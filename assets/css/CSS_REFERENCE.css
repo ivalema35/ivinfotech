@@ -1,0 +1,280 @@
+/* ================================================================
+   UI POLISH ENHANCEMENTS - CSS CODE REFERENCE
+   ================================================================ */
+
+/* ================================================================
+   1. ROOT VARIABLES (Updated)
+   ================================================================ */
+:root {
+    --primary-color: #2563EB;
+    --primary-light: #93C5FD;        /* NEW - For gradient effects */
+    --text-color: #333333;
+    --bg-color: #FFFFFF;
+    --secondary-bg: #F8F9FA;
+    --footer-bg: #F8F9FA;
+    --footer-text: #333333;
+}
+
+/* ================================================================
+   2. TYPOGRAPHY (Updated)
+   ================================================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;  /* UPDATED - Added font-family */
+    font-weight: 700;
+    color: #111827;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    padding-top: 76px;
+}
+
+/* ================================================================
+   3. HERO SECTION - NEW STYLES
+   ================================================================ */
+
+.hero-section {
+    background-color: #FFFFFF;
+    padding: 80px 0;
+}
+
+.hero-headline {
+    font-size: 3.5rem;              /* Increased from display-3 (2.5rem) */
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #2563EB 0%, #93C5FD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+}
+
+/* ================================================================
+   4. BUTTON STYLES - ENHANCED & NEW
+   ================================================================ */
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563EB 0%, #93C5FD 100%);
+    border: none;
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #1D4ED8 0%, #60A5FA 100%);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background-color: rgba(37, 99, 235, 0.05);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}
+
+/* Alternative gradient button classes */
+.gradient-btn {
+    background: linear-gradient(135deg, #2563EB 0%, #93C5FD 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.gradient-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35) !important;
+}
+
+.gradient-btn-outline {
+    color: var(--primary-color) !important;
+    border: 2px solid var(--primary-color) !important;
+    background: transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.gradient-btn-outline:hover {
+    background: rgba(37, 99, 235, 0.05) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2) !important;
+}
+
+/* ================================================================
+   5. HERO ANIMATION CONTAINER - NEW
+   ================================================================ */
+
+.lottie-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+    position: relative;
+    z-index: 1;
+}
+
+.illustration-img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ================================================================
+   6. CARD STYLING - ENHANCED WITH GLASSMORPHISM
+   ================================================================ */
+
+.card {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);           /* Soft shadow */
+    border-radius: 16px;
+    transition: transform 0.3s ease, 
+                box-shadow 0.3s ease, 
+                backdrop-filter 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);                  /* Glassmorphism */
+    backdrop-filter: blur(10px);                            /* Glassmorphism */
+}
+
+.card:hover {
+    transform: translateY(-5px);                            /* Hover lift */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ================================================================
+   7. WHY CHOOSE US SECTION - ENHANCED
+   ================================================================ */
+
+.why-choose-img {
+    border-radius: 20px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.why-choose-img:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+    font-size: 1.5rem !important;
+}
+
+/* ================================================================
+   8. TESTIMONIAL CARDS - ENHANCED WITH GLASSMORPHISM
+   ================================================================ */
+
+.testimonial-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    margin: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ================================================================
+   9. EXISTING STYLES - MAINTAINED/VERIFIED
+   ================================================================ */
+
+/* Navbar remains unchanged - already has good styling */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Sections maintain 80px padding */
+section {
+    padding: 80px 0;
+}
+
+.bg-light {
+    background-color: var(--secondary-bg) !important;
+}
+
+/* ================================================================
+   10. ICON BOX STYLING - EXISTING, WELL MAINTAINED
+   ================================================================ */
+
+.icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background-color: rgba(37, 99, 235, 0.1);
+    border-radius: 50%;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.card:hover .icon-box {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* ================================================================
+   SUMMARY OF CHANGES
+   ================================================================
+
+   NEW CLASSES ADDED:
+   - .hero-headline          (3.5rem font size for main headline)
+   - .gradient-text          (Gradient text effect)
+   - .gradient-btn           (Gradient button variant)
+   - .gradient-btn-outline   (Outline gradient button variant)
+   - .lottie-container       (Lottie animation container)
+   - .illustration-img       (Illustration image styling)
+   - .why-choose-img         (Enhanced image styling)
+   - .feature-icon           (Feature icon styling)
+
+   ENHANCED CLASSES:
+   - .card                   (Glassmorphism + soft shadow)
+   - .btn-primary            (Gradient + enhanced shadow)
+   - .btn-outline-primary    (Enhanced hover state)
+   - .testimonial-card       (Glassmorphism effect)
+   - h1, h2, h3, h4, h5, h6 (Poppins font-family added)
+
+   NEW CSS VARIABLES:
+   - --primary-light         (#93C5FD - for gradient effects)
+
+   KEY IMPROVEMENTS:
+   ✓ Gradient text on main headline
+   ✓ Gradient buttons with shadow effects
+   ✓ Glassmorphism design pattern
+   ✓ Smooth hover animations (card lift, shadow deepening)
+   ✓ Premium typography (Poppins + Inter)
+   ✓ Proper spacing (80px sections)
+   ✓ Lottie animation support
+   ✓ Consistent color palette
+   ✓ Modern micro-interactions
+
+   ================================================================ */
