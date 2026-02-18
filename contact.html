@@ -4,11 +4,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - IV Infotech</title>
+    <title>Contact IV Infotech | Let's Start a Conversation</title>
+    <meta name="description" content="Get in touch with IV Infotech. We have offices in Mehsana, Ahmedabad, Kadi and Edmonton, Canada. Call, WhatsApp or fill the form — we reply within 24 hours.">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* ===== Contact Page — Premium Redesign ===== */
+
+        /* Hero override: extra bottom padding for floating cards */
+        .page-header.contact-hero {
+            padding-bottom: 130px !important;
+        }
+
+        /* ---- Floating Info Cards ---- */
+        .contact-info-row {
+            margin-top: -80px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-info-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 32px 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.09);
+            transition: all 0.35s ease;
+            height: 100%;
+            border-bottom: 4px solid transparent;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-10px);
+            border-bottom-color: #2F55F4;
+            box-shadow: 0 25px 55px rgba(47, 85, 244, 0.14);
+        }
+
+        .contact-info-card .icon-circle {
+            width: 64px;
+            height: 64px;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 18px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-info-card:hover .icon-circle {
+            background: #2F55F4;
+            color: #fff;
+        }
+
+        .contact-info-card h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #0b1c3c;
+            margin-bottom: 8px;
+        }
+
+        .contact-info-card p {
+            color: #6b7280;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* ---- Form Section ---- */
+        .form-section {
+            background: #f9fbfd;
+        }
+
+        .contact-form-wrap {
+            background: #fff;
+            padding: 44px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Floating label override */
+        .form-floating > .form-control,
+        .form-floating > .form-select {
+            border-radius: 12px;
+            border: 1.5px solid #e5e9f0;
+            background: #f9fbfd;
+            font-size: 0.95rem;
+            padding-top: 1.625rem;
+        }
+
+        .form-floating > .form-control:focus,
+        .form-floating > .form-select:focus {
+            border-color: #2F55F4;
+            box-shadow: 0 0 0 4px rgba(47, 85, 244, 0.1);
+            background: #fff;
+        }
+
+        .form-floating > label {
+            color: #9aa3b2;
+            font-size: 0.9rem;
+        }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label,
+        .form-floating > .form-select ~ label {
+            color: #2F55F4;
+            font-weight: 600;
+        }
+
+        .btn-cta-send {
+            background: linear-gradient(135deg, #2F55F4, #1a3fd6);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 16px 30px;
+            border-radius: 50px;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-cta-send:hover {
+            background: linear-gradient(135deg, #1a3fd6, #0f2db0);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(47, 85, 244, 0.38);
+            color: #fff;
+        }
+
+        /* ---- Why IV Infotech Panel ---- */
+        .why-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+            color: #374151;
+        }
+
+        .why-list li .why-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .why-list li strong {
+            color: #0b1c3c;
+            font-weight: 700;
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .why-list li span {
+            color: #6b7280;
+            font-size: 0.87rem;
+        }
+
+        /* ---- Office Cards (4-col) ---- */
+        .offices-section {
+            background: #fff;
+        }
+
+        .office-card {
+            background: #fff;
+            padding: 32px 22px;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04);
+            transition: all 0.35s ease;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .office-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #2F55F4;
+            transform: scaleX(0);
+            transition: transform 0.35s ease;
+        }
+
+        .office-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 24px 50px rgba(47, 85, 244, 0.12);
+        }
+
+        .office-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .office-card .office-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin: 0 auto 16px;
+            transition: all 0.3s ease;
+        }
+
+        .office-card:hover .office-icon {
+            background: #2F55F4;
+            color: #fff;
+        }
+
+        .office-card .office-badge {
+            display: inline-block;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .office-card h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #0b1c3c;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .office-card p {
+            color: #6b7280;
+            font-size: 0.87rem;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* ---- Section Eyebrow ---- */
+        .section-eyebrow {
+            display: inline-block;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            border: 1px solid rgba(47, 85, 244, 0.2);
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+
+        /* ---- Map ---- */
+        .map-section {
+            position: relative;
+            height: 440px;
+            overflow: hidden;
+        }
+
+        .map-section iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: grayscale(90%) saturate(0.6);
+            transition: filter 0.4s ease;
+        }
+
+        .map-section:hover iframe {
+            filter: grayscale(0%) saturate(1);
+        }
+
+        @media (max-width: 768px) {
+            .contact-form-wrap { padding: 28px 20px; }
+            .contact-info-row { margin-top: -40px; }
+        }
+    </style>
 </head>
 
 <body>
@@ -18,7 +312,8 @@
 
     <div id="header-placeholder"></div>
 
-    <header class="page-header">
+    <!-- ===== HERO ===== -->
+    <header class="page-header contact-hero">
         <div class="container text-center">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb justify-content-center">
@@ -26,107 +321,221 @@
                     <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
                 </ol>
             </nav>
-
-            <h1 class="display-4 fw-bold">Contact Us</h1>
-            
-            <p class="lead w-75 mx-auto">Get in touch with us for your next project.</p>
+            <h1 class="display-4 fw-bold">Let's Start a<br class="d-none d-md-block"> Conversation.</h1>
+            <p class="lead w-75 mx-auto">Have a project in mind? We'd love to hear from you.<br class="d-none d-md-block">Reach out to our team in Mehsana — we reply within 24 hours.</p>
         </div>
-
         <div class="custom-shape-divider-bottom">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
             </svg>
         </div>
-
         <ul class="circles">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
         </ul>
     </header>
 
-    <!-- Contact Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row g-5">
-                <!-- Contact Info -->
-                <div class="col-lg-5" data-aos="fade-right">
-                    <h2 class="fw-bold mb-4">Let's Talk</h2>
-                    <p class="text-muted mb-5">Have a question or want to work together? Fill out the form or reach out
-                        to us directly.</p>
+    <!-- ===== FLOATING CONTACT INFO CARDS ===== -->
+    <div class="container contact-info-row" data-aos="fade-up">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="contact-info-card text-center">
+                    <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                    <h5>Visit Us</h5>
+                    <p>T-332, S Cube, Radhanpur Rd<br>opp. Bansari Township<br>Mehsana, Gujarat 384002</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-info-card text-center">
+                    <div class="icon-circle"><i class="fas fa-phone-alt"></i></div>
+                    <h5>Call / WhatsApp</h5>
+                    <p>+91 9924426361<br>Mon – Sat, 9:00 AM – 6:00 PM</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="contact-info-card text-center">
+                    <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+                    <h5>Email Us</h5>
+                    <p>info@ivinfotech.com<br>Typically reply in 2–4 hours</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="d-flex mb-4">
-                        <div class="flex-shrink-0 text-primary">
-                            <i class="fas fa-map-marker-alt fa-2x"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="fw-bold">Location</h5>
-                            <p class="text-muted">S Cube, T-332, Radhanpur Rd, opp. Bansari Township, Kunal, Mehsana, Gujarat 384002</p>
-                        </div>
-                    </div>
+    <!-- ===== FORM + LOTTIE SECTION ===== -->
+    <section class="form-section py-5 mt-5">
+        <div class="container py-3">
+            <div class="row align-items-center g-5">
 
-                    <div class="d-flex mb-4">
-                        <div class="flex-shrink-0 text-primary">
-                            <i class="fas fa-envelope fa-2x"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="fw-bold">Email</h5>
-                            <p class="text-muted">info@ivisioninfotech.in</p>
-                        </div>
-                    </div>
+                <!-- Left: Form -->
+                <div class="col-lg-7" data-aos="fade-right">
+                    <div class="contact-form-wrap">
+                        <span class="section-eyebrow">Send a Message</span>
+                        <h3 class="fw-bold mb-1" style="font-family:'Poppins',sans-serif; color:#0b1c3c;">Tell Us About Your Project</h3>
+                        <p class="text-muted mb-4" style="font-size:0.92rem;">We'll get back to you with a plan, timeline, and no-surprise pricing.</p>
 
-                    <div class="d-flex mb-4">
-                        <div class="flex-shrink-0 text-primary">
-                            <i class="fas fa-phone fa-2x"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="fw-bold">Phone</h5>
-                            <p class="text-muted">+91 9924426361</p>
-                        </div>
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="firstName" placeholder="First Name">
+                                        <label for="firstName">First Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="lastName" placeholder="Last Name">
+                                        <label for="lastName">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" placeholder="Email">
+                                        <label for="email">Email Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="tel" class="form-control" id="phone" placeholder="Phone">
+                                        <label for="phone">Phone / WhatsApp</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="service">
+                                            <option value="" disabled selected></option>
+                                            <option>Custom Website / Software Development</option>
+                                            <option>Mobile App Development</option>
+                                            <option>CRM / ERP Development</option>
+                                            <option>E-Commerce Development</option>
+                                            <option>Digital Marketing</option>
+                                            <option>UI / UX Design</option>
+                                            <option>AI &amp; Automation</option>
+                                            <option>Web Hosting</option>
+                                            <option>General Inquiry</option>
+                                        </select>
+                                        <label for="service">Service Required</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" id="message" placeholder="Message" style="height:150px;"></textarea>
+                                        <label for="message">Your Message</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-1">
+                                    <button type="submit" class="btn-cta-send">
+                                        Send Message &nbsp;<i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
-                <!-- Contact Form -->
-                <div class="col-lg-7" data-aos="fade-left">
-                    <form class="p-4 bg-white shadow rounded">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="name" class="form-label">Your Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="John Doe">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label">Your Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="john@example.com">
-                            </div>
-                            <div class="col-12">
-                                <label for="subject" class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="subject" placeholder="Project Inquiry">
-                            </div>
-                            <div class="col-12">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control" id="message" rows="5"
-                                    placeholder="Tell us about your project..."></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary w-100">Send Message</button>
-                            </div>
-                        </div>
-                    </form>
+                <!-- Right: Lottie + Why Us -->
+                <div class="col-lg-5 text-center" data-aos="fade-left">
+                    <lottie-player src="assets/animations/contact-support.json" background="transparent" speed="1" style="width:100%; max-width:420px; height:auto; margin:0 auto;" loop autoplay></lottie-player>
+
+                    <div class="mt-4 text-start">
+                        <h5 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif; color:#0b1c3c;">Why Work With IV Infotech?</h5>
+                        <ul class="list-unstyled why-list">
+                            <li>
+                                <div class="why-icon"><i class="fas fa-bolt"></i></div>
+                                <div>
+                                    <strong>Quick Response — Within 24 Hours</strong>
+                                    <span>No ghosting, no delays. A real person replies.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="why-icon"><i class="fas fa-comments"></i></div>
+                                <div>
+                                    <strong>Free Technical Consultation</strong>
+                                    <span>We help you plan before you commit a single rupee.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="why-icon"><i class="fas fa-file-signature"></i></div>
+                                <div>
+                                    <strong>NDA & No-Obligation Quotes</strong>
+                                    <span>Your idea stays yours. Zero pressure to sign up.</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="why-icon"><i class="fas fa-headset"></i></div>
+                                <div>
+                                    <strong>24/7 Post-Launch Support</strong>
+                                    <span>We don't disappear after delivery. We're your long-term tech partner.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== OUR 4 OFFICES ===== -->
+    <section class="offices-section py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-eyebrow">Our Offices</span>
+                <h2 class="fw-bold" style="font-family:'Poppins',sans-serif; color:#0b1c3c;">Our Global Presence</h2>
+                <p class="text-muted">Visit us at any of our offices across India and Canada.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                    <div class="office-card text-center">
+                        <div class="office-icon"><i class="fas fa-building"></i></div>
+                        <div class="office-badge">Head Office</div>
+                        <h5>Mehsana</h5>
+                        <p>T-332, S Cube, Radhanpur Rd, opp. Bansari Township, Mehsana, Gujarat 384002</p>
+                        <a href="https://maps.app.goo.gl/scube" target="_blank" class="d-inline-flex align-items-center gap-1 mt-3 text-primary fw-semibold small text-decoration-none">
+                            <i class="fas fa-location-dot"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="office-card text-center">
+                        <div class="office-icon"><i class="fas fa-city"></i></div>
+                        <div class="office-badge">Branch Office</div>
+                        <h5>Ahmedabad</h5>
+                        <p>409-B, Himalaya Arcade, Opp Vastrapur Lake, Vastrapur, Ahmedabad – 380015</p>
+                        <a href="https://maps.app.goo.gl/ahmedabad" target="_blank" class="d-inline-flex align-items-center gap-1 mt-3 text-primary fw-semibold small text-decoration-none">
+                            <i class="fas fa-location-dot"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="office-card text-center">
+                        <div class="office-icon"><i class="fas fa-map-pin"></i></div>
+                        <div class="office-badge">Branch Office</div>
+                        <h5>Kadi</h5>
+                        <p>A-SF-15, Hanumant Plaza, Nr. Vadvala Hanuman Temple, At-Kadi, Dist-Mahesana, 382715</p>
+                        <a href="https://maps.app.goo.gl/kadi" target="_blank" class="d-inline-flex align-items-center gap-1 mt-3 text-primary fw-semibold small text-decoration-none">
+                            <i class="fas fa-location-dot"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="office-card text-center">
+                        <div class="office-icon"><i class="fab fa-canadian-maple-leaf"></i></div>
+                        <div class="office-badge">International</div>
+                        <h5>Canada</h5>
+                        <p>6864 Ellerslie Rd SW, Edmonton, AB T6X 1S4, Canada</p>
+                        <a href="https://maps.app.goo.gl/edmonton" target="_blank" class="d-inline-flex align-items-center gap-1 mt-3 text-primary fw-semibold small text-decoration-none">
+                            <i class="fas fa-location-dot"></i> Get Directions
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Map Section -->
-    <section class="py-0">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.7539410410863!2d72.36963712346962!3d23.588046317180107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c20c9e4a4a4a5%3A0x5d5d5d5d5d5d5d5d!2sRadhanpur%20Rd%2C%20Mehsana%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1707987654321" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <!-- ===== GOOGLE MAP ===== -->
+    <section class="map-section">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.7539410410863!2d72.36963712346962!3d23.588046317180107!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395c20c9e4a4a4a5%3A0x5d5d5d5d5d5d5d5d!2sMehsana%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1707987654321" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 
     <div id="footer-placeholder"></div>
@@ -134,6 +543,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 80 });
+    </script>
 </body>
 
 </html>
