@@ -143,46 +143,50 @@
             background: #fff;
         }
 
+        /* ---- Premium Team Cards ---- */
         .team-card {
-            background: #fff;
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.35s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            border: none;
         }
 
         .team-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(47, 85, 244, 0.14);
-            border-color: rgba(47, 85, 244, 0.1);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(11, 28, 60, 0.25);
         }
 
         .team-img-wrapper {
             position: relative;
+            height: 320px;
+            background: #ffffff;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
             overflow: hidden;
-            aspect-ratio: 4 / 5;
-            width: 100%;
         }
 
         .team-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center top;
+            object-position: top center;
             transition: transform 0.5s ease;
         }
 
         .team-card:hover .team-img-wrapper img {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
+        /* Social overlay — slides up over image */
         .social-overlay {
             position: absolute;
             bottom: -60px;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.93);
+            background: rgba(11, 28, 60, 0.82);
             backdrop-filter: blur(6px);
             padding: 12px 0;
             text-align: center;
@@ -200,8 +204,8 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: rgba(47, 85, 244, 0.1);
-            color: #2F55F4;
+            background: rgba(96, 165, 250, 0.15);
+            color: #60a5fa;
             font-size: 14px;
             margin: 0 4px;
             transition: all 0.25s ease;
@@ -209,30 +213,45 @@
         }
 
         .social-overlay a:hover {
-            background: #2F55F4;
-            color: #fff;
+            background: #60a5fa;
+            color: #0b1c3c;
         }
 
-        .team-card .team-info {
-            padding: 20px 20px 22px;
+        /* Dark navy info panel */
+        .team-info {
+            background-color: #0b1c3c;
+            padding: 25px 20px;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
-        .team-card .team-name {
+        .team-name {
+            color: #ffffff;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            color: #0b1c3c;
-            font-size: 1.05rem;
-            margin-bottom: 4px;
+            font-size: 1.25rem;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
 
         .team-role {
-            color: #2F55F4;
+            color: #60a5fa;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
             font-weight: 600;
-            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+
+        .team-role::before {
+            content: '';
+            display: block;
+            width: 30px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 auto 10px;
         }
 
         /* ---- Stats Row ---- */
@@ -503,7 +522,7 @@
                             <img src="assets/images/team/member5.jpg" alt="Team Member">
                             <div class="social-overlay">
                                 <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                <!-- <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a> -->
                             </div>
                         </div>
                         <div class="team-info">
@@ -538,8 +557,8 @@
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member3.jpg" alt="Team Member">
                             <div class="social-overlay">
-                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                <a href="https://www.linkedin.com/in/hardik-vaghela005/" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a> -->
                             </div>
                         </div>
                         <div class="team-info">
@@ -575,8 +594,8 @@
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member8.jpg" alt="Team Member">
                             <div class="social-overlay">
-                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.linkedin.com/in/tulsi-patel-69416531a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a> -->
                             </div>
                         </div>
                         <div class="team-info">
