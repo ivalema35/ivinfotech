@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team | IV Infotech — The People Behind the Magic</title>
+    <meta name="description" content="Meet the passionate developers, designers, and strategists at IV Infotech who build digital solutions from Mehsana, Gujarat.">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* ===== Our Team Page — Premium Styles ===== */
+
+        /* ---- Hero ---- */
+        .team-hero {
+            background: #fff;
+            padding: 100px 0 80px;
+        }
+
+        .team-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            line-height: 1.15;
+        }
+
+        /* ---- Section Eyebrow ---- */
+        .section-eyebrow {
+            display: inline-block;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            border: 1px solid rgba(47, 85, 244, 0.2);
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+
+        /* ---- Leadership Cards (Horizontal) ---- */
+        .leadership-section {
+            background: #f9fbfd;
+        }
+
+        .leader-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.4s ease;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(47, 85, 244, 0.13);
+        }
+
+        .leader-img-wrap {
+            position: relative;
+            height: 100%;
+            min-height: 320px;
+            overflow: hidden;
+        }
+
+        .leader-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .leader-card:hover .leader-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .leader-badge {
+            display: inline-block;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .leader-name {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .leader-role {
+            color: #2F55F4;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .leader-bio {
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .leader-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(47, 85, 244, 0.08);
+            color: #2F55F4;
+            font-size: 16px;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .leader-social a:hover {
+            background: #2F55F4;
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* ---- Team Grid Cards ---- */
+        .team-section {
+            background: #fff;
+        }
+
+        .team-card {
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(47, 85, 244, 0.14);
+            border-color: rgba(47, 85, 244, 0.1);
+        }
+
+        .team-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+            width: 100%;
+        }
+
+        .team-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transition: transform 0.5s ease;
+        }
+
+        .team-card:hover .team-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .social-overlay {
+            position: absolute;
+            bottom: -60px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.93);
+            backdrop-filter: blur(6px);
+            padding: 12px 0;
+            text-align: center;
+            transition: bottom 0.35s ease;
+        }
+
+        .team-card:hover .social-overlay {
+            bottom: 0;
+        }
+
+        .social-overlay a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(47, 85, 244, 0.1);
+            color: #2F55F4;
+            font-size: 14px;
+            margin: 0 4px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+        }
+
+        .social-overlay a:hover {
+            background: #2F55F4;
+            color: #fff;
+        }
+
+        .team-card .team-info {
+            padding: 20px 20px 22px;
+            text-align: center;
+        }
+
+        .team-card .team-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #0b1c3c;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            color: #2F55F4;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0;
+        }
+
+        /* ---- Stats Row ---- */
+        .team-stats-section {
+            background: linear-gradient(135deg, #0b1c3c 0%, #1a3366 100%);
+        }
+
+        .team-stat {
+            text-align: center;
+            padding: 30px 16px;
+        }
+
+        .team-stat .num {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .team-stat .num sup {
+            font-size: 1.4rem;
+            color: #2F55F4;
+        }
+
+        .team-stat h6 {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* ---- CTA ---- */
+        .cta-team-strip {
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 25px;
+            padding: 56px 40px;
+            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
+            margin: 60px auto;
+            max-width: 1100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-team-strip::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle at 15% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-team-strip h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-team-strip p {
+            color: rgba(255,255,255,0.88);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop {
+            background: #fff;
+            color: #2F55F4;
+            font-weight: 700;
+            padding: 14px 34px;
+            border-radius: 50px;
+            border: 2px solid #fff;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop:hover {
+            background: transparent;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            .leader-img-wrap { min-height: 260px; }
+            .cta-team-strip { padding: 36px 24px; }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="assets/js/loader.js"></script>
+
+    <div id="header-placeholder"></div>
+
+    <!-- ===== HERO ===== -->
+    <section class="team-hero text-center">
+        <div class="container" data-aos="fade-up">
+            <span class="section-eyebrow">Our Team</span>
+            <h1 class="display-4 fw-bold mb-4">Meet the Minds Behind<br class="d-none d-md-block"> <span class="text-primary">the Magic.</span></h1>
+            <p class="lead text-muted mx-auto" style="max-width:680px;">
+                We are a team of passionate developers, designers, and strategists building
+                the digital future from Mehsana, Gujarat.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== TEAM STATS ===== -->
+    <section class="team-stats-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+                    <div class="team-stat">
+                        <div class="num">25<sup>+</sup></div>
+                        <h6>Team Members</h6>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-stat">
+                        <div class="num">8<sup>+</sup></div>
+                        <h6>Years Together</h6>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-stat">
+                        <div class="num">12<sup>+</sup></div>
+                        <h6>Specialisations</h6>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="team-stat">
+                        <div class="num">4</div>
+                        <h6>Office Locations</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== LEADERSHIP SECTION ===== -->
+    <section class="leadership-section py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-eyebrow">Leadership</span>
+                <h2 class="fw-bold" style="font-family:'Poppins',sans-serif; color:#0b1c3c;">Founders & Directors</h2>
+                <p class="text-muted">The vision-setters who built IV Infotech from the ground up.</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+
+                <!-- Founder 1 -->
+                <div class="col-lg-10" data-aos="fade-up" data-aos-delay="0">
+                    <div class="leader-card">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <div class="leader-img-wrap">
+                                    <img src="assets/images/team/founder1.jpg" alt="Founder — IV Infotech">
+                                </div>
+                            </div>
+                            <div class="col-md-8 d-flex align-items-center p-4 p-lg-5">
+                                <div>
+                                    <div class="leader-badge">CEO</div>
+                                    <h3 class="leader-name">Ronak Patel</h3>
+                                    <p class="leader-role">Founder & CEO</p>
+                                    <p class="leader-bio">
+                                        With over a decade of experience in software architecture and business strategy,
+                                        Ronak patel leads IV Infotech's vision of delivering world-class digital solutions from
+                                        Mehsana to global clients. He drives the company's growth in AI, mobile, and
+                                        enterprise software markets.
+                                    </p>
+                                    <div class="leader-social mt-3">
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                                        <a href="mailto:ceo@ivinfotech.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Founder 2
+                <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+                    <div class="leader-card">
+                        <div class="row g-0 flex-row-reverse">
+                            <div class="col-md-4">
+                                <div class="leader-img-wrap">
+                                    <img src="assets/images/team/founder2.jpg" alt="Co-Founder — IV Infotech">
+                                </div>
+                            </div>
+                            <div class="col-md-8 d-flex align-items-center p-4 p-lg-5">
+                                <div>
+                                    <div class="leader-badge">Co-Founder & CTO</div>
+                                    <h3 class="leader-name">Hardik Shah</h3>
+                                    <p class="leader-role">Chief Technology Officer</p>
+                                    <p class="leader-bio">
+                                        Hardik architects the technical backbone of IV Infotech — from cloud
+                                        infrastructure to AI-powered automation pipelines. His expertise spans
+                                        Laravel, Flutter, AI/ML, and scalable SaaS platforms. He mentors the
+                                        engineering team and sets the technical direction for every project.
+                                    </p>
+                                    <div class="leader-social mt-3">
+                                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                        <a href="mailto:cto@ivinfotech.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CORE TEAM GRID ===== -->
+    <section class="team-section py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-eyebrow">Core Team</span>
+                <h2 class="fw-bold" style="font-family:'Poppins',sans-serif; color:#0b1c3c;">The People Who Build It</h2>
+                <p class="text-muted">Every role matters. Every person ships value.</p>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <!-- Member 2 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="80">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member2.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="https://www.linkedin.com/in/harshil-patel-5b557024a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a> -->
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Harshil Patel</p>
+                            <p class="team-role">Mobile App Developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="240">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member4.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="https://www.linkedin.com/in/pooja-rathod-582373327/" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a> -->
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Pooja Chauhan</p>
+                            <p class="team-role">SEO & Content Strategist</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Member 5 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="0">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member5.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Rutul Patel</p>
+                            <p class="team-role">Laravel Developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 1 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="0">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member1.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="https://www.linkedin.com/in/sathavararaj2505?utm_source=share_via&utm_content=profile&utm_medium=member_android" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a> -->
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Raj Sathavara</p>
+                            <p class="team-role">Full Stack Developer</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <!-- Member 3 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="160">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member3.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Hardik Vaghela</p>
+                            <p class="team-role">AI & Automation Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+               
+
+                <!-- Member 6 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="80">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member6.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="https://www.linkedin.com/in/shakshi-patel-a08b16313?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Shakshi Patel</p>
+                            <p class="team-role">Full stack Intern</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 8 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="240">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member8.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Tulsi Patel</p>
+                            <p class="team-role">Full stack Intern</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 7 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="160">
+                    <div class="team-card">
+                        <div class="team-img-wrapper">
+                            <img src="assets/images/team/member7.jpg" alt="Team Member">
+                            <div class="social-overlay">
+                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                        <div class="team-info">
+                            <p class="team-name">Jeel Patel</p>
+                            <p class="team-role">AI & Automation Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HIRING CTA ===== -->
+    <section class="container px-4">
+        <div class="cta-team-strip">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Talented? Passionate? We're Hiring.</h2>
+                    <p class="lead mb-0">Join our growing team in Mehsana. We offer exciting challenges, great culture, and real impact.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="career.html" class="btn-white-pop">View Open Positions</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true, offset: 80 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const aboutLink = document.querySelector('.nav-link[href="about.html"]');
+                if (aboutLink) aboutLink.classList.add('active');
+            }, 400);
+        });
+    </script>
+</body>
+
+</html>
