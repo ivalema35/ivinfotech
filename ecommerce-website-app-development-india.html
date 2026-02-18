@@ -4,382 +4,547 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>High-Converting E-Commerce Stores in Mehsana | IV Infotech</title>
-    <meta name="description" content="E-Commerce Solutions in Mehsana, Gujarat. Shopify and WooCommerce stores built from our S-Cube, Radhanpur Road HQ with global standards.">
-    <meta name="keywords" content="Shopify Developers Mehsana, WooCommerce Expert, Online Store India">
+    <title>Build High-Converting Online Stores in Mehsana | IV Infotech</title>
+    <meta name="description" content="E-Commerce Development in Mehsana, Gujarat. Shopify, WooCommerce & Custom Online Stores built from our S-Cube HQ with secure payments and stunning UX.">
+    <meta name="keywords" content="Shopify Developers Mehsana, WooCommerce Expert Gujarat, Online Store India, E-Commerce Development, Razorpay Integration">
 
-    <meta property="og:title" content="High-Converting E-Commerce Stores | IV Infotech">
-    <meta property="og:description" content="Custom storefronts, secure payments, and inventory automation built with global standards from Mehsana, Gujarat.">
+    <meta property="og:title" content="Build High-Converting Online Stores | IV Infotech">
+    <meta property="og:description" content="Turn visitors into buyers. We design stunning Shopify, WooCommerce, and Custom E-Commerce platforms tailored for businesses in Gujarat & Worldwide.">
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/ecommerce-website-app-development-india.html">
     <meta property="og:type" content="website">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
-        .hero-light h1,
-        .hero-light h2 {
+        /* Premium E-Commerce Page Styles */
+        .hero-section h1 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            line-height: 1.2;
         }
 
-        .hero-light p {
+        .hero-section .lead {
+            font-size: 1.25rem;
             color: #6b7280;
         }
 
-        .btn-brand {
-            background: #2F55F4;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 10px 24px rgba(47, 85, 244, 0.25);
+        .hero-lottie {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            min-height: 450px;
         }
 
-        .btn-brand:hover {
-            background: #1a3fd6;
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        .tech-stack {
+        /* Platform Logos Strip */
+        .platform-strip {
             border-top: 1px solid #eef1f5;
             border-bottom: 1px solid #eef1f5;
-            background: #fafafa;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f7fa 100%);
         }
 
-        .tech-stack .tech-item {
-            color: #9aa3b2;
+        .platform-strip .platform-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .platform-strip .platform-item i {
+            font-size: 48px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .platform-strip .platform-item span {
             font-weight: 600;
-            letter-spacing: 0.2px;
+            color: #9aa3b2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .tech-stack .tech-item i {
-            font-size: 22px;
-            margin-right: 8px;
+        .platform-strip .platform-item:hover i {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
         }
 
+        .platform-strip .platform-item:hover i.fa-shopify { color: #96BF48; }
+        .platform-strip .platform-item:hover i.fa-wordpress { color: #21759B; }
+        .platform-strip .platform-item:hover i.fa-magento { color: #F26322; }
+        .platform-strip .platform-item:hover i.fa-react { color: #61DAFB; }
+        .platform-strip .platform-item:hover i.fa-stripe-s { color: #635BFF; }
+        .platform-strip .platform-item:hover i.fa-credit-card { color: #2F55F4; }
+
+        /* Section Alternating Background */
+        .section-alt {
+            background-color: #f9fbfd;
+        }
+
+        /* Zig-Zag Content Styles */
         .zigzag-section h2 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            font-weight: 700;
         }
 
         .zigzag-section p {
             color: #4b5563;
+            font-size: 1.1rem;
         }
 
-        .bento-card {
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-list li {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .check-list li i {
+            color: #2F55F4;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        /* Image Hover Lift Effect */
+        .img-hover-lift {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .img-hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Feature Cards with Hover - E-Commerce Colorful Style */
+        .feature-card {
             background: #ffffff;
-            border: 1px solid #eef1f5;
-            border-radius: 14px;
-            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 32px 28px;
             height: 100%;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid transparent;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
-        .bento-card h5 {
-            color: #0b1c3c;
-            margin-bottom: 8px;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-top-color: #2F55F4;
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.12);
         }
 
-        .cta-strip {
-            background: #2F55F4;
+        .feature-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-card .icon-wrap.green { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+        .feature-card .icon-wrap.orange { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+        .feature-card .icon-wrap.purple { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); }
+        .feature-card .icon-wrap.pink { background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%); }
+        .feature-card .icon-wrap.cyan { background: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%); }
+
+        .feature-card .icon-wrap i {
+            font-size: 24px;
             color: #ffffff;
         }
 
-        .cta-strip .btn-light {
+        .feature-card h5 {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* Floating CTA Strip */
+        .cta-floating-strip {
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 25px;
+            padding: 50px 40px;
+            color: #ffffff;
+            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
+            margin: 60px auto;
+            max-width: 1100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-floating-strip p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop {
+            background-color: #ffffff;
             color: #2F55F4;
             font-weight: 700;
+            font-size: 1.1rem;
+            padding: 15px 35px;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop:hover {
+            background-color: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: #2F55F4;
+            border-color: #2F55F4;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a3fd6;
+            border-color: #1a3fd6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3);
+        }
+
+        .btn-outline-dark {
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(135deg, #0b1c3c 0%, #1a3366 100%);
+            color: #ffffff;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .stat-item h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #2F55F4;
+            margin-bottom: 8px;
+        }
+
+        .stat-item p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 0;
         }
     </style>
 </head>
 
 <body>
+    <div id="header-placeholder"></div>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/images/logo.png" alt="IV Infotech - Best IT Company in Mehsana" class="logo-img">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="about.html" id="aboutDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            About
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="aboutDropdown">
-                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
-                            <li><a class="dropdown-item" href="testimonials.html">Testimonials</a></li>
-                            <li><a class="dropdown-item" href="#">Career</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="services.html" id="servicesDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item" href="custom-mobile-application-development.html">Custom Mobile Application Development</a></li>
-                            <li><a class="dropdown-item" href="custom-website-software-development.html">Custom Website & Software Development</a></li>
-                            <li><a class="dropdown-item" href="crm-erp-custom-software-development.html">CRM & ERP Custom Software Development</a></li>
-                            <li><a class="dropdown-item" href="ecommerce-website-app-development-india.html">E-Commerce Solution</a></li>
-                            <li><a class="dropdown-item" href="digital-marketing-services.html">Digital Marketing</a></li>
-                            <li><a class="dropdown-item" href="ui-ux-design.html">UI/UX Design</a></li>
-                            <li><a class="dropdown-item" href="web-hosting-services.html">Web Hosting Services</a></li>
-                            <li><a class="dropdown-item" href="ai-automation.html">AI & Automation</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="hireDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Hire
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="hireDropdown">
-                            <li><a class="dropdown-item" href="#">PHP Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Laravel Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Android Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Flutter Developers</a></li>
-                            <li><a class="dropdown-item" href="#">HTML Developers</a></li>
-                            <li><a class="dropdown-item" href="#">UI/UX Designer</a></li>
-                            <li><a class="dropdown-item" href="#">AI Automation Engineer</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="portfolio.html">Portfolio</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="blog.html">Blog</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="d-none d-lg-block">
-                <a href="contact.html" class="btn btn-quote">Get a Quote</a>
-            </div>
-        </div>
-    </nav>
-
-    <section class="hero-light py-5 bg-white">
-        <div class="container">
+    <!-- Hero Section -->
+    <header class="hero-section py-5 bg-white">
+        <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold mb-3">High-Converting E-Commerce Stores.</h1>
-                    <p class="lead mb-4">Launch conversion-first online stores with secure payments, fast checkout, and stunning UX crafted in Gujarat.</p>
-                    <p class="mb-4">From our S-Cube office on Radhanpur Road, Mehsana, we build Shopify and WooCommerce experiences with global standards.</p>
-                    <a href="contact.html" class="btn btn-brand">Start Your Store</a>
-                </div>
-                <div class="col-lg-6 text-center">
-                    <lottie-player src="assets/animations/e-commerce.json" background="transparent" speed="1" style="width: 100%; height: 360px;" loop autoplay></lottie-player>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="tech-stack py-4">
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-center gap-4">
-                <div class="tech-item"><i class="fas fa-store"></i>Shopify</div>
-                <div class="tech-item"><i class="fab fa-wordpress"></i>WooCommerce</div>
-                <div class="tech-item"><i class="fas fa-credit-card"></i>Stripe</div>
-                <div class="tech-item"><i class="fas fa-truck"></i>Logistics</div>
-                <div class="tech-item"><i class="fas fa-chart-line"></i>Analytics</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Custom Storefront Design (UI/UX).</h2>
-                    <p>We design unique storefronts for Mehsana brands that look premium, convert faster, and reduce long-term redesign costs.</p>
+                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Shopify & WooCommerce Experts</span>
+                    <h1 class="display-4 fw-bold mb-4">Build <span class="text-primary">High-Converting</span> Online Stores.</h1>
+                    <p class="lead mb-4">Turn visitors into buyers. We design stunning Shopify, WooCommerce, and Custom E-Commerce platforms tailored for businesses in Gujarat & Worldwide.</p>
+                    <p class="text-muted mb-4">From local retail in Mehsana to global D2C brands—launch secure, scalable, and sales-focused digital storefronts.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="contact.html" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Selling</a>
+                        <a href="services.html" class="btn btn-outline-dark btn-lg px-4 rounded-pill">View Live Stores</a>
+                    </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/about1.jpeg" alt="Custom storefront design" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <lottie-player src="assets/animations/e-commerce.json" background="transparent" speed="1" class="hero-lottie mx-auto" loop autoplay></lottie-player>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Platform Logos Strip -->
+    <section class="platform-strip py-4">
+        <div class="container">
+            <p class="text-center text-uppercase text-muted fw-bold small mb-4">Powered By Leading Platforms</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-5">
+                <div class="platform-item">
+                    <i class="fab fa-shopify"></i>
+                    <span>Shopify</span>
+                </div>
+                <div class="platform-item">
+                    <i class="fab fa-wordpress"></i>
+                    <span>WooCommerce</span>
+                </div>
+                <div class="platform-item">
+                    <i class="fab fa-magento"></i>
+                    <span>Magento</span>
+                </div>
+                <div class="platform-item">
+                    <i class="fab fa-react"></i>
+                    <span>Custom MERN</span>
+                </div>
+                <div class="platform-item">
+                    <i class="fab fa-stripe-s"></i>
+                    <span>Stripe</span>
+                </div>
+                <div class="platform-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Razorpay</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                    <h2 class="fw-bold mb-3">Secure Payment Gateway Integration.</h2>
-                    <p>Our team integrates Razorpay, Stripe, and UPI-ready gateways with scalable architectures and fraud protection.</p>
-                </div>
-                <div class="col-lg-6 order-lg-1" data-aos="fade-right">
-                    <img src="assets/images/about2.jpeg" alt="Secure payment integrations" class="img-fluid rounded-3 shadow-sm">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 1: User-Centric Storefront Design -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Inventory & Order Management.</h2>
-                    <p>Automate inventory updates, order routing, and real-time insights so your teams stay efficient across Gujarat and beyond.</p>
+                    <img src="assets/images/about1.jpeg" alt="E-Commerce Storefront Design" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/why-us.png" alt="Inventory and order management" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">User-Centric Storefront Design</h2>
+                    <p class="mb-4">A pretty website isn't enough. We design user journeys that guide visitors from "Browse" to "Buy" seamlessly with conversion-optimized layouts.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Mobile-First Shopping Experience</li>
+                        <li><i class="fas fa-check-circle"></i>Fast Loading Product Pages</li>
+                        <li><i class="fas fa-check-circle"></i>One-Click Checkout Integration</li>
+                        <li><i class="fas fa-check-circle"></i>SEO-Optimized Product Listings</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
+    <!-- Zig-Zag Section 2: Seamless Operations & Payments -->
+    <section class="zigzag-section py-5 section-alt">
+        <div class="container py-4">
+            <div class="row align-items-center g-5 flex-row-reverse">
+                <div class="col-lg-6" data-aos="fade-left">
+                    <img src="assets/images/about2.jpeg" alt="E-Commerce Payment Integrations" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 pe-lg-5" data-aos="fade-right">
+                    <h2 class="fw-bold mb-3">Seamless Operations & Payments</h2>
+                    <p class="mb-4">Manage your business on auto-pilot with robust backend integrations. From secure payments to automated shipping—we've got you covered.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Secure Payment Gateways (Razorpay/Stripe)</li>
+                        <li><i class="fas fa-check-circle"></i>Real-time Inventory Sync</li>
+                        <li><i class="fas fa-check-circle"></i>Automated Shipping Labels</li>
+                        <li><i class="fas fa-check-circle"></i>GST-Compliant Invoicing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zig-Zag Section 3: Analytics & Growth -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <img src="assets/images/why-us.png" alt="E-Commerce Analytics Dashboard" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Analytics & Marketing Integration</h2>
+                    <p class="mb-4">Track every customer touchpoint. Understand what sells, what doesn't, and optimize your store for maximum revenue.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Google Analytics & Meta Pixel</li>
+                        <li><i class="fas fa-check-circle"></i>Sales & Revenue Dashboards</li>
+                        <li><i class="fas fa-check-circle"></i>Abandoned Cart Recovery</li>
+                        <li><i class="fas fa-check-circle"></i>Email & WhatsApp Marketing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section py-5">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Why Choose Us</h2>
-                <p class="text-muted">E-commerce specialists with global delivery discipline.</p>
+            <div class="row">
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+                    <div class="stat-item">
+                        <h2>150+</h2>
+                        <p>Stores Launched</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-item">
+                        <h2>₹5Cr+</h2>
+                        <p>Client Revenue Generated</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-item">
+                        <h2>99%</h2>
+                        <p>Uptime Guarantee</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-item">
+                        <h2>24/7</h2>
+                        <p>Support Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us - Feature Cards (Colorful) -->
+    <section class="py-5 section-alt">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Why IV Infotech</span>
+                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif; color: #0b1c3c;">Why Brands Choose Us</h2>
+                <p class="text-muted">E-commerce specialists with a track record of launching profitable stores.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>ISO Quality</h5>
-                        <p class="text-muted">Structured QA, security checks, and performance optimization.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="feature-card">
+                        <div class="icon-wrap green">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h5>Fast Time-to-Market</h5>
+                        <p>Launch your store in weeks, not months. Agile sprints with rapid deployment.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>On-Time Delivery</h5>
-                        <p class="text-muted">Launch-focused sprints with milestone tracking and clear KPIs.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="icon-wrap orange">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5>Conversion Optimized</h5>
+                        <p>Every design decision is backed by data to maximize your sales and ROI.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>Support</h5>
-                        <p class="text-muted">Continuous optimization, marketing integrations, and store care plans.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="icon-wrap purple">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>Secure & Scalable</h5>
+                        <p>PCI-compliant payments, SSL encryption, and infrastructure that grows with you.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="icon-wrap pink">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h5>Stunning Designs</h5>
+                        <p>Custom themes that reflect your brand identity and stand out from competitors.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="icon-wrap cyan">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h5>Third-Party Integrations</h5>
+                        <p>Connect with CRMs, ERPs, shipping APIs, and marketing tools seamlessly.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5>Dedicated Support</h5>
+                        <p>Post-launch optimization, training, and continuous store care plans.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta-strip py-5">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Ready to start?</h2>
-            <a href="contact.html" class="btn btn-light px-4 py-2">Book a Consultation</a>
+    <!-- Floating CTA Section -->
+    <section class="container px-4">
+        <div class="cta-floating-strip">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Ready to scale your retail business online?</h2>
+                    <p class="lead mb-0 opacity-90">Get a custom e-commerce strategy session with our experts.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html" class="btn-white-pop">Launch Your Store</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer class="footer-dark">
-        <div class="footer-container">
-            <div class="footer-column">
-                <div class="footer-brand">
-                    <a href="index.html">
-                        <img src="assets/images/logo.png" alt="IV Infotech Logo">
-                    </a>
-                    <p class="footer-tagline">Architecting the Digital Future of Gujarat &amp; Beyond.</p>
-                    <p class="footer-address">
-                        <i class="fas fa-map-marker-alt"></i> S Cube, T-332, Radhanpur Rd, Mehsana, Gujarat 384002
-                    </p>
-                    <div class="footer-social-icons">
-                        <a href="https://www.linkedin.com/company/ivinfotechmeh/" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://www.instagram.com/ivinfotech.official/" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://x.com/ivinfotech2025" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Quick Links</h6>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="testimonials.html">Testimonials</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Career / Hire Us</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Services</h6>
-                <ul class="footer-links">
-                    <li><a href="custom-mobile-application-development.html">Custom Mobile Apps</a></li>
-                    <li><a href="custom-website-software-development.html">Web &amp; Software Dev</a></li>
-                    <li><a href="crm-erp-custom-software-development.html">CRM &amp; ERP Solutions</a></li>
-                    <li><a href="ecommerce-website-app-development-india.html">E-Commerce</a></li>
-                    <li><a href="digital-marketing-services.html">Digital Marketing</a></li>
-                    <li><a href="ui-ux-design.html">UI/UX Design</a></li>
-                    <li><a href="ai-automation.html">AI &amp; Automation</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Connect</h6>
-                <div class="footer-connect">
-                    <div class="footer-connect-item">
-                        <i class="fas fa-envelope"></i>
-                        <div class="footer-connect-info">
-                            <span class="footer-connect-label">Email</span>
-                            <a href="mailto:info@ivinfotech.com">info@ivinfotech.com</a>
-                        </div>
-                    </div>
-                    <div class="footer-connect-item">
-                        <i class="fas fa-phone"></i>
-                        <div class="footer-connect-info">
-                            <span class="footer-connect-label">Phone</span>
-                            <a href="tel:+919924426361">+91 9924426361</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="footer-cta">
-                        Get a Quote <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <p class="footer-copyright">
-                    &copy; <span id="year">2026</span> IV Infotech. All Rights Reserved.
-                </p>
-                <ul class="footer-legal">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const activateServicesLink = () => {
                 const servicesLink = document.querySelector('.nav-link[href="services.html"]');

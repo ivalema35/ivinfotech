@@ -4,49 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scalable Web & Software Solutions in Mehsana | IV Infotech</title>
-    <meta name="description" content="Custom Website & Software Development in Mehsana, Gujarat. Build scalable SaaS platforms and modern web apps from our S-Cube, Radhanpur Road HQ with global standards.">
-    <meta name="keywords" content="Custom Software Mehsana, Web Development Gujarat, PHP Node.js Developers">
+    <title>Custom Web & Software Development in Mehsana | IV Infotech</title>
+    <meta name="description" content="Custom Website & Software Development in Mehsana, Gujarat. Build scalable SaaS platforms, enterprise software, and dynamic websites from our S-Cube HQ with global standards.">
+    <meta name="keywords" content="Custom Software Mehsana, Web Development Gujarat, SaaS Development India, PHP Node.js React Developers, Enterprise Software">
 
-    <meta property="og:title" content="Scalable Web & Software Solutions | IV Infotech">
-    <meta property="og:description" content="Custom SaaS, MERN, Laravel, and legacy modernization with global standards from Mehsana, Gujarat.">
+    <meta property="og:title" content="Custom Web & Software Development | IV Infotech">
+    <meta property="og:description" content="We build scalable SaaS platforms, enterprise software, and dynamic websites. Engineered in Mehsana, deployed globally.">
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/custom-website-software-development.html">
     <meta property="og:type" content="website">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
-        .hero-light h1,
-        .hero-light h2 {
+        /* Premium Page Enhancements */
+        .hero-section h1 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            line-height: 1.2;
         }
 
-        .hero-light p {
+        .hero-section .lead {
+            font-size: 1.25rem;
             color: #6b7280;
         }
 
-        .btn-brand {
-            background: #2F55F4;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 10px 24px rgba(47, 85, 244, 0.25);
+        .hero-lottie {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            min-height: 450px;
         }
 
-        .btn-brand:hover {
-            background: #1a3fd6;
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
+        /* Tech Stack with Grayscale Hover */
         .tech-stack {
             border-top: 1px solid #eef1f5;
             border-bottom: 1px solid #eef1f5;
@@ -54,46 +50,217 @@
         }
 
         .tech-stack .tech-item {
-            color: #9aa3b2;
-            font-weight: 600;
-            letter-spacing: 0.2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 30px;
+            transition: all 0.3s ease;
         }
 
         .tech-stack .tech-item i {
-            font-size: 22px;
-            margin-right: 8px;
+            font-size: 48px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
         }
 
+        .tech-stack .tech-item span {
+            font-weight: 600;
+            color: #9aa3b2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tech-stack .tech-item:hover i {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .tech-stack .tech-item:hover i.fa-php { color: #777BB4; }
+        .tech-stack .tech-item:hover i.fa-node-js { color: #339933; }
+        .tech-stack .tech-item:hover i.fa-react { color: #61DAFB; }
+        .tech-stack .tech-item:hover i.fa-laravel { color: #FF2D20; }
+        .tech-stack .tech-item:hover i.fa-database { color: #336791; }
+        .tech-stack .tech-item:hover i.fa-vuejs { color: #4FC08D; }
+
+        /* Section Alternating Background */
+        .section-alt {
+            background-color: #f9fbfd;
+        }
+
+        /* Zig-Zag Content Styles */
         .zigzag-section h2 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            font-weight: 700;
         }
 
         .zigzag-section p {
             color: #4b5563;
+            font-size: 1.1rem;
         }
 
-        .bento-card {
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-list li {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .check-list li i {
+            color: #2F55F4;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        /* Image Hover Lift Effect */
+        .img-hover-lift {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .img-hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Feature Cards with Hover */
+        .feature-card {
             background: #ffffff;
-            border: 1px solid #eef1f5;
-            border-radius: 14px;
-            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 32px 28px;
             height: 100%;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid transparent;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
-        .bento-card h5 {
-            color: #0b1c3c;
-            margin-bottom: 8px;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-top-color: #2F55F4;
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.12);
         }
 
-        .cta-strip {
-            background: #2F55F4;
+        .feature-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-card .icon-wrap i {
+            font-size: 24px;
             color: #ffffff;
         }
 
-        .cta-strip .btn-light {
+        .feature-card h5 {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* Floating CTA Strip */
+        .cta-floating-strip {
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 25px;
+            padding: 50px 40px;
+            color: #ffffff;
+            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
+            margin: 60px auto;
+            max-width: 1100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-floating-strip p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop {
+            background-color: #ffffff;
             color: #2F55F4;
             font-weight: 700;
+            font-size: 1.1rem;
+            padding: 15px 35px;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop:hover {
+            background-color: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: #2F55F4;
+            border-color: #2F55F4;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a3fd6;
+            border-color: #1a3fd6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3);
+        }
+
+        .btn-outline-dark {
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover {
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -101,109 +268,201 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <section class="hero-light py-5 bg-white">
-        <div class="container">
+    <!-- Hero Section -->
+    <header class="hero-section py-5 bg-white">
+        <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold mb-3">Scalable Web & Software Solutions.</h1>
-                    <p class="lead mb-4">Build secure, high-performance web platforms from concept to launch with a Mehsana-based team delivering global standards.</p>
-                    <p class="mb-4">From our S-Cube office on Radhanpur Road, Gujarat, we engineer SaaS products, ERP-ready systems, and modern web apps that scale across industries.</p>
-                    <a href="contact.html" class="btn btn-brand">Talk to Our Experts</a>
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Top Web Developers in Gujarat</span>
+                    <h1 class="display-4 fw-bold mb-4">Custom Web & <span class="text-primary">Software Development.</span></h1>
+                    <p class="lead mb-4">We build scalable SaaS platforms, enterprise software, and dynamic websites. Engineered in Mehsana, deployed globally.</p>
+                    <p class="text-muted mb-4">From our S-Cube HQ on Radhanpur Road, Gujarat, we deliver clean, secure, and scalable code that powers businesses across industries.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="contact.html" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Your Project</a>
+                        <a href="services.html" class="btn btn-outline-dark btn-lg px-4 rounded-pill">View Case Studies</a>
+                    </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <lottie-player src="assets/animations/custom-web.json" background="transparent" speed="1" style="width: 100%; height: 360px;" loop autoplay></lottie-player>
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <lottie-player src="assets/animations/custom-web.json" background="transparent" speed="1" class="hero-lottie mx-auto" loop autoplay></lottie-player>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
+    <!-- Tech Stack Strip -->
     <section class="tech-stack py-4">
         <div class="container">
-            <div class="d-flex flex-wrap justify-content-center gap-4">
-                <div class="tech-item"><i class="fab fa-php"></i>PHP</div>
-                <div class="tech-item"><i class="fab fa-node-js"></i>Node.js</div>
-                <div class="tech-item"><i class="fab fa-react"></i>React</div>
-                <div class="tech-item"><i class="fab fa-laravel"></i>Laravel</div>
-                <div class="tech-item"><i class="fas fa-database"></i>SQL</div>
+            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-5">
+                <div class="tech-item">
+                    <i class="fab fa-php"></i>
+                    <span>PHP</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-node-js"></i>
+                    <span>Node.js</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-react"></i>
+                    <span>React</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-laravel"></i>
+                    <span>Laravel</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fab fa-vuejs"></i>
+                    <span>Vue.js</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-database"></i>
+                    <span>SQL</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 1: Custom Software Development -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Custom SaaS Platforms (vs Templates).</h2>
-                    <p>We build tailored SaaS platforms for businesses in Mehsana and across Gujarat, keeping long-term costs low while delivering premium user experiences.</p>
+                    <img src="assets/images/about1.jpeg" alt="Custom Software Development" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Custom Software Development</h2>
+                    <p class="mb-4">Off-the-shelf software doesn't fit everyone. We build tailored solutions that match your unique business workflows and scale with your growth.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Full-Stack Development (MERN/LAMP)</li>
+                        <li><i class="fas fa-check-circle"></i>Legacy System Modernization</li>
+                        <li><i class="fas fa-check-circle"></i>Cloud-Native Architecture</li>
+                        <li><i class="fas fa-check-circle"></i>Secure & Scalable Code</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zig-Zag Section 2: SaaS & API Integration -->
+    <section class="zigzag-section py-5 section-alt">
+        <div class="container py-4">
+            <div class="row align-items-center g-5 flex-row-reverse">
                 <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/about1.jpeg" alt="Custom SaaS platforms" class="img-fluid rounded-3 shadow-sm">
+                    <img src="assets/images/about2.jpeg" alt="SaaS & API Integration" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 pe-lg-5" data-aos="fade-right">
+                    <h2 class="fw-bold mb-3">SaaS & API Integration</h2>
+                    <p class="mb-4">Launch your own SaaS product or connect your existing tools with robust APIs. We specialize in multi-tenant architectures and third-party integrations.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Multi-Tenant SaaS Platforms</li>
+                        <li><i class="fas fa-check-circle"></i>Secure Payment Gateway Integration</li>
+                        <li><i class="fas fa-check-circle"></i>Third-Party API Connections</li>
+                        <li><i class="fas fa-check-circle"></i>Real-Time Data Sync</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                    <h2 class="fw-bold mb-3">Full-Stack Technologies (MERN/Laravel).</h2>
-                    <p>Our engineers deliver scalable MERN and Laravel stacks with secure APIs, modular architecture, and cloud-ready deployment.</p>
-                </div>
-                <div class="col-lg-6 order-lg-1" data-aos="fade-right">
-                    <img src="assets/images/about2.jpeg" alt="Full stack development" class="img-fluid rounded-3 shadow-sm">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 3: E-Commerce Solutions -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Legacy Software Modernization.</h2>
-                    <p>We modernize legacy applications, migrate databases, and improve performance to unlock measurable business impact without downtime.</p>
+                    <img src="assets/images/why-us.png" alt="E-Commerce Solutions" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/why-us.png" alt="Legacy software modernization" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">E-Commerce & Web Portals</h2>
+                    <p class="mb-4">From Shopify customizations to fully custom e-commerce platforms, we build conversion-focused online stores that drive revenue.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Custom E-Commerce Development</li>
+                        <li><i class="fas fa-check-circle"></i>Shopify & WooCommerce Experts</li>
+                        <li><i class="fas fa-check-circle"></i>Inventory & Order Management</li>
+                        <li><i class="fas fa-check-circle"></i>SEO-Optimized Architecture</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Why Choose Us</h2>
-                <p class="text-muted">Global standards with local support from Mehsana.</p>
+    <!-- Why Choose Us - Feature Cards -->
+    <section class="py-5 section-alt">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Why IV Infotech</span>
+                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif; color: #0b1c3c;">Why Businesses Choose Us</h2>
+                <p class="text-muted">Global standards with local support from Mehsana, Gujarat.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>ISO Quality</h5>
-                        <p class="text-muted">Enterprise-grade QA, security reviews, and performance testing.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>ISO Quality Standards</h5>
+                        <p>Enterprise-grade QA, security reviews, and performance testing on every project.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-clock"></i>
+                        </div>
                         <h5>On-Time Delivery</h5>
-                        <p class="text-muted">Agile sprints with transparent milestones and predictable launches.</p>
+                        <p>Agile sprints with transparent milestones and predictable launches every time.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>Support</h5>
-                        <p class="text-muted">Post-launch monitoring, optimization, and growth-focused updates.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5>24/7 Support</h5>
+                        <p>Post-launch monitoring, optimization, and growth-focused updates always.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h5>Clean Code Architecture</h5>
+                        <p>Maintainable, documented code following industry best practices and standards.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </div>
+                        <h5>Scalable Solutions</h5>
+                        <p>Built to handle growth from startup to enterprise with modular architecture.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <h5>Cost-Effective</h5>
+                        <p>Premium quality at competitive rates. Maximum ROI for your investment.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta-strip py-5">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Ready to start?</h2>
-            <a href="contact.html" class="btn btn-light px-4 py-2">Book a Consultation</a>
+    <!-- Floating CTA Section -->
+    <section class="container px-4">
+        <div class="cta-floating-strip">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Ready to digitize your business operations?</h2>
+                    <p class="lead mb-0 opacity-90">Let's build something scalable together. Book a free consultation today.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html" class="btn btn-white-pop rounded-pill">Get a Free Quote</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -213,6 +472,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const activateServicesLink = () => {
                 const servicesLink = document.querySelector('.nav-link[href="services.html"]');

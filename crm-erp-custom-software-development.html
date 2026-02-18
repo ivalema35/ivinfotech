@@ -4,49 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom ERP & CRM Solutions in Mehsana | IV Infotech</title>
-    <meta name="description" content="ERP & CRM Solutions in Mehsana, Gujarat. Automate workflows and centralize data from our S-Cube, Radhanpur Road HQ with global standards.">
-    <meta name="keywords" content="ERP Software Mehsana, CRM Developers India, Business Automation">
+    <title>Custom ERP & CRM Software Development in Mehsana | IV Infotech</title>
+    <meta name="description" content="Custom ERP & CRM Solutions in Mehsana, Gujarat. Automate your sales, inventory, HR, and finance with tailored software built at our S-Cube development center.">
+    <meta name="keywords" content="ERP Software Mehsana, CRM Development Gujarat, Business Automation India, Custom ERP Solutions, Sales Automation">
 
-    <meta property="og:title" content="Automate Business with Custom ERP & CRM | IV Infotech">
-    <meta property="og:description" content="Centralized data, sales automation, and real-time reporting dashboards built with global standards from Mehsana, Gujarat.">
+    <meta property="og:title" content="Streamline Operations with Custom ERP & CRM | IV Infotech">
+    <meta property="og:description" content="Stop using spreadsheets. Automate your sales, inventory, and HR processes with tailored software built at our S-Cube, Mehsana development center.">
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/crm-erp-custom-software-development.html">
     <meta property="og:type" content="website">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
-        .hero-light h1,
-        .hero-light h2 {
+        /* Premium Page Enhancements */
+        .hero-section h1 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            line-height: 1.2;
         }
 
-        .hero-light p {
+        .hero-section .lead {
+            font-size: 1.25rem;
             color: #6b7280;
         }
 
-        .btn-brand {
-            background: #2F55F4;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 10px 24px rgba(47, 85, 244, 0.25);
+        .hero-lottie {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            min-height: 450px;
         }
 
-        .btn-brand:hover {
-            background: #1a3fd6;
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
+        /* Tech Stack with Grayscale Hover */
         .tech-stack {
             border-top: 1px solid #eef1f5;
             border-bottom: 1px solid #eef1f5;
@@ -54,46 +50,217 @@
         }
 
         .tech-stack .tech-item {
-            color: #9aa3b2;
-            font-weight: 600;
-            letter-spacing: 0.2px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 30px;
+            transition: all 0.3s ease;
         }
 
         .tech-stack .tech-item i {
-            font-size: 22px;
-            margin-right: 8px;
+            font-size: 48px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
         }
 
+        .tech-stack .tech-item span {
+            font-weight: 600;
+            color: #9aa3b2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tech-stack .tech-item:hover i {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .tech-stack .tech-item:hover i.fa-database { color: #336791; }
+        .tech-stack .tech-item:hover i.fa-cloud { color: #4285F4; }
+        .tech-stack .tech-item:hover i.fa-network-wired { color: #00C7B7; }
+        .tech-stack .tech-item:hover i.fa-chart-line { color: #FF6B35; }
+        .tech-stack .tech-item:hover i.fa-shield-alt { color: #2F55F4; }
+        .tech-stack .tech-item:hover i.fa-cogs { color: #6C757D; }
+
+        /* Section Alternating Background */
+        .section-alt {
+            background-color: #f9fbfd;
+        }
+
+        /* Zig-Zag Content Styles */
         .zigzag-section h2 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            font-weight: 700;
         }
 
         .zigzag-section p {
             color: #4b5563;
+            font-size: 1.1rem;
         }
 
-        .bento-card {
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-list li {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .check-list li i {
+            color: #2F55F4;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        /* Image Hover Lift Effect */
+        .img-hover-lift {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .img-hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Feature Cards with Hover */
+        .feature-card {
             background: #ffffff;
-            border: 1px solid #eef1f5;
-            border-radius: 14px;
-            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 32px 28px;
             height: 100%;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid transparent;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
-        .bento-card h5 {
-            color: #0b1c3c;
-            margin-bottom: 8px;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-top-color: #2F55F4;
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.12);
         }
 
-        .cta-strip {
-            background: #2F55F4;
+        .feature-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-card .icon-wrap i {
+            font-size: 24px;
             color: #ffffff;
         }
 
-        .cta-strip .btn-light {
+        .feature-card h5 {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* Floating CTA Strip */
+        .cta-floating-strip {
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 25px;
+            padding: 50px 40px;
+            color: #ffffff;
+            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
+            margin: 60px auto;
+            max-width: 1100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-floating-strip p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop {
+            background-color: #ffffff;
             color: #2F55F4;
             font-weight: 700;
+            font-size: 1.1rem;
+            padding: 15px 35px;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop:hover {
+            background-color: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: #2F55F4;
+            border-color: #2F55F4;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a3fd6;
+            border-color: #1a3fd6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3);
+        }
+
+        .btn-outline-dark {
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover {
+            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -101,109 +268,201 @@
 <body>
     <div id="header-placeholder"></div>
 
-    <section class="hero-light py-5 bg-white">
-        <div class="container">
+    <!-- Hero Section -->
+    <header class="hero-section py-5 bg-white">
+        <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold mb-3">Automate Business with Custom ERP & CRM.</h1>
-                    <p class="lead mb-4">Streamline operations, automate sales, and gain clarity with enterprise-grade systems built for Gujarat businesses.</p>
-                    <p class="mb-4">From our S-Cube office on Radhanpur Road, Mehsana, we deliver ERP and CRM platforms with global standards for fast-growing teams.</p>
-                    <a href="contact.html" class="btn btn-brand">Schedule a Demo</a>
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Business Automation Experts</span>
+                    <h1 class="display-4 fw-bold mb-4">Streamline Operations with <span class="text-primary">Custom ERP & CRM.</span></h1>
+                    <p class="lead mb-4">Stop using spreadsheets. Automate your sales, inventory, and HR processes with tailored software built at our S-Cube, Mehsana development center.</p>
+                    <p class="text-muted mb-4">Serving businesses across Gujarat, USA, and UK with enterprise-grade automation solutions.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="contact.html" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Book a Demo</a>
+                        <a href="#features" class="btn btn-outline-dark btn-lg px-4 rounded-pill">View Features</a>
+                    </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <lottie-player src="assets/animations/crm-erp.json" background="transparent" speed="1" style="width: 100%; height: 360px;" loop autoplay></lottie-player>
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <lottie-player src="assets/animations/crm-erp.json" background="transparent" speed="1" class="hero-lottie mx-auto" loop autoplay></lottie-player>
                 </div>
             </div>
         </div>
-    </section>
+    </header>
 
+    <!-- Tech Stack Strip -->
     <section class="tech-stack py-4">
         <div class="container">
-            <div class="d-flex flex-wrap justify-content-center gap-4">
-                <div class="tech-item"><i class="fas fa-database"></i>PostgreSQL</div>
-                <div class="tech-item"><i class="fas fa-cloud"></i>Cloud APIs</div>
-                <div class="tech-item"><i class="fas fa-network-wired"></i>Integrations</div>
-                <div class="tech-item"><i class="fas fa-chart-line"></i>BI Dashboards</div>
-                <div class="tech-item"><i class="fas fa-shield-alt"></i>Security</div>
+            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-5">
+                <div class="tech-item">
+                    <i class="fas fa-database"></i>
+                    <span>PostgreSQL</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-cloud"></i>
+                    <span>Cloud APIs</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Integrations</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>BI Dashboards</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security</span>
+                </div>
+                <div class="tech-item">
+                    <i class="fas fa-cogs"></i>
+                    <span>Automation</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 1: Custom ERP Software -->
+    <section class="zigzag-section py-5 bg-white" id="features">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Centralized Data Management.</h2>
-                    <p>We unify your finance, sales, HR, and operations into a single trusted system, keeping costs optimized for local businesses in Mehsana.</p>
+                    <img src="assets/images/about1.jpeg" alt="Custom ERP Dashboard" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Custom ERP Software</h2>
+                    <p class="mb-4">Centralize your Finance, HR, Inventory, and Supply Chain into one powerful dashboard. Built for your exact business logic.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Real-time Inventory Tracking</li>
+                        <li><i class="fas fa-check-circle"></i>Automated Payroll & HRMS</li>
+                        <li><i class="fas fa-check-circle"></i>GST Compliant Invoicing</li>
+                        <li><i class="fas fa-check-circle"></i>Multi-Branch Management</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zig-Zag Section 2: Intelligent CRM Solutions -->
+    <section class="zigzag-section py-5 section-alt">
+        <div class="container py-4">
+            <div class="row align-items-center g-5 flex-row-reverse">
                 <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/about1.jpeg" alt="Centralized data management" class="img-fluid rounded-3 shadow-sm">
+                    <img src="assets/images/about2.jpeg" alt="CRM Sales Pipeline" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 pe-lg-5" data-aos="fade-right">
+                    <h2 class="fw-bold mb-3">Intelligent CRM Solutions</h2>
+                    <p class="mb-4">Never lose a lead again. Track customer interactions and automate follow-ups to boost sales and retention rates.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Lead Management Pipeline</li>
+                        <li><i class="fas fa-check-circle"></i>WhatsApp & Email Automation</li>
+                        <li><i class="fas fa-check-circle"></i>Sales Performance Analytics</li>
+                        <li><i class="fas fa-check-circle"></i>Customer Journey Tracking</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                    <h2 class="fw-bold mb-3">Sales & Inventory Automation.</h2>
-                    <p>Automate lead tracking, sales pipelines, and inventory updates with scalable architectures built to grow with your teams.</p>
-                </div>
-                <div class="col-lg-6 order-lg-1" data-aos="fade-right">
-                    <img src="assets/images/about2.jpeg" alt="Sales and inventory automation" class="img-fluid rounded-3 shadow-sm">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 3: Real-time Reporting -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Real-time Reporting Dashboards.</h2>
-                    <p>Make faster decisions with live KPI dashboards, advanced analytics, and role-based reporting for leadership teams.</p>
+                    <img src="assets/images/why-us.png" alt="Real-time Reporting Dashboards" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/why-us.png" alt="Real-time reporting dashboards" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Real-time Reporting Dashboards</h2>
+                    <p class="mb-4">Make faster decisions with live KPI dashboards, advanced analytics, and role-based reporting for your leadership team.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>Live KPI Dashboards</li>
+                        <li><i class="fas fa-check-circle"></i>Advanced Business Analytics</li>
+                        <li><i class="fas fa-check-circle"></i>Role-Based Access Control</li>
+                        <li><i class="fas fa-check-circle"></i>Automated Report Generation</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Why Choose Us</h2>
+    <!-- Why Choose Us - Feature Cards -->
+    <section class="py-5 section-alt">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Why IV Infotech</span>
+                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif; color: #0b1c3c;">Why Businesses Trust Us</h2>
                 <p class="text-muted">Trusted ERP and CRM experts with global delivery discipline.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>ISO Quality</h5>
-                        <p class="text-muted">Well-documented processes, QA automation, and secure deployment checks.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h5>Custom Business Logic</h5>
+                        <p>Software built around YOUR workflows, not generic templates that force you to adapt.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h5>Seamless Integrations</h5>
+                        <p>Connect with Tally, QuickBooks, WhatsApp, payment gateways, and third-party APIs.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>Mobile-First Design</h5>
+                        <p>Access your business data from anywhere with responsive web and mobile apps.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h5>Enterprise Security</h5>
+                        <p>Role-based access, data encryption, and regular security audits to protect your data.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-clock"></i>
+                        </div>
                         <h5>On-Time Delivery</h5>
-                        <p class="text-muted">Sprint-based delivery with transparent tracking and weekly updates.</p>
+                        <p>Sprint-based delivery with transparent tracking and weekly progress updates.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>Support</h5>
-                        <p class="text-muted">Dedicated support plans for performance, upgrades, and training.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5>Dedicated Support</h5>
+                        <p>Post-launch training, performance monitoring, and continuous optimization.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta-strip py-5">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Ready to start?</h2>
-            <a href="contact.html" class="btn btn-light px-4 py-2">Book a Consultation</a>
+    <!-- Floating CTA Section -->
+    <section class="container px-4">
+        <div class="cta-floating-strip">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Still managing business on Excel?</h2>
+                    <p class="lead mb-0 opacity-90">Let's build a system that works for you. Book a free consultation today.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html" class="btn btn-white-pop rounded-pill">Automate Now</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -213,6 +472,12 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const activateServicesLink = () => {
                 const servicesLink = document.querySelector('.nav-link[href="services.html"]');

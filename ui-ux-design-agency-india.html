@@ -4,382 +4,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User-Centric UI/UX Design in Mehsana | IV Infotech</title>
-    <meta name="description" content="UI/UX Design in Mehsana, Gujarat. User research, wireframes, and prototypes from our S-Cube, Radhanpur Road HQ with global standards.">
-    <meta name="keywords" content="UI/UX Agency Gujarat, App Prototyping, Figma Experts">
+    <title>Crafting Intuitive Digital Experiences - UI/UX Design in Mehsana | IV Infotech</title>
+    <meta name="description" content="UI/UX Design Agency in Mehsana, Gujarat. We create user-centric interfaces that engage users and boost retention. Figma, Wireframes, Prototypes.">
+    <meta name="keywords" content="UI/UX Agency Gujarat, UI/UX Design Mehsana, App Prototyping, Figma Experts India, User Experience Design">
 
-    <meta property="og:title" content="User-Centric Design That Converts | IV Infotech">
-    <meta property="og:description" content="Research-led UI/UX design for web and mobile products, built with global standards from Mehsana, Gujarat.">
+    <meta property="og:title" content="Crafting Intuitive Digital Experiences | IV Infotech">
+    <meta property="og:description" content="Great design is not just about looks; it's about how it works. We create user-centric interfaces that engage users and boost retention.">
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/ui-ux-design-agency-india.html">
     <meta property="og:type" content="website">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
     <style>
-        .hero-light h1,
-        .hero-light h2 {
+        /* Premium UI/UX Page Styles */
+        .hero-section h1 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            line-height: 1.2;
         }
 
-        .hero-light p {
+        .hero-section .lead {
+            font-size: 1.25rem;
             color: #6b7280;
         }
 
-        .btn-brand {
-            background: #2F55F4;
-            color: #ffffff;
-            padding: 12px 28px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            box-shadow: 0 10px 24px rgba(47, 85, 244, 0.25);
+        .hero-lottie {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            min-height: 450px;
         }
 
-        .btn-brand:hover {
-            background: #1a3fd6;
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        .tech-stack {
+        /* Design Tools Strip */
+        .tools-strip {
             border-top: 1px solid #eef1f5;
             border-bottom: 1px solid #eef1f5;
-            background: #fafafa;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f7fa 100%);
         }
 
-        .tech-stack .tech-item {
-            color: #9aa3b2;
+        .tools-strip .tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 30px;
+            transition: all 0.3s ease;
+        }
+
+        .tools-strip .tool-item i {
+            font-size: 48px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .tools-strip .tool-item span {
             font-weight: 600;
-            letter-spacing: 0.2px;
+            color: #9aa3b2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .tech-stack .tech-item i {
-            font-size: 22px;
-            margin-right: 8px;
+        .tools-strip .tool-item:hover i {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
         }
 
+        .tools-strip .tool-item:hover i.fa-figma { color: #F24E1E; }
+        .tools-strip .tool-item:hover i.fa-sketch { color: #F8B90C; }
+        .tools-strip .tool-item:hover i.fa-adobe { color: #FF0000; }
+        .tools-strip .tool-item:hover i.fa-layer-group { color: #8B5CF6; }
+        .tools-strip .tool-item:hover i.fa-paint-brush { color: #FF6F61; }
+        .tools-strip .tool-item:hover i.fa-magic { color: #00C4CC; }
+
+        /* Section Alternating Background */
+        .section-alt {
+            background-color: #f9fbfd;
+        }
+
+        /* Zig-Zag Content Styles */
         .zigzag-section h2 {
+            font-family: 'Poppins', sans-serif;
             color: #0b1c3c;
+            font-weight: 700;
         }
 
         .zigzag-section p {
             color: #4b5563;
+            font-size: 1.1rem;
         }
 
-        .bento-card {
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-list li {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .check-list li i {
+            color: #2F55F4;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        /* Image Hover Lift Effect */
+        .img-hover-lift {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .img-hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Feature Cards with Hover - Creative Colorful Style */
+        .feature-card {
             background: #ffffff;
-            border: 1px solid #eef1f5;
-            border-radius: 14px;
-            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 32px 28px;
             height: 100%;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+            border-top: 4px solid transparent;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
         }
 
-        .bento-card h5 {
-            color: #0b1c3c;
-            margin-bottom: 8px;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-top-color: #2F55F4;
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.12);
         }
 
-        .cta-strip {
-            background: #2F55F4;
+        .feature-card .icon-wrap {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-card .icon-wrap.coral { background: linear-gradient(135deg, #FF6F61 0%, #E5574C 100%); }
+        .feature-card .icon-wrap.violet { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); }
+        .feature-card .icon-wrap.teal { background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%); }
+        .feature-card .icon-wrap.amber { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+        .feature-card .icon-wrap.rose { background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%); }
+
+        .feature-card .icon-wrap i {
+            font-size: 24px;
             color: #ffffff;
         }
 
-        .cta-strip .btn-light {
+        .feature-card h5 {
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        /* Floating CTA Strip */
+        .cta-floating-strip {
+            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
+            border-radius: 25px;
+            padding: 50px 40px;
+            color: #ffffff;
+            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
+            margin: 60px auto;
+            max-width: 1100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-floating-strip p {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop {
+            background-color: #ffffff;
             color: #2F55F4;
             font-weight: 700;
+            font-size: 1.1rem;
+            padding: 15px 35px;
+            transition: all 0.3s ease;
+            border: 2px solid #ffffff;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-white-pop:hover {
+            background-color: transparent;
+            color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background: #2F55F4;
+            border-color: #2F55F4;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1a3fd6;
+            border-color: #1a3fd6;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3);
+        }
+
+        .btn-outline-dark {
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Design Process Section */
+        .process-section {
+            background: linear-gradient(135deg, #0b1c3c 0%, #1a3366 100%);
+            color: #ffffff;
+        }
+
+        .process-item {
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .process-item .step-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #2F55F4;
+            margin-bottom: 8px;
+        }
+
+        .process-section h2 {
+            color: #ffffff;
+        }
+
+        .process-item h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .process-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            margin-bottom: 0;
         }
     </style>
 </head>
 
 <body>
+    <div id="header-placeholder"></div>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="assets/images/logo.png" alt="IV Infotech - Best IT Company in Mehsana" class="logo-img">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="about.html" id="aboutDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            About
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="aboutDropdown">
-                            <li><a class="dropdown-item" href="about.html">About Us</a></li>
-                            <li><a class="dropdown-item" href="testimonials.html">Testimonials</a></li>
-                            <li><a class="dropdown-item" href="#">Career</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="services.html" id="servicesDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Services
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="servicesDropdown">
-                            <li><a class="dropdown-item" href="custom-mobile-application-development.html">Custom Mobile Application Development</a></li>
-                            <li><a class="dropdown-item" href="custom-website-software-development.html">Custom Website & Software Development</a></li>
-                            <li><a class="dropdown-item" href="crm-erp-custom-software-development.html">CRM & ERP Custom Software Development</a></li>
-                            <li><a class="dropdown-item" href="ecommerce-website-app-development-india.html">E-Commerce Solution</a></li>
-                            <li><a class="dropdown-item" href="digital-marketing.html">Digital Marketing</a></li>
-                            <li><a class="dropdown-item" href="ui-ux-design-agency-india.html">UI/UX Design</a></li>
-                            <li><a class="dropdown-item" href="web-hosting-services.html">Web Hosting Services</a></li>
-                            <li><a class="dropdown-item" href="ai-automation.html">AI & Automation</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="hireDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Hire
-                        </a>
-                        <ul class="dropdown-menu border-0 shadow-lg" aria-labelledby="hireDropdown">
-                            <li><a class="dropdown-item" href="#">PHP Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Laravel Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Android Developers</a></li>
-                            <li><a class="dropdown-item" href="#">Flutter Developers</a></li>
-                            <li><a class="dropdown-item" href="#">HTML Developers</a></li>
-                            <li><a class="dropdown-item" href="#">UI/UX Designer</a></li>
-                            <li><a class="dropdown-item" href="#">AI Automation Engineer</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="portfolio.html">Portfolio</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="blog.html">Blog</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="d-none d-lg-block">
-                <a href="contact.html" class="btn btn-quote">Get a Quote</a>
-            </div>
-        </div>
-    </nav>
-
-    <section class="hero-light py-5 bg-white">
-        <div class="container">
+    <!-- Hero Section -->
+    <header class="hero-section py-5 bg-white">
+        <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-5 fw-bold mb-3">User-Centric Design That Converts.</h1>
-                    <p class="lead mb-4">Design experiences that feel intuitive, beautiful, and conversion-focused for Gujarat businesses.</p>
-                    <p class="mb-4">From our S-Cube office on Radhanpur Road, Mehsana, we deliver UI/UX design with global standards for web and mobile products.</p>
-                    <a href="contact.html" class="btn btn-brand">Design My Product</a>
-                </div>
-                <div class="col-lg-6 text-center">
-                    <lottie-player src="assets/animations/ui-ux.json" background="transparent" speed="1" style="width: 100%; height: 360px;" loop autoplay></lottie-player>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="tech-stack py-4">
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-center gap-4">
-                <div class="tech-item"><i class="fab fa-figma"></i>Figma</div>
-                <div class="tech-item"><i class="fas fa-pencil-ruler"></i>Wireframes</div>
-                <div class="tech-item"><i class="fas fa-object-group"></i>Prototyping</div>
-                <div class="tech-item"><i class="fas fa-mobile-alt"></i>Mobile UX</div>
-                <div class="tech-item"><i class="fas fa-laptop-code"></i>Web UI</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">User Research & Wireframing.</h2>
-                    <p>We conduct user interviews and build wireframes that reduce rework, saving cost for teams in Mehsana and across Gujarat.</p>
+                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">UI/UX Design Agency in Mehsana</span>
+                    <h1 class="display-4 fw-bold mb-4">Crafting <span class="text-primary">Intuitive Digital</span> Experiences.</h1>
+                    <p class="lead mb-4">Great design is not just about looks; it's about how it works. We create user-centric interfaces that engage users and boost retention.</p>
+                    <p class="text-muted mb-4">From rough sketches to interactive prototypes—we turn complex ideas into simple, beautiful, and engaging digital products.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="contact.html" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Design Project</a>
+                        <a href="services.html" class="btn btn-outline-dark btn-lg px-4 rounded-pill">See Our Portfolio</a>
+                    </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/about1.jpeg" alt="User research and wireframing" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 text-center" data-aos="fade-left">
+                    <lottie-player src="assets/animations/ui-ux.json" background="transparent" speed="1" class="hero-lottie mx-auto" loop autoplay></lottie-player>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Design Tools Strip -->
+    <section class="tools-strip py-4">
+        <div class="container">
+            <p class="text-center text-uppercase text-muted fw-bold small mb-4">Our Design Studio Uses</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-5">
+                <div class="tool-item">
+                    <i class="fab fa-figma"></i>
+                    <span>Figma</span>
+                </div>
+                <div class="tool-item">
+                    <i class="fab fa-sketch"></i>
+                    <span>Sketch</span>
+                </div>
+                <!-- <div class="tool-item">
+                    <i class="fab fa-adobe"></i>
+                    <span>Adobe XD</span>
+                </div> -->
+                <div class="tool-item">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Prototyping</span>
+                </div>
+                <div class="tool-item">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>Illustrator</span>
+                </div>
+                <div class="tool-item">
+                    <i class="fas fa-magic"></i>
+                    <span>Photoshop</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="zigzag-section py-5 bg-light">
-        <div class="container">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                    <h2 class="fw-bold mb-3">Interactive Prototyping (Figma/Adobe).</h2>
-                    <p>We create clickable prototypes in Figma and Adobe XD so stakeholders can validate ideas before development.</p>
-                </div>
-                <div class="col-lg-6 order-lg-1" data-aos="fade-right">
-                    <img src="assets/images/about2.jpeg" alt="Interactive prototyping" class="img-fluid rounded-3 shadow-sm">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="zigzag-section py-5">
-        <div class="container">
-            <div class="row align-items-center g-4">
+    <!-- Zig-Zag Section 1: Research & Wireframing -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h2 class="fw-bold mb-3">Mobile & Web Interface Design.</h2>
-                    <p>We craft modern interfaces that balance aesthetics, usability, and business impact for global standards.</p>
+                    <img src="assets/images/about1.jpeg" alt="Wireframing Process" class="img-fluid rounded-4 shadow-lg img-hover-lift">
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/why-us.png" alt="Mobile and web interface design" class="img-fluid rounded-3 shadow-sm">
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Blueprint Before Building</h2>
+                    <p class="mb-4">We don't guess; we plan. Our wireframing process ensures the user flow is logical and intuitive before a single line of code is written.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>User Research & Personas</li>
+                        <li><i class="fas fa-check-circle"></i>Information Architecture (IA)</li>
+                        <li><i class="fas fa-check-circle"></i>User Flow Diagrams</li>
+                        <li><i class="fas fa-check-circle"></i>Low-Fidelity Wireframes</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-5 bg-white">
+    <!-- Zig-Zag Section 2: Visual Design & Prototyping -->
+    <section class="zigzag-section py-5 section-alt">
+        <div class="container py-4">
+            <div class="row align-items-center g-5 flex-row-reverse">
+                <div class="col-lg-6" data-aos="fade-left">
+                    <img src="assets/images/about2.jpeg" alt="High Fidelity UI Design" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 pe-lg-5" data-aos="fade-right">
+                    <h2 class="fw-bold mb-3">Pixel-Perfect Interfaces</h2>
+                    <p class="mb-4">We bring your brand to life with stunning colors, typography, and interactive elements that delight users and drive conversions.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>High-Fidelity Mockups</li>
+                        <li><i class="fas fa-check-circle"></i>Clickable Prototypes (Figma)</li>
+                        <li><i class="fas fa-check-circle"></i>Design Systems & Style Guides</li>
+                        <li><i class="fas fa-check-circle"></i>WCAG Accessibility Compliance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zig-Zag Section 3: Mobile & Web UI -->
+    <section class="zigzag-section py-5 bg-white">
+        <div class="container py-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <img src="assets/images/why-us.png" alt="Mobile and Web Interface Design" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                </div>
+                <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <h2 class="fw-bold mb-3">Mobile & Web Excellence</h2>
+                    <p class="mb-4">Whether it's a mobile app or a web dashboard, we design interfaces that are consistent, responsive, and delightful across all devices.</p>
+                    <ul class="check-list">
+                        <li><i class="fas fa-check-circle"></i>iOS & Android App Design</li>
+                        <li><i class="fas fa-check-circle"></i>Responsive Web Interfaces</li>
+                        <li><i class="fas fa-check-circle"></i>Dashboard & Admin Panel UI</li>
+                        <li><i class="fas fa-check-circle"></i>Component Libraries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Process Section -->
+    <section class="process-section py-5">
         <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Why Choose Us</h2>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill">Our Process</span>
+                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif;">From Idea to Interface</h2>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+                    <div class="process-item">
+                        <div class="step-number">01</div>
+                        <h5>Discover</h5>
+                        <p>User research & competitor analysis</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="process-item">
+                        <div class="step-number">02</div>
+                        <h5>Define</h5>
+                        <p>User flows & wireframes</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="process-item">
+                        <div class="step-number">03</div>
+                        <h5>Design</h5>
+                        <p>Visual design & prototyping</p>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="process-item">
+                        <div class="step-number">04</div>
+                        <h5>Deliver</h5>
+                        <p>Handoff & dev support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us - Feature Cards (Colorful) -->
+    <section class="py-5 section-alt">
+        <div class="container py-4">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Why IV Infotech</span>
+                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif; color: #0b1c3c;">Why Brands Choose Us</h2>
                 <p class="text-muted">Design systems that scale with your product roadmap.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>ISO Quality</h5>
-                        <p class="text-muted">Consistent UI standards, design QA, and accessibility checks.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="feature-card">
+                        <div class="icon-wrap coral">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h5>User-Centric Approach</h5>
+                        <p>Every design decision is backed by user research and real data.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>On-Time Delivery</h5>
-                        <p class="text-muted">Design sprints aligned with engineering milestones.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card">
+                        <div class="icon-wrap violet">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h5>Brand-Aligned Visuals</h5>
+                        <p>We create designs that reflect your brand identity and values.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="bento-card">
-                        <h5>Support</h5>
-                        <p class="text-muted">Ongoing design updates, UI audits, and optimization.</p>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card">
+                        <div class="icon-wrap teal">
+                            <i class="fas fa-universal-access"></i>
+                        </div>
+                        <h5>Accessibility First</h5>
+                        <p>WCAG-compliant designs that everyone can use and enjoy.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card">
+                        <div class="icon-wrap amber">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5>Fast Iterations</h5>
+                        <p>Agile design sprints aligned with your engineering milestones.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-card">
+                        <div class="icon-wrap rose">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h5>Developer-Ready Handoff</h5>
+                        <p>Clean specs, assets, and design tokens for seamless dev collaboration.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-card">
+                        <div class="icon-wrap">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h5>Ongoing Support</h5>
+                        <p>UI audits, design updates, and continuous optimization.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="cta-strip py-5">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-3">Ready to start?</h2>
-            <a href="contact.html" class="btn btn-light px-4 py-2">Book a Consultation</a>
+    <!-- Floating CTA Section -->
+    <section class="container px-4">
+        <div class="cta-floating-strip">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Users leaving your app too soon?</h2>
+                    <p class="lead mb-0 opacity-90">Bad design kills conversion. Let's redesign your experience.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html" class="btn-white-pop">Redesign My UI</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer class="footer-dark">
-        <div class="footer-container">
-            <div class="footer-column">
-                <div class="footer-brand">
-                    <a href="index.html">
-                        <img src="assets/images/logo.png" alt="IV Infotech Logo">
-                    </a>
-                    <p class="footer-tagline">Architecting the Digital Future of Gujarat &amp; Beyond.</p>
-                    <p class="footer-address">
-                        <i class="fas fa-map-marker-alt"></i> S Cube, T-332, Radhanpur Rd, Mehsana, Gujarat 384002
-                    </p>
-                    <div class="footer-social-icons">
-                        <a href="https://www.linkedin.com/company/ivinfotechmeh/" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://www.instagram.com/ivinfotech.official/" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://x.com/ivinfotech2025" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Quick Links</h6>
-                <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="testimonials.html">Testimonials</a></li>
-                    <li><a href="#">Portfolio</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Career / Hire Us</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Services</h6>
-                <ul class="footer-links">
-                    <li><a href="custom-mobile-application-development.html">Custom Mobile Apps</a></li>
-                    <li><a href="custom-website-software-development.html">Web &amp; Software Dev</a></li>
-                    <li><a href="crm-erp-custom-software-development.html">CRM &amp; ERP Solutions</a></li>
-                    <li><a href="ecommerce-website-app-development-india.html">E-Commerce</a></li>
-                    <li><a href="digital-marketing.html">Digital Marketing</a></li>
-                    <li><a href="ui-ux-design-agency-india.html">UI/UX Design</a></li>
-                    <li><a href="ai-automation.html">AI &amp; Automation</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h6 class="footer-heading">Connect</h6>
-                <div class="footer-connect">
-                    <div class="footer-connect-item">
-                        <i class="fas fa-envelope"></i>
-                        <div class="footer-connect-info">
-                            <span class="footer-connect-label">Email</span>
-                            <a href="mailto:info@ivinfotech.com">info@ivinfotech.com</a>
-                        </div>
-                    </div>
-                    <div class="footer-connect-item">
-                        <i class="fas fa-phone"></i>
-                        <div class="footer-connect-info">
-                            <span class="footer-connect-label">Phone</span>
-                            <a href="tel:+919924426361">+91 9924426361</a>
-                        </div>
-                    </div>
-                    <a href="contact.html" class="footer-cta">
-                        Get a Quote <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <p class="footer-copyright">
-                    &copy; <span id="year">2026</span> IV Infotech. All Rights Reserved.
-                </p>
-                <ul class="footer-legal">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             const activateServicesLink = () => {
                 const servicesLink = document.querySelector('.nav-link[href="services.html"]');
