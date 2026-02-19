@@ -298,6 +298,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Devicon — Technology Icons -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Swiper CSS -->
@@ -308,8 +310,265 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
+        /* ========== HERO SECTION ========== */
         .hero-section {
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle radial glow behind hero */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(0, 210, 255, .12) 0%, rgba(58, 123, 213, .06) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -15%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(47, 85, 244, .08) 0%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Trust badge */
+        .trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(47, 85, 244, .06);
+            border: 1px solid rgba(47, 85, 244, .12);
+            color: #2F55F4;
+            font-size: .82rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 50px;
+            letter-spacing: .5px;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-headline-new {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            color: #0b1c3c;
+            font-size: clamp(2rem, 4.5vw, 3.4rem);
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        /* Primary CTA button */
+        .btn-hero-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #2F55F4;
+            color: #fff;
+            font-weight: 700;
+            padding: 14px 34px;
+            border-radius: 50px;
+            border: none;
+            font-size: .95rem;
+            text-decoration: none;
+            box-shadow: 0 8px 30px rgba(47, 85, 244, .3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero-primary:hover {
+            background: #1e3fd0;
+            color: #fff;
+            box-shadow: 0 12px 40px rgba(47, 85, 244, .45);
+            transform: translateY(-2px);
+        }
+
+        /* Secondary CTA button */
+        .btn-hero-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: #0b1c3c;
+            font-weight: 700;
+            padding: 14px 34px;
+            border-radius: 50px;
+            border: 2px solid #d1d5db;
+            font-size: .95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hero-secondary:hover {
+            border-color: #0b1c3c;
+            color: #0b1c3c;
+            background: rgba(11, 28, 60, .04);
+            transform: translateY(-2px);
+        }
+
+        /* Floating animation */
+        .float-anim {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* ========== LOGO MARQUEE ========== */
+        .logo-marquee-section {
+            background: #f8f9fc;
+            padding: 35px 0;
+            overflow: hidden;
+            border-top: 1px solid rgba(0, 0, 0, .03);
+            border-bottom: 1px solid rgba(0, 0, 0, .03);
+        }
+
+        .marquee-label {
+            text-align: center;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+
+        .logo-marquee-track {
+            display: flex;
+            width: fit-content;
+            animation: marquee 25s linear infinite;
+        }
+
+        .logo-marquee-track img {
+            height: 36px;
+            margin: 0 44px;
+            filter: grayscale(100%) opacity(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .logo-marquee-track img:hover {
+            filter: grayscale(0%) opacity(1);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ========== INFINITE TECH MARQUEE ========== */
+        .tech-marquee-wrapper {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding: 30px 0;
+            background: #f8f9fc;
+            border-top: 1px solid rgba(0, 0, 0, .03);
+            border-bottom: 1px solid rgba(0, 0, 0, .03);
+        }
+
+        /* Gradient fade on edges */
+        .tech-marquee-wrapper::before,
+        .tech-marquee-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 150px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .tech-marquee-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, #f8f9fc 0%, transparent 100%);
+        }
+
+        .tech-marquee-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, #f8f9fc 0%, transparent 100%);
+        }
+
+        .tech-marquee-track {
+            display: inline-flex;
+            gap: 20px;
+            animation: scrollMarquee 35s linear infinite;
+            padding-left: 20px;
+        }
+
+        .tech-marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Tech Pill Styling */
+        .tech-pill {
             background-color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #4a5568;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+            border: 1px solid rgba(0, 0, 0, .02);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            cursor: default;
+            white-space: nowrap;
+        }
+
+        .tech-pill i {
+            font-size: 1.5rem;
+        }
+
+        .tech-pill:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(47, 85, 244, .15);
+            color: #0b1c3c;
+            border-color: rgba(47, 85, 244, .2);
+        }
+
+        /* Responsive hero tweaks */
+        @media (max-width: 991.98px) {
+            .hero-section::before {
+                width: 500px;
+                height: 500px;
+                top: -10%;
+                right: -30%;
+            }
+
+            .hero-headline-new {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -324,35 +583,58 @@
     <section class="hero-section d-flex align-items-center pt-5 mt-5" style="min-height: 90vh;">
         <div class="container">
             <div class="row align-items-center">
+                <!-- Left Column — Text -->
                 <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-up">
-                    <h1 class="display-2 fw-bold mb-3 ls-tight hero-headline">
-                        Top IT Company in Mehsana & Gujarat: Transforming Ideas into <br>
-                        <span class="gradient-text">Digital Reality</span>
+                    <span class="trust-badge mb-4 d-inline-block">✨ Trusted by 100+ Businesses Worldwide</span>
+                    <h1 class="hero-headline-new mb-4">
+                        Top IT Company in Mehsana &amp; Gujarat: Transforming Ideas into <span class="text-gradient">Digital Reality</span>
                     </h1>
-                    <p class="lead text-muted mb-4 fs-4">
-                        Based in Mehsana, Serving the Globe – We provide World-Class Web Development, App Creation, and AI Solutions tailored for your business growth.
+                    <p class="lead text-muted mb-4" style="font-size:1.12rem;line-height:1.8;max-width:520px;">
+                        Based in Mehsana, serving the globe — we deliver world-class web development, mobile apps, and AI solutions engineered for your business growth.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="services.html" class="btn btn-primary btn-lg px-5 py-3 fw-bold gradient-btn rounded-pill">Our Services</a>
-                        <a href="contact.html" class="btn btn-outline-primary btn-lg px-5 py-3 fw-bold gradient-btn-outline rounded-pill">Contact Us</a>
+                        <a href="contact.html" class="btn-hero-primary">Get a Free Quote <i class="fas fa-arrow-right"></i></a>
+                        <a href="portfolio.html" class="btn-hero-secondary">View Portfolio <i class="fas fa-external-link-alt" style="font-size:.8rem;"></i></a>
                     </div>
                 </div>
+                <!-- Right Column — Visual -->
                 <div class="col-lg-6 text-center d-flex align-items-center justify-content-center position-relative" data-aos="fade-up" data-aos-delay="200" style="min-height: 500px;">
-                    <!-- Decorative Blob Background -->
-                    <div class="hero-blob"></div>
-                    <!-- Hero Lottie Player Animation -->
-                    <lottie-player 
-                        src="assets/animations/hero-tech.json" 
-                        background="transparent" 
-                        speed="1" 
-                        class="hero-animation"
-                        loop 
+                    <lottie-player
+                        src="assets/animations/hero-tech.json"
+                        background="transparent"
+                        speed="1"
+                        class="float-anim"
+                        style="width:100%;max-width:750px;"
+                        loop
                         autoplay>
                     </lottie-player>
-                    <!-- Fallback illustration -->
-                    <img id="fallback-img" src="https://cdn.jsdelivr.net/npm/illustrations@1.0.0/undraw_digital_transformation_hd6u.svg" alt="Digital Transformation" class="img-fluid illustration-img" style="display: none;">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Client Logo Marquee -->
+    <section class="logo-marquee-section">
+        <p class="marquee-label">Trusted by Innovative Brands</p>
+        <div class="logo-marquee-track">
+            <!-- Set 1 -->
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=Acme+Corp" alt="Acme Corp">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=NovaTech" alt="NovaTech">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=BrightEdge" alt="BrightEdge">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=CloudNine" alt="CloudNine">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=FinServ" alt="FinServ">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=HealthPlus" alt="HealthPlus">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=EduSpark" alt="EduSpark">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=RetailMax" alt="RetailMax">
+            <!-- Set 2 (duplicate for seamless infinite scroll) -->
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=Acme+Corp" alt="Acme Corp">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=NovaTech" alt="NovaTech">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=BrightEdge" alt="BrightEdge">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=CloudNine" alt="CloudNine">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=FinServ" alt="FinServ">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=HealthPlus" alt="HealthPlus">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=EduSpark" alt="EduSpark">
+            <img src="https://placehold.co/140x40/f8f9fc/6b7280?text=RetailMax" alt="RetailMax">
         </div>
     </section>
 
@@ -514,49 +796,47 @@
         </div>
     </section>
 
-    <!-- Tech Stack Marquee -->
-    <section class="py-5 bg-white border-top border-bottom">
-        <div class="container" data-aos="fade-up">
-            <h5 class="text-center text-muted fw-bold mb-4 text-uppercase ls-wide">Technologies We Use</h5>
-            <div class="tech-stack-container">
-                <div class="tech-stack-track">
-                    <!-- Duplicate items for seamless loop -->
-                    <!-- In a real scenario, use actual logo images -->
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=React"
-                            alt="React"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=NodeJS"
-                            alt="NodeJS"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Python"
-                            alt="Python"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Flutter"
-                            alt="Flutter"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=AWS"
-                            alt="AWS"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Docker"
-                            alt="Docker"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Laravel"
-                            alt="Laravel"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Angular"
-                            alt="Angular"></div>
+    <!-- Technologies We Master — Infinite Marquee -->
+    <section class="py-5 bg-white">
+        <div class="container text-center mb-4">
+            <h6 class="fw-bold text-muted" style="letter-spacing: 2px;">TECHNOLOGIES WE MASTER</h6>
+        </div>
 
-                    <!-- Repeat for seamless scrolling -->
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=React"
-                            alt="React"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=NodeJS"
-                            alt="NodeJS"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Python"
-                            alt="Python"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Flutter"
-                            alt="Flutter"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=AWS"
-                            alt="AWS"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Docker"
-                            alt="Docker"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Laravel"
-                            alt="Laravel"></div>
-                    <div class="tech-stack-item"><img src="https://placehold.co/100x40/ffffff/333333?text=Angular"
-                            alt="Angular"></div>
-                </div>
+        <div class="tech-marquee-wrapper">
+            <div class="tech-marquee-track">
+                <!-- Set 1 -->
+                <div class="tech-pill"><i class="devicon-laravel-original colored"></i><span>Laravel</span></div>
+                <div class="tech-pill"><i class="devicon-react-original colored"></i><span>React.js</span></div>
+                <div class="tech-pill"><i class="devicon-nodejs-plain colored"></i><span>Node.js</span></div>
+                <div class="tech-pill"><i class="devicon-mysql-plain colored"></i><span>MySQL</span></div>
+                <div class="tech-pill"><i class="devicon-flutter-plain colored"></i><span>Flutter</span></div>
+                <div class="tech-pill"><i class="devicon-apple-original colored"></i><span>iOS / Swift</span></div>
+                <div class="tech-pill"><i class="devicon-android-plain colored"></i><span>Android</span></div>
+                <div class="tech-pill"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+                <div class="tech-pill"><i class="devicon-tensorflow-original colored"></i><span>TensorFlow</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-robot text-primary"></i><span>OpenAI / LLMs</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-network-wired text-warning"></i><span>n8n Automation</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-link text-primary"></i><span>LangChain</span></div>
+                <div class="tech-pill"><i class="devicon-amazonwebservices-plain-wordmark colored"></i><span>AWS</span></div>
+                <div class="tech-pill"><i class="devicon-docker-plain colored"></i><span>Docker</span></div>
+                <div class="tech-pill"><i class="devicon-figma-plain colored"></i><span>Figma</span></div>
+
+                <!-- Set 2 (duplicate for seamless infinite scroll) -->
+                <div class="tech-pill"><i class="devicon-laravel-original colored"></i><span>Laravel</span></div>
+                <div class="tech-pill"><i class="devicon-react-original colored"></i><span>React.js</span></div>
+                <div class="tech-pill"><i class="devicon-nodejs-plain colored"></i><span>Node.js</span></div>
+                <div class="tech-pill"><i class="devicon-mysql-plain colored"></i><span>MySQL</span></div>
+                <div class="tech-pill"><i class="devicon-flutter-plain colored"></i><span>Flutter</span></div>
+                <div class="tech-pill"><i class="devicon-apple-original colored"></i><span>iOS / Swift</span></div>
+                <div class="tech-pill"><i class="devicon-android-plain colored"></i><span>Android</span></div>
+                <div class="tech-pill"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+                <div class="tech-pill"><i class="devicon-tensorflow-original colored"></i><span>TensorFlow</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-robot text-primary"></i><span>OpenAI / LLMs</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-network-wired text-warning"></i><span>n8n Automation</span></div>
+                <div class="tech-pill text-dark"><i class="fas fa-link text-primary"></i><span>LangChain</span></div>
+                <div class="tech-pill"><i class="devicon-amazonwebservices-plain-wordmark colored"></i><span>AWS</span></div>
+                <div class="tech-pill"><i class="devicon-docker-plain colored"></i><span>Docker</span></div>
+                <div class="tech-pill"><i class="devicon-figma-plain colored"></i><span>Figma</span></div>
             </div>
         </div>
     </section>
