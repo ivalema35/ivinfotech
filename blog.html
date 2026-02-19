@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Blog – Tech Insights on Web Dev, AI & Digital Marketing | IV Infotech</title>
+    <meta name="description"
+        content="Read the latest insights and innovations from IV Infotech – expert articles on web development, AI automation, mobile apps, digital marketing, and emerging tech trends.">
+    <meta name="keywords"
+        content="IV Infotech Blog, Web Development Tips, AI Automation Articles, Digital Marketing Insights, Mobile App Trends, Software Engineering Blog Gujarat, Tech Blog India">
+    <meta name="author" content="IV Infotech">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.ivinfotech.com/blog.html">
+
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ivinfotech.com/blog.html">
+    <meta property="og:title" content="Blog – Tech Insights on Web Dev, AI & Digital Marketing | IV Infotech">
+    <meta property="og:description"
+        content="Discover expert articles on web development, AI automation, mobile apps, and digital marketing from IV Infotech – Gujarat's leading IT agency.">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og-blog.jpg">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:site_name" content="IV Infotech">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://www.ivinfotech.com/blog.html">
+    <meta name="twitter:title" content="Blog – Tech Insights | IV Infotech">
+    <meta name="twitter:description"
+        content="Expert articles on web development, AI, mobile apps, and digital marketing from IV Infotech.">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og-blog.jpg">
+
+    <!-- JSON-LD Structured Data - Blog -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "IV Infotech Blog",
+        "description": "Expert insights on web development, AI automation, mobile apps, and digital marketing.",
+        "url": "https://www.ivinfotech.com/blog.html",
+        "publisher": {
+            "@type": "Organization",
+            "name": "IV Infotech",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://www.ivinfotech.com/assets/images/logo.png"
+            }
+        },
+        "blogPost": [
+            {
+                "@type": "BlogPosting",
+                "headline": "How AI-Powered Automation Is Transforming Small Businesses in 2026",
+                "description": "Discover how small and mid-sized businesses are leveraging AI automation to cut costs, streamline workflows, and boost revenue.",
+                "datePublished": "2026-02-15",
+                "author": { "@type": "Person", "name": "Aarav Mehta" },
+                "publisher": { "@type": "Organization", "name": "IV Infotech" }
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Next.js vs Nuxt.js: Which Framework Should You Choose in 2026?",
+                "description": "A detailed comparison of Next.js and Nuxt.js covering performance, SEO, DX, and ecosystem.",
+                "datePublished": "2026-02-10",
+                "author": { "@type": "Person", "name": "Priya Sharma" },
+                "publisher": { "@type": "Organization", "name": "IV Infotech" }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* ========== BLOG HERO ========== */
+        .blog-hero {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8f9ff 60%, #eef2ff 100%);
+            padding: 130px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-hero::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(47, 85, 244, .06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .blog-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, .05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .blog-hero .section-eyebrow {
+            display: inline-block;
+            background: rgba(47, 85, 244, .08);
+            color: #2F55F4;
+            border: 1px solid rgba(47, 85, 244, .2);
+            font-weight: 600;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+
+        .blog-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            color: #0b1c3c;
+            font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+            line-height: 1.15;
+        }
+
+        .blog-hero h1 span {
+            background: linear-gradient(135deg, #2F55F4, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .blog-hero .lead {
+            color: #4b5563;
+            font-size: 1.12rem;
+            line-height: 1.75;
+            max-width: 540px;
+        }
+
+        /* ========== FEATURED POST CARD ========== */
+        .featured-card {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(11, 28, 60, .1);
+            transition: all 0.4s ease;
+        }
+
+        .featured-card:hover {
+            box-shadow: 0 30px 70px rgba(47, 85, 244, .15);
+        }
+
+        .featured-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            min-height: 340px;
+        }
+
+        .featured-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .featured-card:hover .featured-img-wrapper img {
+            transform: scale(1.06);
+        }
+
+        .featured-content {
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-content .badge-category {
+            position: static;
+            display: inline-block;
+            width: fit-content;
+            background: rgba(47, 85, 244, .08);
+            color: #2F55F4;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: .8rem;
+            margin-bottom: 16px;
+        }
+
+        .featured-content h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #0b1c3c;
+            font-size: 1.6rem;
+            line-height: 1.4;
+            margin-bottom: 14px;
+            transition: color 0.3s;
+        }
+
+        .featured-card:hover .featured-content h2 {
+            color: #2F55F4;
+        }
+
+        .featured-content .excerpt {
+            color: #6b7280;
+            font-size: .96rem;
+            line-height: 1.75;
+            margin-bottom: 20px;
+        }
+
+        .author-strip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .author-strip img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0e7ff;
+        }
+
+        .author-info .author-name {
+            font-weight: 600;
+            color: #0b1c3c;
+            font-size: .9rem;
+            line-height: 1.2;
+        }
+
+        .author-info .author-date {
+            color: #9ca3af;
+            font-size: .8rem;
+        }
+
+        .btn-read-article {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #2F55F4, #4f46e5);
+            color: #fff;
+            font-weight: 600;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            border: none;
+            font-size: .92rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(47, 85, 244, .25);
+            width: fit-content;
+        }
+
+        .btn-read-article:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(47, 85, 244, .35);
+            color: #fff;
+        }
+
+        .btn-read-article i {
+            transition: transform 0.3s;
+        }
+
+        .btn-read-article:hover i {
+            transform: translateX(4px);
+        }
+
+        /* ========== CATEGORY FILTERS ========== */
+        .category-filters {
+            padding: 28px 0;
+            background: #fff;
+            border-bottom: 1px solid #f0f2f8;
+            position: sticky;
+            top: 72px;
+            z-index: 100;
+            transition: box-shadow 0.3s;
+        }
+
+        .category-filters.scrolled-filters {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .06);
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .filter-pill {
+            background: transparent;
+            border: 1.5px solid #d1d5db;
+            color: #4b5563;
+            font-weight: 600;
+            font-size: .88rem;
+            padding: 9px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .filter-pill:hover {
+            border-color: #2F55F4;
+            color: #2F55F4;
+            background: rgba(47, 85, 244, .04);
+        }
+
+        .filter-pill.active {
+            background: #2F55F4;
+            border-color: #2F55F4;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(47, 85, 244, .25);
+        }
+
+        /* ========== BLOG CARDS GRID ========== */
+        .blog-feed {
+            padding: 60px 0 80px;
+            background: #f9fbfd;
+        }
+
+        .blog-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.15);
+        }
+
+        .blog-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .blog-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .blog-card:hover .blog-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #2F55F4;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: .78rem;
+            z-index: 2;
+            backdrop-filter: blur(6px);
+        }
+
+        .blog-card-body {
+            padding: 22px 24px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #9ca3af;
+            font-size: .8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .blog-meta .dot {
+            width: 4px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 50%;
+        }
+
+        .article-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-size: 1.08rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .blog-card:hover .article-title {
+            color: #2F55F4;
+        }
+
+        .blog-excerpt {
+            color: #6b7280;
+            font-size: .88rem;
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .blog-card-footer {
+            padding: 14px 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .blog-card-footer .author-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .blog-card-footer .author-mini img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .blog-card-footer .author-mini span {
+            font-weight: 600;
+            color: #374151;
+            font-size: .82rem;
+        }
+
+        .blog-card-footer .card-action {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f3f4f6;
+            color: #6b7280;
+            transition: all 0.3s;
+            font-size: .85rem;
+        }
+
+        .blog-card:hover .card-action {
+            background: #2F55F4;
+            color: #fff;
+        }
+
+        /* ========== CTA STRIP ========== */
+        .cta-floating-strip {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .07);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cta-floating-strip .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .15) !important;
+        }
+
+        /* ========== LOAD MORE ========== */
+        .btn-load-more {
+            background: #fff;
+            color: #2F55F4;
+            font-weight: 700;
+            padding: 14px 36px;
+            border-radius: 50px;
+            border: 2px solid #2F55F4;
+            font-size: .94rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-load-more:hover {
+            background: #2F55F4;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(47, 85, 244, .25);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 991px) {
+            .featured-img-wrapper {
+                min-height: 260px;
+            }
+
+            .featured-content {
+                padding: 28px 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-hero {
+                padding: 100px 0 50px;
+            }
+
+            .featured-content h2 {
+                font-size: 1.3rem;
+            }
+
+            .filter-pills {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 6px;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .filter-pills::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-pill {
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="assets/js/loader.js"></script>
+    <div id="header-placeholder"></div>
+
+    <!-- ============================================
+         SECTION 1: BLOG HERO + FEATURED POST
+    ============================================= -->
+    <section class="blog-hero">
+        <div class="container">
+            <!-- Hero Title -->
+            <div class="row mb-5">
+                <div class="col-lg-7" data-aos="fade-up">
+                    <span class="section-eyebrow">Our Blog</span>
+                    <h1>Insights &amp; <span>Innovations.</span></h1>
+                    <p class="lead mt-3">Discover the latest in Web Dev, AI Automation, and Digital Marketing — straight from the experts at IV Infotech.</p>
+                </div>
+            </div>
+
+            <!-- Featured Post -->
+            <div class="row" data-aos="fade-up" data-aos-delay="150">
+                <div class="col-12">
+                    <article class="featured-card">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="featured-img-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80"
+                                        alt="AI-Powered Automation Transforming Small Businesses in 2026"
+                                        loading="eager">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="featured-content">
+                                    <span class="badge-category">AI &amp; Automation</span>
+                                    <h2>How AI-Powered Automation Is Transforming Small Businesses in 2026</h2>
+                                    <p class="excerpt">Discover how small and mid-sized businesses are leveraging AI automation to cut operational costs by 40%, streamline complex workflows, and unlock new revenue streams — without hiring large tech teams.</p>
+                                    <div class="author-strip">
+                                        <img src="https://ui-avatars.com/api/?name=Aarav+Mehta&background=2F55F4&color=fff&size=80"
+                                            alt="Aarav Mehta">
+                                        <div class="author-info">
+                                            <div class="author-name">Aarav Mehta</div>
+                                            <div class="author-date">Feb 15, 2026 &bull; 8 min read</div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="btn-read-article">Read Article <i
+                                            class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 2: CATEGORY FILTERS
+    ============================================= -->
+    <div class="category-filters" id="categoryFilters">
+        <div class="container">
+            <div class="filter-pills" role="tablist" aria-label="Blog category filters">
+                <button class="filter-pill active" data-category="all" role="tab" aria-selected="true">All</button>
+                <button class="filter-pill" data-category="web-development" role="tab" aria-selected="false">Web Development</button>
+                <button class="filter-pill" data-category="mobile-apps" role="tab" aria-selected="false">Mobile Apps</button>
+                <button class="filter-pill" data-category="ai-automation" role="tab" aria-selected="false">AI &amp; Automation</button>
+                <button class="filter-pill" data-category="digital-marketing" role="tab" aria-selected="false">Digital Marketing</button>
+                <button class="filter-pill" data-category="ui-ux" role="tab" aria-selected="false">UI/UX Design</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         SECTION 3: BLOG CARDS FEED
+    ============================================= -->
+    <section class="blog-feed">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="blogGrid">
+
+                <!-- Card 1 -->
+                <div class="col" data-aos="fade-up" data-category="web-development">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Web Development</span>
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"
+                                alt="Next.js vs Nuxt.js Framework Comparison 2026" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Feb 10, 2026</span>
+                                <span class="dot"></span>
+                                <span>6 min read</span>
+                            </div>
+                            <h3 class="article-title">Next.js vs Nuxt.js: Which Framework Should You Choose in 2026?</h3>
+                            <p class="blog-excerpt">A detailed comparison covering performance, SEO capabilities, developer experience, and ecosystem maturity to help you make the right call.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Priya+Sharma&background=6366f1&color=fff&size=64"
+                                    alt="Priya Sharma">
+                                <span>Priya Sharma</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="ai-automation">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">AI &amp; Automation</span>
+                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80"
+                                alt="Building Custom GPT Chatbots for Customer Support" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Feb 06, 2026</span>
+                                <span class="dot"></span>
+                                <span>7 min read</span>
+                            </div>
+                            <h3 class="article-title">Building Custom GPT-Powered Chatbots for Enterprise Customer Support</h3>
+                            <p class="blog-excerpt">Learn how to build and deploy context-aware AI chatbots using OpenAI APIs, LangChain, and RAG architecture for seamless customer interactions.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Aarav+Mehta&background=2F55F4&color=fff&size=64"
+                                    alt="Aarav Mehta">
+                                <span>Aarav Mehta</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="digital-marketing">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Digital Marketing</span>
+                            <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&q=80"
+                                alt="SEO Strategies That Actually Work in 2026" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Jan 28, 2026</span>
+                                <span class="dot"></span>
+                                <span>5 min read</span>
+                            </div>
+                            <h3 class="article-title">10 SEO Strategies That Actually Work in 2026 (Backed by Data)</h3>
+                            <p class="blog-excerpt">From AI-generated content optimization to Core Web Vitals mastery — the only SEO playbook you need this year.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Neha+Patel&background=10B981&color=fff&size=64"
+                                    alt="Neha Patel">
+                                <span>Neha Patel</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col" data-aos="fade-up" data-category="mobile-apps">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Mobile Apps</span>
+                            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80"
+                                alt="Flutter vs React Native for Cross-Platform Apps" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Jan 22, 2026</span>
+                                <span class="dot"></span>
+                                <span>8 min read</span>
+                            </div>
+                            <h3 class="article-title">Flutter vs React Native in 2026: The Definitive Cross-Platform Showdown</h3>
+                            <p class="blog-excerpt">We benchmark performance, UI fidelity, hot reload speed, and plugin ecosystems to settle the debate once and for all.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Rohit+Jain&background=f59e0b&color=fff&size=64"
+                                    alt="Rohit Jain">
+                                <span>Rohit Jain</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="ui-ux">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">UI/UX Design</span>
+                            <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80"
+                                alt="Design Systems That Scale for Startups" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Jan 15, 2026</span>
+                                <span class="dot"></span>
+                                <span>5 min read</span>
+                            </div>
+                            <h3 class="article-title">Building Design Systems That Scale: A Startup's Practical Guide</h3>
+                            <p class="blog-excerpt">How to create a design system from scratch that keeps your product consistent, speeds up dev handoff, and evolves with your brand.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Meera+Kulkarni&background=ec4899&color=fff&size=64"
+                                    alt="Meera Kulkarni">
+                                <span>Meera Kulkarni</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="web-development">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Web Development</span>
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80"
+                                alt="Headless CMS vs Traditional CMS for Enterprise" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Jan 08, 2026</span>
+                                <span class="dot"></span>
+                                <span>6 min read</span>
+                            </div>
+                            <h3 class="article-title">Headless CMS vs Traditional CMS: What Enterprise Teams Need to Know</h3>
+                            <p class="blog-excerpt">An honest comparison of Strapi, Sanity, and WordPress for teams deciding on a content management strategy in 2026.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Priya+Sharma&background=6366f1&color=fff&size=64"
+                                    alt="Priya Sharma">
+                                <span>Priya Sharma</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="col" data-aos="fade-up" data-category="ai-automation">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">AI &amp; Automation</span>
+                            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80"
+                                alt="Automating Business Workflows with LangChain and Python" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Dec 28, 2025</span>
+                                <span class="dot"></span>
+                                <span>9 min read</span>
+                            </div>
+                            <h3 class="article-title">Automating Business Workflows with LangChain, Python &amp; AI Agents</h3>
+                            <p class="blog-excerpt">A step-by-step tutorial on building autonomous AI agents that handle repetitive business tasks — from data entry to invoice processing.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Aarav+Mehta&background=2F55F4&color=fff&size=64"
+                                    alt="Aarav Mehta">
+                                <span>Aarav Mehta</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="digital-marketing">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Digital Marketing</span>
+                            <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80"
+                                alt="Social Media Marketing Trends 2026" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Dec 20, 2025</span>
+                                <span class="dot"></span>
+                                <span>4 min read</span>
+                            </div>
+                            <h3 class="article-title">Social Media Marketing in 2026: Trends, Tools &amp; Winning Strategies</h3>
+                            <p class="blog-excerpt">Short-form video dominance, AI content assistants, and community-led growth — here's what's actually moving the needle.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Neha+Patel&background=10B981&color=fff&size=64"
+                                    alt="Neha Patel">
+                                <span>Neha Patel</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Card 9 -->
+                <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="mobile-apps">
+                    <article class="blog-card">
+                        <div class="blog-img-wrapper">
+                            <span class="badge-category">Mobile Apps</span>
+                            <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80"
+                                alt="PWA vs Native Apps Performance Guide" loading="lazy">
+                        </div>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>Dec 12, 2025</span>
+                                <span class="dot"></span>
+                                <span>7 min read</span>
+                            </div>
+                            <h3 class="article-title">PWA vs Native Apps: When to Choose What (A Performance Deep Dive)</h3>
+                            <p class="blog-excerpt">We test load speed, offline capability, push notifications, and install rates to give you a clear framework for decision-making.</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name=Rohit+Jain&background=f59e0b&color=fff&size=64"
+                                    alt="Rohit Jain">
+                                <span>Rohit Jain</span>
+                            </div>
+                            <span class="card-action"><i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-5" data-aos="fade-up">
+                <button class="btn-load-more" id="loadMoreBtn">
+                    Load More Articles <i class="fas fa-chevron-down ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 4: START A PROJECT CTA
+    ============================================= -->
+    <section class="container px-4 my-5" data-aos="fade-up">
+        <div class="cta-floating-strip" style="background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%); border-radius: 25px; padding: 50px 40px; color: #ffffff; box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Have a project in mind?</h2>
+                    <p class="lead mb-0 opacity-90">Our team in Mehsana is ready to turn your ideas into reality. Let's talk.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html" class="btn bg-white text-primary fw-bold rounded-pill px-4 py-3 shadow-sm" style="transition: transform 0.3s;">Get a Free Quote</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        // ========== Category Filter Logic ==========
+        document.addEventListener('DOMContentLoaded', function () {
+            const pills = document.querySelectorAll('.filter-pill');
+            const cards = document.querySelectorAll('#blogGrid > .col');
+
+            pills.forEach(pill => {
+                pill.addEventListener('click', function () {
+                    // Update active state
+                    pills.forEach(p => {
+                        p.classList.remove('active');
+                        p.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+
+                    const category = this.dataset.category;
+
+                    // Filter cards with animation
+                    cards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = '';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            requestAnimationFrame(() => {
+                                card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            });
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 350);
+                        }
+                    });
+                });
+            });
+
+            // Sticky filter shadow on scroll
+            const filterBar = document.getElementById('categoryFilters');
+            if (filterBar) {
+                window.addEventListener('scroll', function () {
+                    const rect = filterBar.getBoundingClientRect();
+                    if (rect.top <= 72) {
+                        filterBar.classList.add('scrolled-filters');
+                    } else {
+                        filterBar.classList.remove('scrolled-filters');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
