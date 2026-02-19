@@ -302,6 +302,14 @@
             .contact-form-wrap { padding: 28px 20px; }
             .contact-info-row { margin-top: -40px; }
         }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .contact-info-card:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
+        }
     </style>
 </head>
 
@@ -336,21 +344,21 @@
     <!-- ===== FLOATING CONTACT INFO CARDS ===== -->
     <div class="container contact-info-row" data-aos="fade-up">
         <div class="row g-4">
-            <div class="col-md-4">
+            <div class="col-sm-6 col-md-4">
                 <div class="contact-info-card text-center">
                     <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
                     <h5>Visit Us</h5>
                     <p>T-332, S Cube, Radhanpur Rd<br>opp. Bansari Township<br>Mehsana, Gujarat 384002</p>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-6 col-md-4">
                 <div class="contact-info-card text-center">
                     <div class="icon-circle"><i class="fas fa-phone-alt"></i></div>
                     <h5>Call / WhatsApp</h5>
                     <p>+91 9924426361<br>Mon – Sat, 9:00 AM – 6:00 PM</p>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-6 col-md-4">
                 <div class="contact-info-card text-center">
                     <div class="icon-circle"><i class="fas fa-envelope"></i></div>
                     <h5>Email Us</h5>

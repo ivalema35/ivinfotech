@@ -557,6 +557,16 @@
             border-color: rgba(47, 85, 244, .2);
         }
 
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .btn-hero-primary:hover,
+            .btn-hero-secondary:hover,
+            .tech-pill:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
+        }
+
         /* Responsive hero tweaks */
         @media (max-width: 991.98px) {
             .hero-section::before {
@@ -568,6 +578,31 @@
 
             .hero-headline-new {
                 font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .tech-marquee-wrapper::before,
+            .tech-marquee-wrapper::after {
+                width: 60px;
+            }
+
+            .tech-pill {
+                padding: 10px 18px;
+                font-size: .85rem;
+            }
+
+            .tech-pill i {
+                font-size: 1.2rem;
+            }
+
+            .tech-marquee-track {
+                gap: 14px;
+            }
+
+            .logo-marquee-track img {
+                height: 28px;
+                margin: 0 28px;
             }
         }
     </style>
@@ -598,7 +633,7 @@
                     </div>
                 </div>
                 <!-- Right Column — Visual -->
-                <div class="col-lg-6 text-center d-flex align-items-center justify-content-center position-relative" data-aos="fade-up" data-aos-delay="200" style="min-height: 500px;">
+                <div class="col-lg-6 text-center d-flex align-items-center justify-content-center position-relative order-first order-lg-last" data-aos="fade-up" data-aos-delay="200" style="min-height: 300px;">
                     <lottie-player
                         src="assets/animations/hero-tech.json"
                         background="transparent"
@@ -689,15 +724,15 @@
                 <!-- Service 1 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center d-flex flex-column">
                             <div class="icon-box">
                                 <i class="fas fa-code fa-2x"></i>
                             </div>
                             <h4 class="card-title fw-bold mb-3">Web Development</h4>
-                            <p class="card-text text-muted">Custom, high-performance websites built with React, Vue, and
+                            <p class="card-text text-muted flex-grow-1">Custom, high-performance websites built with React, Vue, and
                                 modern frameworks.</p>
                             <a href="services.html#web"
-                                class="btn btn-link text-primary text-decoration-none fw-bold">Learn More <i
+                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
                                     class="fas fa-arrow-right small ms-1"></i></a>
                         </div>
                     </div>
@@ -705,15 +740,15 @@
                 <!-- Service 2 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center d-flex flex-column">
                             <div class="icon-box">
                                 <i class="fas fa-mobile-alt fa-2x"></i>
                             </div>
                             <h4 class="card-title fw-bold mb-3">Mobile Apps</h4>
-                            <p class="card-text text-muted">Native and hybrid mobile applications for iOS and Android
+                            <p class="card-text text-muted flex-grow-1">Native and hybrid mobile applications for iOS and Android
                                 platforms.</p>
                             <a href="services.html#mobile"
-                                class="btn btn-link text-primary text-decoration-none fw-bold">Learn More <i
+                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
                                     class="fas fa-arrow-right small ms-1"></i></a>
                         </div>
                     </div>
@@ -721,15 +756,15 @@
                 <!-- Service 3 -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
                     <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center d-flex flex-column">
                             <div class="icon-box">
                                 <i class="fas fa-pencil-ruler fa-2x"></i>
                             </div>
                             <h4 class="card-title fw-bold mb-3">UI/UX Design</h4>
-                            <p class="card-text text-muted">User-centric designs that drive engagement and retention.
+                            <p class="card-text text-muted flex-grow-1">User-centric designs that drive engagement and retention.
                             </p>
                             <a href="services.html#ui-ux"
-                                class="btn btn-link text-primary text-decoration-none fw-bold">Learn More <i
+                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
                                     class="fas fa-arrow-right small ms-1"></i></a>
                         </div>
                     </div>

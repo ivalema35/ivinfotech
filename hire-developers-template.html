@@ -186,6 +186,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transition: all 0.4s ease;
             border: none;
+            height: 100%;
         }
 
         .talent-card:hover {
@@ -275,6 +276,8 @@
             transition: all 0.35s ease;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .model-card.popular {
@@ -355,6 +358,7 @@
             font-size: 0.9rem;
             text-decoration: none;
             transition: all 0.3s ease;
+            margin-top: auto;
         }
 
         .btn-model:hover, .model-card.popular .btn-model {
@@ -583,6 +587,17 @@
             .hire-form-card { padding: 28px 20px; margin-top: 40px; }
             .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
             .hire-cta-strip { padding: 40px 24px; }
+        }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .talent-card:hover,
+            .model-card:hover,
+            .tech-chip:hover,
+            .step-card:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
         }
     </style>
 </head>

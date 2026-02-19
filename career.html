@@ -623,6 +623,21 @@
                 opacity: 1;
             }
         }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .career-card:hover,
+            .share-btn:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .career-card {
+                padding: 24px 20px;
+            }
+        }
     </style>
 </head>
 
@@ -957,15 +972,15 @@
                                                 <label class="form-label">Company Name</label>
                                                 <input type="text" class="form-control" placeholder="e.g. XYZ Solutions Pvt. Ltd.">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-6 col-md-4">
                                                 <label class="form-label">Start Date</label>
                                                 <input type="month" class="form-control">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-6 col-md-4">
                                                 <label class="form-label">End Date</label>
                                                 <input type="month" class="form-control end-date-input">
                                             </div>
-                                            <div class="col-md-4 d-flex align-items-end">
+                                            <div class="col-6 col-md-4 d-flex align-items-end">
                                                 <div class="form-check">
                                                     <input class="form-check-input currently-working-cb" type="checkbox" id="currentWork1">
                                                     <label class="form-check-label" for="currentWork1" style="font-size:.88rem;font-weight:500;">Currently Working</label>

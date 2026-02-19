@@ -19,6 +19,85 @@ body.loaded #preloader {
     pointer-events: none;
 }
 
+/* =========================================
+   GLOBAL MOBILE-FIRST RESPONSIVE FOUNDATION
+   ========================================= */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+img, lottie-player, svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Fluid Typography */
+.display-2 { font-size: clamp(2rem, 5vw, 3.5rem) !important; }
+.display-4 { font-size: clamp(2rem, 5vw, 3.5rem) !important; }
+.display-5 { font-size: clamp(1.6rem, 3.5vw, 2.5rem) !important; }
+
+/* Touch-friendly buttons */
+.btn, .btn-hero-primary, .btn-hero-secondary, .btn-case-study, .cta-btn, .btn-quote {
+    min-height: 48px;
+}
+
+/* Base paragraph readability */
+p { font-size: max(0.95rem, 16px); }
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+    .portfolio-card-premium:hover,
+    .tech-pill:hover,
+    .card:hover,
+    .testimonial-card:hover,
+    .service-card:hover,
+    .bento-card:hover {
+        transform: none !important;
+        box-shadow: inherit !important;
+    }
+}
+
+/* =========================================
+   MOBILE (Extra Small, below 576px)
+   ========================================= */
+@media (max-width: 575.98px) {
+    section { padding: 50px 0; }
+
+    .stats-floating-card { padding: 24px 16px; }
+    .stat-number { font-size: 2rem; }
+    .stat-label { font-size: 0.7rem; }
+
+    .page-header { padding-top: 120px; padding-bottom: 70px; }
+    .page-header h1 { font-size: 1.8rem !important; }
+
+    .inner-page-header { padding: 80px 0 60px; }
+    .inner-page-header h1 { font-size: 2rem; }
+
+    .footer-container { padding: 0 16px 24px 16px; }
+}
+
+/* =========================================
+   TABLET (Medium devices, 768px and up)
+   ========================================= */
+@media (min-width: 768px) {
+    section { padding: 70px 0; }
+}
+
+/* =========================================
+   DESKTOP (Large devices, 992px and up)
+   ========================================= */
+@media (min-width: 992px) {
+    section { padding: 80px 0; }
+}
+
+/* =========================================
+   LARGE DESKTOP (1200px and up)
+   ========================================= */
+@media (min-width: 1200px) {
+    .container { max-width: 1140px; }
+}
+
 :root {
     --brand-blue: #2F55F4;
     --brand-blue-dark: #1a3ec1;
@@ -1965,6 +2044,8 @@ footer a:hover {
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-card:hover {
@@ -1997,7 +2078,8 @@ footer a:hover {
     color: #0b1c3c;
     font-weight: 600;
     text-decoration: none;
-    margin-top: 20px;
+    margin-top: auto;
+    padding-top: 20px;
     display: inline-block;
     transition: 0.3s;
 }

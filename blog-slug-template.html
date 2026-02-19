@@ -776,6 +776,15 @@
                 font-size: 1.05rem;
             }
         }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .related-article-card:hover,
+            .toc-link:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
+        }
     </style>
 </head>
 

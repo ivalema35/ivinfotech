@@ -66,7 +66,7 @@
         .leader-img-wrap {
             position: relative;
             height: 100%;
-            min-height: 320px;
+            min-height: 260px;
             overflow: hidden;
         }
 
@@ -144,30 +144,35 @@
         }
 
         /* ---- Premium Team Cards ---- */
+        /* 1. Main Card Wrapper */
         .team-card {
             border-radius: 20px;
             overflow: hidden;
-            background: #ffffff;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s ease;
+            background: #0b1c3c; /* Prevents white gaps */
+            height: 100%; /* Ensures all cards in a row match height */
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             border: none;
         }
 
         .team-card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(11, 28, 60, 0.25);
         }
 
+        /* 2. STRICT Image Container */
         .team-img-wrapper {
             position: relative;
-            height: 320px;
+            width: 100%;
+            height: 320px; /* STRICT HEIGHT */
+            flex-shrink: 0; /* Prevents this box from getting squished */
             background: #ffffff;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
             overflow: hidden;
         }
 
+        /* 3. Image Sizing */
         .team-img-wrapper img {
             width: 100%;
             height: 100%;
@@ -217,11 +222,15 @@
             color: #0b1c3c;
         }
 
-        /* Dark navy info panel */
+        /* 4. Text Info Box */
         .team-info {
             background-color: #0b1c3c;
             padding: 25px 20px;
             text-align: center;
+            flex-grow: 1; /* Fills remaining vertical space evenly */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             position: relative;
             z-index: 2;
         }
@@ -342,6 +351,15 @@
             .leader-img-wrap { min-height: 260px; }
             .cta-team-strip { padding: 36px 24px; }
         }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .team-member-card:hover,
+            .team-card:hover {
+                transform: none !important;
+                box-shadow: inherit !important;
+            }
+        }
     </style>
 </head>
 
@@ -365,7 +383,7 @@
                     </p>
                 </div>
 
-                <div class="col-lg-6 text-center" data-aos="fade-left">
+                <div class="col-lg-6 order-first order-lg-last text-center" data-aos="fade-left">
                     <lottie-player
                         src="/assets/animations/team.json"
                         background="transparent"
@@ -501,7 +519,7 @@
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                 <!-- Member 2 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="80">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member2.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -518,7 +536,7 @@
 
                 <!-- Member 4 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="240">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member4.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -535,7 +553,7 @@
 
                  <!-- Member 5 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="0">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member5.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -552,7 +570,7 @@
 
                 <!-- Member 1 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="0">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member1.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -571,7 +589,7 @@
 
                 <!-- Member 3 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="160">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member3.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -592,7 +610,7 @@
 
                 <!-- Member 6 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="80">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member6.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -608,7 +626,7 @@
 
                 <!-- Member 8 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="240">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member8.jpg" alt="Team Member">
                             <div class="social-overlay">
@@ -625,12 +643,12 @@
 
                 <!-- Member 7 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="160">
-                    <div class="team-card">
+                    <div class="team-card h-100">
                         <div class="team-img-wrapper">
                             <img src="assets/images/team/member7.jpg" alt="Team Member">
                             <div class="social-overlay">
-                                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                                <a href="https://www.linkedin.com/in/jeel-150703-patel" aria-label="LinkedIn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                <!-- <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a> -->
                             </div>
                         </div>
                         <div class="team-info">

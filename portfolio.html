@@ -351,6 +351,28 @@
                 padding: 8px 18px;
                 font-size: .82rem;
             }
+
+            .btn-case-study {
+                padding: 10px 22px;
+                font-size: .85rem;
+            }
+        }
+
+        /* Disable hover transforms on touch */
+        @media (hover: none) {
+            .portfolio-card-premium:hover {
+                transform: none !important;
+                box-shadow: 0 10px 40px rgba(11, 28, 60, .05) !important;
+            }
+            .portfolio-card-premium:hover .portfolio-img-premium {
+                transform: none !important;
+            }
+            .btn-case-study:hover {
+                transform: none !important;
+            }
+            .filter-btn:hover {
+                background: transparent !important;
+            }
         }
     </style>
 </head>
