@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Portfolio | Our Best Work & Success Stories — IV Infotech</title>
+    <meta name="description"
+        content="Explore how IV Infotech helps global brands and startups build scalable Web Apps, AI Automations, CRMs, and Mobile Apps from our Mehsana headquarters. View real case studies.">
+    <meta name="keywords"
+        content="IV Infotech Portfolio, Web Development Projects Mehsana, AI Automation Case Studies, CRM Development Gujarat, Mobile App Portfolio India, UI UX Design Portfolio">
+    <meta name="author" content="IV Infotech">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.ivinfotech.com/portfolio.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ivinfotech.com/portfolio.html">
+    <meta property="og:title" content="Portfolio | Our Best Work & Success Stories — IV Infotech">
+    <meta property="og:description"
+        content="Real projects. Real results. See how IV Infotech delivers world-class web, AI, mobile, and CRM solutions.">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og-portfolio.jpg">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:site_name" content="IV Infotech">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Portfolio | IV Infotech — Our Best Work">
+    <meta name="twitter:description"
+        content="Explore case studies in Web, AI, CRM, Mobile App, and UI/UX Design from IV Infotech.">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og-portfolio.jpg">
+
+    <!-- Additional SEO -->
+    <meta name="geo.region" content="IN-GJ">
+    <meta name="geo.placename" content="Mehsana">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "IV Infotech Portfolio",
+        "description": "A curated collection of web apps, AI automations, CRM systems, mobile apps, and UI/UX designs built by IV Infotech.",
+        "url": "https://www.ivinfotech.com/portfolio.html",
+        "publisher": {
+            "@type": "Organization",
+            "name": "IV Infotech",
+            "url": "https://www.ivinfotech.com",
+            "logo": "https://www.ivinfotech.com/assets/images/logo.png"
+        }
+    }
+    </script>
+
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <style>
+        /* ==========================================================
+           PORTFOLIO PAGE — PREMIUM STYLES
+        ========================================================== */
+
+        /* ========== HERO ========== */
+        .portfolio-hero {
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8f9ff 60%, #eef2ff 100%);
+            padding: 130px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-hero::before {
+            content: '';
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(47, 85, 244, .06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .portfolio-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, .05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .portfolio-hero .section-eyebrow {
+            display: inline-block;
+            background: rgba(47, 85, 244, .08);
+            color: #2F55F4;
+            border: 1px solid rgba(47, 85, 244, .2);
+            font-weight: 600;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-bottom: 14px;
+        }
+
+        .portfolio-hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            color: #0b1c3c;
+            font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+            line-height: 1.2;
+        }
+
+        .portfolio-hero h1 span {
+            background: linear-gradient(135deg, #2F55F4, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .portfolio-hero .lead {
+            color: #4b5563;
+            font-size: 1.12rem;
+            line-height: 1.75;
+            max-width: 560px;
+        }
+
+        /* ========== FILTER TABS ========== */
+        .filter-section {
+            padding: 50px 0 10px;
+            background: #fff;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: .88rem;
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 2px solid #2F55F4;
+            background: transparent;
+            color: #2F55F4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(47, 85, 244, .06);
+        }
+
+        .filter-btn.active,
+        .filter-btn.btn-primary {
+            background: #2F55F4;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(47, 85, 244, .3);
+        }
+
+        /* ========== PORTFOLIO GRID ========== */
+        .portfolio-section {
+            padding: 40px 0 80px;
+            background: #f8f9fc;
+        }
+
+        .portfolio-grid {
+            position: relative;
+        }
+
+        /* Filter animation */
+        .portfolio-item-wrapper {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .portfolio-item-wrapper.hide {
+            transform: scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            max-height: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+
+        /* ========== PREMIUM PORTFOLIO CARD ========== */
+        .portfolio-card-premium {
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(11, 28, 60, .05);
+            border: 1px solid rgba(47, 85, 244, .05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .portfolio-card-premium:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(47, 85, 244, .1);
+        }
+
+        /* ---- Image ---- */
+        .portfolio-img-premium {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .portfolio-card-premium:hover .portfolio-img-premium {
+            transform: scale(1.05);
+        }
+
+        .portfolio-img-col {
+            overflow: hidden;
+        }
+
+        /* ---- Result Badge ---- */
+        .result-badge-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, .08);
+            color: #059669;
+            font-size: .82rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .result-badge-premium i {
+            font-size: .75rem;
+        }
+
+        /* ---- CTA Button ---- */
+        .btn-case-study {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid #2F55F4;
+            color: #2F55F4;
+            background: transparent;
+            font-weight: 700;
+            padding: 11px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: .92rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-case-study:hover {
+            background: #2F55F4;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(47, 85, 244, .25);
+            transform: translateY(-2px);
+        }
+
+        .btn-case-study i {
+            transition: transform 0.3s;
+        }
+
+        .btn-case-study:hover i {
+            transform: translateX(4px);
+        }
+
+        /* ========== DESKTOP: HORIZONTAL + ZIG-ZAG ========== */
+        @media (min-width: 992px) {
+            .portfolio-card-premium .row {
+                display: flex;
+                align-items: center;
+                height: 100%;
+            }
+
+            .portfolio-img-premium {
+                height: 100%;
+                min-height: 400px;
+            }
+
+            /* --- ZIG-ZAG: reverse even items --- */
+            .portfolio-item-wrapper:nth-child(even) .portfolio-card-premium .row {
+                flex-direction: row-reverse;
+            }
+        }
+
+        /* ========== CTA STRIP ========== */
+        .cta-floating-strip {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-floating-strip::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .07);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: -40px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            pointer-events: none;
+        }
+
+        .cta-floating-strip h2 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .cta-floating-strip .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .15) !important;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .portfolio-hero {
+                padding: 100px 0 50px;
+            }
+
+            .portfolio-img-premium {
+                height: 220px;
+                min-height: unset;
+            }
+
+            .filter-btn {
+                padding: 8px 18px;
+                font-size: .82rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="assets/js/loader.js"></script>
+    <div id="header-placeholder"></div>
+
+    <!-- ============================================
+         SECTION 1: PORTFOLIO HERO
+    ============================================= -->
+    <section class="portfolio-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7" data-aos="fade-right">
+                    <span class="section-eyebrow">Portfolio</span>
+                    <h1>Our Best Work &amp;<br><span>Success Stories.</span></h1>
+                    <p class="lead mt-3">Explore how we help global brands and startups build scalable Web Apps, AI Automations, and robust CRMs from our Mehsana headquarters.</p>
+                </div>
+                <div class="col-lg-5 text-center" data-aos="fade-left">
+                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json"
+                        background="transparent" speed="1"
+                        style="width: 100%; max-width: 420px; margin: 0 auto;" loop autoplay>
+                    </lottie-player>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 2: FILTER TABS
+    ============================================= -->
+    <section class="filter-section" style="background:#f8f9fc;">
+        <div class="container">
+            <div class="filter-row" data-aos="fade-up">
+                <button class="filter-btn active btn-primary" data-filter="all">All</button>
+                <button class="filter-btn btn-outline-primary" data-filter="web">Web</button>
+                <button class="filter-btn btn-outline-primary" data-filter="crm">CRM</button>
+                <button class="filter-btn btn-outline-primary" data-filter="app">App</button>
+                <button class="filter-btn btn-outline-primary" data-filter="ui-ux">UI/UX</button>
+                <button class="filter-btn btn-outline-primary" data-filter="ai-bucket">AI Bucket</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 3: PORTFOLIO GRID
+    ============================================= -->
+    <section class="portfolio-section">
+        <div class="container">
+            <div class="row g-5 portfolio-grid">
+
+                <!-- Project 1 — Web -->
+                <div class="col-12 portfolio-item-wrapper web" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                                    class="portfolio-img-premium" alt="SaaS Dashboard — Laravel Web Application by IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">WEB APPLICATION</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Enterprise SaaS Dashboard</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">Multi-tenant analytics platform with real-time data visualisation, role-based access, and automated reporting.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Laravel</span>
+                                        <span class="badge bg-light border text-dark">Vue.js</span>
+                                        <span class="badge bg-light border text-dark">MySQL</span>
+                                        <span class="badge bg-light border text-dark">Redis</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-chart-line"></i> 3x faster reporting for 500+ users</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 2 — CRM -->
+                <div class="col-12 portfolio-item-wrapper crm" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+                                    class="portfolio-img-premium" alt="Custom CRM Solution for Real-Estate Client — IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">CRM SOLUTION</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Real-Estate Lead CRM</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">Custom CRM with pipeline management, auto-follow-ups, WhatsApp integration, and commission tracking.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Laravel</span>
+                                        <span class="badge bg-light border text-dark">Livewire</span>
+                                        <span class="badge bg-light border text-dark">Twilio</span>
+                                        <span class="badge bg-light border text-dark">PostgreSQL</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-bolt"></i> 45% faster lead conversion</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 3 — App -->
+                <div class="col-12 portfolio-item-wrapper app" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80"
+                                    class="portfolio-img-premium" alt="E-Commerce Mobile App — Flutter Development by IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">MOBILE APP</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Multi-Vendor E-Commerce App</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">Cross-platform marketplace with real-time order tracking, in-app payments, and vendor dashboards.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Flutter</span>
+                                        <span class="badge bg-light border text-dark">Dart</span>
+                                        <span class="badge bg-light border text-dark">Firebase</span>
+                                        <span class="badge bg-light border text-dark">Razorpay</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-download"></i> 25,000+ downloads in 3 months</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 4 — UI/UX -->
+                <div class="col-12 portfolio-item-wrapper ui-ux" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80"
+                                    class="portfolio-img-premium" alt="FinTech App Redesign — UI/UX Case Study by IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">UI/UX DESIGN</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">FinTech App Redesign</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">Complete design overhaul for a digital lending platform — 42 screens, design system, and micro-interactions.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Figma</span>
+                                        <span class="badge bg-light border text-dark">Prototyping</span>
+                                        <span class="badge bg-light border text-dark">Design System</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-arrow-up"></i> 68% improvement in user retention</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 5 — AI Bucket -->
+                <div class="col-12 portfolio-item-wrapper ai-bucket" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80"
+                                    class="portfolio-img-premium" alt="AI Customer Support Automation — IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">AI &amp; AUTOMATION</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">AI Support Agent &amp; RAG System</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">GPT-powered customer support chatbot with RAG pipeline, trained on 50k+ docs, reducing ticket volume by 70%.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Python</span>
+                                        <span class="badge bg-light border text-dark">LangChain</span>
+                                        <span class="badge bg-light border text-dark">OpenAI</span>
+                                        <span class="badge bg-light border text-dark">Pinecone</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-robot"></i> Automated 10,000+ tasks/mo</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 6 — Web -->
+                <div class="col-12 portfolio-item-wrapper web" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80"
+                                    class="portfolio-img-premium" alt="Healthcare Portal — Custom Web Development by IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">WEB APPLICATION</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Healthcare Patient Portal</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">HIPAA-ready patient portal with appointment booking, e-prescriptions, and telemedicine integration.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">React</span>
+                                        <span class="badge bg-light border text-dark">Node.js</span>
+                                        <span class="badge bg-light border text-dark">MongoDB</span>
+                                        <span class="badge bg-light border text-dark">AWS</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-users"></i> Serving 12,000+ patients monthly</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 7 — CRM -->
+                <div class="col-12 portfolio-item-wrapper crm" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80"
+                                    class="portfolio-img-premium" alt="ERP & Inventory Management System — IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">CRM &amp; ERP</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Manufacturing ERP System</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">End-to-end ERP with inventory, purchase orders, GST billing, and production line tracking for a Gujarat factory.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Laravel</span>
+                                        <span class="badge bg-light border text-dark">jQuery</span>
+                                        <span class="badge bg-light border text-dark">MySQL</span>
+                                        <span class="badge bg-light border text-dark">REST API</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-cogs"></i> 60% reduction in manual entry</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 8 — AI Bucket -->
+                <div class="col-12 portfolio-item-wrapper ai-bucket" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1655720828018-edd2daec9349?w=800&q=80"
+                                    class="portfolio-img-premium" alt="AI Document Processing Pipeline — IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">AI &amp; AUTOMATION</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Intelligent Document Processor</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">OCR + LLM pipeline extracting structured data from invoices, contracts, and KYC documents with 98% accuracy.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Python</span>
+                                        <span class="badge bg-light border text-dark">GPT-4</span>
+                                        <span class="badge bg-light border text-dark">Tesseract</span>
+                                        <span class="badge bg-light border text-dark">FastAPI</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-file-alt"></i> Processing 5,000+ docs/day</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Project 9 — App -->
+                <div class="col-12 portfolio-item-wrapper app" data-aos="fade-up">
+                    <article class="portfolio-card-premium">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-lg-6 portfolio-img-col">
+                                <img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=800&q=80"
+                                    class="portfolio-img-premium" alt="Food Delivery App — Mobile Development by IV Infotech" loading="lazy">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-4 p-lg-5">
+                                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">MOBILE APP</span>
+                                    <h2 class="fw-bold mb-3" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.45rem;">Hyperlocal Food Delivery App</h2>
+                                    <p class="text-muted mb-4" style="font-size:1.02rem;line-height:1.7;">On-demand delivery platform with live GPS tracking, dynamic pricing, and restaurant management panel.</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light border text-dark">Flutter</span>
+                                        <span class="badge bg-light border text-dark">Node.js</span>
+                                        <span class="badge bg-light border text-dark">Socket.io</span>
+                                        <span class="badge bg-light border text-dark">Google Maps</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <span class="result-badge-premium"><i class="fas fa-motorcycle"></i> 8,000+ orders per week</span>
+                                    </div>
+                                    <a href="#" class="btn-case-study">View Case Study <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 4: CTA STRIP
+    ============================================= -->
+    <section class="container px-4 my-5" data-aos="fade-up">
+        <div class="cta-floating-strip"
+            style="background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%); border-radius: 25px; padding: 50px 40px; color: #ffffff; box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Have a project in mind?</h2>
+                    <p class="lead mb-0 opacity-90">Let's turn your idea into a case study. Talk to our team today.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end">
+                    <a href="contact.html"
+                        class="btn bg-white text-primary fw-bold rounded-pill px-4 py-3 shadow-sm"
+                        style="transition: transform 0.3s;">Start a Project</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item-wrapper');
+
+            filterBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    // Remove active state from all buttons
+                    filterBtns.forEach(function (b) {
+                        b.classList.remove('active', 'btn-primary');
+                        b.classList.add('btn-outline-primary');
+                    });
+
+                    // Set active on the clicked button
+                    this.classList.remove('btn-outline-primary');
+                    this.classList.add('active', 'btn-primary');
+
+                    const filterValue = this.getAttribute('data-filter');
+
+                    portfolioItems.forEach(function (item) {
+                        if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                            item.classList.remove('hide');
+                            item.style.display = '';
+                        } else {
+                            item.classList.add('hide');
+                            // Delay display:none until CSS transition completes
+                            setTimeout(function () {
+                                if (item.classList.contains('hide')) {
+                                    item.style.display = 'none';
+                                }
+                            }, 500);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
