@@ -96,13 +96,24 @@ async function loadComponent(elementId, filePath) {
 }
 
 function setActiveLink() {
-    const currentPath = window.location.pathname.split("/").pop() || 'index.html';
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const linkPath = link.getAttribute('href');
-        if (linkPath === currentPath) {
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+    // Check all nav-links and dropdown-items
+    const allLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-menu .dropdown-item');
+
+    allLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href === currentPath) {
             link.classList.add('active');
+
+            // If it's a dropdown item, also activate the parent dropdown toggle
+            const parentDropdown = link.closest('.nav-item.dropdown');
+            if (parentDropdown) {
+                const parentToggle = parentDropdown.querySelector(':scope > .nav-link');
+                if (parentToggle) {
+                    parentToggle.classList.add('active');
+                }
+            }
         }
     });
 }
