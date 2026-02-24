@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload component files: browser fetches header/footer in parallel with CSS/fonts -->
+    <link rel="preload" href="components/header.html" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="components/footer.html" as="fetch" crossorigin="anonymous">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- SEO Meta Tags -->
@@ -15,10 +18,19 @@
         content="IV Infotech Portfolio, Web Development Projects Mehsana, AI Automation Case Studies, CRM Development Gujarat, Mobile App Portfolio India, UI UX Design Portfolio">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/portfolio.html">
+    <link rel="canonical" href="https://www.ivinfotech.com/portfolio">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
+
+    <!-- Preconnect for Faster External Resource Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+
     <meta property="og:url" content="https://www.ivinfotech.com/portfolio.html">
     <meta property="og:title" content="Portfolio | Our Best Work & Success Stories — IV Infotech">
     <meta property="og:description"
@@ -701,7 +713,7 @@
                     <p class="lead mb-0 opacity-90">Let's turn your idea into a case study. Talk to our team today.</p>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <a href="contact.html"
+                    <a href="contact"
                         class="btn bg-white text-primary fw-bold rounded-pill px-4 py-3 shadow-sm"
                         style="transition: transform 0.3s;">Start a Project</a>
                 </div>
@@ -713,9 +725,9 @@
     <div id="footer-placeholder"></div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

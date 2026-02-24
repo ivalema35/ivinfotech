@@ -1,0 +1,163 @@
+# ============================================
+# IV INFOTECH PERFORMANCE OPTIMIZATION
+# Apache/LiteSpeed Configuration for Hostinger
+# ============================================
+
+# ============================================
+# 0. CLEAN URLs — Remove .html Extension
+# ============================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Redirect external .html requests to clean URL (SEO 301)
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+    RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+
+    # 2. Internally resolve clean URL to the actual .html file
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.html -f
+    RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
+
+# ============================================
+# 1. GZIP COMPRESSION (mod_deflate)
+# ============================================
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML, JSON
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/woff
+    AddOutputFilterByType DEFLATE font/woff2
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+
+    # Remove browser bugs (optional for old IE)
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule>
+
+# ============================================
+# 2. BROWSER CACHING (mod_expires)
+# ============================================
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+
+    # HTML (1 day - since content may update frequently)
+    ExpiresByType text/html "access plus 1 day"
+
+    # CSS and JavaScript (1 month)
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+
+    # Images (1 year)
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/vnd.microsoft.icon "access plus 1 year"
+
+    # Fonts (1 year)
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+
+    # PDF and Documents (1 month)
+    ExpiresByType application/pdf "access plus 1 month"
+
+    # JSON and XML (1 day)
+    ExpiresByType application/json "access plus 1 day"
+    ExpiresByType application/xml "access plus 1 day"
+    ExpiresByType text/xml "access plus 1 day"
+</IfModule>
+
+# ============================================
+# 3. CACHE-CONTROL HEADERS (Alternative/Backup)
+# ============================================
+<IfModule mod_headers.c>
+    # Cache images for 1 year
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+
+    # Cache CSS and JS for 1 month
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+
+    # Cache fonts for 1 year
+    <FilesMatch "\.(ttf|otf|woff|woff2|eot)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+
+    # HTML - short cache (1 day)
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "max-age=86400, public, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ============================================
+# 4. SECURITY HEADERS
+# ============================================
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Prevent MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ============================================
+# 5. FILE COMPRESSION (Alternative method)
+# ============================================
+<IfModule mod_gzip.c>
+    mod_gzip_on Yes
+    mod_gzip_dechunk Yes
+    mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+    mod_gzip_item_include mime ^application/x-javascript.*
+    mod_gzip_item_include mime ^text/.*
+    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
+
+# ============================================
+# 6. ETags (Entity Tags for caching)
+# ============================================
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# ============================================
+# 7. FORCE HTTPS (SSL Redirect) - Optional
+# ============================================
+# Uncomment to force HTTPS:
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload component files: browser fetches header/footer in parallel with CSS/fonts -->
+    <link rel="preload" href="components/header.html" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="components/footer.html" as="fetch" crossorigin="anonymous">
     <title>Crafting Intuitive Digital Experiences - UI/UX Design in Mehsana | IV Infotech</title>
     <meta name="description" content="UI/UX Design Agency in Mehsana, Gujarat. We create user-centric interfaces that engage users and boost retention. Figma, Wireframes, Prototypes.">
     <meta name="keywords" content="UI/UX Agency Gujarat, UI/UX Design Mehsana, App Prototyping, Figma Experts India, User Experience Design">
@@ -13,6 +16,13 @@
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/ui-ux-design-agency-india.html">
     <meta property="og:type" content="website">
+
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -315,8 +325,8 @@
                     <p class="lead mb-4">Great design is not just about looks; it's about how it works. We create user-centric interfaces that engage users and boost retention.</p>
                     <p class="text-muted mb-4">From rough sketches to interactive prototypes—we turn complex ideas into simple, beautiful, and engaging digital products.</p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="contact.html" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Design Project</a>
-                        <a href="services.html" class="btn btn-outline-dark btn-lg px-4 rounded-pill">See Our Portfolio</a>
+                        <a href="contact" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Design Project</a>
+                        <a href="services" class="btn btn-outline-dark btn-lg px-4 rounded-pill">See Our Portfolio</a>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center" data-aos="fade-left">
@@ -365,7 +375,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="assets/images/ui_ux_1.png" class="img-fluid" alt="Wireframing Process"> 
+                        <img src="assets/images/ui_ux_1.png" class="img-fluid" alt="Wireframing Process" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
                         <h2 class="fw-bold mb-3">Blueprint Before Building</h2>
@@ -388,7 +398,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5 flex-lg-row-reverse">
                     <div class="col-lg-6 text-center" data-aos="fade-left"> 
-                        <img src="assets/images/ui_ux_2.png" class="img-fluid" alt="High Fidelity UI Design"> 
+                        <img src="assets/images/ui_ux_2.png" class="img-fluid" alt="High Fidelity UI Design" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-right">
                         <h2 class="fw-bold mb-3">Pixel-Perfect Interfaces</h2>
@@ -411,7 +421,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="assets/images/ui_ux_3.png" class="img-fluid" alt="Mobile and Web Interface Design"> 
+                        <img src="assets/images/ui_ux_3.png" class="img-fluid" alt="Mobile and Web Interface Design" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
                         <h2 class="fw-bold mb-3">Mobile & Web Excellence</h2>
@@ -544,7 +554,7 @@
                     <p class="lead mb-0 opacity-90">Bad design kills conversion. Let's redesign your experience.</p>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <a href="contact.html" class="btn-white-pop">Redesign My UI</a>
+                    <a href="contact" class="btn-white-pop">Redesign My UI</a>
                 </div>
             </div>
         </div>
@@ -552,9 +562,9 @@
 
     <div id="footer-placeholder"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
     <script>
         AOS.init({
             duration: 800,
@@ -564,7 +574,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const activateServicesLink = () => {
-                const servicesLink = document.querySelector('.nav-link[href="services.html"]');
+                const servicesLink = document.querySelector('.nav-link[href="services"]');
                 if (servicesLink) {
                     servicesLink.classList.add('active');
                 }

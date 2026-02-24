@@ -1,9 +1,35 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Load Header
-    loadComponent("header-placeholder", "components/header.html");
+// ─── Component Prefetch ────────────────────────────────────────────────────
+// Start fetching IMMEDIATELY when the script is parsed — before DOMContentLoaded.
+// Combined with <link rel="preload">, these requests fire at the earliest possible moment.
+const _componentCache = {
+    header: fetch('components/header.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText)),
+    footer: fetch('components/footer.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText))
+};
 
-    // Load Footer
-    loadComponent("footer-placeholder", "components/footer.html");
+document.addEventListener("DOMContentLoaded", async function () {
+    // ─── Inject Components in Parallel ──────────────────────────────────────
+    // By the time DOM is ready the fetches are already in-flight (or done).
+    try {
+        const [headerContent, footerContent] = await Promise.all([
+            _componentCache.header,
+            _componentCache.footer
+        ]);
+
+        const headerEl = document.getElementById('header-placeholder');
+        if (headerEl) {
+            headerEl.innerHTML = headerContent;
+            setActiveLink();
+        }
+
+        const footerEl = document.getElementById('footer-placeholder');
+        if (footerEl) {
+            footerEl.innerHTML = footerContent;
+            const yearElement = document.getElementById('year');
+            if (yearElement) yearElement.textContent = new Date().getFullYear();
+        }
+    } catch (error) {
+        console.error('Component loading failed:', error);
+    }
 
     // Initialize AOS
     AOS.init({
@@ -68,35 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // No need for manual initialization
 });
 
-async function loadComponent(elementId, filePath) {
-    try {
-        const response = await fetch(filePath);
-        if (response.ok) {
-            const content = await response.text();
-            document.getElementById(elementId).innerHTML = content;
-            
-            // Update year in footer after loading
-            if (elementId === 'footer-placeholder') {
-                const yearElement = document.getElementById("year");
-                if (yearElement) {
-                    yearElement.textContent = new Date().getFullYear();
-                }
-            }
-            
-            // Re-highlight active link based on current URL
-            if (elementId === 'header-placeholder') {
-                setActiveLink();
-            }
-        } else {
-            console.error(`Error loading ${filePath}: ${response.statusText}`);
-        }
-    } catch (error) {
-        console.error(`Error loading ${filePath}:`, error);
-    }
-}
-
 function setActiveLink() {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPath = window.location.pathname.split('/').pop() || 'index';
 
     // Check all nav-links and dropdown-items
     const allLinks = document.querySelectorAll('.navbar-nav .nav-link, .dropdown-menu .dropdown-item');
@@ -116,4 +115,20 @@ function setActiveLink() {
             }
         }
     });
+}
+
+// Legacy helper kept for any inline page-specific calls — wraps the cache.
+async function loadComponent(elementId, filePath) {
+    try {
+        const response = await fetch(filePath);
+        if (response.ok) {
+            const content = await response.text();
+            const el = document.getElementById(elementId);
+            if (el) el.innerHTML = content;
+        } else {
+            console.error(`Error loading ${filePath}: ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error(`Error loading ${filePath}:`, error);
+    }
 }

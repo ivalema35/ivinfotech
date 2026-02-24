@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload component files: browser fetches header/footer in parallel with CSS/fonts -->
+    <link rel="preload" href="components/header.html" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="components/footer.html" as="fetch" crossorigin="anonymous">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- SEO Meta Tags -->
@@ -15,10 +18,20 @@
         content="IV Infotech Blog, Web Development Tips, AI Automation Articles, Digital Marketing Insights, Mobile App Trends, Software Engineering Blog Gujarat, Tech Blog India">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/blog.html">
+    <link rel="canonical" href="https://www.ivinfotech.com/blog">
 
     <!-- Open Graph / Facebook Meta Tags -->
     <meta property="og:type" content="website">
+
+    <!-- Preconnect for Faster External Resource Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://ui-avatars.com">
+
     <meta property="og:url" content="https://www.ivinfotech.com/blog.html">
     <meta property="og:title" content="Blog – Tech Insights on Web Dev, AI & Digital Marketing | IV Infotech">
     <meta property="og:description"
@@ -641,7 +654,7 @@
                                             <div class="author-date">Feb 15, 2026 &bull; 8 min read</div>
                                         </div>
                                     </div>
-                                    <a href="blog-slug-template.html" class="btn-read-article">Read Article <i
+                                    <a href="blog-slug-template" class="btn-read-article">Read Article <i
                                             class="fas fa-arrow-right"></i></a>
                                 </div>
                             </div>
@@ -678,7 +691,7 @@
                 <!-- Card 1 -->
                 <div class="col" data-aos="fade-up" data-category="web-development">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Web Development</span>
                             <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80"
                                 alt="Next.js vs Nuxt.js Framework Comparison 2026" loading="lazy">
@@ -689,7 +702,7 @@
                                 <span class="dot"></span>
                                 <span>6 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Next.js vs Nuxt.js: Which Framework Should You Choose in 2026?</h3>
                             </a>
                             <p class="blog-excerpt">A detailed comparison covering performance, SEO capabilities, developer experience, and ecosystem maturity to help you make the right call.</p>
@@ -700,7 +713,7 @@
                                     alt="Priya Sharma">
                                 <span>Priya Sharma</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -708,7 +721,7 @@
                 <!-- Card 2 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="ai-automation">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">AI &amp; Automation</span>
                             <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80"
                                 alt="Building Custom GPT Chatbots for Customer Support" loading="lazy">
@@ -719,7 +732,7 @@
                                 <span class="dot"></span>
                                 <span>7 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Building Custom GPT-Powered Chatbots for Enterprise Customer Support</h3>
                             </a>
                             <p class="blog-excerpt">Learn how to build and deploy context-aware AI chatbots using OpenAI APIs, LangChain, and RAG architecture for seamless customer interactions.</p>
@@ -730,7 +743,7 @@
                                     alt="Aarav Mehta">
                                 <span>Aarav Mehta</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -738,7 +751,7 @@
                 <!-- Card 3 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="digital-marketing">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Digital Marketing</span>
                             <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?w=600&q=80"
                                 alt="SEO Strategies That Actually Work in 2026" loading="lazy">
@@ -749,7 +762,7 @@
                                 <span class="dot"></span>
                                 <span>5 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">10 SEO Strategies That Actually Work in 2026 (Backed by Data)</h3>
                             </a>
                             <p class="blog-excerpt">From AI-generated content optimization to Core Web Vitals mastery — the only SEO playbook you need this year.</p>
@@ -760,7 +773,7 @@
                                     alt="Neha Patel">
                                 <span>Neha Patel</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -768,7 +781,7 @@
                 <!-- Card 4 -->
                 <div class="col" data-aos="fade-up" data-category="mobile-apps">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Mobile Apps</span>
                             <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80"
                                 alt="Flutter vs React Native for Cross-Platform Apps" loading="lazy">
@@ -779,7 +792,7 @@
                                 <span class="dot"></span>
                                 <span>8 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Flutter vs React Native in 2026: The Definitive Cross-Platform Showdown</h3>
                             </a>
                             <p class="blog-excerpt">We benchmark performance, UI fidelity, hot reload speed, and plugin ecosystems to settle the debate once and for all.</p>
@@ -790,7 +803,7 @@
                                     alt="Rohit Jain">
                                 <span>Rohit Jain</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -798,7 +811,7 @@
                 <!-- Card 5 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="ui-ux">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">UI/UX Design</span>
                             <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80"
                                 alt="Design Systems That Scale for Startups" loading="lazy">
@@ -809,7 +822,7 @@
                                 <span class="dot"></span>
                                 <span>5 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Building Design Systems That Scale: A Startup's Practical Guide</h3>
                             </a>
                             <p class="blog-excerpt">How to create a design system from scratch that keeps your product consistent, speeds up dev handoff, and evolves with your brand.</p>
@@ -817,10 +830,10 @@
                         <div class="blog-card-footer">
                             <div class="author-mini">
                                 <img src="https://ui-avatars.com/api/?name=Meera+Kulkarni&background=ec4899&color=fff&size=64"
-                                    alt="Meera Kulkarni">
+                                    alt="Meera Kulkarni" loading="lazy" decoding="async">
                                 <span>Meera Kulkarni</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -828,7 +841,7 @@
                 <!-- Card 6 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="web-development">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Web Development</span>
                             <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80"
                                 alt="Headless CMS vs Traditional CMS for Enterprise" loading="lazy">
@@ -839,7 +852,7 @@
                                 <span class="dot"></span>
                                 <span>6 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Headless CMS vs Traditional CMS: What Enterprise Teams Need to Know</h3>
                             </a>
                             <p class="blog-excerpt">An honest comparison of Strapi, Sanity, and WordPress for teams deciding on a content management strategy in 2026.</p>
@@ -850,7 +863,7 @@
                                     alt="Priya Sharma">
                                 <span>Priya Sharma</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -858,7 +871,7 @@
                 <!-- Card 7 -->
                 <div class="col" data-aos="fade-up" data-category="ai-automation">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">AI &amp; Automation</span>
                             <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80"
                                 alt="Automating Business Workflows with LangChain and Python" loading="lazy">
@@ -869,7 +882,7 @@
                                 <span class="dot"></span>
                                 <span>9 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Automating Business Workflows with LangChain, Python &amp; AI Agents</h3>
                             </a>
                             <p class="blog-excerpt">A step-by-step tutorial on building autonomous AI agents that handle repetitive business tasks — from data entry to invoice processing.</p>
@@ -880,7 +893,7 @@
                                     alt="Aarav Mehta">
                                 <span>Aarav Mehta</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -888,7 +901,7 @@
                 <!-- Card 8 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="100" data-category="digital-marketing">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Digital Marketing</span>
                             <img src="https://images.unsplash.com/photo-1611926653458-09294b3142bf?w=600&q=80"
                                 alt="Social Media Marketing Trends 2026" loading="lazy">
@@ -899,7 +912,7 @@
                                 <span class="dot"></span>
                                 <span>4 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">Social Media Marketing in 2026: Trends, Tools &amp; Winning Strategies</h3>
                             </a>
                             <p class="blog-excerpt">Short-form video dominance, AI content assistants, and community-led growth — here's what's actually moving the needle.</p>
@@ -910,7 +923,7 @@
                                     alt="Neha Patel">
                                 <span>Neha Patel</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -918,7 +931,7 @@
                 <!-- Card 9 -->
                 <div class="col" data-aos="fade-up" data-aos-delay="200" data-category="mobile-apps">
                     <article class="blog-card">
-                        <a href="blog-slug-template.html" class="d-block blog-img-wrapper">
+                        <a href="blog-slug-template" class="d-block blog-img-wrapper">
                             <span class="badge-category">Mobile Apps</span>
                             <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80"
                                 alt="PWA vs Native Apps Performance Guide" loading="lazy">
@@ -929,7 +942,7 @@
                                 <span class="dot"></span>
                                 <span>7 min read</span>
                             </div>
-                            <a href="blog-slug-template.html" style="text-decoration:none;">
+                            <a href="blog-slug-template" style="text-decoration:none;">
                                 <h3 class="article-title">PWA vs Native Apps: When to Choose What (A Performance Deep Dive)</h3>
                             </a>
                             <p class="blog-excerpt">We test load speed, offline capability, push notifications, and install rates to give you a clear framework for decision-making.</p>
@@ -940,7 +953,7 @@
                                     alt="Rohit Jain">
                                 <span>Rohit Jain</span>
                             </div>
-                            <a href="blog-slug-template.html" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                            <a href="blog-slug-template" class="card-action"><i class="fas fa-arrow-right"></i></a>
                         </div>
                     </article>
                 </div>
@@ -967,7 +980,7 @@
                     <p class="lead mb-0 opacity-90">Our team in Mehsana is ready to turn your ideas into reality. Let's talk.</p>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <a href="contact.html" class="btn bg-white text-primary fw-bold rounded-pill px-4 py-3 shadow-sm" style="transition: transform 0.3s;">Get a Free Quote</a>
+                    <a href="contact" class="btn bg-white text-primary fw-bold rounded-pill px-4 py-3 shadow-sm" style="transition: transform 0.3s;">Get a Free Quote</a>
                 </div>
             </div>
         </div>
@@ -977,9 +990,9 @@
     <div id="footer-placeholder"></div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
 
     <script>
         // ========== Category Filter Logic ==========

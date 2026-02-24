@@ -1,9 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload component files: browser fetches header/footer in parallel with CSS/fonts -->
+    <link rel="preload" href="components/header.html" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="components/footer.html" as="fetch" crossorigin="anonymous">
     <title>Custom Mobile App Development in Mehsana | IV Infotech</title>
     <meta name="description" content="Best Mobile App Development Company in Mehsana & Gujarat. We build scalable iOS, Android, and Flutter apps from our S-Cube HQ with Silicon Valley standards.">
     <meta name="keywords" content="mobile app development Mehsana, mobile app development Gujarat, iOS app development, Android app development, Flutter app development, IV Infotech">
@@ -13,6 +16,13 @@
     <meta property="og:image" content="assets/images/logo.png">
     <meta property="og:url" content="https://ivinfotech.com/custom-mobile-application-development.html">
     <meta property="og:type" content="website">
+
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -282,8 +292,8 @@
                     <p class="lead mb-4">From concept to the App Store. We engineer scalable iOS & Android apps that drive growth for businesses in Mehsana, Gujarat, and globally.</p>
                     <p class="text-muted mb-4">Based at <strong>S-Cube, Radhanpur Road</strong>, IV Infotech delivers Silicon Valley standard mobile solutions with <strong>ISO Certified Code</strong> practices and dedicated post-launch support.</p>
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="contact.html" class="btn btn-primary btn-lg shadow-sm">Get a Free Quote</a>
-                        <a href="portfolio.html" class="btn btn-outline-dark btn-lg">View Portfolio</a>
+                        <a href="contact" class="btn btn-primary btn-lg shadow-sm">Get a Free Quote</a>
+                        <a href="portfolio" class="btn btn-outline-dark btn-lg">View Portfolio</a>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
@@ -327,7 +337,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="assets/images/custom_mobile_1.jpeg" class="img-fluid" alt="Native iOS and Android development"> 
+                        <img src="assets/images/custom_mobile_1.jpeg" class="img-fluid" alt="Native iOS and Android development" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
                         <h2 class="fw-bold mb-3">Native iOS & Android Development</h2>
@@ -350,7 +360,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5 flex-lg-row-reverse">
                     <div class="col-lg-6 text-center" data-aos="fade-left"> 
-                        <img src="assets/images/custom_mobile_2.jpeg" class="img-fluid" alt="Flutter cross-platform development"> 
+                        <img src="assets/images/custom_mobile_2.jpeg" class="img-fluid" alt="Flutter cross-platform development" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-right">
                         <h2 class="fw-bold mb-3">Cross-Platform Flutter Solutions</h2>
@@ -373,7 +383,7 @@
             <div class="unified-feature-card">
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="assets/images/custom_mobile_3.jpeg" class="img-fluid" alt="Enterprise mobility and APIs"> 
+                        <img src="assets/images/custom_mobile_3.jpeg" class="img-fluid" alt="Enterprise mobility and APIs" loading="lazy" decoding="async"> 
                     </div>
                     <div class="col-lg-6" data-aos="fade-left">
                         <h2 class="fw-bold mb-3">Enterprise Mobility & API Integration</h2>
@@ -466,7 +476,7 @@
                     <p class="lead mb-0 opacity-90">Let's discuss how our Mehsana-based team at S-Cube, Radhanpur Road can deliver global results for you.</p>
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
-                    <a href="contact.html" class="btn btn-white-pop rounded-pill">Get a Free Consultation</a>
+                    <a href="contact" class="btn btn-white-pop rounded-pill">Get a Free Consultation</a>
                 </div>
             </div>
         </div>
@@ -474,9 +484,9 @@
 
     <div id="footer-placeholder"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize AOS
@@ -488,7 +498,7 @@
 
             // Activate Services link in navbar
             const activateServicesLink = () => {
-                const servicesLink = document.querySelector('.nav-link[href="services.html"]');
+                const servicesLink = document.querySelector('.nav-link[href="services"]');
                 if (servicesLink) {
                     servicesLink.classList.add('active');
                 }

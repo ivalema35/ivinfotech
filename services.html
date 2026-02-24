@@ -1,10 +1,17 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Preload component files: browser fetches header/footer in parallel with CSS/fonts -->
+    <link rel="preload" href="components/header.html" as="fetch" crossorigin="anonymous">
+    <link rel="preload" href="components/footer.html" as="fetch" crossorigin="anonymous">
     <title>Services - IV Infotech</title>
+    <!-- Preconnect for Faster External Resource Loading -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -20,7 +27,7 @@
         <div class="container-xxl text-center">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="index">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Services</li>
                 </ol>
             </nav>
@@ -62,7 +69,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">Custom Mobile Application Development</h4>
                         <p class="text-muted">Native and cross-platform mobile apps for iOS and Android designed to engage your audience and drive business growth.</p>
-                        <a href="custom-mobile-application-development.html" class="service-link">Explore Service ➝</a>
+                        <a href="custom-mobile-application-development" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -74,7 +81,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">Custom Website & Software Development</h4>
                         <p class="text-muted">Scalable web applications and custom software built with the latest technologies to transform your business ideas into reality.</p>
-                        <a href="custom-website-software-development.html" class="service-link">Explore Service ➝</a>
+                        <a href="custom-website-software-development" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -86,7 +93,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">CRM & ERP Custom Software Development</h4>
                         <p class="text-muted">Enterprise-grade CRM and ERP solutions tailored to streamline your operations and maximize efficiency.</p>
-                        <a href="crm-erp-custom-software-development.html" class="service-link">Explore Service ➝</a>
+                        <a href="crm-erp-custom-software-development" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -98,7 +105,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">E-Commerce Solutions</h4>
                         <p class="text-muted">Complete e-commerce platforms with secure payments, inventory management, and seamless customer experiences.</p>
-                        <a href="ecommerce-website-app-development-india.html" class="service-link">Explore Service ➝</a>
+                        <a href="ecommerce-website-app-development-india" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -110,7 +117,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">Digital Marketing Services</h4>
                         <p class="text-muted">Strategic digital marketing including SEO, SEM, and social media to amplify your online presence and reach.</p>
-                        <a href="digital-marketing.html" class="service-link">Explore Service ➝</a>
+                        <a href="digital-marketing" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -122,7 +129,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">UI/UX Design</h4>
                         <p class="text-muted">User-centric design that creates engaging, intuitive, and visually stunning digital experiences for your users.</p>
-                        <a href="ui-ux-design-agency-india.html" class="service-link">Explore Service ➝</a>
+                        <a href="ui-ux-design-agency-india" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -134,7 +141,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">Web Hosting Services</h4>
                         <p class="text-muted">Reliable, secure, and high-performance hosting solutions to keep your applications running 24/7 without downtime.</p>
-                        <a href="best-web-hosting-services.html" class="service-link">Explore Service ➝</a>
+                        <a href="best-web-hosting-services" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
 
@@ -146,7 +153,7 @@
                         </div>
                         <h4 class="fw-bold mb-3">AI & Automation</h4>
                         <p class="text-muted">Intelligent automation solutions using AI and machine learning to optimize processes and drive innovation.</p>
-                        <a href="ai-automation.html" class="service-link">Explore Service ➝</a>
+                        <a href="ai-automation" class="service-link">Explore Service ➝</a>
                     </div>
                 </div>
             </div>
@@ -163,7 +170,7 @@
                 </div>
                 
                 <div class="col-lg-4 col-md-4 text-center text-md-end">
-                    <a href="contact.html" class="btn cta-btn">Book Free Consultation</a>
+                    <a href="contact" class="btn cta-btn">Book Free Consultation</a>
                 </div>
             </div>
         </div>
@@ -171,9 +178,9 @@
 
     <div id="footer-placeholder"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
 </body>
 
 </html>

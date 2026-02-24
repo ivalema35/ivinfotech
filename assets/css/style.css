@@ -121,6 +121,23 @@ body {
     /* Avoid content hide behind fixed navbar */
 }
 
+/* ==================== CLS PREVENTION — COMPONENT PLACEHOLDERS ====================
+ * Reserves space for JS-injected header and footer before they load.
+ * Eliminates Cumulative Layout Shift (CLS) caused by late-injected components.
+ * ================================================================================ */
+#header-placeholder {
+    min-height: 80px;          /* Matches .navbar: padding 15px×2 + logo 50px */
+    background-color: #ffffff;
+    width: 100%;
+    position: relative;
+    z-index: 1030;             /* Same stacking context as Bootstrap's fixed-top */
+}
+
+#footer-placeholder {
+    min-height: 420px;         /* Approximates .footer-dark: padding-top 80px + grid content */
+    background-color: #0b1c3c; /* Match footer dark background — prevents white flash */
+}
+
 p {
     line-height: 1.8;
 }
