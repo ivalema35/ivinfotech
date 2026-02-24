@@ -220,6 +220,54 @@ a:hover {
     }
 }
 
+/* Gradient Text — Hero Headings */
+.text-gradient-primary {
+    background: linear-gradient(135deg, #2F55F4 0%, #00c6ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+/* Blue Border Box Style for Service Images */
+.tech-image-box {
+    border: 3px solid #2F55F4;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 10px 30px rgba(47, 85, 244, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tech-image-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(47, 85, 244, 0.25);
+}
+
+.tech-image-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Soft Box for Text Content — Zig-Zag Sections */
+.tech-text-box {
+    background-color: #fcfdfd;
+    border: 1px solid rgba(47, 85, 244, 0.15);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.02);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tech-text-box:hover {
+    box-shadow: 0 10px 25px rgba(47, 85, 244, 0.08);
+}
+
 /* Gradient Buttons */
 .gradient-btn {
     background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 100%) !important;

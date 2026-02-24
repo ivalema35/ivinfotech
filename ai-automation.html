@@ -195,15 +195,6 @@
             flex-shrink: 0;
         }
 
-        .img-hover-lift {
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .img-hover-lift:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15) !important;
-        }
-
         /* Use-Case Cards */
         .usecase-card {
             background: #ffffff;
@@ -447,7 +438,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
                     <div class="badge-glow"><i class="fas fa-microchip me-2"></i>AI Innovation Hub — Mehsana, Gujarat</div>
-                    <h1 class="display-4 fw-bold mb-4">Future-Proof Your Business with <span style="background: linear-gradient(135deg, #2F55F4, #00c4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AI & Automation.</span></h1>
+                    <h1 class="display-4 fw-bold mb-4">Future-Proof Your Business with <span class="text-gradient-primary">AI & Automation.</span></h1>
                     <p class="lead mb-4">Reduce manual work by 70%. We build intelligent Chatbots, AI Agents, and Automated Workflows using <strong style="color:#ffffff;">Python & n8n</strong> right here in Mehsana.</p>
                     <p class="text-muted-light mb-5">Stop paying for human hours on repetitive tasks. Deploy AI that works 24/7, never makes errors, and scales infinitely.</p>
                     <div class="d-flex gap-3 flex-wrap mb-5">
@@ -519,10 +510,13 @@
     <section class="zigzag-section py-5 bg-white">
         <div class="container py-4">
             <div class="row align-items-center g-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <img src="assets/images/about1.jpeg" alt="AI Chatbot Customer Support" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center" data-aos="fade-right"> 
+                    <div class="tech-image-box"> 
+                        <img src="assets/images/ai_auto_1.png" class="img-fluid" alt="AI Chatbot Customer Support"> 
+                    </div>
                 </div>
                 <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <div class="tech-text-box">
                     <div class="section-badge"><i class="fas fa-comments me-1"></i>Chatbot Development</div>
                     <h2 class="fw-bold mb-3">24/7 AI Customer Support</h2>
                     <p class="mb-4">Go beyond FAQs. Our ChatGPT-powered agents understand context, close support tickets, qualify leads, and even <strong>close deals</strong> while you sleep.</p>
@@ -532,6 +526,7 @@
                         <li><i class="fas fa-check-circle"></i>Multi-Language Support (Hindi, Gujarati, English)</li>
                         <li><i class="fas fa-check-circle"></i>Instant Lead Qualification & CRM Sync</li>
                     </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -541,10 +536,13 @@
     <section class="zigzag-section py-5 section-alt">
         <div class="container py-4">
             <div class="row align-items-center g-5 flex-row-reverse">
-                <div class="col-lg-6" data-aos="fade-left">
-                    <img src="assets/images/about2.jpeg" alt="n8n Workflow Automation" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center" data-aos="fade-left"> 
+                    <div class="tech-image-box"> 
+                        <img src="assets/images/ai_auto_2.png" class="img-fluid" alt="n8n Workflow Automation"> 
+                    </div>
                 </div>
                 <div class="col-lg-6 pe-lg-5" data-aos="fade-right">
+                    <div class="tech-text-box">
                     <div class="section-badge"><i class="fas fa-project-diagram me-1"></i>n8n Automation</div>
                     <h2 class="fw-bold mb-3">Workflow Automation — Zero Manual Work</h2>
                     <p class="mb-4">We use <strong>n8n and Python</strong> to connect all your tools—CRM, Email, WhatsApp, Google Sheets—and automate the entire pipeline, eliminating repetitive data entry forever.</p>
@@ -554,6 +552,7 @@
                         <li><i class="fas fa-check-circle"></i>CRM Data Sync (Leads → WhatsApp → Closing)</li>
                         <li><i class="fas fa-check-circle"></i>Social Media Auto-Posting & Scheduling</li>
                     </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -563,10 +562,13 @@
     <section class="zigzag-section py-5 bg-white">
         <div class="container py-4">
             <div class="row align-items-center g-5">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <img src="assets/images/why-us.png" alt="Generative AI Integration" class="img-fluid rounded-4 shadow-lg img-hover-lift">
+                <div class="col-lg-6 d-flex align-items-center justify-content-center" data-aos="fade-right"> 
+                    <div class="tech-image-box"> 
+                        <img src="assets/images/ai_auto_3.png" class="img-fluid" alt="Generative AI Integration"> 
+                    </div>
                 </div>
                 <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                    <div class="tech-text-box">
                     <div class="section-badge"><i class="fas fa-brain me-1"></i>Generative AI</div>
                     <h2 class="fw-bold mb-3">Custom AI Agents & LLM Integration</h2>
                     <p class="mb-4">Beyond ChatGPT—we build custom AI agents with <strong>LangChain & RAG pipelines</strong> that understand your business data and make intelligent decisions autonomously.</p>
@@ -576,6 +578,7 @@
                         <li><i class="fas fa-check-circle"></i>Predictive Analytics & Smart Recommendations</li>
                         <li><i class="fas fa-check-circle"></i>Secure On-Premise LLM Deployments</li>
                     </ul>
+                    </div>
                 </div>
             </div>
         </div>
