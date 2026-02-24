@@ -10,10 +10,16 @@
     RewriteEngine On
 
     # 1. Redirect external .html requests to clean URL (SEO 301)
+    # Exclude components/ and assets/ — must be served as-is (fetch requests)
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^.]+)\.html\ HTTP
+    RewriteCond %{REQUEST_URI} !^/components/
+    RewriteCond %{REQUEST_URI} !^/assets/
     RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
 
     # 2. Internally resolve clean URL to the actual .html file
+    # Exclude components/ and assets/ directories
+    RewriteCond %{REQUEST_URI} !^/components/
+    RewriteCond %{REQUEST_URI} !^/assets/
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}\.html -f
     RewriteRule ^(.*)$ $1.html [L]

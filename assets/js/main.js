@@ -2,8 +2,8 @@
 // Start fetching IMMEDIATELY when the script is parsed — before DOMContentLoaded.
 // Combined with <link rel="preload">, these requests fire at the earliest possible moment.
 const _componentCache = {
-    header: fetch('components/header.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText)),
-    footer: fetch('components/footer.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText))
+    header: fetch('/components/header.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText)),
+    footer: fetch('/components/footer.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText))
 };
 
 document.addEventListener("DOMContentLoaded", async function () {
