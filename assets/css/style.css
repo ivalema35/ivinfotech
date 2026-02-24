@@ -2209,3 +2209,40 @@ footer a:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
+
+/* ========================================= 
+   UNIFIED FEATURE CARD (Zig-Zag Redesign)
+   ========================================= */
+.unified-feature-card {
+    background-color: #ffffff;
+    border: 2px solid #2F55F4 !important;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(47, 85, 244, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    margin-bottom: 3rem;
+    overflow: hidden;
+}
+
+.unified-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(47, 85, 244, 0.15);
+}
+
+.unified-feature-card img {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    mix-blend-mode: multiply;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .unified-feature-card {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
