@@ -625,7 +625,7 @@
     <div id="header-placeholder"></div>
 
     <!-- Hero Section -->
-    <section class="hero-section d-flex align-items-center pt-5 mt-5" style="min-height: 90vh;">
+    <section class="hero-section d-flex align-items-center pt-3">
         <div class="container-xxl">
             <div class="row align-items-center">
                 <!-- Left Column — Text -->
@@ -1025,6 +1025,12 @@
             }
         });
     </script>
+    <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker Active 🚀"));
+    }
+</script>
 </body>
 
 </html>
