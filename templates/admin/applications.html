@@ -1,0 +1,509 @@
+﻿{% extends 'admin/base.html' %}
+
+{% block title %}Applications{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ──────────────────────────────────────────────────────
+     Applications — Ultra-Premium ATS Design
+     Inspired by: Stripe / Linear / Vercel dashboards
+  ────────────────────────────────────────────────────── */
+
+  /* ── Page header ── */
+  .ats-page-hdr {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; flex-wrap: wrap;
+    gap: 12px; margin-bottom: 28px;
+  }
+  .ats-page-hdr h1 {
+    font-size: 20px; font-weight: 700; color: #111827; margin: 0;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .ats-page-hdr p { font-size: 13px; color: #6b7280; margin: 5px 0 0; }
+
+  .btn-manage-jobs {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 16px; background: #fff; color: #374151;
+    border: 1px solid #e5e7eb; border-radius: 8px;
+    font-size: 13px; font-weight: 500; text-decoration: none;
+    transition: background .18s, border-color .18s, box-shadow .18s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .btn-manage-jobs:hover {
+    background: #f9fafb; border-color: #d1d5db;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06); color: #111827;
+  }
+
+  /* ── KPI Cards ── */
+  .ats-kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-bottom: 28px;
+  }
+  .ats-kpi {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    padding: 20px 20px 18px;
+    position: relative;
+    transition: box-shadow .22s, transform .22s;
+    overflow: hidden;
+  }
+  .ats-kpi:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,.08);
+    transform: translateY(-2px);
+  }
+  .ats-kpi__icon {
+    position: absolute; top: 18px; right: 18px;
+    width: 36px; height: 36px; border-radius: 9px;
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .ats-kpi__icon--blue   { background: #eff6ff; color: #2563eb; }
+  .ats-kpi__icon--green  { background: #f0fdf4; color: #16a34a; }
+  .ats-kpi__icon--violet { background: #f5f3ff; color: #7c3aed; }
+  .ats-kpi__icon--slate  { background: #f8fafc; color: #64748b; }
+  .ats-kpi__label {
+    font-size: 11px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: #9ca3af; margin-bottom: 10px;
+    padding-right: 44px;
+  }
+  .ats-kpi__value {
+    font-size: 36px; font-weight: 700; color: #111827; line-height: 1;
+  }
+  .ats-kpi__foot {
+    font-size: 11.5px; color: #9ca3af; margin-top: 8px;
+  }
+  @media (max-width: 900px) { .ats-kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .ats-kpi-grid { grid-template-columns: 1fr; } }
+
+  /* ── Panel ── */
+  .ats-panel {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05); overflow: hidden;
+  }
+  .ats-panel__head {
+    padding: 16px 24px; border-bottom: 1px solid #f3f4f6;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .ats-panel__title {
+    font-size: 14px; font-weight: 600; color: #111827;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .ats-panel__count {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 99px; background: #f3f4f6; color: #6b7280;
+  }
+
+  /* ── Premium ATS table ── */
+  .table-wrap { overflow-x: auto; }
+  .ats-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .ats-table thead tr { background: transparent; }
+  .ats-table th {
+    padding: 13px 20px; text-align: left;
+    font-size: 0.695rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: #9ca3af; white-space: nowrap;
+    border-bottom: 1px solid #f3f4f6; border-top: none;
+  }
+  .ats-table td {
+    padding: 16px 20px; color: #374151;
+    vertical-align: middle; border-top: none;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .ats-table tbody tr:last-child td { border-bottom: none; }
+  .ats-table tbody tr { transition: background .15s; }
+  .ats-table tbody tr:hover { background: #fafafa; }
+
+  /* Applicant cell */
+  .ats-applicant { display: flex; align-items: center; gap: 10px; }
+  .ats-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .ats-avatar--blue   { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+  .ats-avatar--indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
+  .ats-avatar--green  { background: linear-gradient(135deg, #10b981, #34d399); }
+  .ats-avatar--amber  { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+  .ats-avatar--pink   { background: linear-gradient(135deg, #ec4899, #f472b6); }
+  .ats-name  { font-size: 13.5px; font-weight: 600; color: #111827; display: block; }
+  .ats-email { font-size: 11.5px; color: #9ca3af; display: block; text-decoration: none; }
+  .ats-email:hover { color: #2563eb; }
+
+  /* Pastel badges */
+  .ats-badge {
+    display: inline-block; padding: 4px 10px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 500; white-space: nowrap;
+    background: #eff6ff; color: #1d4ed8;
+  }
+  .ats-badge--general { background: #f0fdf4; color: #15803d; }
+
+  /* Ghost download button */
+  .btn-resume {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 8px;
+    background: transparent; color: #374151;
+    font-size: 12px; font-weight: 500; text-decoration: none;
+    transition: border-color .18s, background .18s, color .18s, box-shadow .18s;
+    white-space: nowrap;
+  }
+  .btn-resume:hover {
+    background: #f9fafb; border-color: #d1d5db;
+    color: #111827; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .no-resume { font-size: 12px; color: #9ca3af; font-style: italic; }
+
+  /* Experience "view" button */
+  .btn-exp-view {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border: 1px solid #e5e7eb; border-radius: 6px;
+    background: transparent; color: #6b7280;
+    font-size: 11.5px; font-weight: 500; cursor: pointer;
+    transition: border-color .18s, color .18s, background .18s;
+    margin-top: 4px;
+  }
+  .btn-exp-view:hover { border-color: #93c5fd; color: #2563eb; background: #eff6ff; }
+
+  /* Exp cell */
+  .exp-short { font-size: 12.5px; color: #6b7280; }
+  .exp-clip {
+    font-size: 12px; color: #9ca3af; display: block;
+    max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* Empty state */
+  .ats-empty { text-align: center; padding: 64px 24px; color: #9ca3af; }
+  .ats-empty p { font-size: 14px; margin: 12px 0 0; }
+
+  /* ── Offcanvas slide-over ── */
+  #expOffcanvas {
+    width: 420px !important;
+    border-left: 1px solid #e5e7eb;
+    box-shadow: -12px 0 40px rgba(0,0,0,.08);
+  }
+  #expOffcanvas .offcanvas-header {
+    padding: 26px 26px 18px;
+    border-bottom: 1px solid #f3f4f6;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+  .oc-header-inner { flex: 1; padding-right: 12px; }
+  .oc-name { font-size: 18px; font-weight: 700; color: #111827; display: block; }
+  .oc-sub  { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+  .oc-meta {
+    font-size: 12px; color: #6b7280;
+    display: flex; align-items: center; gap: 5px;
+  }
+  #expOffcanvas .btn-close {
+    position: absolute; top: 20px; right: 22px;
+    opacity: .45; flex-shrink: 0;
+    transition: opacity .18s;
+  }
+  #expOffcanvas .btn-close:hover { opacity: 1; }
+  #expOffcanvas .offcanvas-body { padding: 24px 26px 32px; overflow-y: auto; }
+  .oc-section-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #9ca3af; margin-bottom: 16px;
+    display: block;
+  }
+  .exp-body-content { font-size: 13.5px; color: #374151; line-height: 1.75; }
+  .exp-entry {
+    padding: 13px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .exp-entry:last-child { border-bottom: none; }
+  .exp-entry strong { color: #111827; font-weight: 600; }
+  .exp-fresher {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; font-weight: 600; color: #16a34a;
+    background: #f0fdf4; border-radius: 8px; padding: 12px 16px;
+  }
+</style>
+{% endblock %}
+
+{% block topbar_title %}Job Applications{% endblock %}
+{% block topbar_sub %}View all submitted applications and download uploaded resumes.{% endblock %}
+
+{% block content %}
+
+  <!-- Page header -->
+  <div class="ats-page-hdr">
+    <div>
+      <h1>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+          <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>
+        </svg>
+        Job Applications
+      </h1>
+      <p>{{ applications | length }} application{{ 's' if applications | length != 1 }} received &mdash; read-only view</p>
+    </div>
+    <a href="{{ url_for('admin_jobs') }}" class="btn-manage-jobs">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2"/>
+        <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+      </svg>
+      Manage Openings
+    </a>
+  </div>
+
+  <!-- KPI cards -->
+  <div class="ats-kpi-grid">
+
+    <div class="ats-kpi">
+      <div class="ats-kpi__icon ats-kpi__icon--blue">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+      </div>
+      <div class="ats-kpi__label">Total Applications</div>
+      <div class="ats-kpi__value">{{ applications | length }}</div>
+      <div class="ats-kpi__foot">All time</div>
+    </div>
+
+    <div class="ats-kpi">
+      <div class="ats-kpi__icon ats-kpi__icon--green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+      </div>
+      <div class="ats-kpi__label">With Resume</div>
+      <div class="ats-kpi__value">{{ applications | selectattr('resume_filename') | list | length }}</div>
+      <div class="ats-kpi__foot">File attached</div>
+    </div>
+
+    <div class="ats-kpi">
+      <div class="ats-kpi__icon ats-kpi__icon--violet">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+        </svg>
+      </div>
+      <div class="ats-kpi__label">For Specific Job</div>
+      <div class="ats-kpi__value">{{ applications | selectattr('job_id') | list | length }}</div>
+      <div class="ats-kpi__foot">Targeted roles</div>
+    </div>
+
+    <div class="ats-kpi">
+      <div class="ats-kpi__icon ats-kpi__icon--slate">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
+          <path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/>
+        </svg>
+      </div>
+      <div class="ats-kpi__label">General</div>
+      <div class="ats-kpi__value">{{ applications | rejectattr('job_id') | list | length }}</div>
+      <div class="ats-kpi__foot">Open applications</div>
+    </div>
+
+  </div>
+
+  <!-- Applications table panel -->
+  <div class="ats-panel">
+    <div class="ats-panel__head">
+      <span class="ats-panel__title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        All Received Applications
+      </span>
+      <span class="ats-panel__count">{{ applications | length }} total</span>
+    </div>
+
+    <div class="table-wrap">
+      {% if applications %}
+      {% set avatar_colors = ['blue','indigo','green','amber','pink'] %}
+      <table class="ats-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Applicant</th>
+            <th>Applied For</th>
+            <th>Phone</th>
+            <th>Experience</th>
+            <th>Resume</th>
+            <th>Date Applied</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+          {% set color = avatar_colors[loop.index0 % 5] %}
+          <tr>
+
+            <!-- # -->
+            <td style="font-size:12px;color:#c4c9d4;font-weight:600;width:44px;">
+              {{ loop.index }}
+            </td>
+
+            <!-- Applicant -->
+            <td>
+              <div class="ats-applicant">
+                <div class="ats-avatar ats-avatar--{{ color }}">
+                  {{ app.first_name[0] | upper }}{{ app.last_name[0] | upper if app.last_name else '' }}
+                </div>
+                <div>
+                  <span class="ats-name">{{ app.first_name }} {{ app.last_name }}</span>
+                  <a href="mailto:{{ app.email }}" class="ats-email">{{ app.email }}</a>
+                </div>
+              </div>
+            </td>
+
+            <!-- Applied For -->
+            <td>
+              {% if app.job %}
+              <span class="ats-badge" title="{{ app.job.title }}">{{ app.job.title }}</span>
+              {% else %}
+              <span class="ats-badge ats-badge--general">General</span>
+              {% endif %}
+            </td>
+
+            <!-- Phone -->
+            <td style="font-size:13px;white-space:nowrap;color:#374151;">
+              {{ app.phone or '&mdash;' }}
+            </td>
+
+            <!-- Experience -->
+            <td>
+              {% set exp_text = app.experience_formatted or 'Fresher' %}
+              {% if exp_text | length > 50 %}
+              <span class="exp-clip" title="{{ exp_text }}">{{ exp_text }}</span>
+              <button class="btn-exp-view"
+                      data-name="{{ app.first_name }} {{ app.last_name }}"
+                      data-email="{{ app.email }}"
+                      data-phone="{{ app.phone }}"
+                      data-exp="{{ exp_text | e }}"
+                      onclick="openExpPanel(this)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                View
+              </button>
+              {% else %}
+              <span class="exp-short">{{ exp_text }}</span>
+              {% endif %}
+            </td>
+
+            <!-- Resume -->
+            <td>
+              {% if app.resume_filename %}
+              <a href="{{ url_for('admin_download_resume', filename=app.resume_filename) }}"
+                 class="btn-resume" target="_blank" rel="noopener">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download
+              </a>
+              {% else %}
+              <span class="no-resume">No file</span>
+              {% endif %}
+            </td>
+
+            <!-- Date -->
+            <td style="font-size:12.5px;white-space:nowrap;">
+              <span style="color:#374151;font-weight:500;">
+                {{ app.created_at.strftime('%b %d, %Y') if app.created_at else '&mdash;' }}
+              </span><br>
+              <span style="font-size:11px;color:#9ca3af;">
+                {{ app.created_at.strftime('%I:%M %p') if app.created_at else '' }}
+              </span>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <div class="ats-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>
+        </svg>
+        <p>No applications yet. They will appear here once candidates submit from the
+          <a href="{{ url_for('career') }}" target="_blank" style="color:#2563eb;">Careers page</a>.
+        </p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block body_extras %}
+<!-- Shared Experience Offcanvas (right slide-over) -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="expOffcanvas" aria-labelledby="expOffcanvasLabel">
+  <div class="offcanvas-header">
+    <div class="oc-header-inner">
+      <span class="oc-name" id="ocName">&mdash;</span>
+      <div class="oc-sub">
+        <span class="oc-meta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          <span id="ocEmailText">&mdash;</span>
+        </span>
+        <span class="oc-meta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          <span id="ocPhoneText">&mdash;</span>
+        </span>
+      </div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <span class="oc-section-label">Experience &amp; Background</span>
+    <div class="exp-body-content" id="ocExpBody">&mdash;</div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  /* Experience text -> clean HTML */
+  function formatExperience(raw) {
+    if (!raw || raw.toLowerCase().trim() === 'fresher') {
+      return '<div class="exp-fresher">\uD83C\uDF93&nbsp; Fresher &mdash; No prior work experience</div>';
+    }
+
+    // Split entries by the | pipe separator (used in the n8n/WhatsApp pipeline)
+    const parts = raw.split('|').map(function(s) { return s.trim(); }).filter(Boolean);
+
+    function renderPart(text) {
+      return text.replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>');
+    }
+
+    if (parts.length <= 1) {
+      return '<div class="exp-entry">' + renderPart(raw) + '</div>';
+    }
+
+    return parts.map(function(p) {
+      return '<div class="exp-entry">' + renderPart(p) + '</div>';
+    }).join('');
+  }
+
+  /* Open offcanvas & populate */
+  function openExpPanel(btn) {
+    document.getElementById('ocName').textContent      = btn.dataset.name  || '\u2014';
+    document.getElementById('ocEmailText').textContent = btn.dataset.email || '\u2014';
+    document.getElementById('ocPhoneText').textContent = btn.dataset.phone || '\u2014';
+    document.getElementById('ocExpBody').innerHTML     = formatExperience(btn.dataset.exp);
+    bootstrap.Offcanvas.getOrCreateInstance(
+      document.getElementById('expOffcanvas')
+    ).show();
+  }
+</script>
+{% endblock %}

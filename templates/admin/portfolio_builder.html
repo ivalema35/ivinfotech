@@ -1,0 +1,1748 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{% if portfolio %}Edit: {{ portfolio.title }}{% else %}New Portfolio{% endif %} — Visual Builder{% endblock %}
+
+{# ── Override the whole main-wrap so we can go full-bleed ── #}
+{% block head_extra %}
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL BUILDER — FULL-SCREEN SPLIT LAYOUT
+   Overrides admin base layout so the builder fills the viewport.
+══════════════════════════════════════════════════════════════════ */
+
+/* Hide default topbar & shrink content area to full height */
+.topbar { display: none !important; }
+.main-wrap { padding: 0 !important; }
+.main-content { padding: 0 !important; height: 100vh !important; overflow: hidden !important; }
+
+/* ── Root Variables ── */
+:root {
+  --vb-sidebar-w: 380px;
+  --vb-header-h: 52px;
+  --vb-accent: #6366f1;
+  --vb-accent-dark: #4f46e5;
+  --vb-surface: #16181d;
+  --vb-surface-2: #1e2028;
+  --vb-surface-3: #252830;
+  --vb-border: rgba(255,255,255,.08);
+  --vb-text: #e4e6f0;
+  --vb-text-muted: #8b8fa8;
+  --vb-success: #10B981;
+  --vb-danger: #ef4444;
+  --vb-warning: #f59e0b;
+  --vb-radius: 8px;
+  --vb-radius-sm: 5px;
+  --vb-font: 'Poppins', sans-serif;
+}
+
+/* ── Wrapper ── */
+.vb-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--vb-surface);
+  font-family: var(--vb-font);
+  overflow: hidden;
+}
+
+/* ── Top Chrome Bar ── */
+.vb-chrome {
+  height: var(--vb-header-h);
+  min-height: var(--vb-header-h);
+  background: var(--vb-surface-2);
+  border-bottom: 1px solid var(--vb-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.vb-chrome__back {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--vb-text-muted); font-size: 12.5px; text-decoration: none;
+  padding: 5px 10px; border-radius: var(--vb-radius-sm);
+  transition: background .15s, color .15s;
+}
+.vb-chrome__back:hover { background: var(--vb-surface-3); color: var(--vb-text); }
+.vb-chrome__sep { width: 1px; height: 20px; background: var(--vb-border); }
+.vb-chrome__title {
+  flex: 1; font-size: 13.5px; font-weight: 600; color: var(--vb-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vb-chrome__status {
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+  letter-spacing: .4px;
+}
+.vb-chrome__status--draft { background: rgba(107,114,128,.2); color: #9ca3af; }
+.vb-chrome__status--published { background: rgba(16,185,129,.15); color: var(--vb-success); }
+.vb-chrome__save-group { display: flex; gap: 8px; }
+.vb-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; border-radius:var(--vb-radius-sm); font-size:12.5px; font-weight:600; cursor:pointer; border:none; transition:all .15s; font-family:var(--vb-font); }
+.vb-btn--ghost { background: var(--vb-surface-3); color: var(--vb-text); border: 1px solid var(--vb-border); }
+.vb-btn--ghost:hover { background: rgba(255,255,255,.08); }
+.vb-btn--primary { background: var(--vb-accent); color: #fff; }
+.vb-btn--primary:hover { background: var(--vb-accent-dark); }
+.vb-btn--success { background: var(--vb-success); color: #fff; }
+.vb-btn--success:hover { background: #059669; }
+.vb-btn--danger { background: var(--vb-danger); color: #fff; }
+.vb-btn--sm { padding: 5px 12px; font-size: 11.5px; }
+.vb-btn:disabled { opacity: .5; cursor: not-allowed; }
+.vb-btn .spinner { width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:none; }
+.vb-btn.loading .spinner { display:block; }
+.vb-btn.loading .btn-icon { display:none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Body (sidebar + preview) ── */
+.vb-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ══ LEFT SIDEBAR (CONTROLS) ══ */
+.vb-controls {
+  width: var(--vb-sidebar-w);
+  min-width: 320px;
+  max-width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--vb-surface-2);
+  border-right: 1px solid var(--vb-border);
+  overflow: hidden;
+}
+.vb-controls__scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 14px 14px 80px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--vb-surface-3) transparent;
+}
+.vb-controls__scroll::-webkit-scrollbar { width: 4px; }
+.vb-controls__scroll::-webkit-scrollbar-track { background: transparent; }
+.vb-controls__scroll::-webkit-scrollbar-thumb { background: var(--vb-surface-3); border-radius: 4px; }
+
+/* ── Resize handle ── */
+.vb-resizer {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background .15s;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.vb-resizer:hover, .vb-resizer.active { background: var(--vb-accent); }
+
+/* ══ ACCORDION SECTIONS ══ */
+.vb-section {
+  border: 1px solid var(--vb-border);
+  border-radius: var(--vb-radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: var(--vb-surface-3);
+}
+.vb-section__head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 14px; cursor: pointer;
+  font-size: 12.5px; font-weight: 600; color: var(--vb-text);
+  user-select: none;
+  border-bottom: 1px solid transparent;
+  transition: background .15s;
+}
+.vb-section__head:hover { background: rgba(255,255,255,.04); }
+.vb-section__head.open { border-bottom-color: var(--vb-border); }
+.vb-section__arrow { margin-left: auto; transition: transform .2s; color: var(--vb-text-muted); font-size: 10px; }
+.vb-section__head.open .vb-section__arrow { transform: rotate(180deg); }
+.vb-section__body { padding: 14px; display: none; }
+.vb-section__body.open { display: block; }
+
+/* ── Form fields ── */
+.vb-field { margin-bottom: 12px; }
+.vb-label {
+  display: block; font-size: 11px; font-weight: 600; color: var(--vb-text-muted);
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px;
+}
+.vb-input, .vb-textarea, .vb-select {
+  width: 100%; background: var(--vb-surface-2); border: 1px solid var(--vb-border);
+  color: var(--vb-text); border-radius: var(--vb-radius-sm);
+  padding: 8px 10px; font-size: 13px; font-family: var(--vb-font);
+  transition: border-color .15s;
+  box-sizing: border-box;
+}
+.vb-input:focus, .vb-textarea:focus, .vb-select:focus {
+  outline: none; border-color: var(--vb-accent);
+  background: rgba(99,102,241,.06);
+}
+.vb-textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+.vb-select option { background: #1e2028; }
+.vb-input-hint { font-size: 11px; color: var(--vb-text-muted); margin-top: 3px; }
+
+/* ── Color Pickers ── */
+.vb-color-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.vb-color-label { font-size: 11.5px; color: var(--vb-text-muted); flex: 1; font-weight: 500; }
+.vb-color-preview {
+  width: 28px; height: 28px; border-radius: 6px; cursor: pointer;
+  border: 2px solid rgba(255,255,255,.15); flex-shrink: 0;
+  transition: transform .1s;
+}
+.vb-color-preview:hover { transform: scale(1.1); }
+.vb-color-input-native { width: 0; height: 0; opacity: 0; position: absolute; }
+.vb-color-hex {
+  width: 88px; background: var(--vb-surface-2); border: 1px solid var(--vb-border);
+  color: var(--vb-text); border-radius: var(--vb-radius-sm);
+  padding: 5px 8px; font-size: 12px; font-family: monospace;
+  text-transform: uppercase;
+}
+.vb-color-hex:focus { outline: none; border-color: var(--vb-accent); }
+
+/* ── Toggle ── */
+.vb-toggle {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+}
+.vb-toggle__track {
+  width: 38px; height: 20px; border-radius: 20px;
+  background: var(--vb-surface); border: 1px solid var(--vb-border);
+  position: relative; transition: background .2s;
+  flex-shrink: 0;
+}
+.vb-toggle__thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--vb-text-muted); transition: all .2s;
+}
+.vb-toggle input:checked ~ .vb-toggle__track { background: var(--vb-success); border-color: var(--vb-success); }
+.vb-toggle input:checked ~ .vb-toggle__track .vb-toggle__thumb { left: 20px; background: #fff; }
+.vb-toggle input { display: none; }
+.vb-toggle__label { font-size: 12.5px; color: var(--vb-text); }
+
+/* ── KPI Grid ── */
+.vb-kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+/* ── JSON Array Builders ── */
+.vb-array { }
+.vb-array__item {
+  background: var(--vb-surface-2); border: 1px solid var(--vb-border);
+  border-radius: var(--vb-radius-sm); margin-bottom: 6px;
+  overflow: hidden;
+}
+.vb-array__item-head {
+  display: flex; align-items: center; gap: 6px; padding: 7px 10px;
+  border-bottom: 1px solid var(--vb-border); cursor: pointer;
+  font-size: 12px; color: var(--vb-text);
+}
+.vb-array__item-body { padding: 10px; }
+.vb-array__add {
+  display: flex; align-items: center; gap: 6px; padding: 7px 10px;
+  background: rgba(99,102,241,.08); border: 1px dashed rgba(99,102,241,.3);
+  border-radius: var(--vb-radius-sm); cursor: pointer; color: var(--vb-accent);
+  font-size: 12px; font-weight: 600; width: 100%; justify-content: center;
+  transition: background .15s;
+}
+.vb-array__add:hover { background: rgba(99,102,241,.16); }
+.vb-array__remove {
+  margin-left: auto; color: var(--vb-danger); background: none; border: none;
+  cursor: pointer; font-size: 13px; padding: 0 2px; opacity: .7;
+  transition: opacity .15s;
+}
+.vb-array__remove:hover { opacity: 1; }
+.vb-array__drag { color: var(--vb-text-muted); cursor: grab; font-size: 12px; }
+
+/* ── Dropzone ── */
+.vb-dropzone {
+  border: 1.5px dashed var(--vb-border); border-radius: var(--vb-radius);
+  padding: 18px 12px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s;
+  background: var(--vb-surface);
+  position: relative;
+}
+.vb-dropzone:hover, .vb-dropzone.drag-over {
+  border-color: var(--vb-accent); background: rgba(99,102,241,.06);
+}
+.vb-dropzone__icon { font-size: 24px; color: var(--vb-text-muted); margin-bottom: 6px; }
+.vb-dropzone__label { font-size: 12px; color: var(--vb-text-muted); }
+.vb-dropzone__sub { font-size: 11px; color: var(--vb-text-muted); opacity: .6; margin-top: 3px; }
+.vb-dropzone input[type=file] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+.vb-img-preview {
+  position: relative; margin-top: 8px;
+  border-radius: var(--vb-radius-sm); overflow: hidden;
+  background: var(--vb-surface);
+}
+.vb-img-preview img {
+  width: 100%; max-height: 100px; object-fit: cover; border-radius: var(--vb-radius-sm);
+  display: block;
+}
+.vb-img-preview__remove {
+  position: absolute; top: 4px; right: 4px;
+  background: rgba(0,0,0,.7); color: #fff; border: none;
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+
+/* ══ RIGHT PREVIEW PANEL ══ */
+.vb-preview {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #f0f2f5;
+  position: relative;
+}
+.vb-preview__toolbar {
+  height: var(--vb-header-h);
+  background: var(--vb-surface-2);
+  border-bottom: 1px solid var(--vb-border);
+  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  flex-shrink: 0;
+}
+.vb-preview__slug {
+  flex: 1; font-size: 12px; color: var(--vb-text-muted);
+  font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.vb-preview__open { font-size: 11.5px; color: var(--vb-accent); text-decoration: none; font-weight:600; white-space:nowrap; }
+.vb-preview__open:hover { color: #818cf8; }
+.vb-device-btns { display: flex; gap: 3px; }
+.vb-device-btn {
+  background: none; border: none; color: var(--vb-text-muted); cursor: pointer;
+  padding: 5px 8px; border-radius: var(--vb-radius-sm); font-size: 12px;
+  transition: background .15s, color .15s;
+}
+.vb-device-btn.active, .vb-device-btn:hover { background: rgba(255,255,255,.08); color: var(--vb-text); }
+.vb-preview__frame-wrap {
+  flex: 1; overflow: hidden; display: flex; align-items: flex-start;
+  justify-content: center; padding: 0; position: relative;
+  transition: padding .3s;
+}
+.vb-preview__frame-wrap.mobile { padding: 16px; background: #2a2d35; }
+#vbPreviewFrame {
+  width: 100%; height: 100%; border: none;
+  transition: width .3s, box-shadow .3s;
+}
+.vb-preview__frame-wrap.mobile #vbPreviewFrame {
+  width: 390px; height: 100%; border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5);
+}
+.vb-preview__frame-wrap.tablet #vbPreviewFrame { width: 768px; }
+
+/* ── Preview placeholder (before first save) ── */
+.vb-preview__placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; background: #f0f2f5;
+  z-index: 10;
+}
+.vb-preview__placeholder-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: #fff;
+}
+.vb-preview__placeholder h4 { font-size: 16px; font-weight: 700; color: #1e293b; margin: 0; }
+.vb-preview__placeholder p { font-size: 13px; color: #64748b; margin: 0; text-align: center; max-width: 300px; }
+
+/* ── Toast ── */
+.vb-toast {
+  position: fixed; bottom: 24px; left: calc(var(--vb-sidebar-w) + 24px);
+  background: var(--vb-surface-2); color: var(--vb-text);
+  border: 1px solid var(--vb-border); border-radius: var(--vb-radius-sm);
+  padding: 10px 18px; font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4); z-index: 9999;
+  display: flex; align-items: center; gap: 8px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.vb-toast.show { opacity: 1; transform: translateY(0); }
+.vb-toast--success .vb-toast__icon { color: var(--vb-success); }
+.vb-toast--error .vb-toast__icon { color: var(--vb-danger); }
+.vb-toast--info .vb-toast__icon { color: var(--vb-accent); }
+
+/* ── Gallery mini strip ── */
+.vb-gallery-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.vb-gallery-thumb {
+  position: relative; width: 64px; height: 48px; border-radius: 5px; overflow: hidden;
+  border: 1px solid var(--vb-border); background: var(--vb-surface);
+  flex-shrink: 0;
+}
+.vb-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vb-gallery-thumb__type {
+  position: absolute; bottom: 2px; left: 2px;
+  background: rgba(0,0,0,.7); color: #fff; font-size: 9px;
+  padding: 1px 4px; border-radius: 3px; font-weight: 700;
+}
+.vb-gallery-thumb__del {
+  position: absolute; top: 2px; right: 2px;
+  background: rgba(239,68,68,.85); color: #fff; border: none;
+  width: 16px; height: 16px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 9px;
+}
+
+/* ── Unsaved dot ── */
+.vb-unsaved-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--vb-warning);
+  display: inline-block; margin-left: 5px; animation: pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+/* ── Upload progress bar ── */
+.vb-upload-bar {
+  height: 3px; background: var(--vb-border); border-radius: 2px;
+  margin-top: 6px; overflow: hidden; display: none;
+}
+.vb-upload-bar__fill { height: 100%; background: var(--vb-accent); transition: width .3s; width: 0; }
+
+/* Responsive: below 900px stack vertically */
+@media (max-width: 900px) {
+  .vb-body { flex-direction: column; }
+  .vb-controls { width: 100%; max-width: 100%; height: 50%; min-width: 0; }
+  .vb-resizer { width: 100%; height: 4px; cursor: row-resize; }
+  .vb-preview { height: 50%; }
+  .vb-preview__frame-wrap.mobile #vbPreviewFrame { width: 100%; border-radius: 0; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{# ──────────────────────────────────────────────────────────────── #}
+{# DATA BOOTSTRAP (passed straight to JS so no extra round-trip)   #}
+{# ──────────────────────────────────────────────────────────────── #}
+{% set _p = portfolio %}
+{% if _p %}
+<script>
+var VB_INIT = {
+  id:             {{ _p.id }},
+  slug:           {{ _p.slug | tojson }},
+  title:          {{ _p.title | tojson }},
+  category:       {{ _p.category | tojson }},
+  client_name:    {{ (_p.client_name or '') | tojson }},
+  primary_color:  {{ (_p.primary_color or _p.theme_color or '#2F55F4') | tojson }},
+  secondary_color:{{ (_p.secondary_color or '#10B981') | tojson }},
+  bg_color:       {{ (_p.bg_color or '#0f1117') | tojson }},
+  is_published:   {{ 'true' if _p.is_published else 'false' }},
+  hero_outcome:   {{ (_p.hero_outcome or '') | tojson }},
+  hero_description: {{ (_p.hero_description or '') | tojson }},
+  hero_image_web: {{ (_p.hero_image_web or '') | tojson }},
+  hero_image_app: {{ (_p.hero_image_app or '') | tojson }},
+  kpi_1_value: {{ (_p.kpi_1_value or '') | tojson }},
+  kpi_1_label: {{ (_p.kpi_1_label or '') | tojson }},
+  kpi_2_value: {{ (_p.kpi_2_value or '') | tojson }},
+  kpi_2_label: {{ (_p.kpi_2_label or '') | tojson }},
+  kpi_3_value: {{ (_p.kpi_3_value or '') | tojson }},
+  kpi_3_label: {{ (_p.kpi_3_label or '') | tojson }},
+  industry:    {{ (_p.industry or '') | tojson }},
+  market:      {{ (_p.market or '') | tojson }},
+  goal:        {{ (_p.goal or '') | tojson }},
+  client_story_p1: {{ (_p.client_story_p1 or '') | tojson }},
+  client_story_p2: {{ (_p.client_story_p2 or '') | tojson }},
+  challenges:     {{ (_p.challenges or '[]') | tojson }},
+  solution_steps: {{ (_p.solution_steps or '[]') | tojson }},
+  services:       {{ (_p.services or '[]') | tojson }},
+  results:        {{ (_p.results or '{}') | tojson }},
+  features:       {{ (_p.features or '[]') | tojson }},
+  testimonials:   {{ (_p.testimonials or '[]') | tojson }},
+  gallery:        {{ (_p.gallery or '[]') | tojson }},
+};
+</script>
+{% else %}
+<script>
+var VB_INIT = {
+  id: null, slug: '', title: '', category: 'Web', client_name: '',
+  primary_color: '#2F55F4', secondary_color: '#10B981', bg_color: '#0f1117',
+  is_published: false, hero_outcome: '', hero_description: '',
+  hero_image_web: '', hero_image_app: '',
+  kpi_1_value:'', kpi_1_label:'', kpi_2_value:'', kpi_2_label:'', kpi_3_value:'', kpi_3_label:'',
+  industry:'', market:'', goal:'', client_story_p1:'', client_story_p2:'',
+  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]'
+};
+</script>
+{% endif %}
+
+{# ──────────────────────────────────────────────────────────────── #}
+{# BUILDER DOM                                                      #}
+{# ──────────────────────────────────────────────────────────────── #}
+<div class="vb-wrap">
+
+  <!-- ── Top Chrome ── -->
+  <div class="vb-chrome">
+    <a href="{{ url_for('admin_portfolio') }}" class="vb-chrome__back">
+      <i class="fa-solid fa-chevron-left"></i> Portfolio
+    </a>
+    <div class="vb-chrome__sep"></div>
+    <span class="vb-chrome__title" id="chromTitle">
+      {% if portfolio %}{{ portfolio.title }}{% else %}New Portfolio{% endif %}
+    </span>
+    <span class="vb-chrome__status vb-chrome__status--{% if portfolio and portfolio.is_published %}published{% else %}draft{% endif %}" id="chromStatus">
+      {% if portfolio and portfolio.is_published %}Published{% else %}Draft{% endif %}
+    </span>
+    <span id="unsavedDot" class="vb-unsaved-dot" style="display:none;" title="Unsaved changes"></span>
+    <div class="vb-chrome__save-group">
+      <button class="vb-btn vb-btn--ghost" id="btnSaveDraft">
+        <span class="spinner"></span>
+        <span class="btn-icon"><i class="fa-regular fa-floppy-disk"></i></span>
+        Save Draft
+      </button>
+      <button class="vb-btn vb-btn--success" id="btnPublish">
+        <span class="spinner"></span>
+        <span class="btn-icon"><i class="fa-solid fa-globe"></i></span>
+        Publish
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="vb-body" id="vbBody">
+
+    <!-- ════════════ LEFT SIDEBAR — CONTROLS ════════════ -->
+    <aside class="vb-controls" id="vbControls">
+      <div class="vb-controls__scroll" id="vbScroll">
+
+        <!-- ─── Section: Basic Info ─── -->
+        <div class="vb-section" id="sec-basic">
+          <div class="vb-section__head open" onclick="toggleSection(this)">
+            <i class="fa-solid fa-circle-info fa-fw" style="color:#6366f1;font-size:12px;"></i>
+            Basic Info
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body open">
+            <div class="vb-field">
+              <label class="vb-label">Page Title <span style="color:#ef4444;">*</span></label>
+              <input class="vb-input" id="f_title" type="text" placeholder="e.g. Belzzo Kids Fashion eCommerce" data-bind="title" data-ivb-preview="title" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">URL Slug <span style="color:#ef4444;">*</span></label>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <input class="vb-input" id="f_slug" type="text" placeholder="belzzo-kids-footwear" data-bind="slug" style="flex:1;" />
+                <button class="vb-btn vb-btn--ghost vb-btn--sm" onclick="autoSlug()" title="Auto-generate from title"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+              </div>
+              <div class="vb-input-hint">/portfolio/<span id="slugPreview">…</span></div>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Category</label>
+              <select class="vb-select" id="f_category" data-bind="category">
+                <option value="Web">Web App</option>
+                <option value="App">Mobile App</option>
+                <option value="CRM">CRM / ERP</option>
+                <option value="AI">AI &amp; Automation</option>
+              </select>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Client Name</label>
+              <input class="vb-input" id="f_client_name" type="text" placeholder="Acme Corp" data-bind="client_name" data-ivb-preview="client_name" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Industry</label>
+              <input class="vb-input" id="f_industry" type="text" placeholder="Fashion / Healthcare / FinTech…" data-bind="industry" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Target Market</label>
+              <input class="vb-input" id="f_market" type="text" placeholder="India, UAE, UK…" data-bind="market" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Primary Goal</label>
+              <input class="vb-input" id="f_goal" type="text" placeholder="Boost eCommerce conversions by 30%" data-bind="goal" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Published</label>
+              <label class="vb-toggle">
+                <input type="checkbox" id="f_is_published" />
+                <div class="vb-toggle__track"><div class="vb-toggle__thumb"></div></div>
+                <span class="vb-toggle__label">Make visible on public portfolio page</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Section: Colors / Theme ─── -->
+        <div class="vb-section" id="sec-colors">
+          <div class="vb-section__head open" onclick="toggleSection(this)">
+            <i class="fa-solid fa-palette fa-fw" style="color:#f59e0b;font-size:12px;"></i>
+            Colors &amp; Theme
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body open">
+            <div class="vb-color-row">
+              <span class="vb-color-label">Primary</span>
+              <div class="vb-color-preview" id="prev_primary" onclick="document.getElementById('pick_primary').click()"></div>
+              <input type="color" class="vb-color-input-native" id="pick_primary" data-bind="primary_color" />
+              <input type="text" class="vb-color-hex" id="hex_primary" maxlength="7" placeholder="#2F55F4" />
+            </div>
+            <p class="vb-input-hint" style="margin-top:4px;margin-bottom:10px;font-size:11.5px;">
+              <i class="fa-solid fa-circle-info" style="color:#f59e0b;"></i>
+              <strong>Tip:</strong> Choose a <strong>dark or strong</strong> color (e.g. deep blue, dark purple, black). Used for buttons &amp; headings on a white background — light colors will be hard to read.
+            </p>
+            <div class="vb-color-row">
+              <span class="vb-color-label">Secondary / Accent</span>
+              <div class="vb-color-preview" id="prev_secondary" onclick="document.getElementById('pick_secondary').click()"></div>
+              <input type="color" class="vb-color-input-native" id="pick_secondary" data-bind="secondary_color" />
+              <input type="text" class="vb-color-hex" id="hex_secondary" maxlength="7" placeholder="#10B981" />
+            </div>
+            <p class="vb-input-hint" style="margin-top:4px;margin-bottom:10px;font-size:11.5px;">
+              <i class="fa-solid fa-circle-info" style="color:#f59e0b;"></i>
+              <strong>Tip:</strong> Choose a <strong>vibrant or bright</strong> color (e.g. electric orange, neon green, cyan). Used for icons &amp; highlights to create contrast against the primary.
+            </p>
+            <p class="vb-input-hint" style="margin-top:10px;">
+              <i class="fa-solid fa-circle-info" style="margin-right:4px;"></i>
+              The page background is always white. Changes appear instantly in the preview.
+            </p>
+          </div>
+        </div>
+
+        <!-- ─── Section: Hero ─── -->
+        <div class="vb-section" id="sec-hero">
+          <div class="vb-section__head open" onclick="toggleSection(this)">
+            <i class="fa-solid fa-star fa-fw" style="color:#e879f9;font-size:12px;"></i>
+            Hero Section
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body open">
+            <div class="vb-field">
+              <label class="vb-label">Outcome Headline</label>
+              <input class="vb-input" id="f_hero_outcome" type="text" placeholder="+40% discovery &amp; -32% checkout drop-off" data-bind="hero_outcome" data-ivb-preview="hero_outcome" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Hero Description</label>
+              <textarea class="vb-textarea" id="f_hero_description" placeholder="Brief summary of the project…" data-bind="hero_description" data-ivb-preview="hero_description" rows="4"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px;">
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 1 Value</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_1_value" type="text" placeholder="+40%" data-bind="kpi_1_value" data-ivb-preview="kpi_1_value" />
+              </div>
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 2 Value</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_2_value" type="text" placeholder="2.1s" data-bind="kpi_2_value" data-ivb-preview="kpi_2_value" />
+              </div>
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 3 Value</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_3_value" type="text" placeholder="94" data-bind="kpi_3_value" data-ivb-preview="kpi_3_value" />
+              </div>
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 1 Label</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_1_label" type="text" placeholder="Organic traffic" data-bind="kpi_1_label" data-ivb-preview="kpi_1_label" />
+              </div>
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 2 Label</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_2_label" type="text" placeholder="Page speed" data-bind="kpi_2_label" data-ivb-preview="kpi_2_label" />
+              </div>
+              <div class="vb-field" style="margin:0;">
+                <label class="vb-label">KPI 3 Label</label>
+                <input class="vb-input vb-input--sm" id="f_kpi_3_label" type="text" placeholder="Lighthouse" data-bind="kpi_3_label" data-ivb-preview="kpi_3_label" />
+              </div>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Hero Image — Web / Desktop Mockup</label>
+              <div class="vb-dropzone" id="dz_hero_web" data-field="hero_image_web" data-ivb-key="hero_image_web">
+                <div class="vb-dropzone__icon"><i class="fa-regular fa-image"></i></div>
+                <div class="vb-dropzone__label">Click or drag &amp; drop</div>
+                <div class="vb-dropzone__sub">PNG, JPG, WebP · max 5 MB</div>
+                <input type="file" accept="image/*" onchange="handleDropzoneFile(this,'dz_hero_web')" />
+              </div>
+              <div class="vb-upload-bar" id="upbar_hero_web"><div class="vb-upload-bar__fill" id="upfill_hero_web"></div></div>
+              <div class="vb-img-preview" id="imgprev_hero_web" style="display:none;">
+                <img id="imgthumb_hero_web" src="" alt="Preview" />
+                <button class="vb-img-preview__remove" onclick="clearImg('hero_image_web','dz_hero_web','imgprev_hero_web')">×</button>
+              </div>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Hero Image — App / Mobile Mockup</label>
+              <div class="vb-dropzone" id="dz_hero_app" data-field="hero_image_app" data-ivb-key="hero_image_app">
+                <div class="vb-dropzone__icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                <div class="vb-dropzone__label">Click or drag &amp; drop</div>
+                <div class="vb-dropzone__sub">PNG, JPG, WebP · max 5 MB</div>
+                <input type="file" accept="image/*" onchange="handleDropzoneFile(this,'dz_hero_app')" />
+              </div>
+              <div class="vb-upload-bar" id="upbar_hero_app"><div class="vb-upload-bar__fill" id="upfill_hero_app"></div></div>
+              <div class="vb-img-preview" id="imgprev_hero_app" style="display:none;">
+                <img id="imgthumb_hero_app" src="" alt="Preview" />
+                <button class="vb-img-preview__remove" onclick="clearImg('hero_image_app','dz_hero_app','imgprev_hero_app')">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Section: Client Story ─── -->
+        <div class="vb-section" id="sec-story">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-book-open fa-fw" style="color:#34d399;font-size:12px;"></i>
+            Client Story
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-field">
+              <label class="vb-label">Story Paragraph 1</label>
+              <textarea class="vb-textarea" id="f_client_story_p1" rows="3" data-bind="client_story_p1" data-ivb-preview="client_story_p1"></textarea>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Story Paragraph 2</label>
+              <textarea class="vb-textarea" id="f_client_story_p2" rows="3" data-bind="client_story_p2" data-ivb-preview="client_story_p2"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Section: Challenges ─── -->
+        <div class="vb-section" id="sec-challenges">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-triangle-exclamation fa-fw" style="color:#f87171;font-size:12px;"></i>
+            Challenges
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-array" id="arr-challenges"></div>
+            <button class="vb-array__add" onclick="addChallenge()">
+              <i class="fa-solid fa-plus"></i> Add Challenge
+            </button>
+          </div>
+        </div>
+
+        <!-- ─── Section: Solution Steps ─── -->
+        <div class="vb-section" id="sec-solution">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-list-check fa-fw" style="color:#818cf8;font-size:12px;"></i>
+            Solution Steps
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-array" id="arr-solution"></div>
+            <button class="vb-array__add" onclick="addSolutionStep()">
+              <i class="fa-solid fa-plus"></i> Add Step
+            </button>
+          </div>
+        </div>
+
+        <!-- ─── Section: Services ─── -->
+        <div class="vb-section" id="sec-services">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-gear fa-fw" style="color:#38bdf8;font-size:12px;"></i>
+            Services
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-array" id="arr-services"></div>
+            <button class="vb-array__add" onclick="addService()">
+              <i class="fa-solid fa-plus"></i> Add Service
+            </button>
+          </div>
+        </div>
+
+        <!-- ─── Section: Results ─── -->
+        <div class="vb-section" id="sec-results">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-chart-line fa-fw" style="color:#4ade80;font-size:12px;"></i>
+            Results
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <label class="vb-label" style="margin-bottom:8px;">Result Cards (KPI highlights)</label>
+            <div class="vb-array" id="arr-result-cards"></div>
+            <button class="vb-array__add" onclick="addResultCard()" style="margin-bottom:14px;">
+              <i class="fa-solid fa-plus"></i> Add Result Card
+            </button>
+            <label class="vb-label" style="margin-bottom:8px;">Comparison Table Rows</label>
+            <div class="vb-array" id="arr-result-rows"></div>
+            <button class="vb-array__add" onclick="addResultRow()">
+              <i class="fa-solid fa-plus"></i> Add Table Row
+            </button>
+          </div>
+        </div>
+
+        <!-- ─── Section: Gallery ─── -->
+        <div class="vb-section" id="sec-gallery">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-images fa-fw" style="color:#fb923c;font-size:12px;"></i>
+            Gallery
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <button class="vb-btn vb-btn--ghost vb-btn--sm" onclick="addGalleryImages('web')">
+                <i class="fa-solid fa-desktop"></i> Add Web Screen
+              </button>
+              <button class="vb-btn vb-btn--ghost vb-btn--sm" onclick="addGalleryImages('app')">
+                <i class="fa-solid fa-mobile-screen-button"></i> Add App Screen
+              </button>
+              <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none" onchange="handleGalleryFiles(this)" />
+            </div>
+            <div class="vb-gallery-strip" id="galleryStrip"></div>
+            <div class="vb-upload-bar" id="upbar_gallery"><div class="vb-upload-bar__fill" id="upfill_gallery"></div></div>
+            <p class="vb-input-hint" style="margin-top:6px;">Images stored in <code>uploads/portfolio/&lt;slug&gt;/</code></p>
+          </div>
+        </div>
+
+        <!-- ─── Section: Built-in Features ─── -->
+        <div class="vb-section" id="sec-features">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-star fa-fw" style="color:#facc15;font-size:12px;"></i>
+            Built-in Features
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-array" id="arr-features"></div>
+            <button class="vb-array__add" onclick="addFeature()">
+              <i class="fa-solid fa-plus"></i> Add Feature
+            </button>
+          </div>
+        </div>
+
+        <!-- ─── Section: Testimonials ─── -->
+        <div class="vb-section" id="sec-testimonials">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-comment-dots fa-fw" style="color:#a78bfa;font-size:12px;"></i>
+            Testimonials
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <p class="vb-input-hint" style="margin-bottom:8px;">Each row is one client testimonial. Changes send live to the preview. </p>
+            <div class="vb-array" id="arr-testimonials"></div>
+            <button class="vb-array__add" onclick="addTestimonial()">
+              <i class="fa-solid fa-plus"></i> Add Testimonial
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /.vb-controls__scroll -->
+    </aside><!-- /.vb-controls -->
+
+    <!-- Drag-resize handle -->
+    <div class="vb-resizer" id="vbResizer"></div>
+
+    <!-- ════════════ RIGHT PANEL — LIVE PREVIEW ════════════ -->
+    <div class="vb-preview" id="vbPreview">
+
+      <div class="vb-preview__toolbar">
+        <div class="vb-preview__slug" id="previewSlugLabel">
+          {% if portfolio %}/portfolio/{{ portfolio.slug }}{% else %}Not saved yet{% endif %}
+        </div>
+        <div class="vb-device-btns">
+          <button class="vb-device-btn active" data-mode="desktop" onclick="setDevice(this,'desktop')" title="Desktop">
+            <i class="fa-solid fa-desktop"></i>
+          </button>
+          <button class="vb-device-btn" data-mode="tablet" onclick="setDevice(this,'tablet')" title="Tablet">
+            <i class="fa-solid fa-tablet-screen-button"></i>
+          </button>
+          <button class="vb-device-btn" data-mode="mobile" onclick="setDevice(this,'mobile')" title="Mobile">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </button>
+        </div>
+        {% if portfolio %}
+        <a href="{{ url_for('portfolio_detail', slug=portfolio.slug) }}" target="_blank" class="vb-preview__open">
+          Open Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="vb-preview__frame-wrap" id="frameWrap">
+        {% if not portfolio %}
+        <div class="vb-preview__placeholder" id="vbPlaceholder">
+          <div class="vb-preview__placeholder-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <h4>Fill in Basic Info to start</h4>
+          <p>Enter a title and slug, then click <strong>Save Draft</strong> to load the live preview.</p>
+        </div>
+        {% endif %}
+        <iframe id="vbPreviewFrame"
+                src="{% if portfolio %}/admin/portfolio/preview/{{ portfolio.slug }}?embed=1{% else %}about:blank{% endif %}"
+                title="Portfolio Live Preview"
+                {% if not portfolio %}style="display:none;"{% endif %}
+                sandbox="allow-scripts allow-same-origin allow-forms">
+        </iframe>
+      </div>
+
+    </div><!-- /.vb-preview -->
+
+  </div><!-- /.vb-body -->
+
+</div><!-- /.vb-wrap -->
+
+<!-- Toast notification -->
+<div class="vb-toast" id="vbToast">
+  <i class="fa-solid fa-circle-check vb-toast__icon"></i>
+  <span id="vbToastMsg">Saved</span>
+</div>
+
+<!-- Gallery type context (stored across file input sessions) -->
+<input type="hidden" id="galleryUploadType" value="web" />
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   IV INFOTECH — PORTFOLIO VISUAL BUILDER
+   Vanilla JS • No extra dependencies
+═══════════════════════════════════════════════════════════════════════ */
+'use strict';
+
+/* ── State ── */
+const state = Object.assign({
+  challenges: [], solution_steps: [], services: [],
+  results: { cards: [], rows: [] }, features: [], testimonials: [], gallery: []
+}, VB_INIT);
+
+// Parse JSON string fields from VB_INIT into proper objects
+['challenges','solution_steps','services','features','testimonials'].forEach(function(k) {
+  try { state[k] = typeof state[k] === 'string' ? JSON.parse(state[k]) : state[k]; } catch(e) { state[k] = []; }
+});
+try {
+  state.results = typeof state.results === 'string' ? JSON.parse(state.results) : state.results;
+  if (!state.results.cards) state.results.cards = [];
+  if (!state.results.rows)  state.results.rows  = [];
+} catch(e) { state.results = { cards:[], rows:[] }; }
+try { state.gallery = typeof state.gallery === 'string' ? JSON.parse(state.gallery) : state.gallery; } catch(e) { state.gallery = []; }
+
+let portfolioId   = VB_INIT.id;
+let portfolioSlug = VB_INIT.slug;
+let isDirty       = false;
+let previewReady  = false;
+let autoSaveTimer = null;
+
+/* ── Helpers ── */
+const $ = id => document.getElementById(id);
+function markDirty() { isDirty = true; $('unsavedDot').style.display = 'inline-block'; scheduleAutoSave(); }
+
+/* ── Populate initial form values ── */
+function populateForm() {
+  const map = {
+    f_title: 'title', f_slug: 'slug', f_category: 'category',
+    f_client_name: 'client_name', f_industry: 'industry',
+    f_market: 'market', f_goal: 'goal',
+    f_hero_outcome: 'hero_outcome', f_hero_description: 'hero_description',
+    f_kpi_1_value: 'kpi_1_value', f_kpi_1_label: 'kpi_1_label',
+    f_kpi_2_value: 'kpi_2_value', f_kpi_2_label: 'kpi_2_label',
+    f_kpi_3_value: 'kpi_3_value', f_kpi_3_label: 'kpi_3_label',
+    f_client_story_p1: 'client_story_p1', f_client_story_p2: 'client_story_p2',
+  };
+  for (var id in map) {
+    var el = $(id);
+    if (el) el.value = state[map[id]] || '';
+  }
+  $('f_is_published').checked = !!state.is_published;
+  $('slugPreview').textContent = state.slug || '…';
+
+  // Colors
+  setColor('primary',   state.primary_color   || '#2F55F4');
+  setColor('secondary', state.secondary_color || '#10B981');
+
+  // Hero images
+  if (state.hero_image_web) showImgPreview('hero_web', state.hero_image_web);
+  if (state.hero_image_app) showImgPreview('hero_app', state.hero_image_app);
+
+  // JSON arrays
+  state.challenges.forEach(renderChallenge);
+  state.solution_steps.forEach(renderSolutionStep);
+  state.services.forEach(renderService);
+  state.results.cards.forEach(renderResultCard);
+  state.results.rows.forEach(renderResultRow);
+  state.features.forEach(renderFeature);
+  state.testimonials.forEach(renderTestimonial);
+  state.gallery.forEach(renderGalleryThumb);
+}
+
+/* ── Field binding: listen for all input events ── */
+document.addEventListener('input', function(e) {
+  var el = e.target;
+  var bind = el.dataset.bind;
+  if (!bind) return;
+  state[bind] = el.type === 'checkbox' ? el.checked : el.value;
+  markDirty();
+  scheduleAutoSave();
+
+  if (bind === 'slug') {
+    $('slugPreview').textContent = el.value || '…';
+  }
+  if (bind === 'title') {
+    $('chromTitle').textContent = el.value || 'New Portfolio';
+  }
+
+  // Push text change to preview iframe via postMessage
+  var ivbKey = el.dataset.ivbPreview;
+  if (ivbKey) sendToPreview({ source:'ivb', type:'text', key:ivbKey, value:el.value });
+});
+
+document.getElementById('f_is_published').addEventListener('change', function() {
+  state.is_published = this.checked;
+  markDirty();
+});
+
+/* ── Section accordion ── */
+function toggleSection(head) {
+  var body = head.nextElementSibling;
+  head.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+/* ── Slug auto-generation ── */
+function autoSlug() {
+  var t = ($('f_title').value || '').toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  $('f_slug').value = t;
+  state.slug = t;
+  $('slugPreview').textContent = t || '…';
+  markDirty();
+}
+
+/* ══ COLOR PICKERS ══ */
+function setColor(which, value) {
+  $('pick_' + which).value = value;
+  $('hex_' + which).value  = value.toUpperCase();
+  $('prev_' + which).style.background = value;
+}
+
+['primary','secondary'].forEach(function(which) {
+  $('pick_' + which).addEventListener('input', function() {
+    var v = this.value;
+    $('hex_' + which).value = v.toUpperCase();
+    $('prev_' + which).style.background = v;
+    var bindKey = which === 'bg' ? 'bg_color' : which + '_color';
+    state[bindKey] = v;
+    markDirty();
+    pushColorCSS();
+  });
+  $('hex_' + which).addEventListener('input', function() {
+    var v = this.value;
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+      $('pick_' + which).value = v;
+      $('prev_' + which).style.background = v;
+      var bindKey = which === 'bg' ? 'bg_color' : which + '_color';
+      state[bindKey] = v;
+      markDirty();
+      pushColorCSS();
+    }
+  });
+});
+
+function hexToRGB(hex) {
+  var h = (hex || '#000000').replace('#', '');
+  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  try { return parseInt(h.slice(0,2),16)+','+parseInt(h.slice(2,4),16)+','+parseInt(h.slice(4,6),16); }
+  catch(e) { return '0,0,0'; }
+}
+
+function bgLuminance(hex) {
+  /* ITU-R BT.601 perceived luminance — matches the Jinja2 calc server-side */
+  var h = (hex || '#ffffff').replace('#', '');
+  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  try {
+    var r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+    return r * 0.299 + g * 0.587 + b * 0.114;
+  } catch(e) { return 255; }
+}
+
+function pushColorCSS() {
+  var p  = state.primary_color   || '#2F55F4';
+  var s  = state.secondary_color || '#10B981';
+  var pr = hexToRGB(p);
+  var sr = hexToRGB(s);
+  /* Mirror exactly what portfolio-details.html renders server-side for #ivb-theme-vars.
+     Background is always #ffffff (strict white theme) — bg_color no longer drives the page bg.
+     #ivb-overrides (the !important structural rules) stays immutable in the DOM. */
+  var css =
+    ':root{'
+      + '--pf-bg:#ffffff;'
+      + '--pf-text-main:#0b1c3c;--pf-text-muted:#4b5563;'
+      + '--pf-card-bg:#ffffff;--pf-card-border:rgba(0,0,0,0.07);'
+      + '--pf-primary:'+p+';--pf-secondary:'+s+';'
+      + '--pf-primary-soft:color-mix(in srgb,'+p+' 8%,transparent);'
+      + '--pf-primary-border:color-mix(in srgb,'+p+' 20%,transparent);'
+    + '}'
+    + '#portfolio-view-page{'
+      + '--brand:'+p+';--brand-rgb:'+pr+';'
+      + '--brand-2:'+s+';--brand-2-rgb:'+sr+';'
+      + '--brand-tint:'+p+';--brand-tint-rgb:'+pr+';'
+      + '--brand-light:'+p+';--brand-vivid:'+p+';'
+      + '--brand-comp:'+s+';--belzzo-teal:'+s+';'
+      + '--belzzo-accent:'+p+';--belzzo-pink-deep:'+p+';'
+      + '--case-study-primary:'+p+';--case-study-primary-soft:rgba('+pr+',0.08);'
+      + '--case-study-ink:#0b1c3c;--case-study-muted:#4b5563;--case-study-surface:#f8fafc;'
+      + '--wf-accent-1:'+p+';--wf-accent-2:'+s+';'
+      + '--dark-bg:#ffffff;--dark-bg-2:#f8fafc;--dark-bg-deep:#f1f5f9;'
+      + '--bg-warm-1:#fafafa;--bg-warm-2:#f5f5f5;'
+      + '--hero-gradient:linear-gradient(135deg,#fafafa 0%,#ffffff 100%);'
+      + '--portfolio-theme:'+p+';--portfolio-primary:'+p+';--portfolio-secondary:'+s+';--portfolio-bg:#ffffff;'
+    + '}';
+  sendToPreview({ source: 'ivb', type: 'css', css: css });
+}
+
+/* ══ PREVIEW IFRAME ══ */
+var previewFrame = $('vbPreviewFrame');
+
+function sendToPreview(msg) {
+  try {
+    if (previewFrame && previewFrame.contentWindow)
+      previewFrame.contentWindow.postMessage(msg, '*');
+  } catch(e) {}
+}
+
+// Listen for messages FROM the preview iframe
+window.addEventListener('message', function(evt) {
+  if (!evt.data) return;
+  var d = evt.data;
+  if (d.source !== 'ivb-preview') return;
+  if (d.type === 'ready' || d.type === 'pong') {
+    previewReady = true;
+    // Re-push current state after iframe reloads
+    pushColorCSS();
+    sendTestimonialsToPreview();
+  }
+  if (d.type === 'edit') {
+    // User edited something directly in the preview (contenteditable)
+    var el = $('f_' + d.key);
+    if (el) el.value = d.value;
+    state[d.key] = d.value;
+    markDirty();
+  }
+});
+
+previewFrame.addEventListener('load', function() {
+  previewReady = false;
+  sendToPreview({ source: 'ivb', type: 'ping' });
+});
+
+/* ── Device emulation ── */
+function setDevice(btn, mode) {
+  document.querySelectorAll('.vb-device-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var wrap = $('frameWrap');
+  wrap.classList.remove('mobile','tablet');
+  if (mode !== 'desktop') wrap.classList.add(mode);
+}
+
+/* ══ IMAGE UPLOADS ══ */
+function handleDropzoneFile(input, dzId) {
+  var file = input.files[0];
+  if (!file) return;
+  var field = document.getElementById(dzId).dataset.field;
+  uploadPortfolioImage(file, field, dzId);
+}
+
+function uploadPortfolioImage(file, field, dzId) {
+  var slug = state.slug || 'temp-' + Date.now();
+  var upbarId  = 'upbar_'  + (dzId ? dzId.replace('dz_','') : field.replace('_image','').replace('hero_','hero_'));
+  var upfillId = 'upfill_' + (dzId ? dzId.replace('dz_','') : field.replace('_image','').replace('hero_','hero_'));
+
+  var $bar  = $(upbarId);
+  var $fill = $(upfillId);
+  if ($bar) { $bar.style.display = 'block'; $fill.style.width = '10%'; }
+
+  var fd = new FormData();
+  fd.append('file', file);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/admin/api/upload_portfolio_image/' + encodeURIComponent(slug));
+
+  xhr.upload.addEventListener('progress', function(e) {
+    if (e.lengthComputable && $fill) {
+      $fill.style.width = Math.round((e.loaded / e.total) * 90) + '%';
+    }
+  });
+
+  xhr.onload = function() {
+    if ($fill) $fill.style.width = '100%';
+    setTimeout(function() { if ($bar) $bar.style.display = 'none'; }, 600);
+
+    try {
+      var res = JSON.parse(xhr.responseText);
+      if (res.success) {
+        state[field] = res.url;
+        markDirty();
+        var previewId = dzId ? 'imgprev_' + dzId.replace('dz_','') : null;
+        var thumbId   = dzId ? 'imgthumb_' + dzId.replace('dz_','') : null;
+        if (previewId) showImgPreview_ids(previewId, thumbId, res.url);
+        // Push to live preview
+        var ivbKey = document.getElementById(dzId) ? document.getElementById(dzId).dataset.ivbKey : null;
+        if (ivbKey) sendToPreview({ source:'ivb', type:'img', key:ivbKey, value:res.url });
+        showToast('Image uploaded ✓', 'success');
+      } else {
+        showToast('Upload failed: ' + (res.error || 'Unknown error'), 'error');
+      }
+    } catch(e) { showToast('Upload error', 'error'); }
+  };
+  xhr.onerror = function() { showToast('Network error during upload', 'error'); };
+  xhr.send(fd);
+}
+
+function showImgPreview(key, url) {
+  // key = 'hero_web' or 'hero_app'
+  var previewId = 'imgprev_' + key;
+  var thumbId   = 'imgthumb_' + key;
+  showImgPreview_ids(previewId, thumbId, url);
+}
+function showImgPreview_ids(previewId, thumbId, url) {
+  var prev  = $(previewId);
+  var thumb = $(thumbId);
+  if (prev && thumb) { thumb.src = url; prev.style.display = 'block'; }
+}
+function clearImg(field, dzId, previewId) {
+  state[field] = '';
+  var prev = $(previewId);
+  if (prev) { prev.style.display = 'none'; var img = prev.querySelector('img'); if (img) img.src = ''; }
+  markDirty();
+}
+
+/* ── Drag-and-drop for dropzones ── */
+document.querySelectorAll('.vb-dropzone').forEach(function(dz) {
+  dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', function() { dz.classList.remove('drag-over'); });
+  dz.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    var file = e.dataTransfer.files[0];
+    if (file) {
+      var field  = dz.dataset.field;
+      uploadPortfolioImage(file, field, dz.id);
+    }
+  });
+});
+
+/* ══ GALLERY ══ */
+var _galleryUploadType = 'web';
+
+function addGalleryImages(type) {
+  _galleryUploadType = type;
+  $('galleryUploadType').value = type;
+  $('galleryFileInput').multiple = true;
+  $('galleryFileInput').click();
+}
+
+function handleGalleryFiles(input) {
+  var files = Array.from(input.files);
+  var type  = _galleryUploadType;
+  var total = files.length;
+  var done  = 0;
+  var slug  = state.slug || 'temp-' + Date.now();
+
+  $('upbar_gallery').style.display = 'block';
+  $('upfill_gallery').style.width = '5%';
+
+  files.forEach(function(file) {
+    var fd = new FormData();
+    fd.append('file', file);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/admin/api/upload_portfolio_image/' + encodeURIComponent(slug));
+    xhr.onload = function() {
+      done++;
+      $('upfill_gallery').style.width = Math.round((done / total) * 100) + '%';
+      try {
+        var res = JSON.parse(xhr.responseText);
+        if (res.success) {
+          var item = { type: type, url: res.url, label: file.name.replace(/\.[^.]+$/, ''), alt: '' };
+          state.gallery.push(item);
+          renderGalleryThumb(item, state.gallery.length - 1);
+          markDirty();
+        }
+      } catch(e) {}
+      if (done === total) {
+        setTimeout(function() { $('upbar_gallery').style.display = 'none'; }, 800);
+        showToast(total + ' image' + (total > 1 ? 's' : '') + ' added ✓', 'success');
+      }
+    };
+    xhr.send(fd);
+  });
+  input.value = '';
+}
+
+function renderGalleryThumb(item, idx) {
+  var strip = $('galleryStrip');
+  var div   = document.createElement('div');
+  div.className = 'vb-gallery-thumb';
+  div.dataset.idx = idx;
+  div.innerHTML = '<img src="' + item.url + '" alt="' + (item.alt||'') + '" />'
+    + '<span class="vb-gallery-thumb__type">' + item.type.toUpperCase() + '</span>'
+    + '<button class="vb-gallery-thumb__del" onclick="removeGalleryItem(' + idx + ',this)" title="Remove">&times;</button>';
+  strip.appendChild(div);
+}
+
+function removeGalleryItem(idx, btn) {
+  state.gallery.splice(idx, 1);
+  var el = btn ? btn.closest('.vb-gallery-thumb') : null;
+  if (el) el.remove();
+  // Re-index remaining thumbs
+  document.querySelectorAll('.vb-gallery-thumb').forEach(function(t, i) {
+    t.dataset.idx = i;
+    var delBtn = t.querySelector('.vb-gallery-thumb__del');
+    if (delBtn) delBtn.setAttribute('onclick', 'removeGalleryItem(' + i + ',this)');
+  });
+  markDirty();
+}
+
+/* ══ JSON ARRAY BUILDERS ══ */
+
+/* ─── Challenges ─── */
+function addChallenge(data) {
+  var d = data || { tag:'', severity:'Medium', title:'', desc:'', impact:'', icon:'fa-solid fa-triangle-exclamation' };
+  state.challenges.push(d);
+  renderChallenge(d, state.challenges.length - 1);
+  markDirty();
+}
+function renderChallenge(d, idx) {
+  var arr  = $('arr-challenges');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var iconVal = esc(d.icon || 'fa-solid fa-triangle-exclamation');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.title || 'Challenge ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'challenges\',this.closest(\'.vb-array__item\'));event.stopPropagation()" title="Remove"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Icon</label>'
+    + '<div class="vb-icon-picker-group">'
+    + '<input type="hidden" class="vb-icon-hidden" data-arr="challenges" data-field="icon" oninput="updateArrayField(this)" value="' + iconVal + '">'
+    + '<button type="button" class="icon-select-btn" onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">' 
+    + '<i class="' + iconVal + ' preview-icon"></i> Select Icon'
+    + '</button></div></div>'
+    + '<div class="vb-field"><label class="vb-label">Tag</label>'
+    + '<input class="vb-input" type="text" data-arr="challenges" data-field="tag" value="' + esc(d.tag) + '" placeholder="NAVIGATION" oninput="updateArrayField(this)" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Severity</label>'
+    + '<select class="vb-select" data-arr="challenges" data-field="severity" oninput="updateArrayField(this)">'
+    + '<option ' + (d.severity==='Critical'?'selected':'') + '>Critical</option>'
+    + '<option ' + (d.severity==='High'?'selected':'') + '>High</option>'
+    + '<option ' + (!d.severity||d.severity==='Medium'?'selected':'') + '>Medium</option>'
+    + '<option ' + (d.severity==='Low'?'selected':'') + '>Low</option>'
+    + '</select></div>'
+    + '<div class="vb-field"><label class="vb-label">Title</label>'
+    + '<input class="vb-input" type="text" data-arr="challenges" data-field="title" value="' + esc(d.title) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Challenge\' " /></div>'
+    + '<div class="vb-field"><label class="vb-label">Description</label>'
+    + '<textarea class="vb-textarea" rows="2" data-arr="challenges" data-field="desc" oninput="updateArrayField(this)">' + esc(d.desc) + '</textarea></div>'
+    + '<div class="vb-field"><label class="vb-label">Impact</label>'
+    + '<input class="vb-input" type="text" data-arr="challenges" data-field="impact" value="' + esc(d.impact) + '" oninput="updateArrayField(this)" /></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
+/* ─── Solution Steps ─── */
+function addSolutionStep(data) {
+  var d = data || { tag:'', title:'', points:[] };
+  state.solution_steps.push(d);
+  renderSolutionStep(d, state.solution_steps.length - 1);
+  markDirty();
+}
+function renderSolutionStep(d, idx) {
+  var arr  = $('arr-solution');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var pts = (d.points || []).join('\n');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.title || 'Step ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'solution_steps\',this.closest(\'.vb-array__item\'));event.stopPropagation()"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Tag / Module Label</label>'
+    + '<input class="vb-input" type="text" data-arr="solution_steps" data-field="tag" value="' + esc(d.tag) + '" oninput="updateArrayField(this)" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Step Title</label>'
+    + '<input class="vb-input" type="text" data-arr="solution_steps" data-field="title" value="' + esc(d.title) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Step\'" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Bullet Points (one per line)</label>'
+    + '<textarea class="vb-textarea" rows="4" placeholder="One point per line" data-arr="solution_steps" data-field="points" '
+    + 'oninput="updateArrayField(this, this.value.split(\'\\n\').filter(function(l){return l.trim()}))">'
+    + esc(pts) + '</textarea></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
+/* ─── Services ─── */
+function addService(data) {
+  var d = data || { num:'', icon_svg:'', title:'', desc:'', deliverables:[] };
+  state.services.push(d);
+  renderService(d, state.services.length - 1);
+  markDirty();
+}
+function renderService(d, idx) {
+  var arr  = $('arr-services');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var dels = (d.deliverables || []).join(', ');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.title || 'Service ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'services\',this.closest(\'.vb-array__item\'));event.stopPropagation()"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Number</label>'
+    + '<input class="vb-input" type="text" data-arr="services" data-field="num" value="' + esc(d.num) + '" placeholder="01" oninput="updateArrayField(this)" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Icon</label>'
+    + '<div class="vb-icon-picker-group">'
+    + '<input type="hidden" class="vb-icon-hidden" data-arr="services" data-field="icon_svg" oninput="updateArrayField(this)" value="' + esc(d.icon_svg || 'fa-solid fa-layer-group') + '">'
+    + '<button type="button" class="icon-select-btn" onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">'
+    + '<i class="' + esc(d.icon_svg || 'fa-solid fa-layer-group') + ' preview-icon"></i> Select Icon'
+    + '</button>'
+    + '</div></div>'
+    + '<div class="vb-field"><label class="vb-label">Title</label>'
+    + '<input class="vb-input" type="text" data-arr="services" data-field="title" value="' + esc(d.title) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Service\'" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Description</label>'
+    + '<textarea class="vb-textarea" rows="2" data-arr="services" data-field="desc" oninput="updateArrayField(this)">' + esc(d.desc) + '</textarea></div>'
+    + '<div class="vb-field"><label class="vb-label">Deliverables (comma-separated)</label>'
+    + '<input class="vb-input" type="text" data-arr="services" data-field="deliverables" value="' + esc(dels) + '" '
+    + 'oninput="updateArrayField(this, this.value.split(\',\').map(function(s){return s.trim()}).filter(Boolean))" /></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
+/* ─── Result Cards ─── */
+function addResultCard(data) {
+  var d = data || { metric:'', label:'', insight:'', icon:'fa-solid fa-arrow-trend-up' };
+  state.results.cards.push(d);
+  renderResultCard(d, state.results.cards.length - 1);
+  markDirty();
+}
+function renderResultCard(d, idx) {
+  var arr = $('arr-result-cards');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var iconVal = esc(d.icon || 'fa-solid fa-arrow-trend-up');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.metric || 'Result Card ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeResultCard(this);event.stopPropagation()"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Metric Value (e.g. +40%)</label><input class="vb-input" type="text" value="' + esc(d.metric) + '" oninput="updateResultCard(this,\'metric\')" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Label</label><input class="vb-input" type="text" value="' + esc(d.label) + '" oninput="updateResultCard(this,\'label\')" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Insight text</label><input class="vb-input" type="text" value="' + esc(d.insight) + '" oninput="updateResultCard(this,\'insight\')" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Icon</label>'
+    + '<div class="vb-icon-picker-group">'
+    + '<input type="hidden" class="vb-icon-hidden" value="' + iconVal + '" oninput="updateResultCard(this,\'icon\')">'
+    + '<button type="button" class="icon-select-btn" onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">'
+    + '<i class="' + iconVal + ' preview-icon"></i> Select Icon'
+    + '</button>'
+    + '</div></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+function updateResultCard(input, field) {
+  var item = input.closest('.vb-array__item');
+  var idx  = Array.from($('arr-result-cards').children).indexOf(item);
+  state.results.cards[idx][field] = input.value;
+  markDirty();
+}
+function removeResultCard(btn) {
+  var item = btn.closest('.vb-array__item');
+  var idx  = Array.from($('arr-result-cards').children).indexOf(item);
+  state.results.cards.splice(idx, 1);
+  item.remove();
+  markDirty();
+}
+
+/* ─── Result Rows ─── */
+function addResultRow(data) {
+  var d = data || { metric:'', before:'', after:'' };
+  state.results.rows.push(d);
+  renderResultRow(d, state.results.rows.length - 1);
+  markDirty();
+}
+function renderResultRow(d, idx) {
+  var arr = $('arr-result-rows');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.metric || 'Row ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeResultRow(this);event.stopPropagation()"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px;">'
+    + '<div class="vb-field" style="margin:0;"><label class="vb-label">Metric</label><input class="vb-input" type="text" value="' + esc(d.metric) + '" oninput="updateResultRow(this,\'metric\')" /></div>'
+    + '<div class="vb-field" style="margin:0;"><label class="vb-label">Before</label><input class="vb-input" type="text" value="' + esc(d.before) + '" oninput="updateResultRow(this,\'before\')" /></div>'
+    + '<div class="vb-field" style="margin:0;"><label class="vb-label">After</label><input class="vb-input" type="text" value="' + esc(d.after) + '" oninput="updateResultRow(this,\'after\')" /></div>'
+    + '</div></div>';
+  arr.appendChild(item);
+}
+function updateResultRow(input, field) {
+  var item = input.closest('.vb-array__item');
+  var idx  = Array.from($('arr-result-rows').children).indexOf(item);
+  state.results.rows[idx][field] = input.value;
+  markDirty();
+}
+function removeResultRow(btn) {
+  var item = btn.closest('.vb-array__item');
+  var idx  = Array.from($('arr-result-rows').children).indexOf(item);
+  state.results.rows.splice(idx, 1);
+  item.remove();
+  markDirty();
+}
+
+/* ─── Built-in Features ─── */
+function addFeature(data) {
+  var d = data || { icon:'fa-solid fa-star', title:'', desc:'', benefit:'' };
+  state.features.push(d);
+  renderFeature(d, state.features.length - 1);
+  markDirty();
+}
+function renderFeature(d, idx) {
+  var arr  = $('arr-features');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var iconVal = esc(d.icon || 'fa-solid fa-star');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.title || 'Feature ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'features\',this.closest(\'.vb-array__item\'));event.stopPropagation()" title="Remove"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Icon</label>'
+    + '<div class="vb-icon-picker-group">'
+    + '<input type="hidden" class="vb-icon-hidden" data-arr="features" data-field="icon" oninput="updateArrayField(this)" value="' + iconVal + '">'
+    + '<button type="button" class="icon-select-btn" onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">'
+    + '<i class="' + iconVal + ' preview-icon"></i> Select Icon'
+    + '</button></div></div>'
+    + '<div class="vb-field"><label class="vb-label">Title</label>'
+    + '<input class="vb-input" type="text" data-arr="features" data-field="title" value="' + esc(d.title) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\' Feature\'" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Description</label>'
+    + '<textarea class="vb-textarea" rows="2" data-arr="features" data-field="desc" oninput="updateArrayField(this)">' + esc(d.desc) + '</textarea></div>'
+    + '<div class="vb-field"><label class="vb-label">Benefit (✓ line)</label>'
+    + '<input class="vb-input" type="text" data-arr="features" data-field="benefit" value="' + esc(d.benefit) + '" oninput="updateArrayField(this)" /></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
+/* ─── Testimonials ─── */
+function sendTestimonialsToPreview() {
+  sendToPreview({ source: 'ivb', type: 'testimonials', testimonials: state.testimonials });
+}
+function addTestimonial(data) {
+  var d = data || { quote: '', client_name: '', client_role: '', rating: 5 };
+  state.testimonials.push(d);
+  renderTestimonial(d, state.testimonials.length - 1);
+  markDirty();
+  sendTestimonialsToPreview();
+}
+function renderTestimonial(d, idx) {
+  var arr  = $('arr-testimonials');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (esc(d.client_name) || 'Testimonial ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'testimonials\',this.closest(\'.vb-array__item\'));sendTestimonialsToPreview();event.stopPropagation()" title="Remove"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Quote</label>'
+    + '<textarea class="vb-textarea" rows="3" data-arr="testimonials" data-field="quote" oninput="updateArrayField(this);sendTestimonialsToPreview()">' + esc(d.quote) + '</textarea></div>'
+    + '<div class="vb-field"><label class="vb-label">Client Name</label>'
+    + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_name" value="' + esc(d.client_name) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Testimonial\';sendTestimonialsToPreview()" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Client Role / Title</label>'
+    + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_role" value="' + esc(d.client_role) + '" oninput="updateArrayField(this);sendTestimonialsToPreview()" /></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
+/* ─── Generic array helpers ─── */
+function toggleArrayItem(head) {
+  var body = head.nextElementSibling;
+  body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+/*
+  updateArrayField — always resolves the CURRENT DOM position of the item,
+  so edits work correctly even after previous items have been deleted.
+
+  Signature accepted:
+    updateArrayField(el)                   — reads data-arr, data-field from el
+    updateArrayField(el, customValue)      — use custom value (e.g. split array)
+
+  Each input / select / textarea in a rendered array item must carry:
+    data-arr="challenges"   (or solution_steps / services)
+    data-field="tag"        (field name inside the state object)
+*/
+function updateArrayField(el, customValue) {
+  var arr   = el.dataset.arr;
+  var field = el.dataset.field;
+  if (!arr || !field) return;
+  var value = (customValue !== undefined) ? customValue : el.value;
+  var item  = el.closest('.vb-array__item');
+  if (!item || !item.parentElement) return;
+  var idx = Array.from(item.parentElement.children).indexOf(item);
+  if (idx < 0 || !state[arr] || state[arr][idx] === undefined) return;
+  state[arr][idx][field] = value;
+  markDirty();
+}
+function removeArrayItem(arr, el) {
+  var items = Array.from(el.parentElement.querySelectorAll('.vb-array__item'));
+  var idx   = items.indexOf(el);
+  if (idx >= 0) state[arr].splice(idx, 1);
+  el.remove();
+  markDirty();
+}
+
+/* ── HTML entity escape ── */
+function esc(s) {
+  return (s || '').toString()
+    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ══ SAVE / PUBLISH ══ */
+function collectPayload(action) {
+  return {
+    id:             portfolioId,
+    action:         action,
+    title:          state.title,
+    slug:           state.slug,
+    category:       state.category,
+    client_name:    state.client_name,
+    primary_color:  state.primary_color,
+    secondary_color:state.secondary_color,
+    bg_color:       state.bg_color,
+    theme_color:    state.primary_color,
+    is_published:   action === 'publish',
+    hero_outcome:   state.hero_outcome,
+    hero_description: state.hero_description,
+    hero_image_web:  state.hero_image_web,
+    hero_image_app:  state.hero_image_app,
+    kpi_1_value: state.kpi_1_value, kpi_1_label: state.kpi_1_label,
+    kpi_2_value: state.kpi_2_value, kpi_2_label: state.kpi_2_label,
+    kpi_3_value: state.kpi_3_value, kpi_3_label: state.kpi_3_label,
+    industry: state.industry, market: state.market, goal: state.goal,
+    client_story_p1: state.client_story_p1, client_story_p2: state.client_story_p2,
+    challenges:     state.challenges,
+    solution_steps: state.solution_steps,
+    services:       state.services,
+    results:        state.results,
+    features:       state.features,
+    testimonials:   state.testimonials,
+    gallery:        state.gallery,
+  };
+}
+
+async function doSave(action) {
+  var payload = collectPayload(action);
+  if (!payload.title) { showToast('Title is required', 'error'); return; }
+  if (!payload.slug)  { autoSlug(); payload.slug = state.slug; }
+  if (!payload.slug)  { showToast('Slug is required', 'error'); return; }
+
+  var btn = action === 'publish' ? $('btnPublish') : $('btnSaveDraft');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    var resp = await fetch('/admin/portfolio/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    var data = await resp.json();
+
+    if (data.success) {
+      portfolioId   = data.id;
+      portfolioSlug = data.slug;
+      state.id   = data.id;
+      state.slug = data.slug;
+
+      isDirty = false;
+      $('unsavedDot').style.display = 'none';
+
+      // Update chrome
+      $('chromTitle').textContent = state.title;
+      var statusEl = $('chromStatus');
+      if (action === 'publish') {
+        statusEl.textContent = 'Published';
+        statusEl.className   = 'vb-chrome__status vb-chrome__status--published';
+      } else {
+        statusEl.textContent = 'Draft';
+        statusEl.className   = 'vb-chrome__status vb-chrome__status--draft';
+      }
+
+      // Show preview once we have a slug
+      var placeholder = $('vbPlaceholder');
+      if (placeholder) placeholder.style.display = 'none';
+
+      var newSrc = '/admin/portfolio/preview/' + data.slug + '?embed=1';
+      if (previewFrame.style.display === 'none') {
+        previewFrame.style.display = '';
+      }
+      if (previewFrame.src !== (window.location.origin + newSrc)) {
+        previewFrame.src = newSrc;
+      } else {
+        previewFrame.contentWindow && previewFrame.contentWindow.location.reload();
+      }
+
+      $('previewSlugLabel').textContent = '/portfolio/' + data.slug; // public URL label
+      $('slugPreview').textContent = data.slug;
+
+      showToast(action === 'publish' ? 'Published ✓' : 'Draft saved ✓', 'success');
+    } else {
+      showToast('Error: ' + (data.error || 'Save failed'), 'error');
+    }
+  } catch(e) {
+    showToast('Network error — check connection', 'error');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+$('btnSaveDraft').addEventListener('click', function() { doSave('draft'); });
+$('btnPublish').addEventListener('click',    function() { doSave('publish'); });
+
+/* ── Autosave (debounced 2s after last change) ── */
+function scheduleAutoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(function() {
+    if (isDirty && portfolioId) doSave('draft');
+  }, 2000);
+}
+
+/* ══ TOAST ══ */
+var toastTimer;
+function showToast(msg, type) {
+  var toast   = $('vbToast');
+  var msgEl   = $('vbToastMsg');
+  var iconEl  = toast.querySelector('.vb-toast__icon');
+  msgEl.textContent = msg;
+  toast.className   = 'vb-toast vb-toast--' + (type || 'info');
+  iconEl.className  = 'fa-solid ' + (type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info') + ' vb-toast__icon';
+  void toast.offsetWidth;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+/* ══ DRAG-RESIZE SIDEBAR ══ */
+(function() {
+  var resizer   = $('vbResizer');
+  var controls  = $('vbControls');
+  var dragging  = false;
+  var startX, startW;
+
+  resizer.addEventListener('mousedown', function(e) {
+    dragging = true; startX = e.clientX; startW = controls.offsetWidth;
+    resizer.classList.add('active');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    var newW = Math.max(280, Math.min(600, startW + e.clientX - startX));
+    controls.style.width = newW + 'px';
+    document.documentElement.style.setProperty('--vb-sidebar-w', newW + 'px');
+  });
+  document.addEventListener('mouseup', function() {
+    if (dragging) {
+      dragging = false;
+      resizer.classList.remove('active');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+})();
+
+/* ══ INIT ══ */
+populateForm();
+// Push initial color state to preview on first load
+previewFrame.addEventListener('load', function() { setTimeout(pushColorCSS, 200); });
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', function(e) {
+  if (isDirty) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+{% endblock %}

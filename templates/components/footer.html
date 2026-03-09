@@ -1,0 +1,141 @@
+﻿<footer class="footer-dark">
+    <div class="footer-container">
+        <!-- Column 1: Brand (40%) -->
+        <div class="footer-column">
+            <div class="footer-brand">
+                <a href="/">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="IV Infotech Logo">
+                </a>
+                <p class="footer-tagline">{{ site.company_tagline }}</p>
+                <p class="footer-address">
+                    <i class="fas fa-map-marker-alt"></i> {{ site.address_line1 }}{% if site.address_line2 %}, {{ site.address_line2 }}{% endif %}, {{ site.address_city }}, {{ site.address_state }} {{ site.address_pincode }}
+                </p>
+                <div class="footer-social-icons">
+                    {% if site.social_linkedin %}
+                    <a href="{{ site.social_linkedin }}" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    {% endif %}
+                    {% if site.social_instagram %}
+                    <a href="{{ site.social_instagram }}" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                    {% if site.social_twitter %}
+                    <a href="{{ site.social_twitter }}" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Twitter / X">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if site.social_facebook %}
+                    <a href="{{ site.social_facebook }}" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    {% endif %}
+                    {% if site.social_youtube %}
+                    <a href="{{ site.social_youtube }}" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2: Quick Links (20%) -->
+        <div class="footer-column">
+            <h6 class="footer-heading">Quick Links</h6>
+            <ul class="footer-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/testimonials">Testimonials</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/career">Career / Hire Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Services (20%) -->
+        <div class="footer-column">
+            <h6 class="footer-heading">Services</h6>
+            <ul class="footer-links">
+                <li><a href="/custom-mobile-application-development">Custom Mobile Apps</a></li>
+                <li><a href="/custom-website-software-development">Web &amp; Software Dev</a></li>
+                <li><a href="/crm-erp-custom-software-development">CRM &amp; ERP Solutions</a></li>
+                <li><a href="/ecommerce-website-app-development-india">E-Commerce</a></li>
+                <li><a href="/digital-marketing">Digital Marketing</a></li>
+                <li><a href="/ui-ux-design-agency-india">UI/UX Design</a></li>
+                <li><a href="/best-web-hosting-services">Web Hosting</a></li>
+                <li><a href="/ai-automation">AI &amp; Automation</a></li>
+            </ul>
+        </div>
+
+        <!-- Column 4: Connect (20%) -->
+        <div class="footer-column">
+            <h6 class="footer-heading">Connect</h6>
+            <div class="footer-connect">
+                <div class="footer-connect-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="footer-connect-info">
+                        <span class="footer-connect-label">Email</span>
+                    <a href="mailto:{{ site.email_primary }}">{{ site.email_primary }}</a>
+                </div>
+            </div>
+                <div class="footer-connect-item">
+                    <i class="fas fa-phone"></i>
+                    <div class="footer-connect-info">
+                        <span class="footer-connect-label">Phone</span>
+                        <a href="tel:{{ site.phone_primary | replace(' ','') }}">{{ site.phone_primary }}</a>
+                    </div>
+                </div>
+                <a href="/contact" class="footer-cta">
+                    Get a Quote <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom Bar -->
+    <div class="footer-bottom">
+        <div class="footer-bottom-content">
+            <p class="footer-copyright">
+                &copy; <span id="year">{{ now.year }}</span> IV Infotech. All Rights Reserved.
+            </p>
+            <ul class="footer-legal">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<!-- Ask IV AI Chat Widget -->
+<div id="ivChatWidget" aria-live="polite" aria-label="IV AI Assistant chat">
+    <div class="iv-chat-header">
+        <div class="iv-chat-title">
+            <span class="iv-chat-avatar"><i class="fa-solid fa-robot"></i></span>
+            <div>
+                <strong>IV AI Assistant</strong>
+                <small>Online now</small>
+            </div>
+        </div>
+        <button type="button" class="iv-chat-close" aria-label="Close chat" onclick="toggleChatWindow(false)">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <div class="iv-chat-body" id="ivChatBody">
+        <div class="iv-message iv-bot">
+            <div class="iv-bubble">Hi, I am Ask IV. How can I help you today?</div>
+        </div>
+        <div class="iv-quick-replies" id="ivQuickReplies">
+            <button type="button" class="iv-chip" onclick="sendQuickReply('What IT services do you offer?')">What IT services do you offer?</button>
+            <button type="button" class="iv-chip" onclick="sendQuickReply('Where is your office located?')">Where is your office located?</button>
+            <button type="button" class="iv-chip" onclick="sendQuickReply('How can I get a project quote?')">How can I get a project quote?</button>
+        </div>
+    </div>
+    <div class="iv-chat-input-wrap">
+        <input type="text" id="ivChatInput" placeholder="Type your message..." autocomplete="off" />
+        <button type="button" id="ivChatSendBtn" aria-label="Send message" onclick="sendMessage()">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>

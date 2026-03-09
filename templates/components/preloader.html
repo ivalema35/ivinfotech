@@ -1,0 +1,18 @@
+<div id="preloader">
+    <lottie-player
+        src="{{ url_for('static', filename='animations/loader.json') }}"
+        background="transparent"
+        speed="1"
+        style="width: 200px; height: 200px;"
+        loop
+        autoplay>
+    </lottie-player>
+</div>
+<script>
+    window.addEventListener("load", function () {
+        setTimeout(function () {
+            var preloader = document.getElementById("preloader");
+            if (preloader) { document.body.classList.add("loaded"); }
+        }, 800);
+    });
+</script>

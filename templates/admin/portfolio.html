@@ -1,0 +1,190 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block head_extra %}
+    <style>
+        .page-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .page-header-bar h1 { font-size:20px; font-weight:700; color:var(--text-dark); margin:0; }
+        .page-header-bar p  { font-size:13px; color:var(--text-muted); margin:2px 0 0; }
+        .btn-add { display:inline-flex; align-items:center; gap:7px; padding:9px 20px; background:var(--primary-blue); color:#fff; border-radius:var(--radius-sm); font-size:13.5px; font-weight:600; border:none; cursor:pointer; transition:background .2s; text-decoration:none; }
+        .btn-add:hover { background:var(--primary-dark); color:#fff; }
+        .btn-build { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:linear-gradient(135deg,#6366f1,#4f46e5); color:#fff; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:opacity .18s; text-decoration:none; }
+        .btn-build:hover { opacity:.85; color:#fff; }
+        .btn-edit { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:var(--primary-light); color:var(--primary-blue); border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; text-decoration:none; }
+        .btn-edit:hover { background:#dce5fd; }
+        .btn-delete { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; }
+        .btn-delete:hover { background:#fca5a5; }
+        .btn-danger-confirm { background:#dc2626; color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; }
+        .btn-danger-confirm:hover { background:#b91c1c; }
+        .btn-cancel-md { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); border-radius:var(--radius-sm); padding:9px 20px; font-size:13.5px; font-family:'Poppins',sans-serif; cursor:pointer; }
+        .modal-content { border-radius:var(--radius); border:none; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+        .modal-header { background:linear-gradient(135deg,var(--primary-blue),var(--primary-dark)); border-radius:var(--radius) var(--radius) 0 0; padding:20px 24px; }
+        .modal-header .modal-title { color:#fff; font-weight:700; font-size:16px; }
+        .modal-header .btn-close { filter:invert(1); opacity:.8; }
+        .modal-body { padding:24px; }
+        .modal-footer { padding:16px 24px; border-top:1px solid var(--border); }
+        .modal-danger .modal-header { background:linear-gradient(135deg,#dc2626,#b91c1c); }
+        .color-swatch { display:inline-block; width:22px; height:22px; border-radius:5px; border:1px solid rgba(0,0,0,.12); vertical-align:middle; margin-right:8px; }
+        .cat-badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.4px; }
+        .cat-web  { background:#e0e7ff; color:#3730a3; }
+        .cat-crm  { background:#d1fae5; color:#065f46; }
+        .cat-app  { background:#fce7f3; color:#831843; }
+        .cat-ai   { background:#fef3c7; color:#92400e; }
+        .empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); }
+        .empty-state i { font-size:48px; margin-bottom:16px; opacity:.4; display:block; }
+        .empty-state p { font-size:14px; margin:0; }
+        .desc-cell { max-width:260px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:var(--text-mid); }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}Portfolio{% endblock %}
+{% block topbar_sub %}Manage case studies shown on the public Portfolio page.{% endblock %}
+
+{% block content %}
+
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}
+    <div class="alert alert-{{ 'success' if cat == 'success' else 'danger' }} alert-dismissible fade show" role="alert" style="border-radius:var(--radius-sm);font-size:13.5px;margin-bottom:18px;">
+        <i class="fa-solid fa-{{ 'circle-check' if cat == 'success' else 'triangle-exclamation' }}" style="margin-right:8px;"></i>{{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    <div class="page-header-bar">
+        <div>
+            <h1><i class="fa-solid fa-folder-open" style="color:var(--primary-blue);margin-right:8px;"></i>Portfolio</h1>
+            <p>{{ portfolios | length }} project{{ 's' if portfolios | length != 1 }} in the database</p>
+        </div>
+        <div style="display:flex;gap:10px;">
+            <a href="{{ url_for('admin_portfolio_build') }}" class="btn-build">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Visual Builder
+            </a>
+            <a href="{{ url_for('admin_portfolio_add') }}" class="btn-add">
+                <i class="fa-solid fa-plus"></i> Add Project
+            </a>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel__header">
+            <h2 class="panel__title"><i class="fa-solid fa-list"></i> All Projects</h2>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <a href="{{ url_for('portfolio') }}" target="_blank" class="btn-edit">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> View Portfolio
+                </a>
+                <span class="panel__badge">{{ portfolios | length }} total</span>
+            </div>
+        </div>
+        <div class="table-wrap">
+            {% if portfolios %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Client</th>
+                        <th>Category</th>
+                        <th>Theme</th>
+                        <th>Status</th>
+                        <th>Added</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for p in portfolios %}
+                <tr>
+                    <td style="color:var(--text-muted);font-size:12px;">{{ loop.index }}</td>
+                    <td>
+                        <div style="font-weight:600;font-size:13.5px;color:var(--text-dark);">{{ p.title }}</div>
+                        <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;font-style:italic;">/portfolio/{{ p.slug }}</div>
+                    </td>
+                    <td style="font-size:13px;color:var(--text-mid);">{{ p.client_name or '—' }}</td>
+                    <td>
+                        {% set cat = p.category %}
+                        <span class="cat-badge cat-{{ 'web' if cat == 'Web' else 'crm' if cat == 'CRM' else 'app' if cat == 'App' else 'ai' }}">
+                            {{ cat }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="color-swatch" style="background:{{ p.primary_color or p.theme_color }};"></span>
+                        <span class="color-swatch" style="background:{{ p.secondary_color or '#10B981' }};"></span>
+                        <span style="font-size:11px;color:var(--text-muted);font-family:monospace;">{{ p.primary_color or p.theme_color }}</span>
+                    </td>
+                    <td>
+                        {% if p.is_published %}
+                            <span style="background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Published</span>
+                        {% else %}
+                            <span style="background:#f3f4f6;color:#6b7280;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Draft</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">{{ p.created_at.strftime('%d %b %Y') }}</td>
+                    <td>
+                        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                            <a href="{{ url_for('admin_portfolio_build', pid=p.id) }}" class="btn-build" title="Visual Builder">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Build
+                            </a>
+                            <a href="{{ url_for('portfolio_detail', slug=p.slug) }}" target="_blank" class="btn-edit" title="View live">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="{{ url_for('admin_portfolio_edit', pid=p.id) }}" class="btn-edit">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </a>
+                            <button type="button" class="btn-delete"
+                                    data-pid="{{ p.id }}" data-title="{{ p.title }}"
+                                    onclick="confirmDelete(this)">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa-solid fa-folder-open"></i>
+                <p>No portfolio projects yet. <a href="{{ url_for('admin_portfolio_add') }}" style="color:var(--primary-blue);font-weight:600;">Add your first project →</a></p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Delete confirmation modal -->
+    <div class="modal fade modal-danger" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;"></i>Delete Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size:14px;color:var(--text-mid);margin:0;">
+                        Are you sure you want to permanently delete <strong id="deleteTitle"></strong>?
+                        This action cannot be undone.
+                    </p>
+                </div>
+                <div class="modal-footer" style="justify-content:flex-end;gap:10px;">
+                    <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST">
+                        <button type="submit" class="btn-danger-confirm">
+                            <i class="fa-solid fa-trash" style="margin-right:6px;"></i> Yes, Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmDelete(btn) {
+    document.getElementById('deleteTitle').textContent = '"' + btn.dataset.title + '"';
+    document.getElementById('deleteForm').action = '/admin/portfolio/delete/' + btn.dataset.pid;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,309 @@
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     Universal Contact / Inquiry Form Component
+     Usage: include 'components/universal_contact_form.html'
+     Submits via AJAX to /api/submit-inquiry — no page reload.
+     source_page is auto-populated from window.location.pathname.
+════════════════════════════════════════════════════════════════════════════ -->
+<div class="ucf-card">
+
+  <span class="ucf-eyebrow">Send a Message</span>
+  <h4 class="ucf-title">Tell Us About Your Project</h4>
+  <p class="ucf-subtitle">We'll get back to you with a plan, timeline, and no-surprise pricing.</p>
+
+  <form id="ucfForm" novalidate autocomplete="on">
+    <!-- Tracks which page this submission came from -->
+    <input type="hidden" name="source_page" id="form_source_page" value="{{ request.path }}">
+
+    <div class="row g-3">
+
+      <!-- Full Name -->
+      <div class="col-12">
+        <div class="form-floating">
+          <input type="text" class="form-control ucf-input" id="ucf_name" name="name"
+                 placeholder="Full Name" required autocomplete="name">
+          <label for="ucf_name">Full Name <span class="ucf-required">*</span></label>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="email" class="form-control ucf-input" id="ucf_email" name="email"
+                 placeholder="Email" required autocomplete="email">
+          <label for="ucf_email">Email Address <span class="ucf-required">*</span></label>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="col-md-6">
+        <div class="form-floating">
+          <input type="tel" class="form-control ucf-input" id="ucf_phone" name="phone"
+                 placeholder="Phone" autocomplete="tel">
+          <label for="ucf_phone">Phone / WhatsApp</label>
+        </div>
+      </div>
+
+      <!-- Service of Interest -->
+      <div class="col-12">
+        <div class="form-floating">
+          <select class="form-select ucf-input" id="ucf_service" name="service_interest">
+            <option value="" disabled selected></option>
+            <option value="Web Development">Web Development</option>
+            <option value="Mobile App Development">Mobile App Development</option>
+            <option value="AI &amp; Automation">AI &amp; Automation</option>
+            <option value="CRM / ERP Development">CRM / ERP Development</option>
+            <option value="UI/UX Design">UI/UX Design</option>
+            <option value="Digital Marketing">Digital Marketing</option>
+            <option value="Cloud / Hosting">Cloud / Hosting</option>
+            <option value="Other">Other</option>
+          </select>
+          <label for="ucf_service">Service of Interest</label>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="col-12">
+        <div class="form-floating">
+          <textarea class="form-control ucf-input" id="ucf_message" name="message"
+                    placeholder="Tell us about your project..." style="height:120px;"></textarea>
+          <label for="ucf_message">Your Message</label>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="col-12 mt-1">
+        <button type="submit" class="ucf-submit-btn" id="ucfSubmitBtn">
+          <span class="ucf-btn-text"><i class="fas fa-paper-plane me-2"></i>Send Message</span>
+          <span class="ucf-btn-loading" style="display:none;"><i class="fas fa-circle-notch fa-spin me-2"></i>Sending…</span>
+        </button>
+      </div>
+
+    </div><!-- /row -->
+  </form>
+
+  <!-- ── Success State (shown after AJAX success) ── -->
+  <div id="ucfSuccess" class="ucf-success" style="display:none;" aria-live="polite">
+    <div class="ucf-success-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h5>Message Sent!</h5>
+    <p>Thank you! Our team will get back to you within 24 hours.</p>
+  </div>
+
+  <p class="ucf-privacy-note">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    100% Confidential &nbsp;·&nbsp; No spam &nbsp;·&nbsp; No obligation
+  </p>
+
+</div><!-- /ucf-card -->
+
+
+<!-- ── Scoped Styles ── -->
+<style>
+/* Universal Contact Form — ucf-* namespace */
+.ucf-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+  border: 1px solid rgba(0, 0, 0, .05);
+  position: relative;
+}
+.ucf-eyebrow {
+  display: inline-block;
+  background: rgba(47, 85, 244, .08);
+  color: #2F55F4;
+  border: 1px solid rgba(47, 85, 244, .2);
+  font-weight: 600;
+  font-size: .73rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 14px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+}
+.ucf-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0b1c3c;
+  margin-bottom: 5px;
+}
+.ucf-subtitle {
+  font-size: .87rem;
+  color: #6b7280;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+.ucf-required { color: #ef4444; }
+
+/* Floating-label inputs */
+.ucf-card .form-floating > .ucf-input {
+  border-radius: 12px;
+  border: 1.5px solid #e5e9f0;
+  background: #f9fbfd;
+  font-size: .93rem;
+  color: #0b1c3c;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.ucf-card .form-floating > .ucf-input:focus {
+  border-color: #2F55F4;
+  box-shadow: 0 0 0 4px rgba(47, 85, 244, .09);
+  background: #fff;
+}
+.ucf-card .form-floating > label {
+  color: #9ca3af;
+  font-size: .88rem;
+}
+.ucf-card .form-floating > .ucf-input.is-invalid {
+  border-color: #ef4444;
+  background: #fff5f5;
+}
+
+/* Submit button */
+.ucf-submit-btn {
+  background: linear-gradient(135deg, #2F55F4, #1a3fd6);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 28px;
+  border-radius: 50px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background .3s, transform .25s, box-shadow .25s;
+  letter-spacing: .2px;
+}
+.ucf-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1a3fd6, #0f2db0);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(47, 85, 244, .35);
+}
+.ucf-submit-btn:disabled {
+  opacity: .7;
+  cursor: not-allowed;
+}
+
+/* Success state */
+.ucf-success {
+  text-align: center;
+  padding: 28px 16px;
+}
+.ucf-success-icon {
+  width: 64px;
+  height: 64px;
+  background: #f0fdf4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.ucf-success h5 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #0b1c3c;
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+}
+.ucf-success p {
+  color: #6b7280;
+  font-size: .9rem;
+  margin: 0;
+}
+
+/* Privacy note */
+.ucf-privacy-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: .74rem;
+  color: #b0b7c3;
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .ucf-card { padding: 26px 18px; }
+}
+</style>
+
+
+<!-- ── AJAX Submit Script ── -->
+<script>
+(function () {
+  'use strict';
+  var form = document.getElementById('ucfForm');
+  if (!form || form.dataset.ucfBound) return;
+  form.dataset.ucfBound = '1';
+
+  /* Populate source_page once JS runs (covers cases where Jinja request.path is unavailable) */
+  var srcInput = document.getElementById('form_source_page');
+  if (srcInput && !srcInput.value) {
+    srcInput.value = window.location.pathname;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    /* Basic client-side validation */
+    var nameEl  = form.querySelector('[name="name"]');
+    var emailEl = form.querySelector('[name="email"]');
+    var valid   = true;
+    [nameEl, emailEl].forEach(function (el) {
+      if (!el || !el.value.trim()) {
+        if (el) el.classList.add('is-invalid');
+        valid = false;
+      } else {
+        el.classList.remove('is-invalid');
+      }
+    });
+    if (!valid) return;
+
+    var btn      = document.getElementById('ucfSubmitBtn');
+    var btnText  = btn.querySelector('.ucf-btn-text');
+    var btnLoad  = btn.querySelector('.ucf-btn-loading');
+
+    btn.disabled        = true;
+    btnText.style.display = 'none';
+    btnLoad.style.display = '';
+
+    /* Build payload */
+    var payload = {};
+    new FormData(form).forEach(function (v, k) { payload[k] = v; });
+
+    fetch('/api/submit-inquiry', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res.success) {
+        window.location.href = '/thank-you';
+      } else {
+        alert(res.error || 'Something went wrong. Please try again.');
+        btn.disabled        = false;
+        btnText.style.display = '';
+        btnLoad.style.display = 'none';
+      }
+    })
+    .catch(function () {
+      alert('Network error. Please check your connection and try again.');
+      btn.disabled        = false;
+      btnText.style.display = '';
+      btnLoad.style.display = 'none';
+    });
+  });
+}());
+</script>

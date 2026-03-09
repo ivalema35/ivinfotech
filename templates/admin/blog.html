@@ -1,0 +1,424 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block head_extra %}
+    <!-- TinyMCE CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        /* ── Page layout ─────────────────────────────────────── */
+        .page-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .page-header-bar h1 { font-size:20px; font-weight:700; color:var(--text-dark); margin:0; }
+        .page-header-bar p  { font-size:13px; color:var(--text-muted); margin:2px 0 0; }
+
+        /* ── Buttons ─────────────────────────────────────────── */
+        .btn-add { display:inline-flex; align-items:center; gap:7px; padding:9px 20px; background:var(--primary-blue); color:#fff; border-radius:var(--radius-sm); font-size:13.5px; font-weight:600; border:none; cursor:pointer; transition:background .2s; text-decoration:none; }
+        .btn-add:hover { background:var(--primary-dark); color:#fff; }
+        .btn-edit { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:var(--primary-light); color:var(--primary-blue); border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; text-decoration:none; }
+        .btn-edit:hover { background:#dce5fd; }
+        .btn-delete { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; }
+        .btn-delete:hover { background:#fca5a5; }
+        .btn-save { background:var(--primary-blue); color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; transition:background .18s; }
+        .btn-save:hover { background:var(--primary-dark); }
+        .btn-cancel-md { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); border-radius:var(--radius-sm); padding:9px 20px; font-size:13.5px; font-family:'Poppins',sans-serif; cursor:pointer; text-decoration:none; display:inline-block; }
+        .btn-danger-confirm { background:#dc2626; color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; }
+        .btn-danger-confirm:hover { background:#b91c1c; }
+
+        /* ── Form / modal ────────────────────────────────────── */
+        .modal-content { border-radius:var(--radius); border:none; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+        .modal-header  { background:linear-gradient(135deg,var(--primary-blue),var(--primary-dark)); border-radius:var(--radius) var(--radius) 0 0; padding:20px 24px; }
+        .modal-header .modal-title { color:#fff; font-weight:700; font-size:16px; }
+        .modal-header .btn-close { filter:invert(1); opacity:.8; }
+        .modal-body   { padding:24px; }
+        .modal-footer { padding:16px 24px; border-top:1px solid var(--border); }
+        .modal-danger .modal-header { background:linear-gradient(135deg,#dc2626,#b91c1c); }
+        .form-label { font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:5px; }
+        .form-control, .form-select { border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 12px; font-size:13.5px; font-family:'Poppins',sans-serif; color:var(--text-dark); transition:border-color .18s, box-shadow .18s; }
+        .form-control:focus, .form-select:focus { border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(47,85,244,.12); outline:none; }
+        textarea.form-control { resize:vertical; min-height:90px; }
+        .help-text { font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+        .tgl-wrap { display:flex; align-items:center; gap:8px; margin-top:4px; }
+        .tgl-wrap input[type=checkbox] { width:17px; height:17px; accent-color:var(--primary-blue); cursor:pointer; }
+        .tgl-wrap label { font-size:13px; color:var(--text-mid); margin:0; cursor:pointer; }
+
+        /* Full-page editor layout */
+        .editor-wrapper { max-width:900px; margin:0 auto; }
+        .editor-card { background:#fff; border-radius:var(--radius); border:1px solid var(--border); padding:30px 32px; margin-bottom:24px; }
+        .editor-card h2 { font-size:14px; font-weight:700; color:var(--text-dark); margin:0 0 18px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+        .slug-group { position:relative; }
+        .slug-group .slug-prefix { position:absolute; left:0; top:0; bottom:0; display:flex; align-items:center; padding:0 12px; background:var(--bg-table-head); border-right:1px solid var(--border); border-radius:var(--radius-sm) 0 0 var(--radius-sm); font-size:13px; color:var(--text-muted); white-space:nowrap; pointer-events:none; }
+        .slug-group input { padding-left:152px; }
+
+        /* Table styles */
+        .desc-cell { max-width:260px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:var(--text-mid); }
+        .cover-thumb { width:44px; height:32px; object-fit:cover; border-radius:6px; border:1px solid var(--border); }
+        .cover-placeholder { width:44px; height:32px; background:var(--bg-body); border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center; color:var(--text-muted); font-size:14px; }
+        .empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); }
+        .empty-state i { font-size:48px; margin-bottom:16px; opacity:.4; display:block; }
+        .empty-state p { font-size:14px; margin:0; }
+
+        /* TinyMCE wrapper hint */
+        .tinymce-hint { font-size:12px; color:var(--text-muted); margin-top:6px; background:var(--bg-body); border-radius:6px; padding:8px 12px; border-left:3px solid var(--primary-blue); }
+        .tinymce-hint strong { color:var(--primary-blue); }
+
+        /* Image preview */
+        #imgPreview { max-width:100%; max-height:160px; border-radius:8px; margin-top:10px; display:none; border:1px solid var(--border); }
+        #editImgPreview { max-width:100%; max-height:160px; border-radius:8px; margin-top:10px; border:1px solid var(--border); }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}Blog Posts{% endblock %}
+{% block topbar_sub %}Create, edit, and publish articles to the public blog.{% endblock %}
+
+{% block content %}
+
+    <!-- ── List view ─────────────────────────────────────────── -->
+    {% if not _mode and not _edit_post is defined %}
+
+        <div class="page-header-bar">
+            <div>
+                <h1><i class="fa-solid fa-pen-nib" style="color:var(--primary-blue);margin-right:8px;"></i>Blog Posts</h1>
+                <p>{{ posts | length }} post{{ 's' if posts | length != 1 }} in the database</p>
+            </div>
+            <a href="{{ url_for('admin_blog_add') }}" class="btn-add">
+                <i class="fa-solid fa-plus"></i> New Post
+            </a>
+        </div>
+
+        <div class="panel">
+            <div class="panel__header">
+                <h2 class="panel__title"><i class="fa-solid fa-list"></i> All Blog Posts</h2>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <a href="{{ url_for('blog') }}" target="_blank" class="btn-edit" style="text-decoration:none;">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> View Blog
+                    </a>
+                    <span class="panel__badge">{{ posts | length }} total</span>
+                </div>
+            </div>
+            <div class="table-wrap">
+                {% if posts %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Author</th>
+                            <th>Read Time</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in posts %}
+                    <tr>
+                        <td style="color:var(--text-muted);font-size:12px;">{{ loop.index }}</td>
+                        <td>
+                            {% if post.featured_image %}
+                            <img src="{{ post.featured_image }}" alt="{{ post.title }}" class="cover-thumb">
+                            {% else %}
+                            <span class="cover-placeholder"><i class="fa-regular fa-image"></i></span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div style="max-width:240px;">
+                                <strong style="font-size:13.5px;display:block;">{{ post.title }}</strong>
+                                <span style="font-size:11px;color:var(--text-muted);">/blog/{{ post.slug }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="pos-tag pos-tag--blue" style="white-space:nowrap;">{{ post.category }}</span>
+                        </td>
+                        <td style="font-size:13px;color:var(--text-mid);">{{ post.author_name }}</td>
+                        <td style="font-size:13px;color:var(--text-mid);">{{ post.read_time or '—' }}</td>
+                        <td>
+                            {% if post.is_published %}
+                            <span class="status-pill status-pill--green">Published</span>
+                            {% else %}
+                            <span class="status-pill status-pill--red">Draft</span>
+                            {% endif %}
+                        </td>
+                        <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                            {{ post.created_at.strftime('%b %d, %Y') if post.created_at else '—' }}
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:6px;">
+                                <a href="{{ url_for('admin_blog_edit', pid=post.id) }}" class="btn-edit">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </a>
+                                <button class="btn-delete"
+                                    onclick="openDeleteModal({{ post.id }}, '{{ post.title | replace("'", "\\'") }}')">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fa-regular fa-newspaper"></i>
+                    <p>No blog posts yet. Click <strong>New Post</strong> to get started.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    {% else %}
+
+    {# ── Add / Edit Form ────────────────────────────────────── #}
+    {% set is_edit = (_edit_post is defined and _edit_post) %}
+    {% set p = _edit_post if is_edit else None %}
+
+        <div class="page-header-bar">
+            <div>
+                <h1>
+                    <i class="fa-solid fa-{{ 'pen' if is_edit else 'plus-circle' }}" style="color:var(--primary-blue);margin-right:8px;"></i>
+                    {{ 'Edit Post' if is_edit else 'New Blog Post' }}
+                </h1>
+                <p>{{ 'Update the article details below.' if is_edit else 'Fill in the details and write your article below.' }}</p>
+            </div>
+            <a href="{{ url_for('admin_blog') }}" class="btn-cancel-md">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Posts
+            </a>
+        </div>
+
+        <form action="{{ url_for('admin_blog_edit', pid=p.id) if is_edit else url_for('admin_blog_add') }}"
+              method="POST" enctype="multipart/form-data" id="blogForm">
+
+            <div class="editor-wrapper">
+
+                <!-- Card 1: Core fields -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-circle-info" style="color:var(--primary-blue);"></i> Post Details</h2>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Title <span style="color:#ef4444">*</span></label>
+                            <input type="text" class="form-control" name="title" id="postTitle"
+                                   value="{{ p.title if is_edit else '' }}"
+                                   placeholder="e.g. 10 Benefits of Custom Laravel Development" required maxlength="255">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Slug <span style="color:#ef4444">*</span></label>
+                            <div class="slug-group">
+                                <span class="slug-prefix">/blog/</span>
+                                <input type="text" class="form-control" name="slug" id="postSlug"
+                                       value="{{ p.slug if is_edit else '' }}"
+                                       placeholder="auto-generated-from-title" required maxlength="255">
+                            </div>
+                            <p class="help-text">URL-friendly identifier. Auto-generated from title — edit if needed.</p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Category <span style="color:#ef4444">*</span></label>
+                            <select class="form-select" name="category" required>
+                                {% set cats = ['Web Development','Mobile Apps','AI & Automation','Digital Marketing','UI/UX Design','General'] %}
+                                {% for c in cats %}
+                                <option value="{{ c }}" {{ 'selected' if is_edit and p.category == c else '' }}>{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Read Time</label>
+                            <input type="text" class="form-control" name="read_time"
+                                   value="{{ p.read_time if is_edit else '' }}"
+                                   placeholder="e.g. 5 min read" maxlength="40">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Publish</label>
+                            <div class="tgl-wrap" style="margin-top:8px;">
+                                <input type="checkbox" id="chkPublish" name="is_published"
+                                       {{ 'checked' if is_edit and p.is_published else '' }}>
+                                <label for="chkPublish">Published (live on site)</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Author Name</label>
+                            <input type="text" class="form-control" name="author_name"
+                                   value="{{ p.author_name if is_edit else 'IV Infotech' }}"
+                                   placeholder="e.g. Priya Sharma" maxlength="120">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Author Role / Title</label>
+                            <input type="text" class="form-control" name="author_role"
+                                   value="{{ p.author_role if is_edit else '' }}"
+                                   placeholder="e.g. Senior Developer" maxlength="120">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Media -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-image" style="color:var(--primary-blue);"></i> Featured Image</h2>
+                    {% if is_edit and p.featured_image %}
+                    <img id="editImgPreview" src="{{ p.featured_image }}" alt="Current cover">
+                    <p class="help-text" style="margin-top:8px;">Upload a new image below to replace the current one.</p>
+                    {% endif %}
+                    <input type="file" class="form-control mt-2" name="featured_image" id="imgInput"
+                           accept=".png,.jpg,.jpeg,.gif,.webp">
+                    <img id="imgPreview" alt="Preview">
+                    <p class="help-text">Recommended: 1200×630 px, JPG/PNG/WebP. Leave blank to keep the current image.</p>
+                </div>
+
+                <!-- Card 3: Excerpt -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-quote-left" style="color:var(--primary-blue);"></i> Excerpt</h2>
+                    <textarea class="form-control" name="excerpt" rows="3"
+                              placeholder="A short 1–2 sentence summary shown on the blog feed cards.">{{ p.excerpt if is_edit else '' }}</textarea>
+                    <p class="help-text">Displayed on the blog listing page. Keep it under 180 characters.</p>
+                </div>
+
+                <!-- Card 4: Article content -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-file-pen" style="color:var(--primary-blue);"></i> Article Content</h2>
+                    <div class="tinymce-hint">
+                        <strong>Tip:</strong> Use <strong>Heading 2</strong> (Format &rarr; Headings &rarr; Heading 2) for main sections.
+                        The Table of Contents on the public page is auto-generated from every <code>&lt;h2&gt;</code> in your article.
+                    </div>
+                    <textarea name="content" id="articleContent" class="form-control mt-3"
+                              style="min-height:400px;">{{ p.content | safe if is_edit else '' }}</textarea>
+                </div>
+
+                <!-- Save bar -->
+                <div style="display:flex;justify-content:flex-end;gap:12px;margin-bottom:40px;">
+                    <a href="{{ url_for('admin_blog') }}" class="btn-cancel-md">Cancel</a>
+                    <button type="submit" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>
+                        {{ 'Update Post' if is_edit else 'Create Post' }}
+                    </button>
+                </div>
+
+            </div><!-- /.editor-wrapper -->
+        </form>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block body_extras %}
+
+    {% if not _mode and not _edit_post is defined %}
+    <!-- ── Delete Confirmation Modal ─────────────────────────── -->
+    <div class="modal fade modal-danger" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation me-2"></i>Delete Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size:14px;color:var(--text-mid);margin:0;">
+                        Are you sure you want to permanently delete
+                        <strong id="deletePostName" style="color:var(--text-dark);"></strong>?
+                        This action cannot be undone.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <form id="deleteForm" method="POST">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-danger-confirm ms-2">
+                            <i class="fa-solid fa-trash me-1"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openDeleteModal(id, title) {
+        document.getElementById('deletePostName').textContent = title;
+        document.getElementById('deleteForm').action = '/admin/blog/delete/' + id;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+    </script>
+    {% endif %}
+
+    {% if _mode == 'add' or (_edit_post is defined and _edit_post) %}
+    <script>
+    // ── Auto-slug from title ──────────────────────────────────
+    (function () {
+        var titleInput = document.getElementById('postTitle');
+        var slugInput  = document.getElementById('postSlug');
+        var userEdited = {{ 'true' if (_edit_post is defined and _edit_post) else 'false' }};
+
+        function slugify(str) {
+            return str.toLowerCase()
+                      .trim()
+                      .replace(/[^\w\s-]/g, '')
+                      .replace(/[\s_]+/g, '-')
+                      .replace(/-+/g, '-');
+        }
+
+        titleInput.addEventListener('input', function () {
+            if (!userEdited) {
+                slugInput.value = slugify(this.value);
+            }
+        });
+
+        slugInput.addEventListener('input', function () {
+            userEdited = true;
+        });
+    })();
+
+    // ── Featured image preview ───────────────────────────────
+    document.getElementById('imgInput').addEventListener('change', function () {
+        var preview = document.getElementById('imgPreview');
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // ── TinyMCE initialisation ────────────────────────────────
+    tinymce.init({
+        selector: '#articleContent',
+        height: 550,
+        menubar: 'file edit view insert format tools',
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'wordcount', 'codesample',
+            'blockquote'
+        ],
+        toolbar:
+            'undo redo | blocks | bold italic underline strikethrough | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | link image media | ' +
+            'blockquote codesample code | removeformat | fullscreen',
+        block_formats: 'Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Pre=pre',
+        content_style: [
+            'body { font-family: Inter, sans-serif; font-size: 15px; line-height: 1.8; color: #374151; padding: 16px; }',
+            'h2 { font-family: Poppins, sans-serif; font-weight: 700; color: #0b1c3c; border-bottom: 2px solid #f0f2f8; padding-bottom: 6px; }',
+            'h3 { font-family: Poppins, sans-serif; font-weight: 700; color: #0b1c3c; }',
+            'pre { background: #0f172a; color: #e2e8f0; padding: 16px; border-radius: 8px; font-size: 0.9em; }',
+            'blockquote { border-left: 4px solid #2F55F4; background: #f9fbfd; padding: 16px 20px; border-radius: 0 8px 8px 0; font-style: italic; color: #0b1c3c; }'
+        ].join(' '),
+        skin: 'oxide',
+        promotion: false,
+        branding: false,
+        resize: true,
+        statusbar: true,
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save();
+            });
+        }
+    });
+    </script>
+    {% endif %}
+
+{% endblock %}

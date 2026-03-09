@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+<!-- SEO -->
+  <title>{{ portfolio.title }} Case Study | IV Infotech Portfolio</title>
+  <meta name="description" content="{{ portfolio.hero_description | striptags | truncate(160) }}" />
+  <meta name="keywords" content="{{ portfolio.title }}, case study, IV Infotech portfolio, {{ portfolio.category }} development, {{ portfolio.industry }}" />
+  <meta name="author" content="IV Infotech" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.ivinfotech.com/portfolio/{{ portfolio.slug }}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.ivinfotech.com/portfolio/{{ portfolio.slug }}" />
+  <meta property="og:title" content="{{ portfolio.title }} — Case Study | IV Infotech" />
+  <meta property="og:description" content="{{ portfolio.hero_outcome }} — {{ portfolio.hero_description | striptags | truncate(120) }}" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="IV Infotech" />
+
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Lottie Player (required for preloader animation) -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <!-- ═══ GLOBAL CSS (loaded FIRST) ═══ -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+
+  <!-- ═══ PAGE-SPECIFIC SCOPED CSS (loaded AFTER global) ═══ -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio-details.min.css') }}" />
+
+  <!-- ═══ Project theme colors — CSS variables only (postMessage replaces this block) ═══ -->
+  <style id="ivb-theme-vars">
+    {%- set _p  = portfolio.primary_color   or '#2F55F4' -%}
+    {%- set _s  = portfolio.secondary_color or '#10B981' -%}
+    {%- set _pr = _p | hex_rgb -%}
+    {%- set _sr = _s | hex_rgb -%}
+    /* Base is always white for a premium, predictable SaaS aesthetic */
+    :root {
+      --pf-bg:           #ffffff;
+      --pf-text-main:    #0b1c3c;
+      --pf-text-muted:   #4b5563;
+      --pf-card-bg:      #ffffff;
+      --pf-card-border:  rgba(0,0,0,0.07);
+      /* Admin-defined accent colors */
+      --pf-primary:      {{ _p }};
+      --pf-secondary:    {{ _s }};
+      /* Derived soft tints for badges/tags */
+      --pf-primary-soft:   color-mix(in srgb, {{ _p }} 8%, transparent);
+      --pf-primary-border: color-mix(in srgb, {{ _p }} 20%, transparent);
+    }
+    /* ── Override every legacy pink/dark variable from portfolio-details.min.css ── */
+    #portfolio-view-page {
+      --brand:           {{ _p }};
+      --brand-rgb:       {{ _pr }};
+      --brand-2:         {{ _s }};
+      --brand-2-rgb:     {{ _sr }};
+      --brand-tint:      color-mix(in srgb, {{ _p }} 18%, #ffffff);
+      --brand-tint-rgb:  {{ _pr }};
+      --brand-light:     {{ _p }};
+      --brand-vivid:     {{ _p }};
+      --brand-comp:      {{ _s }};
+      --belzzo-teal:     {{ _s }};
+      --belzzo-accent:   {{ _p }};
+      --belzzo-pink-deep:{{ _p }};
+      --belzzo-light-bg: color-mix(in srgb, {{ _p }} 12%, #ffffff);
+      --case-study-primary:      {{ _p }};
+      --case-study-primary-soft: rgba({{ _pr }}, 0.08);
+      /* Section ink / muted text / card surface — used widely in min.css */
+      --case-study-ink:     #0b1c3c;
+      --case-study-muted:   #4b5563;
+      --case-study-surface: #f8fafc;
+      --wf-accent-1:  {{ _p }};
+      --wf-accent-2:  {{ _s }};
+      /* Background cascade — always white */
+      --dark-bg:      #ffffff;
+      --dark-bg-2:    #f8fafc;
+      --dark-bg-deep: #f1f5f9;
+      --bg-warm-1:    #fafafa;
+      --bg-warm-2:    #f5f5f5;
+      --hero-gradient:linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+      /* backward-compat aliases */
+      --portfolio-theme:     {{ _p }};
+      --portfolio-primary:   {{ _p }};
+      --portfolio-secondary: {{ _s }};
+      --portfolio-bg:        #ffffff;
+    }
+  </style>
+
+  <!-- ═══ Immutable theme overrides — structural !important rules (never replaced by postMessage) ═══ -->
+  <style id="ivb-overrides">
+    /* 1. Base background & text ─────────────────────────────────────────────── */
+    body, #portfolio-view-page,
+    .belzzo-background, .belzzo-challenge-section,
+    .belzzo-solution-section, .case-study-section {
+      background-color: var(--pf-bg) !important;
+      color: var(--pf-text-main) !important;
+    }
+
+    /* 1b. Global heading & paragraph contrast ──────────────────────────────── */
+    #portfolio-view-page h1, #portfolio-view-page h2,
+    #portfolio-view-page h3, #portfolio-view-page h4,
+    #portfolio-view-page h5, #portfolio-view-page h6,
+    #portfolio-view-page .belzzo-hero-lead,
+    #portfolio-view-page .belzzo-story-intro {
+      color: var(--pf-text-main) !important;
+    }
+    #portfolio-view-page p { color: var(--pf-text-muted) !important; }
+
+    /* 1c. Workflow section — permanently locked to dark/space aesthetic ───── */
+    /* The 3D canvas + star-field require a deep-space dark context regardless  */
+    /* of the project's accent colors. Scoped strictly; nothing else affected.  */
+    /* NOTE: background shorthand (not just background-color) clears any        */
+    /* background-image gradient set by var(--wf-bg) in the scoped CSS.         */
+    #portfolio-view-page .belzzo-workflow-section {
+      background: #050a15 !important;
+      background-image: none !important;
+      color: #ffffff !important;
+      isolation: isolate;
+    }
+    #portfolio-view-page .belzzo-workflow-section h1,
+    #portfolio-view-page .belzzo-workflow-section h2,
+    #portfolio-view-page .belzzo-workflow-section h3,
+    #portfolio-view-page .belzzo-workflow-section h4,
+    #portfolio-view-page .belzzo-workflow-section h5,
+    #portfolio-view-page .belzzo-workflow-section h6,
+    #portfolio-view-page .belzzo-workflow-section p,
+    #portfolio-view-page .belzzo-workflow-section .wf-workflow-title h3,
+    #portfolio-view-page .belzzo-workflow-section .wf-workflow-title p,
+    #portfolio-view-page .belzzo-workflow-section .wf-hud {
+      color: #ffffff !important;
+    }
+
+    /* 2. Kill text gradients → solid primary color ──────────────────────────── */
+    .text-gradient-primary, .belzzo-hero-title span {
+      background: none !important;
+      -webkit-text-fill-color: var(--pf-primary) !important;
+      color: var(--pf-primary) !important;
+    }
+
+    /* 3. Kill pink glows → primary-tinted radial gradients ──────────────────── */
+    .belzzo-hero::before, .belzzo-hero::after,
+    .belzzo-hero-bg, .belzzo-background-glow,
+    .belzzo-challenge-glow, .belzzo-solution-glow,
+    .bz-pslider-glow {
+      background: radial-gradient(circle, color-mix(in srgb, var(--pf-primary) 8%, transparent) 0%, transparent 70%) !important;
+    }
+
+    /* 4. Category pills, tags, badges ──────────────────────────────────────── */
+    .belzzo-category-pill, .bz-mtag, .belzzo-module-tag {
+      background-color: color-mix(in srgb, var(--pf-primary) 10%, transparent) !important;
+      color: var(--pf-primary) !important;
+      border: 1px solid color-mix(in srgb, var(--pf-primary) 20%, transparent) !important;
+    }
+
+    /* 5. Accent bars & dividers ─────────────────────────────────────────────── */
+    .belzzo-story-accent-bar, .belzzo-process-line, .belzzo-header-underline {
+      background-color: var(--pf-primary) !important;
+    }
+
+    /* 6. Buttons — use #portfolio-view-page scope to beat min.css specificity ── */
+    /* min.css: #portfolio-view-page .belzzo-btn-primary{background:var(--navy)!important}
+       Since --navy resolves to #ffffff on white base, button bg becomes white → white
+       text is invisible. We must override at the SAME specificity level or higher.       */
+    #portfolio-view-page .belzzo-btn-primary {
+      background: var(--pf-primary) !important;
+      background-image: none !important;
+      border-color: var(--pf-primary) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px color-mix(in srgb, var(--pf-primary) 30%, transparent) !important;
+    }
+    #portfolio-view-page .belzzo-btn-primary:hover {
+      background: color-mix(in srgb, var(--pf-primary) 85%, #000000) !important;
+      background-image: none !important;
+    }
+    #portfolio-view-page .belzzo-btn-outline {
+      border-color: var(--pf-primary) !important;
+      color: var(--pf-primary) !important;
+      background: #ffffff !important;
+    }
+    #portfolio-view-page .belzzo-btn-outline:hover {
+      background: var(--pf-primary) !important;
+      color: #ffffff !important;
+    }
+
+    /* 7. Typography polish ──────────────────────────────────────────────────── */
+    .belzzo-hero-title {
+      font-family: 'Poppins', sans-serif !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.02em !important;
+    }
+    .belzzo-hero-lead {
+      font-size: 1.15rem !important;
+      color: var(--pf-text-muted) !important;
+      line-height: 1.7 !important;
+    }
+
+    /* 8. Secondary color — icons & decorative elements ─────────────────────── */
+    .belzzo-trust-item svg,
+    .belzzo-feature-icon svg,
+    .belzzo-stack-icon svg {
+      color: var(--pf-secondary) !important;
+    }
+    .belzzo-deco-circle {
+      background-color: var(--pf-secondary) !important;
+    }
+
+    /* 8b. Feature cards & solution cards — ensure white bg + dark text ────── */
+    #portfolio-view-page .belzzo-feature-card,
+    #portfolio-view-page .belzzo-process-card,
+    #portfolio-view-page .challenge-card {
+      background: #ffffff !important;
+      border: 1px solid #e5e7eb !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04) !important;
+    }
+    #portfolio-view-page .belzzo-feature-card h4,
+    #portfolio-view-page .belzzo-process-card h3,
+    #portfolio-view-page .belzzo-feature-benefit span {
+      color: #0b1c3c !important;
+    }
+    #portfolio-view-page .belzzo-feature-card p,
+    #portfolio-view-page .belzzo-process-card p {
+      color: #4b5563 !important;
+    }
+
+    /* 9. KPI cards — de-pinked gradient border ──────────────────────────────── */
+    .belzzo-kpi-card {
+      background: linear-gradient(135deg,
+        color-mix(in srgb, var(--pf-bg) 97%, #ffffff) 0%,
+        var(--pf-bg) 100%) !important;
+      border-color: color-mix(in srgb, var(--pf-primary) 15%, transparent) !important;
+    }
+
+    /* 10. Story card — de-pinked border ─────────────────────────────────────── */
+    .belzzo-story {
+      border-color: color-mix(in srgb, var(--pf-primary) 12%, transparent) !important;
+    }
+
+    /* 11. Remaining scoped overrides (match specificity of min.css rules) ────── */
+    #portfolio-view-page .belzzo-process-node        { background: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-stack-num           { color: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-eyebrow             { color: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-outcome-box         { border-left: 4px solid var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-result-metric       { color: var(--pf-primary) !important; }
+    #portfolio-view-page .bz-gtab--active            { color: var(--pf-primary) !important; border-bottom-color: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-module-tag,
+    #portfolio-view-page .belzzo-stack-icon svg      { color: var(--pf-primary) !important; stroke: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-kpi-value           { color: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-snapshot-gradient-bar { background: linear-gradient(90deg, var(--pf-primary), color-mix(in srgb, var(--pf-primary) 30%, #ffffff)) !important; }
+    #portfolio-view-page .bz-mseverity--critical     { color: var(--pf-primary) !important; }
+    #portfolio-view-page .belzzo-deliverable         { background: color-mix(in srgb, var(--pf-secondary) 15%, transparent) !important; color: var(--pf-secondary) !important; border-color: color-mix(in srgb, var(--pf-secondary) 30%, transparent) !important; }
+    #portfolio-view-page .belzzo-result-card         { border-top-color: var(--pf-secondary) !important; }
+
+    /* 12. Challenge cards hover lift ─────────────────────────────────────────── */
+    #portfolio-view-page .challenge-card:hover {
+      transform: translateY(-6px) !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.10) !important;
+    }
+
+    /* 13. Features section — kill dark navy !important from min.css ────────────
+       min.css (at multiple positions, last wins):
+         #portfolio-view-page .belzzo-features-section {
+           background: var(--navy) !important;  ← same specificity
+           background-image: radial-gradient(circle,var(--navy) 0%,var(--dark-bg-deep)
+                             100%) !important;
+         }
+       --navy=var(--dark-bg)=#ffffff but --dark-bg-deep=#f1f5f9 (from our override)
+       → gradient from white to light-grey = grey section on screen.
+       background-image renders ON TOP of background-color so both must be cleared.  */
+    #portfolio-view-page .belzzo-features-section {
+      background: #ffffff !important;
+      background-image: none !important;
+    }
+    /* Header text was forced white for dark-mode; flip to dark */
+    #portfolio-view-page .belzzo-features-header h3 {
+      color: #0b1c3c !important;
+    }
+    #portfolio-view-page .belzzo-features-header p {
+      color: #4b5563 !important;
+    }
+    /* Cards inside were glass-morphic (near-transparent on dark bg) */
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-card {
+      background: #ffffff !important;
+      background-image: none !important;
+      border: 1px solid #e5e7eb !important;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-card h4 {
+      color: #0b1c3c !important;
+    }
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-card p {
+      color: #4b5563 !important;
+    }
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-benefit span:last-child {
+      color: #4b5563 !important;
+    }
+    /* Icon background: transparent-white looks invisible on white — use primary tint */
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-icon {
+      background: color-mix(in srgb, var(--pf-primary) 10%, transparent) !important;
+      border: 1px solid color-mix(in srgb, var(--pf-primary) 20%, transparent) !important;
+      color: var(--pf-primary) !important;
+    }
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-card:hover .belzzo-feature-icon {
+      background: color-mix(in srgb, var(--pf-primary) 20%, transparent) !important;
+    }
+    #portfolio-view-page .belzzo-features-section .belzzo-feature-card:hover {
+      background: #ffffff !important;
+      border-color: color-mix(in srgb, var(--pf-primary) 30%, transparent) !important;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.10) !important;
+      transform: translateY(-8px) !important;
+    }
+
+    /* 14. Workflow viewport — kill light --wf-bg gradient ──────────────────────
+       .wf-viewport covers the full visible area (position:sticky, 100vh-80px).
+       Its background is var(--wf-bg) = radial-gradient(..., var(--dark-bg-deep)...)
+       We overrode --dark-bg-deep to #f1f5f9 for the global white theme, but that
+       makes the workflow viewport render LIGHT GREY instead of dark space.
+       Fix: force viewport (and its containing section) to #050a15 via
+       the same scoped selector the min.css sticky rules use.                       */
+    #portfolio-view-page .belzzo-workflow-section .wf-viewport {
+      background: #050a15 !important;
+      background-image: none !important;
+    }
+  </style>
+
+  <!-- ═══ WORKFLOW SECTION — STICKY & LAYOUT FIXES ═══════════════════════
+       All rules use !important to win over both global CSS (style.css) and
+       the scoped stylesheet (portfolio-details.min.css).
+  ══════════════════════════════════════════════════════════════════════════ -->
+  <style>
+    /* ══════════════════════════════════════════════════════════════════════
+       CRITICAL: Neutralize ALL global scroll-context killers from style.css
+       ══════════════════════════════════════════════════════════════════════
+       style.css line 25: html, body { overflow-x: hidden }
+       Per CSS Overflow spec, overflow-x:hidden on <html> creates a scroll
+       container on the document root. position:sticky inside then sticks
+       relative to <html>'s internal scroll offset (always 0) — the sticky
+       viewport never moves, and the 2400px proxy scrolls past as a dark void.
+
+       Additional killers guarded against:
+       • overflow-y: must stay visible so no Y-axis scroll container forms
+       • height: auto — a fixed height on html/body creates a bounded scroll box
+       • scroll-behavior: auto — smooth-scroll fights rAF-based scroll reads
+       • transform/filter/perspective/backdrop-filter on body/main — each one
+         creates a new compositing layer / containing block in WebKit/Blink,
+         displacing fixed+sticky positioning calculations
+    ══════════════════════════════════════════════════════════════════════ */
+    html {
+      overflow-x: clip    !important;
+      overflow-y: visible !important;
+      height: auto        !important;
+      scroll-behavior: auto !important;
+    }
+    body {
+      overflow-x: clip    !important;
+      overflow-y: visible !important;
+      height: auto        !important;
+      transform:       none !important;
+      filter:          none !important;
+      perspective:     none !important;
+      backdrop-filter: none !important;
+      will-change:     auto !important;
+      contain:         none !important;
+    }
+    /* main wrapper: same stacking-context reset so no compositing trap */
+    main, #portfolio-view-page {
+      transform:       none !important;
+      filter:          none !important;
+      perspective:     none !important;
+      backdrop-filter: none !important;
+      will-change:     auto !important;
+      contain:         none !important;
+    }
+
+    /* ── Keep horizontal overflow clipped on the page wrapper ───────────────
+       html/body are now fully unclipped (overflow:visible) so horizontal
+       overflow protection moves here at the scoped wrapper level instead.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page {
+      margin-top: -80px;
+      overflow-x: clip !important;
+      overflow-y: visible !important;
+    }
+
+    /* ── Fix 2: Prevent section & root from re-trapping sticky ─────────────
+       .belzzo-workflow-section has overflow:clip from the scoped CSS.
+       overflow:clip in CSS Overflow Level 4 does NOT create a scroll container,
+       but Firefox ≤ 115 and some older Chromium builds treat it like hidden.
+       Splitting axes is the safest cross-browser approach for a sticky parent:
+       X is clipped (prevents horizontal content bleed) while Y stays visible
+       (no scroll container is formed on the axis sticky needs to track).
+       .wf-root must also stay visible so it doesn't trap the sticky viewport.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section {
+      overflow-x: clip    !important;
+      overflow-y: visible !important;
+    }
+    #portfolio-view-page .wf-root {
+      overflow: visible !important;
+    }
+
+    /* ── Fix 3: Sticky offset matches actual navbar height ──────────────────
+       Navbar height is 80 px (padding:15px×2 + logo:50px — per style.css).
+       Scoped CSS uses top:70px → 10 px of the viewport hides behind the nav.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-viewport {
+      top: 80px !important;
+      height: calc(100vh - 80px) !important;
+    }
+    @media (max-width: 991px) {
+      #portfolio-view-page .belzzo-workflow-section .wf-viewport {
+        top: 70px !important;
+        height: calc(100svh - 70px) !important;
+      }
+    }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-workflow-section .wf-viewport {
+        top: 60px !important;
+        height: calc(100svh - 60px) !important;
+      }
+    }
+
+    /* ── Fix 4: Remove all CSS containment from the viewport ───────────────
+       The previous fix block accidentally applied "contain: paint style" to
+       .wf-viewport. contain:paint clips painted content to the element border
+       box — this directly prevents 3D cards from orbiting outside the visible
+       bounds (which relies on the overflow:visible override the scoped CSS sets).
+       contain:layout would also kill sticky. Use will-change only.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-viewport {
+      contain: none !important;   /* clear any accidental contain from previous fix */
+      will-change: transform;
+    }
+
+    /* ── Fix 5: Guarantee 3D context chain stays intact ────────────────────
+       Any ancestor that forms a new stacking context (e.g. via will-change,
+       opacity < 1, or filter) flattens transform-style:preserve-3d on children.
+       Explicitly restoring preserve-3d on each node in the chain ensures the
+       translate3d(x, y, vizZ) on .wf-item actually moves in Z-depth.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-viewport,
+    #portfolio-view-page .belzzo-workflow-section .wf-world,
+    #portfolio-view-page .belzzo-workflow-section .wf-item {
+      transform-style: preserve-3d !important;
+    }
+
+    /* ── Fix 6: Stars canvas must sit above atmospheric overlays ────────────
+       Overlays (scanlines/vignette/noise) are at z-index:4 per the visibility
+       fix in the scoped CSS. The canvas inline z-index was 2 → stars painted
+       behind overlays and invisible. Layer order must be:
+       overlays(4) → stars-canvas(5) → wf-world/cards(6) → HUD(8).
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-stars-canvas {
+      z-index: 5 !important;
+    }
+
+    /* ── Fix 7: box-sizing guard for fixed-dimension cards ──────────────────
+       Cards are declared 320 × 460 px with padding:2rem.
+       Ensures border-box so padding doesn't expand the declared size.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-card--demo,
+    #portfolio-view-page .belzzo-workflow-section .wf-item {
+      box-sizing: border-box !important;
+    }
+
+    /* ── Fix 8: Global p override leaking into HUD subtitle ─────────────────
+       style.css forces p { font-size: max(0.95rem, 16px) } globally.
+       Restores the intended 0.92rem for the HUD under-title line.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-workflow-title p {
+      font-size: 0.92rem !important;
+      margin: 0 0 18px !important;
+    }
+
+    /* ── Fix 9: Global min-height on .btn leaking into card interior ────────
+       style.css forces min-height:48px on .btn. Any button inside a card would
+       blow out the fixed-height card layout.
+    ──────────────────────────────────────────────────────────────────────── */
+    #portfolio-view-page .belzzo-workflow-section .wf-card--demo button,
+    #portfolio-view-page .belzzo-workflow-section .wf-card button {
+      min-height: unset !important;
+    }
+  </style>
+</head>
+
+<body>
+    {%- include 'components/preloader.html' %}
+  <!-- Loader -->
+<!-- Global Header -->
+    {%- include 'components/navbar.html' %}
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       PORTFOLIO DETAILS — ALL page content scoped inside this wrapper.
+       CSS is prefixed with #portfolio-view-page so styles cannot leak out.
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <main id="portfolio-view-page">
+
+    <section id="overview" class="belzzo-hero">
+      <div class="belzzo-hero-bg"></div>
+      <div class="container-xxl position-relative">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <div class="belzzo-hero-content">
+              <span class="belzzo-category-pill">
+                <svg class="belzzo-pill-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M4 7h6M7 4v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                {{ portfolio.category | upper }} / {{ portfolio.industry | upper if portfolio.industry else portfolio.category | upper }}
+              </span>
+              
+              <h1 class="belzzo-hero-title" data-ivb="title">{{ portfolio.title }}</h1>
+              
+              <div class="belzzo-outcome-box">
+                <p class="belzzo-outcome-text" data-ivb="hero_outcome">{{ portfolio.hero_outcome }}</p>
+              </div>
+
+              <p class="belzzo-hero-lead" data-ivb="hero_description">{{ portfolio.hero_description }}</p>
+
+              {% if portfolio.get_services() %}
+              <p class="belzzo-services-inline"><strong>Services:</strong>
+                {% for svc in portfolio.get_services() %}{{ svc.title }}{% if not loop.last %} &nbsp;·&nbsp; {% endif %}{% endfor %}
+              </p>
+              {% endif %}
+              
+              <div class="belzzo-kpi-row">
+                {% if portfolio.kpi_1_value %}
+                <div class="belzzo-kpi-card">
+                  <div class="belzzo-kpi-value" data-ivb="kpi_1_value">{{ portfolio.kpi_1_value }}</div>
+                  <div class="belzzo-kpi-label" data-ivb="kpi_1_label">{{ portfolio.kpi_1_label }}</div>
+                </div>
+                {% endif %}
+                {% if portfolio.kpi_2_value %}
+                <div class="belzzo-kpi-card">
+                  <div class="belzzo-kpi-value" data-ivb="kpi_2_value">{{ portfolio.kpi_2_value }}</div>
+                  <div class="belzzo-kpi-label" data-ivb="kpi_2_label">{{ portfolio.kpi_2_label }}</div>
+                </div>
+                {% endif %}
+                {% if portfolio.kpi_3_value %}
+                <div class="belzzo-kpi-card">
+                  <div class="belzzo-kpi-value" data-ivb="kpi_3_value">{{ portfolio.kpi_3_value }}</div>
+                  <div class="belzzo-kpi-label" data-ivb="kpi_3_label">{{ portfolio.kpi_3_label }}</div>
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="belzzo-trust-bar">
+                <span class="belzzo-trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Core Web Vitals
+                </span>
+                <span class="belzzo-trust-sep"></span>
+                <span class="belzzo-trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17l-5-5-4 4-4-7"/></svg>
+                  GA4 Tracking
+                </span>
+                <span class="belzzo-trust-sep"></span>
+                <span class="belzzo-trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                  Secure Payments
+                </span>
+                <span class="belzzo-trust-sep"></span>
+                <span class="belzzo-trust-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  SEO-ready
+                </span>
+              </div>
+
+              <div class="belzzo-hero-cta">
+                <a class="btn belzzo-btn-primary" href="#results">
+                  See Results
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="ms-2">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a class="btn belzzo-btn-outline" href="{{ url_for('portfolio') }}">
+                  All Projects
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="ms-2">
+                    <path d="M10 3h-7v7M3 11l8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-6">
+            <div class="belzzo-hero-visual">
+              <div class="belzzo-visual-frame">
+                <div class="belzzo-device-mockup">
+                  <div class="belzzo-laptop" data-ivb-container="hero_image_web"{% if not portfolio.hero_image_web %} style="display:none"{% endif %}>
+                    <div class="belzzo-laptop-screen">
+                      <img src="{{ portfolio.hero_image_web or '' }}" alt="{{ portfolio.title }} desktop view" class="belzzo-screen-img" data-ivb="hero_image_web" />
+                    </div>
+                  </div>
+                  <div class="belzzo-phone" data-ivb-container="hero_image_app"{% if not portfolio.hero_image_app %} style="display:none"{% endif %}>
+                    <div class="belzzo-phone-screen">
+                      <img src="{{ portfolio.hero_image_app or '' }}" alt="{{ portfolio.title }} mobile view" class="belzzo-screen-img" data-ivb="hero_image_app" />
+                    </div>
+                  </div>
+                </div>
+                
+                {% if portfolio.kpi_1_label %}
+                <div class="belzzo-floating-label belzzo-label-1">
+                  <div class="belzzo-label-dot"></div>
+                  <div class="belzzo-label-text">{{ portfolio.kpi_1_label }}</div>
+                </div>
+                {% endif %}
+                
+                {% if portfolio.kpi_2_label %}
+                <div class="belzzo-floating-label belzzo-label-2">
+                  <div class="belzzo-label-dot"></div>
+                  <div class="belzzo-label-text">{{ portfolio.kpi_2_label }}</div>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="belzzo-background">
+      <div class="belzzo-background-glow"></div>
+      <div class="belzzo-bg-deco belzzo-bg-deco-1"></div>
+      <div class="belzzo-bg-deco belzzo-bg-deco-2"></div>
+      <div class="container-xxl">
+        <div class="belzzo-client-header">
+          <span class="belzzo-eyebrow">ABOUT THE CLIENT</span>
+          <h2>Client Background</h2>
+        </div>
+        
+        <div class="row g-5 align-items-stretch">
+          <div class="col-lg-7">
+            <div class="belzzo-story">
+              <div class="belzzo-story-accent-bar"></div>
+              <p class="belzzo-story-intro belzzo-story-p1" data-ivb="client_story_p1">{{ portfolio.client_story_p1 }}</p>
+              <div class="belzzo-story-sep"></div>
+              <p class="belzzo-story-intro belzzo-story-p2" style="margin-top:0" data-ivb="client_story_p2">{{ portfolio.client_story_p2 }}</p>
+              <div class="belzzo-story-deco">
+                <span class="belzzo-deco-circle belzzo-deco-c1"></span>
+                <span class="belzzo-deco-circle belzzo-deco-c2"></span>
+                <span class="belzzo-deco-circle belzzo-deco-c3"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-5">
+            <div class="belzzo-snapshot-card">
+              <div class="belzzo-snapshot-gradient-bar"></div>
+              <h4 class="belzzo-snapshot-title">Quick Snapshot</h4>
+              <div class="belzzo-snapshot-grid">
+                <div class="belzzo-snapshot-item">
+                  <div class="belzzo-snapshot-item-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M2 5l6-3 6 3v6l-6 3-6-3V5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="belzzo-snapshot-item-content">
+                    <span class="belzzo-snapshot-label">Industry</span>
+                    <span class="belzzo-snapshot-value">{{ portfolio.industry or 'N/A' }}</span>
+                  </div>
+                </div>
+                
+                <div class="belzzo-snapshot-item">
+                  <div class="belzzo-snapshot-item-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M8 4v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="belzzo-snapshot-item-content">
+                    <span class="belzzo-snapshot-label">Market</span>
+                    <span class="belzzo-snapshot-value">{{ portfolio.market or 'N/A' }}</span>
+                  </div>
+                </div>
+                
+                <div class="belzzo-snapshot-item">
+                  <div class="belzzo-snapshot-item-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M14 8l-6 6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M8 14V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="belzzo-snapshot-item-content">
+                    <span class="belzzo-snapshot-label">Goal</span>
+                    <span class="belzzo-snapshot-value">{{ portfolio.goal or 'N/A' }}</span>
+                  </div>
+                </div>
+                
+                <div class="belzzo-snapshot-item">
+                  <div class="belzzo-snapshot-item-icon">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <circle cx="5" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/>
+                      <circle cx="11" cy="11" r="3" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M7 5h7M5 7v7" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  </div>
+                  <div class="belzzo-snapshot-item-content">
+                    <span class="belzzo-snapshot-label">Client</span>
+                    <span class="belzzo-snapshot-value" data-ivb="client_name">{{ portfolio.client_name or 'Confidential' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery" class="case-study-section belzzo-gallery-section">
+      {%- set _gallery = portfolio.get_gallery() %}
+      {%- set _web_imgs = _gallery | selectattr('type','equalto','web') | list %}
+      {%- set _app_imgs = _gallery | selectattr('type','equalto','app') | list %}
+      {%- set _has_web = _web_imgs | length > 0 %}
+      {%- set _has_app = _app_imgs | length > 0 %}
+      <div class="container-xxl">
+
+        <div class="belzzo-gallery-header">
+          <span class="belzzo-eyebrow">GALLERY</span>
+          <h3>Gallery / Screens</h3>
+          <div class="belzzo-header-underline"></div>
+          <p>Key pages and layouts from the {{ portfolio.client_name or portfolio.title }} project.</p>
+        </div>
+
+        <!-- Tab switcher — only show if BOTH web and app images exist -->
+        {% if _has_web and _has_app %}
+        <div class="bz-gallery-tabs" role="tablist" aria-label="Screen categories">
+          <button class="bz-gtab bz-gtab--active" role="tab" id="bz-tab-web"
+                  aria-selected="true" aria-controls="bz-panel-gallery" data-set="web">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Web Screens
+          </button>
+          <button class="bz-gtab" role="tab" id="bz-tab-app"
+                  aria-selected="false" aria-controls="bz-panel-gallery" data-set="app">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            App Screens
+          </button>
+        </div>
+        {% elif _has_app and not _has_web %}
+        <div class="bz-gallery-tabs" role="tablist" aria-label="Screen categories">
+          <button class="bz-gtab bz-gtab--active" role="tab" id="bz-tab-app"
+                  aria-selected="true" aria-controls="bz-panel-gallery" data-set="app">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            App Screens
+          </button>
+        </div>
+        {% endif %}
+
+        <!-- Slider stage -->
+        <div class="bz-pslider-wrap" id="bz-panel-gallery" role="tabpanel">
+          <div class="bz-pslider-glow" aria-hidden="true"></div>
+          <div class="bz-pslider" id="bzPSlider"></div>
+
+          <button class="bz-ps-arrow bz-ps-prev" id="bzPSPrev" aria-label="Previous slide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="bz-ps-arrow bz-ps-next" id="bzPSNext" aria-label="Next slide">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+
+          <div class="bz-ps-dots" id="bzPSDots" role="tablist" aria-label="Select slide"></div>
+        </div>
+      </div>
+
+      <!-- Lightbox -->
+      <div class="belzzo-lightbox" aria-hidden="true">
+        <div class="belzzo-lightbox-backdrop"></div>
+        <div class="belzzo-lightbox-content" role="dialog" aria-modal="true" aria-label="Gallery viewer">
+          <button class="belzzo-lightbox-close" type="button" aria-label="Close">&times;</button>
+          <button class="belzzo-lightbox-prev" type="button" aria-label="Previous">&#10094;</button>
+          <img class="belzzo-lightbox-image" alt="" />
+          <button class="belzzo-lightbox-next" type="button" aria-label="Next">&#10095;</button>
+          <div class="belzzo-lightbox-counter">1 / 3</div>
+          <div class="belzzo-lightbox-caption"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="challenge" class="belzzo-challenge-section">
+      <div class="belzzo-challenge-glow"></div>
+      <div class="container-xxl">
+
+        <div class="belzzo-challenge-header">
+          <span class="belzzo-eyebrow">THE SITUATION</span>
+          <h3>Challenge / Problem</h3>
+          <p class="belzzo-challenge-subtitle">{{ portfolio.client_name or 'The client' }} faced critical gaps that were directly limiting growth and customer trust.</p>
+        </div>
+
+        <!-- Challenge Cards Grid -->
+        <div class="row g-4 mt-2">
+          {% for ch in portfolio.get_challenges() %}
+          <div class="col-md-6 col-lg-4">
+            <div class="challenge-card" style="background:var(--pf-card-bg);border:1px solid var(--pf-card-border);border-radius:16px;padding:32px;height:100%;box-shadow:0 10px 30px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="icon-box" style="width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--pf-secondary) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--pf-secondary);font-size:1.2rem;flex-shrink:0;">
+                  {% if ch.icon and ch.icon.startswith('fa-') %}<i class="{{ ch.icon }}"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}
+                </div>
+                <span class="badge" style="background:color-mix(in srgb,var(--pf-primary) 15%,transparent);color:var(--pf-primary);font-size:0.75rem;font-weight:600;padding:5px 10px;border-radius:6px;">{{ ch.tag }}</span>
+              </div>
+              <h4 style="font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--pf-text-main);line-height:1.4;">{{ ch.title }}</h4>
+              <p style="font-size:0.93rem;color:var(--pf-text-muted);margin-bottom:18px;line-height:1.65;">{{ ch.desc }}</p>
+              {% if ch.impact %}
+              <div style="border-top:1px dashed var(--pf-card-border);padding-top:16px;">
+                <strong style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--pf-primary);">Impact</strong>
+                <p style="font-size:0.9rem;margin-top:6px;margin-bottom:0;color:var(--pf-text-main);">{{ ch.impact }}</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div><!-- /challenge cards grid -->
+      </div>
+    </section>
+
+    <section id="solution" class="belzzo-solution-section">
+      <div class="belzzo-solution-glow"></div>
+      <div class="container-xxl">
+        <div class="belzzo-solution-header">
+          <span class="belzzo-eyebrow">OUR APPROACH</span>
+          <h2>Solution &amp; Approach</h2>
+          <p class="belzzo-solution-subtitle">{{ portfolio.hero_description | truncate(120) }}</p>
+        </div>
+        <div class="belzzo-process-timeline">
+          {% for step in portfolio.get_solution_steps() %}
+          <div class="belzzo-process-step" data-step="{{ loop.index }}">
+            <div class="belzzo-process-node-wrap">
+              <div class="belzzo-process-node">{{ '%02d' % loop.index }}</div>
+              {% if not loop.last %}<div class="belzzo-process-line"></div>{% endif %}
+            </div>
+            <div class="belzzo-process-card">
+              <span class="belzzo-module-tag">{{ step.tag }}</span>
+              <h3>{{ step.title }}</h3>
+              <ul class="belzzo-module-list">
+                {% for pt in step.points %}<li>{{ pt }}</li>{% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="case-study-section belzzo-services-section">
+      <div class="container-xxl">
+        <div class="belzzo-services-header">
+          <span class="belzzo-eyebrow">WHAT WE DELIVERED</span>
+          <h3>Services Delivered</h3>
+          <div class="belzzo-header-underline"></div>
+          <p>A comprehensive solution tailored for {{ portfolio.client_name or 'the client' }}.</p>
+        </div>
+        <div class="belzzo-delivery-stack">
+          {% for svc in portfolio.get_services() %}
+          <div class="belzzo-stack-item" data-service="{{ loop.index }}">
+            <span class="belzzo-stack-num">{{ svc.num or '%02d' % loop.index }}</span>
+            <div class="belzzo-stack-icon">
+              {% if svc.icon_svg %}
+              <i class="{{ svc.icon_svg }}" style="font-size:22px;"></i>
+              {% else %}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 11l3 3L22 4"/></svg>
+              {% endif %}
+            </div>
+            <div class="belzzo-stack-body">
+              <h4>{{ svc.title }}</h4>
+              <p>{{ svc.desc }}</p>
+            </div>
+            <div class="belzzo-stack-tags">
+              {% for d in svc.deliverables %}<span class="belzzo-deliverable">{{ d }}</span>{% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="case-study-section belzzo-features-section">
+      <div class="container-xxl">
+        <div class="belzzo-features-header">
+          <span class="belzzo-eyebrow">KEY CAPABILITIES</span>
+          <h3>Built-in Features</h3>
+          <div class="belzzo-header-underline"></div>
+          <p>Drive engagement and conversions with smart, battle-tested functionality.</p>
+        </div>
+        {%- set feats = portfolio.get_features() %}
+        <div class="row g-4">
+        {%- if feats %}
+          {%- for feat in feats %}
+          <div class="col-sm-6 col-lg-3">
+            <div class="belzzo-feature-card" data-feature="{{ loop.index }}">
+              <div class="belzzo-feature-icon">
+                {%- if feat.icon and feat.icon.startswith('fa-') %}
+                <i class="{{ feat.icon }}" style="font-size:32px;"></i>
+                {%- else %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+                {%- endif %}
+              </div>
+              <h4>{{ feat.title }}</h4>
+              <p>{{ feat.desc }}</p>
+              {%- if feat.benefit %}
+              <div class="belzzo-feature-benefit">
+                <span class="belzzo-benefit-icon">✓</span>
+                <span>{{ feat.benefit }}</span>
+              </div>
+              {%- endif %}
+            </div>
+          </div>
+          {%- endfor %}
+        {%- else %}
+          <div class="col-sm-6 col-lg-3">
+            <div class="belzzo-feature-card" data-feature="mobile">
+              <div class="belzzo-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+              </div>
+              <h4>Mobile-first responsive design</h4>
+              <p>Optimized experience across all screen sizes and devices.</p>
+              <div class="belzzo-feature-benefit">
+                <span class="belzzo-benefit-icon">✓</span>
+                <span>Seamless experience on mobile</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="belzzo-feature-card" data-feature="filters">
+              <div class="belzzo-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/><line x1="5" y1="3" x2="19" y2="3"/>
+                </svg>
+              </div>
+              <h4>Smart category &amp; size filters</h4>
+              <p>Advanced filtering for faster product discovery.</p>
+              <div class="belzzo-feature-benefit">
+                <span class="belzzo-benefit-icon">✓</span>
+                <span>Faster product discovery</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="belzzo-feature-card" data-feature="checkout">
+              <div class="belzzo-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/><line x1="2" y1="2" x2="22" y2="22"/>
+                </svg>
+              </div>
+              <h4>One-click checkout</h4>
+              <p>Streamlined purchase process to reduce cart abandonment.</p>
+              <div class="belzzo-feature-benefit">
+                <span class="belzzo-benefit-icon">✓</span>
+                <span>Higher conversion rate</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="belzzo-feature-card" data-feature="seo">
+              <div class="belzzo-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6m3-3H8"/>
+                </svg>
+              </div>
+              <h4>SEO-ready structure</h4>
+              <p>Optimized for search engines to drive organic traffic.</p>
+              <div class="belzzo-feature-benefit">
+                <span class="belzzo-benefit-icon">✓</span>
+                <span>Search visibility</span>
+              </div>
+            </div>
+          </div>
+        {%- endif %}
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="case-study-section belzzo-results-section">
+      {%- set res = portfolio.get_results() %}
+      <div class="container-xxl">
+        <div class="belzzo-results-header">
+          <span class="belzzo-eyebrow">BUSINESS IMPACT</span>
+          <h3>Measurable Results</h3>
+          <div class="belzzo-header-underline"></div>
+          <p>The platform delivered immediate, measurable business impact in all key metrics.</p>
+        </div>
+        
+        <div class="row g-4 mb-5">
+          {% for card in res.get('cards', []) %}
+          <div class="col-md-4">
+            <div class="belzzo-result-card" data-metric="{{ loop.index }}">
+              <div class="belzzo-result-icon">
+                {%- if card.icon and card.icon.startswith('fa-') %}
+                <i class="{{ card.icon }}" style="font-size:22px;"></i>
+                {%- else %}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                </svg>
+                {%- endif %}
+              </div>
+              <div class="belzzo-result-metric">{{ card.metric }}</div>
+              <div class="belzzo-result-label">{{ card.label }}</div>
+              <div class="belzzo-result-insight">
+                <span class="belzzo-insight-icon">{{ card.icon or '↑' }}</span>
+                <span>{{ card.insight }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Detailed Metrics Table -->
+        {% if res.get('rows') %}
+        <div class="belzzo-results-table-wrapper">
+          <h4 class="belzzo-table-title">Performance Metrics Comparison</h4>
+          <div class="table-responsive">
+            <table class="belzzo-results-table">
+              <colgroup>
+                <col style="width:50%">
+                <col style="width:25%">
+                <col style="width:25%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th><span class="belzzo-table-icon">📊</span> Metric</th>
+                  <th class="belzzo-before-col"><span class="belzzo-table-icon">⏱️</span> Before</th>
+                  <th class="belzzo-after-col"><span class="belzzo-table-icon">✨</span> After</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in res.get('rows', []) %}
+                <tr class="belzzo-table-row">
+                  <td><strong>{{ row.metric }}</strong></td>
+                  <td class="belzzo-before-cell">{{ row.before }}</td>
+                  <td class="belzzo-after-cell"><strong>{{ row.after }}</strong></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <section id="metrics" class="belzzo-workflow-section">
+      <div class="wf-root" aria-label="Our IT Execution Workflow">
+        <div class="wf-viewport">
+          <!-- OVERLAYS -->
+          <div class="wf-scanlines" aria-hidden="true"></div>
+          <div class="wf-vignette" aria-hidden="true"></div>
+          <div class="wf-noise" aria-hidden="true"></div>
+
+          <!-- HUD -->
+          <div class="wf-hud" aria-hidden="true">
+            <div class="wf-workflow-title">
+              <h3>Our IT Execution Workflow</h3>
+              <p>From Requirement Analysis to Deployment &amp; Support</p>
+            </div>
+
+            <div class="wf-hud-top">
+              <span>SYS.READY</span>
+              <div class="wf-hud-line"></div>
+              <span>FPS: <strong class="wf-fps">60</strong></span>
+            </div>
+
+            <div class="wf-center-nav">
+              SCROLL VELOCITY // <strong class="wf-vel">0.00</strong>
+            </div>
+
+            <div class="wf-hud-bottom">
+              <span>COORD: <strong class="wf-coord">000.000</strong></span>
+              <div class="wf-hud-line"></div>
+              <span>VER 2.0.4 [BETA]</span>
+            </div>
+          </div>
+
+<!-- Stars canvas — z-index:5 keeps stars above overlays (z-index:4) but below 3D cards (z-index:6) -->
+      <canvas class="wf-stars-canvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5;"></canvas>
+
+          <!-- 3D WORLD -->
+          <div class="wf-world" aria-hidden="true"></div>
+        </div>
+
+        <!-- Long scroll area -->
+        <div class="wf-scroll-proxy" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section id="testimonial" class="case-study-section belzzo-testimonial-section">
+      <div class="container-xxl">
+
+        <div class="belzzo-tslider-header">
+          <span class="belzzo-eyebrow">CLIENT TESTIMONIALS</span>
+          <h3>Voices From Our Clients</h3>
+          <p>Real outcomes, real partnerships &mdash; hear what the teams we&rsquo;ve built for have to say.</p>
+        </div>
+
+        <div class="belzzo-tslider-wrap" id="bTSlider">
+          <div class="belzzo-tslider-viewport">
+            <div class="belzzo-tslider-track" id="bTSliderTrack"></div>
+          </div>
+          <button class="belzzo-tslider-btn belzzo-tslider-prev" id="bTSliderPrev" aria-label="Previous testimonial">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="belzzo-tslider-btn belzzo-tslider-next" id="bTSliderNext" aria-label="Next testimonial">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        <div class="belzzo-tslider-dots" id="bTSliderDots"></div>
+
+      </div>
+    </section>
+
+  </main>
+  <!-- ═══ END #portfolio-view-page ═══ -->
+
+  <!-- Global Footer -->
+    {%- include 'components/footer.html' %}
+
+  <!-- ═══ GLOBAL JS (loaded FIRST) ═══ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+
+  <!-- ═══ PAGE-SPECIFIC SCOPED JS (loaded LAST) ═══ -->
+  <!-- Gallery data injected before deferred script so it's available when the IIFE runs -->
+  <script>
+    {%- set _gal = portfolio.get_gallery() %}
+    {%- set _web = _gal | selectattr('type','equalto','web') | list %}
+    {%- set _app = _gal | selectattr('type','equalto','app') | list %}
+    window.BZ_WEB = [{% for i in _web %}{"src":{{ i.url | tojson }},"label":{{ (i.label or '') | tojson }},"alt":{{ (i.alt or i.label or '') | tojson }}}{% if not loop.last %},{% endif %}{% endfor %}];
+    window.BZ_APP = [{% for i in _app %}{"src":{{ i.url | tojson }},"label":{{ (i.label or '') | tojson }},"alt":{{ (i.alt or i.label or '') | tojson }},"isApp":true}{% if not loop.last %},{% endif %}{% endfor %}];
+    window.BZ_TESTIMONIALS = {{ portfolio.get_testimonials() | tojson }};
+    /* Live-preview testimonial re-builder — called by the embed postMessage listener */
+    window.bzReinitTestimonials = function(data) {
+      var track    = document.getElementById('bTSliderTrack');
+      var dotsWrap = document.getElementById('bTSliderDots');
+      if (!track) return;
+      track.style.transition = 'none';
+      track.style.transform  = 'translateX(0)';
+      track.innerHTML = '';
+      data.forEach(function(t) {
+        var name     = t.client_name || t.name || '';
+        var parts    = name.split(' ').filter(Boolean);
+        var initials = parts.map(function(w) { return w.charAt(0); }).join('').slice(0, 2).toUpperCase() || '??';
+        var card = document.createElement('div');
+        card.className = 'belzzo-tcard';
+        card.innerHTML =
+          '<div class="belzzo-tcard-qmark">“</div>' +
+          '<p class="belzzo-tcard-text">' + (t.quote || '') + '</p>' +
+          '<div class="belzzo-tcard-footer">' +
+            '<div class="belzzo-tcard-left">' +
+              '<div class="belzzo-tcard-avatar">' + initials + '</div>' +
+              '<div><div class="belzzo-tcard-name">' + name + '</div>' +
+              '<div class="belzzo-tcard-role">' + (t.client_role || t.role || '') + '</div></div>' +
+            '</div>' +
+            '<div class="belzzo-tcard-right">' +
+              '<div class="belzzo-tcard-stars" aria-label="5 stars">★★★★★</div>' +
+            '</div>' +
+          '</div>';
+        track.appendChild(card);
+      });
+      if (dotsWrap) {
+        dotsWrap.innerHTML = '';
+        var perView = window.innerWidth >= 768 ? 2 : 1;
+        var maxIdx  = Math.max(0, data.length - perView);
+        for (var i = 0; i <= maxIdx; i++) {
+          (function(idx) {
+            var dot = document.createElement('button');
+            dot.className = 'belzzo-tslider-dot' + (idx === 0 ? ' is-active' : '');
+            dot.setAttribute('aria-label', 'Slide ' + (idx + 1));
+            dotsWrap.appendChild(dot);
+          })(i);
+        }
+      }
+    };
+  </script>
+  <script src="{{ url_for('static', filename='js/portfolio-details.min.js') }}" defer></script>
+
+  <!-- ═══ WORKFLOW SECTION — Post-load Re-measurement ═══
+       Race condition fix: main.js injects the header asynchronously via fetch.
+       The workflow JS (DOMContentLoaded) measures sectionStart BEFORE the header
+       shifts the layout. Dispatching a resize event on 'load' (after all async
+       injections complete) forces the workflow's syncLayout() + measure() to run
+       with the final, correct DOM geometry.
+  ═══════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+
+      function remeasureWorkflow() {
+        // Trigger the workflow section's built-in resize handler which calls
+        // syncLayout() and measure() — all safely enclosed in the IIFE closure.
+        window.dispatchEvent(new Event('resize'));
+      }
+
+      // Primary: fire after all resources (including async-injected header) load.
+      window.addEventListener('load', function () {
+        // One rAF to let the browser apply the freshly injected header layout,
+        // then dispatch resize to re-sync the 3D scroll offsets.
+        requestAnimationFrame(function () {
+          remeasureWorkflow();
+          // Secondary pass 300ms later handles edge cases where the header
+          // animation/font loading still shifts layout after the load event.
+          setTimeout(remeasureWorkflow, 300);
+        });
+      });
+
+      // Observe the header placeholder so we re-sync the moment the header HTML
+      // is injected (most reliable trigger regardless of network speed).
+      var headerPlaceholder = document.getElementById('header-placeholder');
+      if (headerPlaceholder && typeof MutationObserver !== 'undefined') {
+        var mo = new MutationObserver(function (records) {
+          if (records.some(function (r) { return r.addedNodes.length > 0; })) {
+            mo.disconnect();
+            // Wait one rAF so the injected header is rendered before measuring.
+            requestAnimationFrame(remeasureWorkflow);
+          }
+        });
+        mo.observe(headerPlaceholder, { childList: true });
+      }
+    })();
+  </script>
+
+  {% if request.args.get('embed') %}
+  <!-- ═══ Visual Builder Live-Preview Listener (embed mode only) ═══
+       Listens for postMessage events from the parent builder page and
+       applies color/text/image changes without a full page reload.
+  ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      'use strict';
+      window.addEventListener('message', function (evt) {
+        var d = evt.data;
+        if (!d || d.source !== 'ivb') return;
+
+        if (d.type === 'css') {
+          // Full CSS replacement — used for color theme updates
+          var themeEl = document.getElementById('ivb-theme-vars');
+          if (themeEl) themeEl.textContent = d.css;
+
+        } else if (d.type === 'testimonials') {
+          // Rebuild the testimonial slider with the updated array
+          window.BZ_TESTIMONIALS = d.testimonials;
+          if (typeof window.bzReinitTestimonials === 'function') {
+            window.bzReinitTestimonials(d.testimonials);
+          }
+
+        } else if (d.type === 'text') {
+          // Update a single text node by data-ivb key
+          var nodes = document.querySelectorAll('[data-ivb="' + d.key + '"]');
+          nodes.forEach(function (n) { n.textContent = d.value; });
+
+        } else if (d.type === 'img') {
+          // Update an image src by data-ivb key; reveal the wrapper if it was hidden
+          var imgs = document.querySelectorAll('img[data-ivb="' + d.key + '"]');
+          imgs.forEach(function (i) {
+            if (d.value) {
+              i.src = d.value;
+              var container = document.querySelector('[data-ivb-container="' + d.key + '"]');
+              if (container) container.style.display = '';
+            }
+          });
+
+        } else if (d.type === 'ping') {
+          // Handshake — reply so the builder knows the iframe is ready
+          evt.source && evt.source.postMessage({ source: 'ivb-preview', type: 'pong' }, '*');
+        }
+      });
+
+      // Notify parent that the preview is ready once the DOM is interactive
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          window.parent.postMessage({ source: 'ivb-preview', type: 'ready' }, '*');
+        });
+      } else {
+        window.parent.postMessage({ source: 'ivb-preview', type: 'ready' }, '*');
+      }
+
+      // Forward contenteditable edits back to the builder sidebar
+      document.addEventListener('input', function (e) {
+        var el = e.target;
+        var key = el.getAttribute('data-ivb');
+        if (key && el.isContentEditable) {
+          window.parent.postMessage({
+            source: 'ivb-preview', type: 'edit', key: key, value: el.textContent
+          }, '*');
+        }
+      });
+    })();
+  </script>
+  {% endif %}
+</body>
+</html>

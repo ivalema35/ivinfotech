@@ -1,36 +1,4 @@
-// ─── Component Prefetch ────────────────────────────────────────────────────
-// Start fetching IMMEDIATELY when the script is parsed — before DOMContentLoaded.
-// Combined with <link rel="preload">, these requests fire at the earliest possible moment.
-const _componentCache = {
-    header: fetch('/components/header.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText)),
-    footer: fetch('/components/footer.html').then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-};
-
-document.addEventListener("DOMContentLoaded", async function () {
-    // ─── Inject Components in Parallel ──────────────────────────────────────
-    // By the time DOM is ready the fetches are already in-flight (or done).
-    try {
-        const [headerContent, footerContent] = await Promise.all([
-            _componentCache.header,
-            _componentCache.footer
-        ]);
-
-        const headerEl = document.getElementById('header-placeholder');
-        if (headerEl) {
-            headerEl.innerHTML = headerContent;
-            setActiveLink();
-        }
-
-        const footerEl = document.getElementById('footer-placeholder');
-        if (footerEl) {
-            footerEl.innerHTML = footerContent;
-            const yearElement = document.getElementById('year');
-            if (yearElement) yearElement.textContent = new Date().getFullYear();
-        }
-    } catch (error) {
-        console.error('Component loading failed:', error);
-    }
-
+document.addEventListener("DOMContentLoaded", function () {
     // Initialize AOS
     AOS.init({
         duration: 800,
@@ -117,18 +85,233 @@ function setActiveLink() {
     });
 }
 
-// Legacy helper kept for any inline page-specific calls — wraps the cache.
-async function loadComponent(elementId, filePath) {
-    try {
-        const response = await fetch(filePath);
-        if (response.ok) {
-            const content = await response.text();
-            const el = document.getElementById(elementId);
-            if (el) el.innerHTML = content;
-        } else {
-            console.error(`Error loading ${filePath}: ${response.statusText}`);
-        }
-    } catch (error) {
-        console.error(`Error loading ${filePath}:`, error);
+const IV_CHAT_WEBHOOK_URL = 'https://n8n.srv1010073.hstgr.cloud/webhook/iv-infotech-Chat-bot';
+let ivChatRequestInFlight = false;
+
+function initializeIvChatWidget() {
+    const widget = document.getElementById('ivChatWidget');
+    if (!widget || widget.dataset.ready === 'true') return;
+
+    widget.dataset.ready = 'true';
+
+    const input = document.getElementById('ivChatInput');
+    if (input) {
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
     }
 }
+
+function toggleChatWindow(forceState) {
+    const widget = document.getElementById('ivChatWidget');
+    if (!widget) return;
+
+    const shouldOpen = typeof forceState === 'boolean'
+        ? forceState
+        : !widget.classList.contains('is-open');
+
+    widget.classList.toggle('is-open', shouldOpen);
+
+    if (window.matchMedia('(max-width: 991.98px)').matches) {
+        // #ivChatWidget is position:fixed;inset:0 — it covers the full viewport,
+        // so body.overflow lock is redundant and breaks position:sticky pages.
+    }
+
+    if (shouldOpen) {
+        initializeIvChatWidget();
+        setTimeout(function () {
+            const input = document.getElementById('ivChatInput');
+            if (input) input.focus();
+        }, 100);
+    }
+}
+
+function sendQuickReply(text) {
+    const input = document.getElementById('ivChatInput');
+    if (!input) return;
+
+    toggleChatWindow(true);
+    input.value = text;
+    sendMessage();
+}
+
+function appendChatMessage(text, sender) {
+    const body = document.getElementById('ivChatBody');
+    if (!body) return null;
+
+    const row = document.createElement('div');
+    row.className = sender === 'user' ? 'iv-message iv-user' : 'iv-message iv-bot';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'iv-bubble';
+    bubble.textContent = text || '';
+
+    row.appendChild(bubble);
+    body.appendChild(row);
+    scrollChatToBottom();
+
+    return bubble;
+}
+
+function appendTypingIndicator() {
+    const body = document.getElementById('ivChatBody');
+    if (!body) return null;
+
+    const row = document.createElement('div');
+    row.className = 'iv-message iv-bot';
+    row.id = 'ivTypingRow';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'iv-bubble';
+    bubble.innerHTML = '<span class="iv-typing-indicator"><span></span><span></span><span></span></span>';
+
+    row.appendChild(bubble);
+    body.appendChild(row);
+    scrollChatToBottom();
+
+    return row;
+}
+
+function removeTypingIndicator(typingRow) {
+    if (typingRow && typingRow.parentNode) {
+        typingRow.parentNode.removeChild(typingRow);
+    }
+}
+
+function hideQuickReplies() {
+    const quickReplies = document.getElementById('ivQuickReplies');
+    if (quickReplies) {
+        quickReplies.classList.add('hidden');
+    }
+}
+
+function scrollChatToBottom() {
+    const body = document.getElementById('ivChatBody');
+    if (body) {
+        body.scrollTop = body.scrollHeight;
+    }
+}
+
+function extractWebhookReply(payload, depth = 0) {
+    if (depth > 5 || payload == null) return '';
+
+    if (typeof payload === 'string') {
+        return payload.trim();
+    }
+
+    if (Array.isArray(payload)) {
+        for (const item of payload) {
+            const reply = extractWebhookReply(item, depth + 1);
+            if (reply) return reply;
+        }
+        return '';
+    }
+
+    if (typeof payload === 'object') {
+        const priorityKeys = ['reply', 'response', 'output', 'text', 'answer', 'message'];
+        for (const key of priorityKeys) {
+            if (Object.prototype.hasOwnProperty.call(payload, key)) {
+                const reply = extractWebhookReply(payload[key], depth + 1);
+                if (reply) return reply;
+            }
+        }
+
+        const nestedKeys = ['data', 'result', 'body'];
+        for (const key of nestedKeys) {
+            if (Object.prototype.hasOwnProperty.call(payload, key)) {
+                const reply = extractWebhookReply(payload[key], depth + 1);
+                if (reply) return reply;
+            }
+        }
+    }
+
+    return '';
+}
+
+async function typeWriterEffect(element, text) {
+    if (!element) return;
+
+    element.textContent = '';
+    const content = String(text || '');
+
+    for (let i = 0; i < content.length; i += 1) {
+        element.textContent += content.charAt(i);
+        scrollChatToBottom();
+        await new Promise(function (resolve) {
+            setTimeout(resolve, 15);
+        });
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('ivChatInput');
+    const sendBtn = document.getElementById('ivChatSendBtn');
+
+    if (!input || !sendBtn) return;
+
+    const userText = input.value.trim();
+    if (!userText || ivChatRequestInFlight) return;
+
+    toggleChatWindow(true);
+    appendChatMessage(userText, 'user');
+    hideQuickReplies();
+
+    input.value = '';
+    ivChatRequestInFlight = true;
+    sendBtn.disabled = true;
+
+    const typingRow = appendTypingIndicator();
+
+    try {
+        const response = await fetch(IV_CHAT_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userText })
+        });
+
+        if (!response.ok) {
+            throw new Error('Webhook request failed with status ' + response.status);
+        }
+
+        const contentType = response.headers.get('content-type') || '';
+        let payload;
+
+        if (contentType.includes('application/json')) {
+            payload = await response.json();
+        } else {
+            const raw = await response.text();
+            try {
+                payload = JSON.parse(raw);
+            } catch (parseError) {
+                payload = raw;
+            }
+        }
+
+        let botText = extractWebhookReply(payload);
+        if (!botText) {
+            botText = 'Thanks for your message. Our assistant will get back to you shortly.';
+        }
+
+        removeTypingIndicator(typingRow);
+        const botBubble = appendChatMessage('', 'bot');
+        await typeWriterEffect(botBubble, botText);
+    } catch (error) {
+removeTypingIndicator(typingRow);
+        const botBubble = appendChatMessage('', 'bot');
+        await typeWriterEffect(botBubble, 'Sorry, I could not connect right now. Please try again in a few moments.');
+    } finally {
+        ivChatRequestInFlight = false;
+        sendBtn.disabled = false;
+        input.focus();
+        scrollChatToBottom();
+    }
+}
+
+window.toggleChatWindow = toggleChatWindow;
+window.sendQuickReply = sendQuickReply;
+window.sendMessage = sendMessage;

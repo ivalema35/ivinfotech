@@ -7,7 +7,7 @@
 document.write(`
 <div id="preloader">
     <lottie-player
-        src="assets/animations/loader.json"
+        src="/assets/animations/loader.json"
         background="transparent"
         speed="1"
         style="width: 200px; height: 200px;"

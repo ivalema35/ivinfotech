@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} — IV Infotech Admin</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body class="admin-body">
+
+    <!-- ── Sidebar ──────────────────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Logo -->
+        <div class="sidebar__brand">
+            <a href="/" target="_blank" class="sidebar__logo-link">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="IV Infotech">
+            </a>
+        </div>
+
+        <!-- Profile card -->
+        <div class="sidebar__profile">
+            <div class="sidebar__avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="sidebar__profile-info">
+                <span class="sidebar__profile-name">{{ current_user.username | capitalize }}</span>
+                <span class="sidebar__profile-role">Administrator</span>
+            </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="sidebar__nav">
+            <span class="sidebar__section-label">Main Menu</span>
+            <a href="{{ url_for('admin_dashboard') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_dashboard' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-gauge-high"></i><span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_inquiries') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_inquiries' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-envelope-open-text"></i><span>Inquiries</span>
+            </a>
+            <a href="{{ url_for('admin_jobs') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_jobs' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-briefcase"></i><span>Job Openings</span>
+            </a>
+            <a href="{{ url_for('admin_applications') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_applications' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-file-lines"></i><span>Applications</span>
+            </a>
+
+            <span class="sidebar__section-label">Content</span>
+            <a href="{{ url_for('admin_portfolio') }}"
+               class="sidebar__link {% if request.endpoint in ['admin_portfolio','admin_portfolio_add','admin_portfolio_edit','admin_portfolio_build'] %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-folder-open"></i><span>Portfolio</span>
+            </a>
+            <a href="{{ url_for('admin_blog') }}"
+               class="sidebar__link {% if request.endpoint in ['admin_blog','admin_blog_add','admin_blog_edit'] %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-pen-nib"></i><span>Blog Posts</span>
+            </a>
+            <a href="{{ url_for('admin_testimonials') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_testimonials' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-star-half-stroke"></i><span>Testimonials</span>
+            </a>
+            <a href="{{ url_for('admin_team') }}"
+               class="sidebar__link {% if request.endpoint in ['admin_team','admin_team_add','admin_team_edit','admin_team_delete'] %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-users"></i><span>Team Members</span>
+            </a>
+
+            <span class="sidebar__section-label">System</span>
+            <a href="{{ url_for('admin_settings') }}"
+               class="sidebar__link {% if request.endpoint == 'admin_settings' %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-gear"></i><span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar__footer">
+            <a href="{{ url_for('admin_logout') }}" class="sidebar__link sidebar__link--logout">
+                <i class="fa-solid fa-right-from-bracket"></i><span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── Main wrapper ─────────────────────────────────────── -->
+    <div class="main-wrap">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="topbar__toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            {% block topbar_greeting %}
+            <div class="topbar__greeting">
+                <h1 class="topbar__title">{% block topbar_title %}Admin Panel{% endblock %}</h1>
+                <p class="topbar__sub">{% block topbar_sub %}{% endblock %}</p>
+            </div>
+            {% endblock %}
+
+            {% block topbar_search %}{% endblock %}
+
+            <div class="topbar__actions">
+                <button class="topbar__icon-btn" title="Notifications" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="topbar__notif-dot"></span>
+                </button>
+
+                <div class="topbar__profile-wrap">
+                    <button class="topbar__profile-btn" id="profileDropBtn">
+                        <div class="topbar__profile-avatar">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="topbar__profile-name">{{ current_user.username | capitalize }}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div class="topbar__dropdown" id="profileDrop">
+                        <a href="{{ url_for('admin_dashboard') }}"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+                        <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+                        <hr>
+                        <a href="{{ url_for('admin_logout') }}" class="topbar__dropdown--logout">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ── Content ──────────────────────────────────────── -->
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- ── Toast area ── -->
+    <div id="toastArea" aria-live="assertive" aria-atomic="true"></div>
+
+    <!-- Flash messages → JSON for JS toast system -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div id="_flashData" data-msgs='{{ messages | tojson }}' style="display:none"></div>
+    {% endif %}
+    {% endwith %}
+
+    {% block body_extras %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        /* Sidebar toggle */
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            const open = sidebar.classList.toggle('sidebar--open');
+            overlay.classList.toggle('active', open);
+        });
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar--open');
+            overlay.classList.remove('active');
+        });
+
+        /* Profile dropdown */
+        const dropBtn  = document.getElementById('profileDropBtn');
+        const dropMenu = document.getElementById('profileDrop');
+        dropBtn.addEventListener('click', (e) => { e.stopPropagation(); dropMenu.classList.toggle('show'); });
+        document.addEventListener('click', () => dropMenu.classList.remove('show'));
+    })();
+    </script>
+
+    <script>
+    /* ── Premium Toast System ─────────────────────────────── */
+    (function () {
+        var ICONS = {
+            success: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+            danger:  '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+            warning: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+            info:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+        };
+        var LABELS = { success: 'Success', danger: 'Error', warning: 'Warning', info: 'Info' };
+        var area   = document.getElementById('toastArea');
+
+        window.showAdmToast = function (type, msg, dur) {
+            dur = dur || 4000;
+            var t = ICONS[type] ? type : 'info';
+            var el = document.createElement('div');
+            el.className = 'adm-toast adm-toast--' + t;
+            el.style.setProperty('--toast-dur', (dur / 1000) + 's');
+            el.innerHTML =
+                '<span class="adm-toast__icon">' + ICONS[t] + '</span>' +
+                '<div class="adm-toast__body">' +
+                    '<div class="adm-toast__title">' + LABELS[t] + '</div>' +
+                    '<div class="adm-toast__msg">' + msg + '</div>' +
+                '</div>' +
+                '<button class="adm-toast__close" aria-label="Close">&times;</button>' +
+                '<div class="adm-toast__bar"></div>';
+
+            el.querySelector('.adm-toast__close').addEventListener('click', function () { dismiss(el); });
+            area.appendChild(el);
+
+            var tid = setTimeout(function () { dismiss(el); }, dur);
+
+            el.addEventListener('mouseenter', function () {
+                clearTimeout(tid);
+                el.querySelector('.adm-toast__bar').style.animationPlayState = 'paused';
+            });
+            el.addEventListener('mouseleave', function () {
+                el.querySelector('.adm-toast__bar').style.animationPlayState = 'running';
+                tid = setTimeout(function () { dismiss(el); }, 1500);
+            });
+        };
+
+        function dismiss(el) {
+            el.classList.add('adm-toast--out');
+            setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 240);
+        }
+
+        /* Auto-fire Flask flash messages */
+        var flashEl = document.getElementById('_flashData');
+        if (flashEl) {
+            try {
+                JSON.parse(flashEl.getAttribute('data-msgs')).forEach(function (m) {
+                    showAdmToast(m[0], m[1]);
+                });
+            } catch (e) {}
+        }
+    })();
+    </script>
+
+    {% block scripts %}{% endblock %}
+
+    {# ── Universal Icon Picker (available on all admin pages) ── #}
+    {% include 'admin/components/icon_picker_modal.html' %}
+
+</body>
+</html>

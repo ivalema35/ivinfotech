@@ -1,0 +1,411 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Testimonials{% endblock %}
+
+{% block head_extra %}
+    <style>
+        /* ── Page-specific overrides ── */
+        .page-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .page-header-bar h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        .page-header-bar p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 2px 0 0;
+        }
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 20px;
+            background: var(--primary-blue);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background: var(--primary-dark); color: #fff; }
+
+        /* Rating stars display */
+        .star-display { color: #f59e0b; letter-spacing: 1px; font-size: 13px; }
+
+        /* Toggle switch */
+        .tgl-wrap { display: flex; align-items: center; gap: 8px; }
+        .tgl-wrap input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--primary-blue); cursor: pointer; }
+        .tgl-wrap label { font-size: 13px; color: var(--text-mid); margin: 0; cursor: pointer; }
+
+        /* Modal customisations */
+        .modal-content { border-radius: var(--radius); border: none; box-shadow: 0 20px 60px rgba(0,0,0,.18); }
+        .modal-header  { background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: var(--radius) var(--radius) 0 0; padding: 20px 24px; }
+        .modal-header .modal-title { color: #fff; font-weight: 700; font-size: 16px; }
+        .modal-header .btn-close   { filter: invert(1); opacity: .8; }
+        .modal-body   { padding: 24px; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); }
+
+        .form-label { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 5px; }
+        .form-control, .form-select {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 9px 12px;
+            font-size: 13.5px;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            transition: border-color .18s, box-shadow .18s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(47,85,244,.12);
+            outline: none;
+        }
+        textarea.form-control { resize: vertical; min-height: 90px; }
+
+        .btn-save {
+            background: var(--primary-blue);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 9px 24px;
+            font-size: 13.5px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background .18s;
+        }
+        .btn-save:hover { background: var(--primary-dark); }
+        .btn-cancel-md {
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            color: var(--text-mid);
+            border-radius: var(--radius-sm);
+            padding: 9px 20px;
+            font-size: 13.5px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+        }
+
+        /* Action buttons */
+        .btn-edit {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            background: var(--primary-light);
+            color: var(--primary-blue);
+            border: none; border-radius: 6px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background .18s;
+        }
+        .btn-edit:hover { background: #dce5fd; }
+        .btn-delete {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none; border-radius: 6px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background .18s;
+        }
+        .btn-delete:hover { background: #fca5a5; }
+
+        /* Content cell truncation */
+        .content-cell {
+            max-width: 320px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 13px;
+            color: var(--text-mid);
+        }
+
+        /* Delete confirm modal */
+        .modal-danger .modal-header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+        .btn-danger-confirm {
+            background: #dc2626; color: #fff;
+            border: none; border-radius: var(--radius-sm);
+            padding: 9px 24px; font-size: 13.5px; font-weight: 600;
+            font-family: 'Poppins', sans-serif; cursor: pointer;
+            transition: background .18s;
+        }
+        .btn-danger-confirm:hover { background: #b91c1c; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+        .empty-state p { font-size: 14px; margin: 0; }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}Manage Testimonials{% endblock %}
+{% block topbar_sub %}Add, edit, or remove client reviews shown on the site.{% endblock %}
+
+{% block content %}
+
+            <!-- Page header -->
+            <div class="page-header-bar">
+                <div>
+                    <h1><i class="fa-solid fa-star-half-stroke" style="color:var(--primary-blue);margin-right:8px;"></i>Testimonials</h1>
+                    <p>{{ testimonials | length }} testimonial{{ 's' if testimonials | length != 1 }} in the database</p>
+                </div>
+                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="fa-solid fa-plus"></i> Add Testimonial
+                </button>
+            </div>
+
+            <!-- Main table panel -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title"><i class="fa-solid fa-list"></i> All Testimonials</h2>
+                    <span class="panel__badge">{{ testimonials | length }} total</span>
+                </div>
+                <div class="table-wrap">
+                    {% if testimonials %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Client</th>
+                                <th>Role</th>
+                                <th>Content</th>
+                                <th>Rating</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for t in testimonials %}
+                            {% set words = t.client_name.split() %}
+                            {% set initials = (words[0][0] + (words[-1][0] if words|length > 1 else '')) | upper %}
+                            {% set avatar_colors = ['#2F55F4','#6366f1','#10b981','#f59e0b','#ef4444','#06b6d4','#ec4899'] %}
+                            {% set color = avatar_colors[loop.index0 % (avatar_colors | length)] %}
+                            <tr>
+                                <td style="color:var(--text-muted);font-size:12px;">{{ loop.index }}</td>
+                                <td>
+                                    <div class="applicant-cell">
+                                        <div class="applicant-avatar" style="background:{{ color }};width:34px;height:34px;font-size:11px;">{{ initials }}</div>
+                                        <strong style="font-size:13.5px;">{{ t.client_name }}</strong>
+                                    </div>
+                                </td>
+                                <td style="font-size:13px;color:var(--text-mid);">{{ t.client_role }}</td>
+                                <td>
+                                    <div class="content-cell" title="{{ t.content }}">{{ t.content }}</div>
+                                </td>
+                                <td>
+                                    <span class="star-display">
+                                        {% for _ in range(t.rating) %}★{% endfor %}{% for _ in range(5 - t.rating) %}☆{% endfor %}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if t.is_active %}
+                                    <span class="status-pill status-pill--green">Active</span>
+                                    {% else %}
+                                    <span class="status-pill status-pill--red">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                                    {{ t.created_at.strftime('%b %d, %Y') if t.created_at else '—' }}
+                                </td>
+                                <td>
+                                    <div style="display:flex;gap:6px;align-items:center;">
+                                        <button class="btn-edit"
+                                            onclick="openEditModal({{ t.id }}, '{{ t.client_name | replace("'", "\\'") }}', '{{ t.client_role | replace("'", "\\'") }}', {{ t.rating }}, {{ 'true' if t.is_active else 'false' }}, this)"
+                                            data-content="{{ t.content | e }}">
+                                            <i class="fa-solid fa-pen"></i> Edit
+                                        </button>
+                                        <button class="btn-delete"
+                                            onclick="openDeleteModal({{ t.id }}, '{{ t.client_name | replace("'", "\\'") }}')">
+                                            <i class="fa-solid fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fa-regular fa-star"></i>
+                        <p>No testimonials yet. Click <strong>Add Testimonial</strong> to get started.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+{% endblock %}
+
+{% block body_extras %}
+    <!-- ── Add Modal ─────────────────────────────────────────── -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">
+                        <i class="fa-solid fa-plus-circle me-2"></i>Add New Testimonial
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('admin_testimonials_add') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="add_client_name">Client Name <span style="color:#ef4444">*</span></label>
+                            <input type="text" class="form-control" id="add_client_name" name="client_name"
+                                placeholder="e.g. Akash Patel" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="add_client_role">Role / Company <span style="color:#ef4444">*</span></label>
+                            <input type="text" class="form-control" id="add_client_role" name="client_role"
+                                placeholder="e.g. CEO at XYZ / Client / Intern" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="add_content">Review Content <span style="color:#ef4444">*</span></label>
+                            <textarea class="form-control" id="add_content" name="content"
+                                placeholder="Write the testimonial content here…" required rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="add_rating">Rating</label>
+                            <select class="form-select" id="add_rating" name="rating">
+                                <option value="5" selected>★★★★★ — 5 Stars</option>
+                                <option value="4">★★★★☆ — 4 Stars</option>
+                                <option value="3">★★★☆☆ — 3 Stars</option>
+                                <option value="2">★★☆☆☆ — 2 Stars</option>
+                                <option value="1">★☆☆☆☆ — 1 Star</option>
+                            </select>
+                        </div>
+                        <div class="tgl-wrap">
+                            <input type="checkbox" id="add_is_active" name="is_active" checked>
+                            <label for="add_is_active">Show on website (Active)</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Save Testimonial
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Edit Modal ────────────────────────────────────────── -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">
+                        <i class="fa-solid fa-pen me-2"></i>Edit Testimonial
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editForm" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label" for="edit_client_name">Client Name <span style="color:#ef4444">*</span></label>
+                            <input type="text" class="form-control" id="edit_client_name" name="client_name" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="edit_client_role">Role / Company <span style="color:#ef4444">*</span></label>
+                            <input type="text" class="form-control" id="edit_client_role" name="client_role" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="edit_content">Review Content <span style="color:#ef4444">*</span></label>
+                            <textarea class="form-control" id="edit_content" name="content" required rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="edit_rating">Rating</label>
+                            <select class="form-select" id="edit_rating" name="rating">
+                                <option value="5">★★★★★ — 5 Stars</option>
+                                <option value="4">★★★★☆ — 4 Stars</option>
+                                <option value="3">★★★☆☆ — 3 Stars</option>
+                                <option value="2">★★☆☆☆ — 2 Stars</option>
+                                <option value="1">★☆☆☆☆ — 1 Star</option>
+                            </select>
+                        </div>
+                        <div class="tgl-wrap">
+                            <input type="checkbox" id="edit_is_active" name="is_active">
+                            <label for="edit_is_active">Show on website (Active)</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Update Testimonial
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Delete Confirm Modal ──────────────────────────────── -->
+    <div class="modal fade modal-danger" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="fa-solid fa-trash me-2"></i>Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="text-align:center;padding:28px 24px 20px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:#f59e0b;margin-bottom:14px;display:block;"></i>
+                    <p style="font-size:14px;color:var(--text-dark);margin:0;">
+                        Are you sure you want to delete the testimonial by <strong id="deleteClientName">—</strong>?
+                        <br><span style="font-size:12px;color:var(--text-muted);">This action cannot be undone.</span>
+                    </p>
+                </div>
+                <form id="deleteForm" method="POST">
+                    <div class="modal-footer" style="justify-content:center;gap:10px;">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-danger-confirm">
+                            <i class="fa-solid fa-trash me-1"></i> Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    /* Edit modal ─ populate from data attributes */
+    function openEditModal(id, name, role, rating, isActive, btn) {
+        const content = btn.dataset.content;
+        document.getElementById('editForm').action = '/admin/testimonials/edit/' + id;
+        document.getElementById('edit_client_name').value = name;
+        document.getElementById('edit_client_role').value = role;
+        document.getElementById('edit_content').value     = content;
+        document.getElementById('edit_rating').value      = String(rating);
+        document.getElementById('edit_is_active').checked = isActive;
+        const modal = new bootstrap.Modal(document.getElementById('editModal'));
+        modal.show();
+    }
+
+    /* Delete modal ─ set form action + display name */
+    function openDeleteModal(id, name) {
+        document.getElementById('deleteForm').action     = '/admin/testimonials/delete/' + id;
+        document.getElementById('deleteClientName').textContent = name;
+        const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+    </script>
+{% endblock %}

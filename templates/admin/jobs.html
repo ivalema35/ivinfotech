@@ -1,0 +1,331 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Job Openings{% endblock %}
+
+{% block head_extra %}
+    <style>
+        .page-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .page-header-bar h1 { font-size:20px; font-weight:700; color:var(--text-dark); margin:0; }
+        .page-header-bar p  { font-size:13px; color:var(--text-muted); margin:2px 0 0; }
+        .btn-add { display:inline-flex; align-items:center; gap:7px; padding:9px 20px; background:var(--primary-blue); color:#fff; border-radius:var(--radius-sm); font-size:13.5px; font-weight:600; border:none; cursor:pointer; transition:background .2s; }
+        .btn-add:hover { background:var(--primary-dark); color:#fff; }
+        .tgl-wrap { display:flex; align-items:center; gap:8px; }
+        .tgl-wrap input[type=checkbox] { width:18px; height:18px; accent-color:var(--primary-blue); cursor:pointer; }
+        .tgl-wrap label { font-size:13px; color:var(--text-mid); margin:0; cursor:pointer; }
+        .modal-content { border-radius:var(--radius); border:none; box-shadow:0 20px 60px rgba(0,0,0,.18); }
+        .modal-header { background:linear-gradient(135deg,var(--primary-blue),var(--primary-dark)); border-radius:var(--radius) var(--radius) 0 0; padding:20px 24px; }
+        .modal-header .modal-title { color:#fff; font-weight:700; font-size:16px; }
+        .modal-header .btn-close { filter:invert(1); opacity:.8; }
+        .modal-body { padding:24px; }
+        .modal-footer { padding:16px 24px; border-top:1px solid var(--border); }
+        .form-label { font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:5px; }
+        .form-control, .form-select { border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 12px; font-size:13.5px; font-family:'Poppins',sans-serif; color:var(--text-dark); transition:border-color .18s, box-shadow .18s; }
+        .form-control:focus, .form-select:focus { border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(47,85,244,.12); outline:none; }
+        textarea.form-control { resize:vertical; min-height:80px; }
+        .btn-save { background:var(--primary-blue); color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; transition:background .18s; }
+        .btn-save:hover { background:var(--primary-dark); }
+        .btn-cancel-md { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); border-radius:var(--radius-sm); padding:9px 20px; font-size:13.5px; font-family:'Poppins',sans-serif; cursor:pointer; }
+        .btn-edit { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:var(--primary-light); color:var(--primary-blue); border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; }
+        .btn-edit:hover { background:#dce5fd; }
+        .btn-delete { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; background:#fee2e2; color:#dc2626; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:background .18s; }
+        .btn-delete:hover { background:#fca5a5; }
+        .modal-danger .modal-header { background:linear-gradient(135deg,#dc2626,#b91c1c); }
+        .btn-danger-confirm { background:#dc2626; color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; }
+        .btn-danger-confirm:hover { background:#b91c1c; }
+        .desc-cell { max-width:280px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px; color:var(--text-mid); }
+        .tags-wrap { display:flex; flex-wrap:wrap; gap:4px; }
+        .tag-chip { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); font-size:11px; font-weight:600; padding:2px 8px; border-radius:6px; white-space:nowrap; }
+        .icon-preview { width:32px; height:32px; background:var(--primary-light); border-radius:8px; display:inline-grid; place-items:center; color:var(--primary-blue); font-size:15px; flex-shrink:0; }
+        .job-title-cell { display:flex; align-items:center; gap:10px; }
+        .empty-state { text-align:center; padding:60px 20px; color:var(--text-muted); }
+        .empty-state i { font-size:48px; margin-bottom:16px; opacity:.4; }
+        .empty-state p { font-size:14px; margin:0; }
+        .help-text { font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}Job Openings{% endblock %}
+{% block topbar_sub %}Manage public-facing career listings on the website.{% endblock %}
+
+{% block content %}
+
+            <!-- Header bar -->
+            <div class="page-header-bar">
+                <div>
+                    <h1><i class="fa-solid fa-briefcase" style="color:var(--primary-blue);margin-right:8px;"></i>Job Openings</h1>
+                    <p>{{ jobs | length }} position{{ 's' if jobs | length != 1 }} in the database</p>
+                </div>
+                <button class="btn-add" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="fa-solid fa-plus"></i> Add Job Opening
+                </button>
+            </div>
+
+            <!-- Table panel -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title"><i class="fa-solid fa-list"></i> All Positions</h2>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <a href="{{ url_for('career') }}" target="_blank" class="btn-edit" style="text-decoration:none;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> View Live Page
+                        </a>
+                        <span class="panel__badge">{{ jobs | length }} total</span>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    {% if jobs %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Location</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Tags</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td style="color:var(--text-muted);font-size:12px;">{{ loop.index }}</td>
+                            <td>
+                                <div class="job-title-cell">
+                                    <span class="icon-preview"><i class="{{ job.icon_class }}"></i></span>
+                                    <strong style="font-size:13.5px;">{{ job.title }}</strong>
+                                </div>
+                            </td>
+                            <td style="font-size:13px;color:var(--text-mid);white-space:nowrap;">
+                                <i class="fa-solid fa-location-dot" style="color:var(--primary-blue);font-size:11px;"></i>
+                                {{ job.location }}
+                            </td>
+                            <td>
+                                <span class="pos-tag pos-tag--blue" style="white-space:nowrap;">{{ job.job_type }}</span>
+                            </td>
+                            <td>
+                                <div class="desc-cell" title="{{ job.description }}">{{ job.description }}</div>
+                            </td>
+                            <td>
+                                {% if job.tags %}
+                                <div class="tags-wrap">
+                                    {% for tag in job.tags.split(',') %}
+                                    <span class="tag-chip">{{ tag.strip() }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <span style="color:var(--text-muted);font-size:12px;">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if job.is_active %}
+                                <span class="status-pill status-pill--green">Active</span>
+                                {% else %}
+                                <span class="status-pill status-pill--red">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                                {{ job.created_at.strftime('%b %d, %Y') if job.created_at else '—' }}
+                            </td>
+                            <td>
+                                <div style="display:flex;gap:6px;">
+                                    <button class="btn-edit"
+                                        onclick="openEditModal({{ job.id }}, this)"
+                                        data-title="{{ job.title | e }}"
+                                        data-description="{{ job.description | e }}"
+                                        data-location="{{ job.location | e }}"
+                                        data-jobtype="{{ job.job_type | e }}"
+                                        data-iconclass="{{ job.icon_class | e }}"
+                                        data-tags="{{ job.tags | e if job.tags else '' }}"
+                                        data-active="{{ 'true' if job.is_active else 'false' }}">
+                                        <i class="fa-solid fa-pen"></i> Edit
+                                    </button>
+                                    <button class="btn-delete"
+                                        onclick="openDeleteModal({{ job.id }}, '{{ job.title | replace("'", "\\'") }}')">
+                                        <i class="fa-solid fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <p>No job openings yet. Click <strong>Add Job Opening</strong> to get started.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+{% endblock %}
+
+{% block body_extras %}
+    <!-- ── Add Modal ─────────────────────────────────────────── -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-plus-circle me-2"></i>Add New Job Opening</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{ url_for('admin_jobs_add') }}" method="POST">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">Job Title <span style="color:#ef4444">*</span></label>
+                                <input type="text" class="form-control" name="title" placeholder="e.g. Laravel Developer" required maxlength="160">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Job Type <span style="color:#ef4444">*</span></label>
+                                <select class="form-select" name="job_type" required>
+                                    <option value="Full-Time" selected>Full-Time</option>
+                                    <option value="Part-Time">Part-Time</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Remote">Remote</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location <span style="color:#ef4444">*</span></label>
+                                <input type="text" class="form-control" name="location" placeholder="e.g. Mehsana / Remote" value="Mehsana" required maxlength="120">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Icon Class</label>
+                                <input type="text" class="form-control" name="icon_class" placeholder="e.g. fas fa-code" value="fas fa-code" maxlength="60">
+                                <p class="help-text">Font Awesome class — <a href="https://fontawesome.com/icons" target="_blank" style="color:var(--primary-blue);">browse icons</a></p>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description <span style="color:#ef4444">*</span></label>
+                                <textarea class="form-control" name="description" placeholder="Brief description of the role and responsibilities…" required rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="form-control" name="tags" placeholder="e.g. PHP, Laravel, MySQL, REST APIs" maxlength="255">
+                                <p class="help-text">Comma-separated skill tags displayed on the job card.</p>
+                            </div>
+                            <div class="col-12">
+                                <div class="tgl-wrap">
+                                    <input type="checkbox" id="add_is_active" name="is_active" checked>
+                                    <label for="add_is_active">Show on careers page (Active)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk me-1"></i> Save Position</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Edit Modal ─────────────────────────────────────────── -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-pen me-2"></i>Edit Job Opening</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editForm" method="POST">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">Job Title <span style="color:#ef4444">*</span></label>
+                                <input type="text" class="form-control" id="edit_title" name="title" required maxlength="160">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Job Type <span style="color:#ef4444">*</span></label>
+                                <select class="form-select" id="edit_job_type" name="job_type" required>
+                                    <option value="Full-Time">Full-Time</option>
+                                    <option value="Part-Time">Part-Time</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Remote">Remote</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Location <span style="color:#ef4444">*</span></label>
+                                <input type="text" class="form-control" id="edit_location" name="location" required maxlength="120">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Icon Class</label>
+                                <input type="text" class="form-control" id="edit_icon_class" name="icon_class" maxlength="60">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Description <span style="color:#ef4444">*</span></label>
+                                <textarea class="form-control" id="edit_description" name="description" required rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="form-control" id="edit_tags" name="tags" maxlength="255">
+                                <p class="help-text">Comma-separated skill tags.</p>
+                            </div>
+                            <div class="col-12">
+                                <div class="tgl-wrap">
+                                    <input type="checkbox" id="edit_is_active" name="is_active">
+                                    <label for="edit_is_active">Show on careers page (Active)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk me-1"></i> Update Position</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Delete Modal ───────────────────────────────────────── -->
+    <div class="modal fade modal-danger" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fa-solid fa-trash me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" style="text-align:center;padding:28px 24px 20px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size:40px;color:#f59e0b;margin-bottom:14px;display:block;"></i>
+                    <p style="font-size:14px;color:var(--text-dark);margin:0;">
+                        Delete job opening <strong id="deleteJobTitle">—</strong>?
+                        <span style="display:block;font-size:12px;color:var(--text-muted);margin-top:6px;">All related applications will lose their job reference. This cannot be undone.</span>
+                    </p>
+                </div>
+                <form id="deleteForm" method="POST">
+                    <div class="modal-footer" style="justify-content:center;gap:10px;">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-danger-confirm"><i class="fa-solid fa-trash me-1"></i> Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    function openEditModal(id, btn) {
+        document.getElementById('editForm').action = '/admin/jobs/edit/' + id;
+        document.getElementById('edit_title').value      = btn.dataset.title;
+        document.getElementById('edit_description').value = btn.dataset.description;
+        document.getElementById('edit_location').value   = btn.dataset.location;
+        document.getElementById('edit_job_type').value   = btn.dataset.jobtype;
+        document.getElementById('edit_icon_class').value = btn.dataset.iconclass;
+        document.getElementById('edit_tags').value       = btn.dataset.tags;
+        document.getElementById('edit_is_active').checked = (btn.dataset.active === 'true');
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+    }
+
+    function openDeleteModal(id, title) {
+        document.getElementById('deleteForm').action = '/admin/jobs/delete/' + id;
+        document.getElementById('deleteJobTitle').textContent = title;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+    </script>
+{% endblock %}

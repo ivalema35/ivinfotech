@@ -1,0 +1,673 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Inquiries{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ────────────────────────────────────────────────────
+     Inquiries Dashboard — Premium SaaS Table
+     Matches applications.html aesthetic
+  ──────────────────────────────────────────────────── */
+
+  /* Page header */
+  .inq-page-hdr {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; flex-wrap: wrap;
+    gap: 12px; margin-bottom: 28px;
+  }
+  .inq-page-hdr h1 {
+    font-size: 20px; font-weight: 700; color: #111827; margin: 0;
+    display: flex; align-items: center; gap: 9px;
+  }
+  .inq-page-hdr p { font-size: 13px; color: #6b7280; margin: 5px 0 0; }
+
+  /* KPI grid */
+  .inq-kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-bottom: 28px;
+  }
+  .inq-kpi {
+    background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    padding: 20px 20px 18px; position: relative;
+    transition: box-shadow .22s, transform .22s; overflow: hidden;
+  }
+  .inq-kpi:hover { box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+  .inq-kpi__icon {
+    position: absolute; top: 18px; right: 18px;
+    width: 36px; height: 36px; border-radius: 9px;
+    display: grid; place-items: center;
+  }
+  .inq-kpi__icon--blue   { background: #eff6ff; color: #2563eb; }
+  .inq-kpi__icon--yellow { background: #fefce8; color: #ca8a04; }
+  .inq-kpi__icon--violet { background: #f5f3ff; color: #7c3aed; }
+  .inq-kpi__icon--green  { background: #f0fdf4; color: #16a34a; }
+  .inq-kpi__label {
+    font-size: 11px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: #9ca3af; margin-bottom: 10px;
+    padding-right: 44px;
+  }
+  .inq-kpi__value { font-size: 36px; font-weight: 700; color: #111827; line-height: 1; }
+  .inq-kpi__foot  { font-size: 11.5px; color: #9ca3af; margin-top: 8px; }
+  @media (max-width: 900px) { .inq-kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .inq-kpi-grid { grid-template-columns: 1fr; } }
+
+  /* Panel */
+  .inq-panel {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05); overflow: hidden;
+  }
+  .inq-panel__head {
+    padding: 16px 24px; border-bottom: 1px solid #f3f4f6;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .inq-panel__title {
+    font-size: 14px; font-weight: 600; color: #111827;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .inq-panel__count {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 99px; background: #f3f4f6; color: #6b7280;
+  }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  .inq-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .inq-table th {
+    padding: 13px 20px; text-align: left;
+    font-size: .69rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: #9ca3af; white-space: nowrap;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .inq-table td {
+    padding: 15px 20px; color: #374151; vertical-align: middle;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .inq-table tbody tr:last-child td { border-bottom: none; }
+  .inq-table tbody tr { transition: background .15s; }
+  .inq-table tbody tr:hover { background: #fafafa; }
+
+  /* Contact cell */
+  .inq-contact { display: flex; align-items: center; gap: 10px; }
+  .inq-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .inq-avatar--blue   { background: linear-gradient(135deg,#3b82f6,#60a5fa); }
+  .inq-avatar--indigo { background: linear-gradient(135deg,#6366f1,#818cf8); }
+  .inq-avatar--green  { background: linear-gradient(135deg,#10b981,#34d399); }
+  .inq-avatar--amber  { background: linear-gradient(135deg,#f59e0b,#fbbf24); }
+  .inq-avatar--pink   { background: linear-gradient(135deg,#ec4899,#f472b6); }
+  .inq-name  { font-size: 13.5px; font-weight: 600; color: #111827; display: block; }
+  .inq-email { font-size: 11.5px; color: #9ca3af; display: block; text-decoration: none; }
+  .inq-email:hover { color: #2563eb; }
+  .inq-phone { font-size: 11px; color: #b0b7c3; display: block; margin-top: 1px; }
+
+  /* Service badge */
+  .inq-badge {
+    display: inline-block; padding: 4px 10px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 500; white-space: nowrap;
+    background: #eff6ff; color: #1d4ed8;
+  }
+  .inq-badge--crm     { background: #faf5ff; color: #7c3aed; }
+  .inq-badge--mobile  { background: #fff7ed; color: #c2410c; }
+  .inq-badge--ai      { background: #f0fdf4; color: #15803d; }
+  .inq-badge--design  { background: #fdf2f8; color: #9d174d; }
+  .inq-badge--digital { background: #fffbeb; color: #b45309; }
+  .inq-badge--hosting { background: #f8fafc; color: #475569; }
+  .inq-badge--other   { background: #f3f4f6; color: #6b7280; }
+
+  /* Source page badge */
+  .src-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 9px; border-radius: 6px; font-size: 11px;
+    font-weight: 500; font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background: #f1f5f9; color: #475569; max-width: 180px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  /* Status badge */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 600; white-space: nowrap;
+  }
+  .status-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .status-new        { background: #eff6ff; color: #1d4ed8; }
+  .status-new::before        { background: #3b82f6; }
+  .status-in-progress { background: #fefce8; color: #854d0e; }
+  .status-in-progress::before { background: #eab308; }
+  .status-closed     { background: #f0fdf4; color: #15803d; }
+  .status-closed::before     { background: #22c55e; }
+
+  /* Status select */
+  .status-select {
+    font-size: 12px; font-weight: 600; padding: 5px 8px;
+    border-radius: 8px; border: 1px solid #e5e7eb;
+    background: #fafafa; color: #374151; cursor: pointer;
+    transition: border-color .18s;
+  }
+  .status-select:focus { outline: none; border-color: #93c5fd; }
+
+  /* Action buttons */
+  .btn-view-msg {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px; border: 1px solid #e5e7eb; border-radius: 7px;
+    background: transparent; color: #374151;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: border-color .18s, background .18s, color .18s;
+  }
+  .btn-view-msg:hover { border-color: #93c5fd; color: #2563eb; background: #eff6ff; }
+
+  /* Empty state */
+  .inq-empty { text-align: center; padding: 64px 24px; color: #9ca3af; }
+  .inq-empty p { font-size: 14px; margin: 12px 0 0; }
+
+  /* ── Redesigned Modal ── */
+  .inq-modal .modal-content {
+    border: none; border-radius: 20px;
+    box-shadow: 0 32px 80px rgba(0,0,0,.18); overflow: hidden;
+  }
+  /* Accent bar at very top */
+  .inq-modal .modal-content::before {
+    content: ''; display: block; height: 4px;
+    background: linear-gradient(90deg, #2563eb, #6366f1, #8b5cf6);
+  }
+  .inq-modal .modal-header {
+    border-bottom: 1px solid #f1f5f9; padding: 24px 28px 20px;
+    background: #fff; align-items: flex-start;
+  }
+  .inq-modal-avatar {
+    width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+    display: grid; place-items: center; font-size: 16px; font-weight: 700;
+    color: #fff; background: linear-gradient(135deg, #3b82f6, #6366f1);
+    margin-right: 14px;
+  }
+  .inq-modal-hdr-name {
+    font-size: 17px; font-weight: 700; color: #0f172a; margin: 0 0 2px; line-height: 1.3;
+  }
+  .inq-modal-hdr-email {
+    font-size: 12.5px; color: #64748b; font-weight: 400;
+  }
+  .inq-modal-hdr-date {
+    font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;
+  }
+  .inq-modal .btn-close {
+    margin: 0; opacity: .35; flex-shrink: 0; margin-top: 4px;
+  }
+  .inq-modal .btn-close:hover { opacity: .7; }
+  /* Info grid */
+  .inq-info-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin-bottom: 22px;
+  }
+  .inq-info-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: #f8fafc; border: 1px solid #f1f5f9;
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .inq-info-icon {
+    width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+    display: grid; place-items: center; color: #fff;
+  }
+  .inq-info-icon--blue   { background: linear-gradient(135deg,#3b82f6,#60a5fa); }
+  .inq-info-icon--violet { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
+  .inq-info-icon--green  { background: linear-gradient(135deg,#10b981,#34d399); }
+  .inq-info-icon--amber  { background: linear-gradient(135deg,#f59e0b,#fbbf24); }
+  .inq-info-icon--slate  { background: linear-gradient(135deg,#64748b,#94a3b8); }
+  .inq-info-label {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .07em; color: #94a3b8; margin-bottom: 2px;
+  }
+  .inq-info-value {
+    font-size: 13px; font-weight: 600; color: #0f172a;
+    word-break: break-all; line-height: 1.4;
+  }
+  .inq-info-value a { color: #2563eb; text-decoration: none; }
+  .inq-info-value a:hover { text-decoration: underline; }
+  /* Message section */
+  .inq-msg-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: #94a3b8; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .inq-msg-label::after {
+    content: ''; flex: 1; height: 1px; background: #f1f5f9;
+  }
+  #msgModalBody {
+    font-size: 14px; color: #334155; line-height: 1.8;
+    background: #f8fafc; border-radius: 12px;
+    border-left: 3px solid #c7d2fe;
+    padding: 16px 20px; min-height: 56px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  /* Status changer inside modal */
+  .inq-modal-foot {
+    padding: 16px 28px 22px; display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid #f1f5f9; gap: 12px; flex-wrap: wrap;
+  }
+  .inq-modal-status-wrap { display: flex; align-items: center; gap: 10px; }
+  .inq-modal-status-wrap label {
+    font-size: 12px; font-weight: 600; color: #64748b;
+  }
+  .inq-modal-status-select {
+    font-size: 13px; font-weight: 600; padding: 7px 12px;
+    border-radius: 9px; border: 1.5px solid #e2e8f0;
+    background: #fff; color: #0f172a; cursor: pointer;
+    transition: border-color .18s;
+  }
+  .inq-modal-status-select:focus { outline: none; border-color: #93c5fd; }
+  .btn-modal-close {
+    font-size: 13px; font-weight: 600; padding: 8px 20px;
+    border-radius: 9px; border: 1.5px solid #e2e8f0;
+    background: #fff; color: #64748b; cursor: pointer;
+    transition: all .18s;
+  }
+  .btn-modal-close:hover { border-color: #cbd5e1; background: #f8fafc; color: #334155; }
+
+  /* Toast */
+  #inqToast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    background: #111827; color: #fff; border-radius: 10px;
+    padding: 12px 20px; font-size: 13px; font-weight: 500;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity .28s, transform .28s; pointer-events: none;
+  }
+  #inqToast.show { opacity: 1; transform: translateY(0); }
+</style>
+{% endblock %}
+
+{% block topbar_title %}Inquiries{% endblock %}
+{% block topbar_sub %}All contact and hire-page leads from your website.{% endblock %}
+
+{% block content %}
+
+  <!-- Page header -->
+  <div class="inq-page-hdr">
+    <div>
+      <h1>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        Inquiries
+      </h1>
+      <p>{{ inquiries | length }} inquiry{{ 'ies' if inquiries | length != 1 else 'y' }} received — manage leads from all pages</p>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  {%- set total_count    = inquiries | length %}
+  {%- set new_count      = inquiries | selectattr('status', 'equalto', 'New')         | list | length %}
+  {%- set progress_count = inquiries | selectattr('status', 'equalto', 'In Progress') | list | length %}
+  {%- set closed_count   = inquiries | selectattr('status', 'equalto', 'Closed')      | list | length %}
+
+  <div class="inq-kpi-grid">
+
+    <div class="inq-kpi">
+      <div class="inq-kpi__icon inq-kpi__icon--blue">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <div class="inq-kpi__label">Total Inquiries</div>
+      <div class="inq-kpi__value">{{ total_count }}</div>
+      <div class="inq-kpi__foot">All time</div>
+    </div>
+
+    <div class="inq-kpi">
+      <div class="inq-kpi__icon inq-kpi__icon--yellow">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <div class="inq-kpi__label">New Leads</div>
+      <div class="inq-kpi__value">{{ new_count }}</div>
+      <div class="inq-kpi__foot">Awaiting action</div>
+    </div>
+
+    <div class="inq-kpi">
+      <div class="inq-kpi__icon inq-kpi__icon--violet">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+      </div>
+      <div class="inq-kpi__label">In Progress</div>
+      <div class="inq-kpi__value">{{ progress_count }}</div>
+      <div class="inq-kpi__foot">Being handled</div>
+    </div>
+
+    <div class="inq-kpi">
+      <div class="inq-kpi__icon inq-kpi__icon--green">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="inq-kpi__label">Closed</div>
+      <div class="inq-kpi__value">{{ closed_count }}</div>
+      <div class="inq-kpi__foot">Resolved leads</div>
+    </div>
+
+  </div>
+
+  <!-- Inquiries Table Panel -->
+  <div class="inq-panel">
+    <div class="inq-panel__head">
+      <span class="inq-panel__title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        All Received Inquiries
+      </span>
+      <span class="inq-panel__count">{{ inquiries | length }} total</span>
+    </div>
+
+    <div class="table-wrap">
+      {% if inquiries %}
+      {%- set avatar_colors = ['blue','indigo','green','amber','pink'] %}
+      <table class="inq-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name &amp; Contact</th>
+            <th>Service Interest</th>
+            <th>Source Page</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inq in inquiries %}
+          {%- set color = avatar_colors[loop.index0 % 5] %}
+          {%- set initials = (inq.name.split()[0][0] if inq.name else '?') | upper %}
+          {%- set initials = initials + ((inq.name.split()[1][0] if inq.name.split()|length > 1 else '') | upper) %}
+          <tr data-id="{{ inq.id }}">
+
+            <!-- # -->
+            <td style="font-size:12px;color:#c4c9d4;font-weight:600;width:44px;">
+              {{ loop.index }}
+            </td>
+
+            <!-- Name & Contact -->
+            <td>
+              <div class="inq-contact">
+                <div class="inq-avatar inq-avatar--{{ color }}">{{ initials }}</div>
+                <div>
+                  <span class="inq-name">{{ inq.name }}</span>
+                  <a href="mailto:{{ inq.email }}" class="inq-email">{{ inq.email }}</a>
+                  {% if inq.phone %}
+                  <span class="inq-phone">{{ inq.phone }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+
+            <!-- Service Interest -->
+            <td>
+              {%- set svc = inq.service_interest or '' %}
+              {%- if 'CRM' in svc or 'ERP' in svc %}
+                <span class="inq-badge inq-badge--crm">{{ svc }}</span>
+              {%- elif 'Mobile' in svc %}
+                <span class="inq-badge inq-badge--mobile">{{ svc }}</span>
+              {%- elif 'AI' in svc %}
+                <span class="inq-badge inq-badge--ai">{{ svc }}</span>
+              {%- elif 'Design' in svc or 'UI' in svc %}
+                <span class="inq-badge inq-badge--design">{{ svc }}</span>
+              {%- elif 'Marketing' in svc %}
+                <span class="inq-badge inq-badge--digital">{{ svc }}</span>
+              {%- elif 'Hosting' in svc or 'Cloud' in svc %}
+                <span class="inq-badge inq-badge--hosting">{{ svc }}</span>
+              {%- elif svc %}
+                <span class="inq-badge">{{ svc }}</span>
+              {%- else %}
+                <span class="inq-badge inq-badge--other">General</span>
+              {%- endif %}
+            </td>
+
+            <!-- Source Page -->
+            <td>
+              <span class="src-badge" title="{{ inq.source_page or '—' }}">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                {{ inq.source_page or '—' }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td style="font-size:12.5px;white-space:nowrap;">
+              <span style="color:#374151;font-weight:500;">
+                {{ inq.created_at.strftime('%b %d, %Y') if inq.created_at else '—' }}
+              </span><br>
+              <span style="font-size:11px;color:#9ca3af;">
+                {{ inq.created_at.strftime('%I:%M %p') if inq.created_at else '' }}
+              </span>
+            </td>
+
+            <!-- Status -->
+            <td>
+              <select class="status-select" data-id="{{ inq.id }}" onchange="updateStatus(this)">
+                <option value="New"         {% if inq.status == 'New'         %}selected{% endif %}>🔵 New</option>
+                <option value="In Progress" {% if inq.status == 'In Progress' %}selected{% endif %}>🟡 In Progress</option>
+                <option value="Closed"      {% if inq.status == 'Closed'      %}selected{% endif %}>🟢 Closed</option>
+              </select>
+            </td>
+
+            <!-- Action -->
+            <td>
+              <button class="btn-view-msg"
+                      data-id="{{ inq.id }}"
+                      data-name="{{ inq.name | e }}"
+                      data-email="{{ inq.email | e }}"
+                      data-phone="{{ inq.phone or '' | e }}"
+                      data-service="{{ inq.service_interest or '' | e }}"
+                      data-source="{{ inq.source_page or '' | e }}"
+                      data-date="{{ inq.created_at.strftime('%b %d, %Y – %I:%M %p') if inq.created_at else '' }}"
+                      data-message="{{ inq.message or '' | e }}"
+                      onclick="openMsgModal(this)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                View
+              </button>
+            </td>
+
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% else %}
+      <div class="inq-empty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <p>No inquiries yet. They will appear here once visitors submit the contact or hire forms.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- ── View Message Modal ── -->
+  <div class="modal fade inq-modal" id="msgModal" tabindex="-1" aria-labelledby="msgModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+          <div id="mmAvatarWrapper" class="inq-modal-avatar" aria-hidden="true">HV</div>
+          <div style="flex:1;min-width:0;">
+            <p class="inq-modal-hdr-name" id="mmName">—</p>
+            <span class="inq-modal-hdr-email" id="mmEmail"></span>
+            <span class="inq-modal-hdr-date" id="mmDate"></span>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body" style="padding:22px 28px 6px;">
+
+          <!-- Info grid -->
+          <div class="inq-info-grid" id="mmInfoGrid"></div>
+
+          <!-- Message -->
+          <div class="inq-msg-label">Message</div>
+          <div id="msgModalBody">—</div>
+
+        </div>
+
+        <!-- Footer: status changer -->
+        <div class="inq-modal-foot">
+          <div class="inq-modal-status-wrap">
+            <label for="mmStatusSelect">Update status:</label>
+            <select class="inq-modal-status-select" id="mmStatusSelect" onchange="updateStatusFromModal(this)">
+              <option value="New">🔵 New</option>
+              <option value="In Progress">🟡 In Progress</option>
+              <option value="Closed">🟢 Closed</option>
+            </select>
+          </div>
+          <button class="btn-modal-close" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="inqToast"></div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  /* ── View Message Modal ── */
+  var _currentModalId = null;
+
+  function openMsgModal(btn) {
+    var d = btn.dataset;
+    _currentModalId = d.id || null;
+
+    /* Header */
+    var initials = d.name ? d.name.trim().split(/\s+/).slice(0,2).map(function(w){return w[0].toUpperCase();}).join('') : '?';
+    document.getElementById('mmAvatarWrapper').textContent = initials;
+    document.getElementById('mmName').textContent  = d.name  || '—';
+    document.getElementById('mmEmail').textContent = d.email || '';
+    document.getElementById('mmDate').textContent  = d.date  || '';
+
+    /* Info grid */
+    var infoItems = [
+      { label: 'Email',   value: d.email   ? '<a href="mailto:'+escHtml(d.email)+'">'+escHtml(d.email)+'</a>' : null, iconClass: 'inq-info-icon--blue',
+        svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>' },
+      { label: 'Phone',   value: d.phone   ? escHtml(d.phone)   : null, iconClass: 'inq-info-icon--green',
+        svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.61 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.09 4.18 2 2 0 0 1 5.09 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>' },
+      { label: 'Service', value: d.service ? escHtml(d.service) : null, iconClass: 'inq-info-icon--violet',
+        svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>' },
+      { label: 'Source',  value: d.source  ? escHtml(d.source)  : null, iconClass: 'inq-info-icon--amber',
+        svg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' },
+    ].filter(function(i){ return i.value; });
+
+    var grid = document.getElementById('mmInfoGrid');
+    grid.innerHTML = infoItems.map(function(i) {
+      return '<div class="inq-info-item">'
+        + '<div class="inq-info-icon ' + i.iconClass + '">' + i.svg + '</div>'
+        + '<div><div class="inq-info-label">' + i.label + '</div>'
+        + '<div class="inq-info-value">' + i.value + '</div></div>'
+        + '</div>';
+    }).join('');
+
+    /* Message */
+    document.getElementById('msgModalBody').textContent = d.message || '(no message provided)';
+
+    /* Status select */
+    var sel = document.getElementById('mmStatusSelect');
+    var rowSel = _currentModalId ? document.querySelector('.status-select[data-id="'+_currentModalId+'"]') : null;
+    if (sel && rowSel) sel.value = rowSel.value;
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('msgModal')).show();
+  }
+
+  /* ── Status update from inside modal ── */
+  function updateStatusFromModal(sel) {
+    if (!_currentModalId) return;
+    /* sync with the table row select */
+    var rowSel = document.querySelector('.status-select[data-id="'+_currentModalId+'"]');
+    if (rowSel) { rowSel.value = sel.value; updateStatus(rowSel); }
+    else {
+      sel.disabled = true;
+      fetch('/admin/inquiries/status/' + _currentModalId, {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({status: sel.value})
+      }).then(function(r){return r.json();}).then(function(res){
+        if(res.success) showToast('Status updated to "'+sel.value+'"');
+        else showToast('Failed to update status', true);
+      }).catch(function(){ showToast('Network error', true); })
+        .finally(function(){ sel.disabled = false; });
+    }
+  }
+
+  /* ── Inline Status Update ── */
+  function updateStatus(sel) {
+    var id     = sel.dataset.id;
+    var status = sel.value;
+    sel.disabled = true;
+
+    fetch('/admin/inquiries/status/' + id, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ status: status })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (res.success) {
+        showToast('Status updated to "' + status + '"');
+      } else {
+        showToast('Failed to update status', true);
+        /* revert — reload row value on next page refresh */
+      }
+    })
+    .catch(function () { showToast('Network error', true); })
+    .finally(function () { sel.disabled = false; });
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, isError) {
+    var t = document.getElementById('inqToast');
+    t.textContent  = msg;
+    t.style.background = isError ? '#dc2626' : '#111827';
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 2800);
+  }
+
+  /* ── Escape HTML helper ── */
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+{% endblock %}

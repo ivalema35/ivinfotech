@@ -1,0 +1,623 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit' if portfolio else 'Add' }} Portfolio Project{% endblock %}
+
+{% block head_extra %}
+    <style>
+        .page-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .page-header-bar h1 { font-size:20px; font-weight:700; color:var(--text-dark); margin:0; }
+        .page-header-bar p  { font-size:13px; color:var(--text-muted); margin:2px 0 0; }
+        .form-label { font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:5px; display:block; }
+        .form-control, .form-select { border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 12px; font-size:13.5px; font-family:'Poppins',sans-serif; color:var(--text-dark); width:100%; transition:border-color .18s, box-shadow .18s; background:#fff; }
+        .form-control:focus, .form-select:focus { border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(47,85,244,.12); outline:none; }
+        textarea.form-control { resize:vertical; min-height:80px; }
+        .help-text { font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+        .btn-save { background:var(--primary-blue); color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; transition:background .18s; }
+        .btn-save:hover { background:var(--primary-dark); }
+        .btn-cancel-md { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); border-radius:var(--radius-sm); padding:9px 20px; font-size:13.5px; font-family:'Poppins',sans-serif; cursor:pointer; text-decoration:none; display:inline-block; }
+        .tgl-wrap { display:flex; align-items:center; gap:8px; margin-top:4px; }
+        .tgl-wrap input[type=checkbox] { width:17px; height:17px; accent-color:var(--primary-blue); cursor:pointer; }
+        .tgl-wrap label { font-size:13px; color:var(--text-mid); margin:0; cursor:pointer; }
+        .editor-wrapper { max-width:960px; margin:0 auto; }
+        .editor-card { background:#fff; border-radius:var(--radius); border:1px solid var(--border); padding:28px 30px; margin-bottom:22px; }
+        .editor-card h2 { font-size:14px; font-weight:700; color:var(--text-dark); margin:0 0 18px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+        .slug-group { position:relative; }
+        .slug-group .slug-prefix { position:absolute; left:0; top:0; bottom:0; display:flex; align-items:center; padding:0 12px; background:var(--bg-table-head); border-right:1px solid var(--border); border-radius:var(--radius-sm) 0 0 var(--radius-sm); font-size:13px; color:var(--text-muted); white-space:nowrap; pointer-events:none; }
+        .slug-group input { padding-left:130px; }
+
+        /* JSON row editors */
+        .json-section { margin-top:0; }
+        .json-row { background:var(--bg-body); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; position:relative; }
+        .json-row .remove-row { position:absolute; top:10px; right:12px; background:#fee2e2; color:#dc2626; border:none; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:700; cursor:pointer; }
+        .json-row .remove-row:hover { background:#fca5a5; }
+        .btn-add-row { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; background:var(--primary-light); color:var(--primary-blue); border:1px dashed var(--primary-blue); border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer; margin-top:6px; transition:background .18s; }
+        .btn-add-row:hover { background:#dce5fd; }
+        .sub-label { font-size:11.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; display:block; }
+        .mini-input { font-size:12.5px; padding:6px 10px; }
+        .img-preview { max-width:100%; max-height:110px; border-radius:8px; margin-top:8px; border:1px solid var(--border); display:none; }
+        .img-preview.show { display:block; }
+        .btn-upload { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; background:var(--primary-light); color:var(--primary-blue); border:1px solid var(--border); border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; margin-top:6px; }
+        .btn-upload:hover { background:#dce5fd; }
+        .gallery-row-type { width:90px; }
+        .form-section-cols { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        @media(max-width:640px){ .form-section-cols { grid-template-columns:1fr; } }
+        .kpi-cols { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        @media(max-width:640px){ .kpi-cols { grid-template-columns:1fr; } }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}{{ 'Edit Project' if portfolio else 'Add Project' }}{% endblock %}
+{% block topbar_sub %}{{ 'Update the portfolio case study.' if portfolio else 'Create a new portfolio case study.' }}{% endblock %}
+
+{% block content %}
+
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}
+    <div class="alert alert-{{ 'success' if cat == 'success' else 'danger' }} alert-dismissible fade show" role="alert" style="border-radius:var(--radius-sm);font-size:13.5px;margin-bottom:18px;">
+        <i class="fa-solid fa-{{ 'circle-check' if cat == 'success' else 'triangle-exclamation' }}" style="margin-right:8px;"></i>{{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    <div class="page-header-bar">
+        <div>
+            <h1><i class="fa-solid fa-{{ 'pen' if portfolio else 'plus' }}" style="color:var(--primary-blue);margin-right:8px;"></i>
+                {{ 'Edit: ' + portfolio.title if portfolio else 'New Portfolio Project' }}
+            </h1>
+            <p>Fill in all sections, then click Save at the bottom.</p>
+        </div>
+        <a href="{{ url_for('admin_portfolio') }}" class="btn-cancel-md">
+            <i class="fa-solid fa-arrow-left" style="margin-right:6px;"></i> Back to list
+        </a>
+    </div>
+
+    <form method="POST"
+          action="{{ url_for('admin_portfolio_edit', pid=portfolio.id) if portfolio else url_for('admin_portfolio_add') }}"
+          enctype="multipart/form-data" id="portfolioForm" class="editor-wrapper">
+
+        <!-- ── 1. Basic Info ───────────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-circle-info" style="color:var(--primary-blue);"></i> Basic Info</h2>
+            <div class="form-section-cols" style="margin-bottom:16px;">
+                <div>
+                    <label class="form-label">Project Title *</label>
+                    <input type="text" name="title" id="titleInput" class="form-control"
+                           value="{{ portfolio.title if portfolio else '' }}" required
+                           placeholder="e.g. Belzzo Kids Footwear">
+                </div>
+                <div>
+                    <label class="form-label">Slug *</label>
+                    <div class="slug-group">
+                        <span class="slug-prefix">/portfolio/</span>
+                        <input type="text" name="slug" id="slugInput" class="form-control"
+                               value="{{ portfolio.slug if portfolio else '' }}" required
+                               placeholder="belzzo-kids-footwear">
+                    </div>
+                    <p class="help-text">Auto-generated from title, or enter manually.</p>
+                </div>
+            </div>
+            <div class="form-section-cols" style="margin-bottom:16px;">
+                <div>
+                    <label class="form-label">Category *</label>
+                    <select name="category" class="form-select">
+                        {% for c in ['Web','CRM','App','AI'] %}
+                        <option value="{{ c }}" {{ 'selected' if portfolio and portfolio.category == c }}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Client Name</label>
+                    <input type="text" name="client_name" class="form-control"
+                           value="{{ portfolio.client_name or '' }}"
+                           placeholder="e.g. Belzzo Retail Pvt. Ltd.">
+                </div>
+            </div>
+            <div class="form-section-cols">
+                <div>
+                    <label class="form-label">Theme Color *</label>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <input type="color" name="theme_color" id="themeColor"
+                               value="{{ portfolio.theme_color if portfolio else '#2F55F4' }}"
+                               style="width:48px;height:40px;padding:2px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;">
+                        <input type="text" id="themeColorHex" class="form-control" style="max-width:120px;"
+                               value="{{ portfolio.theme_color if portfolio else '#2F55F4' }}"
+                               placeholder="#2F55F4" maxlength="7" pattern="^#[0-9A-Fa-f]{6}$">
+                    </div>
+                    <p class="help-text">Pick or type a hex color — used for highlights across the case study page.</p>
+                </div>
+                <div>
+                    <label class="form-label">Published</label>
+                    <div class="tgl-wrap" style="margin-top:10px;">
+                        <input type="checkbox" name="is_published" id="isPublished"
+                               {{ 'checked' if portfolio and portfolio.is_published }}>
+                        <label for="isPublished">Show on public portfolio page</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── 2. Hero Section ─────────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-star" style="color:var(--primary-blue);"></i> Hero / Banner</h2>
+            <div style="margin-bottom:16px;">
+                <label class="form-label">Hero Outcome (headline badge)</label>
+                <input type="text" name="hero_outcome" class="form-control"
+                       value="{{ portfolio.hero_outcome or '' }}"
+                       placeholder="e.g. +40% discovery & -32% checkout drop-off">
+                <p class="help-text">Short result shown as the hero badge above the title.</p>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label class="form-label">Hero Description</label>
+                <textarea name="hero_description" class="form-control" rows="3"
+                          placeholder="Brief intro paragraph shown in the hero section.">{{ portfolio.hero_description or '' }}</textarea>
+            </div>
+            <div class="form-section-cols" style="margin-bottom:16px;">
+                <div>
+                    <label class="form-label">Hero Image — Desktop Mockup URL</label>
+                    <input type="text" name="hero_image_web" class="form-control"
+                           value="{{ portfolio.hero_image_web or '' }}"
+                           placeholder="https://... or /assets/images/...">
+                    <p class="help-text">Main desktop/laptop screen mockup (shows left side in hero).</p>
+                </div>
+                <div>
+                    <label class="form-label">Hero Image — Mobile Mockup URL</label>
+                    <input type="text" name="hero_image_app" class="form-control"
+                           value="{{ portfolio.hero_image_app or '' }}"
+                           placeholder="https://... or /assets/images/...">
+                    <p class="help-text">Mobile / phone screen mockup (shows right side in hero).</p>
+                </div>
+            </div>
+            <div class="kpi-cols">
+                {% for n in [1,2,3] %}
+                <div style="background:var(--bg-body);border:1px solid var(--border);border-radius:8px;padding:14px;">
+                    <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px;">KPI {{ n }}</div>
+                    <div style="margin-bottom:8px;">
+                        <label class="form-label" style="font-size:12px;">Value</label>
+                        <input type="text" name="kpi_{{ n }}_value" class="form-control mini-input"
+                               value="{{ portfolio['kpi_' ~ n ~ '_value'] if portfolio else '' }}"
+                               placeholder="e.g. 40%">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size:12px;">Label</label>
+                        <input type="text" name="kpi_{{ n }}_label" class="form-control mini-input"
+                               value="{{ portfolio['kpi_' ~ n ~ '_label'] if portfolio else '' }}"
+                               placeholder="e.g. Faster Checkout">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ── 3. About the Client ─────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-building" style="color:var(--primary-blue);"></i> About the Client</h2>
+            <div class="form-section-cols" style="margin-bottom:16px;">
+                <div>
+                    <label class="form-label">Industry</label>
+                    <input type="text" name="industry" class="form-control"
+                           value="{{ portfolio.industry or '' }}" placeholder="e.g. Retail & E-Commerce">
+                </div>
+                <div>
+                    <label class="form-label">Market</label>
+                    <input type="text" name="market" class="form-control"
+                           value="{{ portfolio.market or '' }}" placeholder="e.g. India – Tier 1 &amp; 2 cities">
+                </div>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label class="form-label">Project Goal</label>
+                <input type="text" name="goal" class="form-control"
+                       value="{{ portfolio.goal or '' }}"
+                       placeholder="e.g. Launch a mobile-first D2C web store">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label class="form-label">Client Story — Paragraph 1</label>
+                <textarea name="client_story_p1" class="form-control" rows="3"
+                          placeholder="Context and background of the client...">{{ portfolio.client_story_p1 or '' }}</textarea>
+            </div>
+            <div>
+                <label class="form-label">Client Story — Paragraph 2</label>
+                <textarea name="client_story_p2" class="form-control" rows="3"
+                          placeholder="What drove them to seek a technology solution...">{{ portfolio.client_story_p2 or '' }}</textarea>
+            </div>
+        </div>
+
+        <!-- ── 4. Challenges ──────────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-triangle-exclamation" style="color:var(--primary-blue);"></i> Challenges</h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                Each row is one challenge card. Fields: <code>tag</code>, <code>severity</code> (low/medium/high/critical), <code>title</code>, <code>desc</code>, <code>impact</code>.
+            </p>
+            <div id="challengesRows" class="json-section">
+                <!-- rows injected by JS -->
+            </div>
+            <button type="button" class="btn-add-row" onclick="addChallengeRow()">
+                <i class="fa-solid fa-plus"></i> Add Challenge
+            </button>
+            <textarea name="challenges" id="challengesJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── 5. Solution Steps ───────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-lightbulb" style="color:var(--primary-blue);"></i> Solution Steps</h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                Each row is one step. Fields: <code>tag</code>, <code>title</code>, <code>points</code> (comma-separated bullet points).
+            </p>
+            <div id="solutionRows" class="json-section">
+                <!-- rows injected by JS -->
+            </div>
+            <button type="button" class="btn-add-row" onclick="addSolutionRow()">
+                <i class="fa-solid fa-plus"></i> Add Step
+            </button>
+            <textarea name="solution_steps" id="solutionJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── 6. Services / Tech Stack ───────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-layer-group" style="color:var(--primary-blue);"></i> Services / Tech Stack</h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                Each row is one service card. Fields: <code>num</code>, <code>icon_svg</code> (Font Awesome class, e.g. <code>fa-solid fa-cart-shopping</code>), <code>title</code>, <code>desc</code>, <code>deliverables</code> (comma-separated).
+            </p>
+            <div id="servicesRows" class="json-section">
+                <!-- rows injected by JS -->
+            </div>
+            <button type="button" class="btn-add-row" onclick="addServiceRow()">
+                <i class="fa-solid fa-plus"></i> Add Service
+            </button>
+            <textarea name="services" id="servicesJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── 7. Results ──────────────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-chart-line" style="color:var(--primary-blue);"></i> Results</h2>
+            <div style="margin-bottom:20px;">
+                <div style="font-size:13px;font-weight:700;color:var(--text-dark);margin-bottom:10px;">Result Cards (metric + label + insight)</div>
+                <div id="resultCardsRows" class="json-section"></div>
+                <button type="button" class="btn-add-row" onclick="addResultCardRow()">
+                    <i class="fa-solid fa-plus"></i> Add Card
+                </button>
+            </div>
+            <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-dark);margin-bottom:10px;">Comparison Table Rows (metric + before + after)</div>
+                <div id="resultTableRows" class="json-section"></div>
+                <button type="button" class="btn-add-row" onclick="addResultTableRow()">
+                    <i class="fa-solid fa-plus"></i> Add Row
+                </button>
+            </div>
+            <textarea name="results" id="resultsJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── 8. Gallery ─────────────────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-images" style="color:var(--primary-blue);"></i> Gallery</h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                Each row is one gallery image. <code>type</code>: <strong>web</strong> (desktop) or <strong>app</strong> (mobile). Upload a file or paste a URL. <code>label</code> is the slide caption; <code>alt</code> is the alt text.
+            </p>
+            <div id="galleryRows" class="json-section"></div>
+            <button type="button" class="btn-add-row" onclick="addGalleryRow()">
+                <i class="fa-solid fa-plus"></i> Add Image
+            </button>
+            <textarea name="gallery" id="galleryJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── 9. Built-in Features ─────────────────────── -->
+        <div class="editor-card">
+            <h2><i class="fa-solid fa-star" style="color:var(--primary-blue);"></i> Built-in Features</h2>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                Each row is one feature card shown in the <em>Built-in Features</em> section of the portfolio page.
+                Fields: <code>icon</code> (FA class), <code>title</code>, <code>desc</code>, <code>benefit</code> (shown with ✓).
+            </p>
+            <div id="featuresRows" class="json-section"></div>
+            <button type="button" class="btn-add-row" onclick="addFeatureRow()">
+                <i class="fa-solid fa-plus"></i> Add Feature
+            </button>
+            <textarea name="features" id="featuresJson" style="display:none;"></textarea>
+        </div>
+
+        <!-- ── Save bar ────────────────────────────────────── -->
+        <div style="display:flex;gap:12px;justify-content:flex-end;align-items:center;margin-bottom:40px;">
+            <a href="{{ url_for('admin_portfolio') }}" class="btn-cancel-md">Cancel</a>
+            <button type="submit" class="btn-save">
+                <i class="fa-solid fa-floppy-disk" style="margin-right:7px;"></i>
+                {{ 'Save Changes' if portfolio else 'Create Project' }}
+            </button>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── Seed data from server (edit mode) ─────────────────────────── */
+const INIT = {
+    challenges:    {{ (portfolio.challenges or '[]') | safe if portfolio else '[]' }},
+    solution_steps:{{ (portfolio.solution_steps or '[]') | safe if portfolio else '[]' }},
+    services:      {{ (portfolio.services or '[]') | safe if portfolio else '[]' }},
+    results:       {{ (portfolio.results or '{}') | safe if portfolio else '{}' }},
+    features:      {{ (portfolio.features or '[]') | safe if portfolio else '[]' }},
+    gallery:       {{ (portfolio.gallery or '[]') | safe if portfolio else '[]' }},
+};
+
+/* ── Slug auto-generate ─────────────────────────────────────────── */
+const titleInput = document.getElementById('titleInput');
+const slugInput  = document.getElementById('slugInput');
+let slugManual = slugInput.value.length > 0;
+titleInput.addEventListener('input', () => {
+    if (slugManual) return;
+    slugInput.value = titleInput.value.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
+});
+slugInput.addEventListener('input', () => { slugManual = true; });
+
+/* ── Color picker sync ──────────────────────────────────────────── */
+const colorPicker = document.getElementById('themeColor');
+const colorHex    = document.getElementById('themeColorHex');
+colorPicker.addEventListener('input', () => { colorHex.value = colorPicker.value; });
+colorHex.addEventListener('input', () => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(colorHex.value)) colorPicker.value = colorHex.value;
+});
+
+/* ── Generic row helpers ────────────────────────────────────────── */
+function el(tag, attrs={}, ...children) {
+    const e = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs))
+        k === 'class' ? e.className = v : e.setAttribute(k, v);
+    for (const c of children) typeof c === 'string' ? e.insertAdjacentHTML('beforeend', c) : e.appendChild(c);
+    return e;
+}
+function labeledInput(label, name, value='', placeholder='', type='text', extraClass='') {
+    return `<div><span class="sub-label">${label}</span>
+        <input type="${type}" class="form-control mini-input ${extraClass}" data-field="${name}"
+               value="${escHtml(value)}" placeholder="${placeholder}"></div>`;
+}
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function makeRemoveBtn(container) {
+    const btn = el('button', {type:'button', class:'remove-row'}, '<i class="fa-solid fa-xmark"></i> Remove');
+    btn.onclick = () => btn.closest('.json-row').remove();
+    return btn;
+}
+
+/* ── Challenges ─────────────────────────────────────────────────── */
+function addChallengeRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const iconVal = escHtml(data.icon || 'fa-solid fa-triangle-exclamation');
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:10px;margin-bottom:10px;align-items:end;">
+            <div>
+                <span class="sub-label">Icon</span>
+                <div class="icon-picker-group d-flex align-items-center gap-2" style="margin-top:2px;">
+                    <input type="hidden" class="c-icon-input" data-field="icon" value="${iconVal}">
+                    <button type="button" class="icon-select-btn"
+                            onclick="openIconPicker(this.previousElementSibling, this.querySelector('.preview-icon'))">
+                        <i class="${iconVal} preview-icon"></i> Select
+                    </button>
+                </div>
+            </div>
+            ${labeledInput('Tag','tag', data.tag||'','e.g. PERFORMANCE')}
+            ${labeledInput('Severity','severity', data.severity||'','low/medium/high/critical')}
+            ${labeledInput('Title','title', data.title||'','Challenge title')}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            ${labeledInput('Description (desc)','desc', data.desc||'','Short description')}
+            ${labeledInput('Impact','impact', data.impact||'','Business impact')}
+        </div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('challengesRows').appendChild(row);
+}
+
+/* ── Solution Steps ─────────────────────────────────────────────── */
+function addSolutionRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const pts = Array.isArray(data.points) ? data.points.join(', ') : (data.points||'');
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;margin-bottom:10px;">
+            ${labeledInput('Tag','tag', data.tag||'','e.g. STEP 01')}
+            ${labeledInput('Title','title', data.title||'','Step title')}
+        </div>
+        <div>${labeledInput('Points (comma-separated)','points', pts,'point 1, point 2, ...')}</div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('solutionRows').appendChild(row);
+}
+
+/* ── Services ───────────────────────────────────────────────────── */
+function addServiceRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const del = Array.isArray(data.deliverables) ? data.deliverables.join(', ') : (data.deliverables||'');
+    const iconVal = data.icon_svg || 'fa-solid fa-layer-group';
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:60px auto 2fr;gap:10px;margin-bottom:10px;align-items:end;">
+            ${labeledInput('Num','num', data.num||'','01')}
+            <div>
+                <span class="sub-label">Icon</span>
+                <div class="icon-picker-group d-flex align-items-center gap-2" style="margin-top:2px;">
+                    <input type="hidden" class="c-icon-input" data-field="icon_svg" value="${escHtml(iconVal)}">
+                    <button type="button" class="icon-select-btn"
+                            onclick="openIconPicker(this.previousElementSibling, this.querySelector('.preview-icon'))">
+                        <i class="${escHtml(iconVal)} preview-icon"></i> Select Icon
+                    </button>
+                </div>
+            </div>
+            ${labeledInput('Title','title', data.title||'','Service title')}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            ${labeledInput('Description','desc', data.desc||'','Brief description')}
+            ${labeledInput('Deliverables (comma-separated)','deliverables', del,'item 1, item 2')}
+        </div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('servicesRows').appendChild(row);
+}
+
+/* ── Result Cards ───────────────────────────────────────────────── */
+function addResultCardRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const iconVal = escHtml(data.icon || 'fa-solid fa-arrow-trend-up');
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+            ${labeledInput('Metric','metric', data.metric||'','e.g. 40%')}
+            ${labeledInput('Label','label', data.label||'','e.g. Faster Checkout')}
+            ${labeledInput('Insight','insight', data.insight||'','Brief note')}
+        </div>
+        <div>
+            <span class="sub-label">Icon</span>
+            <div class="icon-picker-group d-flex align-items-center gap-2" style="margin-top:2px;">
+                <input type="hidden" class="c-icon-input" data-field="icon" value="${iconVal}">
+                <button type="button" class="icon-select-btn"
+                        onclick="openIconPicker(this.previousElementSibling, this.querySelector('.preview-icon'))">
+                    <i class="${iconVal} preview-icon"></i> Select Icon
+                </button>
+            </div>
+        </div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('resultCardsRows').appendChild(row);
+}
+
+/* ── Result Table Rows ──────────────────────────────────────────── */
+function addResultTableRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+            ${labeledInput('Metric','metric', data.metric||'','e.g. Page Load Time')}
+            ${labeledInput('Before','before', data.before||'','e.g. 6.2 s')}
+            ${labeledInput('After','after', data.after||'','e.g. 1.4 s')}
+        </div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('resultTableRows').appendChild(row);
+}
+
+/* ── Features ──────────────────────────────────────────────────── */
+function addFeatureRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const iconVal = escHtml(data.icon || 'fa-solid fa-star');
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:10px;margin-bottom:10px;align-items:end;">
+            <div>
+                <span class="sub-label">Icon</span>
+                <div class="icon-picker-group d-flex align-items-center gap-2" style="margin-top:2px;">
+                    <input type="hidden" class="c-icon-input" data-field="icon" value="${iconVal}">
+                    <button type="button" class="icon-select-btn"
+                            onclick="openIconPicker(this.previousElementSibling, this.querySelector('.preview-icon'))">
+                        <i class="${iconVal} preview-icon"></i> Select
+                    </button>
+                </div>
+            </div>
+            ${labeledInput('Title','title', data.title||'','Feature name')}
+            ${labeledInput('Benefit (✓ line)','benefit', data.benefit||'','e.g. Faster checkout')}
+        </div>
+        <div>${labeledInput('Description','desc', data.desc||'','Short description of the feature')}</div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('featuresRows').appendChild(row);
+}
+
+/* ── Gallery ────────────────────────────────────────────────────── */
+function addGalleryRow(data={}) {
+    const row = el('div', {class:'json-row'});
+    const rowId = 'gal_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+    row.innerHTML = `
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr 1fr;gap:10px;align-items:start;margin-bottom:10px;">
+            <div>
+                <span class="sub-label">Type</span>
+                <select class="form-control mini-input gallery-row-type" data-field="type">
+                    <option value="web" ${data.type==='web'?'selected':''}>web</option>
+                    <option value="app" ${data.type==='app'?'selected':''}>app</option>
+                </select>
+            </div>
+            <div>
+                <span class="sub-label">Image URL</span>
+                <input type="text" class="form-control mini-input" data-field="url"
+                       value="${escHtml(data.url||'')}" placeholder="https://... or upload →"
+                       id="${rowId}_url">
+            </div>
+            ${labeledInput('Label (caption)','label', data.label||'','e.g. Homepage')}
+            ${labeledInput('Alt text','alt', data.alt||'','Descriptive alt text')}
+        </div>
+        <div>
+            <label class="btn-upload" style="cursor:pointer;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Image
+                <input type="file" accept="image/*" style="display:none;" onchange="uploadGalleryImg(this, '${rowId}_url')">
+            </label>
+            <img id="${rowId}_preview" class="img-preview" src="${escHtml(data.url||'')}" ${data.url?'style="display:block;"':''}>
+        </div>`;
+    row.appendChild(makeRemoveBtn(row));
+    document.getElementById('galleryRows').appendChild(row);
+    // Update preview when URL is typed
+    const urlInput = document.getElementById(rowId + '_url');
+    const preview  = document.getElementById(rowId + '_preview');
+    urlInput.addEventListener('input', () => {
+        preview.src = urlInput.value;
+        preview.style.display = urlInput.value ? 'block' : 'none';
+    });
+}
+
+/* ── Gallery image upload via AJAX ─────────────────────────────── */
+async function uploadGalleryImg(fileInput, urlFieldId) {
+    if (!fileInput.files[0]) return;
+    const fd = new FormData();
+    fd.append('image', fileInput.files[0]);
+    const label = fileInput.closest('.json-row').querySelector('[data-field="label"]');
+    try {
+        const res = await fetch('/admin/portfolio/upload-image', {method:'POST', body:fd});
+        const data = await res.json();
+        if (data.url) {
+            const urlField  = document.getElementById(urlFieldId);
+            const previewId = urlFieldId.replace('_url','_preview');
+            urlField.value  = data.url;
+            const prev = document.getElementById(previewId);
+            if (prev) { prev.src = data.url; prev.style.display = 'block'; }
+            if (label && !label.value) label.value = fileInput.files[0].name.replace(/\.[^.]+$/,'');
+        } else { alert('Upload failed: ' + (data.error || 'unknown error')); }
+    } catch(e) { alert('Upload error: ' + e.message); }
+}
+
+/* ── Read rows back to JSON on submit ───────────────────────────── */
+function readRows(containerId, fieldsMap) {
+    return Array.from(document.getElementById(containerId).querySelectorAll('.json-row')).map(row => {
+        const obj = {};
+        for (const [field, transform] of Object.entries(fieldsMap)) {
+            const el = row.querySelector(`[data-field="${field}"]`);
+            let val = el ? (el.tagName === 'SELECT' ? el.value : el.value.trim()) : '';
+            obj[field] = transform ? transform(val) : val;
+        }
+        return obj;
+    });
+}
+
+document.getElementById('portfolioForm').addEventListener('submit', function() {
+    // Challenges
+    document.getElementById('challengesJson').value = JSON.stringify(
+        readRows('challengesRows', {icon:null, tag:null, severity:null, title:null, desc:null, impact:null}));
+
+    // Solution steps — points split by comma
+    document.getElementById('solutionJson').value = JSON.stringify(
+        readRows('solutionRows', {tag:null, title:null,
+            points: v => v.split(',').map(s=>s.trim()).filter(Boolean)}));
+
+    // Services — deliverables split by comma
+    document.getElementById('servicesJson').value = JSON.stringify(
+        readRows('servicesRows', {num:null, icon_svg:null, title:null, desc:null,
+            deliverables: v => v.split(',').map(s=>s.trim()).filter(Boolean)}));
+
+    // Results
+    const cards = readRows('resultCardsRows', {metric:null, label:null, insight:null, icon:null});
+    const rows  = readRows('resultTableRows', {metric:null, before:null, after:null});
+    document.getElementById('resultsJson').value = JSON.stringify({cards, rows});
+
+    // Features
+    document.getElementById('featuresJson').value = JSON.stringify(
+        readRows('featuresRows', {icon:null, title:null, desc:null, benefit:null}));
+
+    // Gallery
+    document.getElementById('galleryJson').value = JSON.stringify(
+        readRows('galleryRows', {type:null, url:null, label:null, alt:null}));
+});
+
+/* ── Init: populate from existing data ─────────────────────────── */
+(INIT.challenges || []).forEach(d => addChallengeRow(d));
+(INIT.solution_steps || []).forEach(d => addSolutionRow(d));
+(INIT.services || []).forEach(d => addServiceRow(d));
+((INIT.results && INIT.results.cards) || []).forEach(d => addResultCardRow(d));
+((INIT.results && INIT.results.rows)  || []).forEach(d => addResultTableRow(d));
+(INIT.features || []).forEach(d => addFeatureRow(d));
+(INIT.gallery || []).forEach(d => addGalleryRow(d));
+</script>
+{% endblock %}

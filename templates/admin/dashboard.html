@@ -1,0 +1,368 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block topbar_greeting %}
+            <div class="topbar__greeting">
+                <h1 class="topbar__title" id="greetTitle">Welcome, {{ current_user.username | capitalize }}!</h1>
+                <p class="topbar__sub">Here's your portal overview for today.</p>
+            </div>
+{% endblock %}
+
+{% block topbar_search %}
+            <div class="topbar__search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search…">
+            </div>
+{% endblock %}
+
+{% block content %}
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+
+                <!-- Applications -->
+                <a href="{{ url_for('admin_applications') }}" class="kpi-card kpi-card--link">
+                    <div class="kpi-card__icon kpi-card__icon--blue">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__value">{{ total_apps }}</span>
+                        <span class="kpi-card__label">Job Applications</span>
+                        <span class="kpi-card__trend kpi-card__trend--neutral">
+                            <i class="fa-solid fa-database"></i> All time
+                        </span>
+                    </div>
+                    <div class="kpi-card__sparkline">
+                        <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                            <defs><linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#2F55F4" stop-opacity=".18"/>
+                                <stop offset="100%" stop-color="#2F55F4" stop-opacity="0"/>
+                            </linearGradient></defs>
+                            <polygon points="0,30 20,22 40,26 60,16 80,19 100,10 120,6 120,36 0,36" fill="url(#gBlue)"/>
+                            <polyline points="0,30 20,22 40,26 60,16 80,19 100,10 120,6" fill="none" stroke="#2F55F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Inquiries -->
+                <a href="{{ url_for('admin_inquiries') }}" class="kpi-card kpi-card--link">
+                    <div class="kpi-card__icon kpi-card__icon--indigo">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__value">{{ total_inquiries }}</span>
+                        <span class="kpi-card__label">Inquiries</span>
+                        <span class="kpi-card__trend kpi-card__trend--neutral">
+                            <i class="fa-solid fa-inbox"></i> Contact &amp; hire forms
+                        </span>
+                    </div>
+                    <div class="kpi-card__sparkline">
+                        <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                            <defs><linearGradient id="gIndigo" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#6366f1" stop-opacity=".18"/>
+                                <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                            </linearGradient></defs>
+                            <polygon points="0,26 20,20 40,24 60,14 80,17 100,8 120,11 120,36 0,36" fill="url(#gIndigo)"/>
+                            <polyline points="0,26 20,20 40,24 60,14 80,17 100,8 120,11" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Portfolio -->
+                <a href="{{ url_for('admin_portfolio') }}" class="kpi-card kpi-card--link">
+                    <div class="kpi-card__icon kpi-card__icon--cyan">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__value">{{ total_portfolio }}</span>
+                        <span class="kpi-card__label">Portfolio Projects</span>
+                        <span class="kpi-card__trend kpi-card__trend--neutral">
+                            <i class="fa-solid fa-circle-check"></i> Published
+                        </span>
+                    </div>
+                    <div class="kpi-card__sparkline">
+                        <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                            <defs><linearGradient id="gCyan" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#06b6d4" stop-opacity=".18"/>
+                                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                            </linearGradient></defs>
+                            <polygon points="0,20 20,18 40,20 60,17 80,19 100,17 120,17 120,36 0,36" fill="url(#gCyan)"/>
+                            <polyline points="0,20 20,18 40,20 60,17 80,19 100,17 120,17" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog -->
+                <a href="{{ url_for('admin_blog') }}" class="kpi-card kpi-card--link">
+                    <div class="kpi-card__icon kpi-card__icon--green">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <div class="kpi-card__body">
+                        <span class="kpi-card__value">{{ total_blog }}</span>
+                        <span class="kpi-card__label">Blog Posts</span>
+                        <span class="kpi-card__trend kpi-card__trend--neutral">
+                            <i class="fa-solid fa-rss"></i> Total articles
+                        </span>
+                    </div>
+                    <div class="kpi-card__sparkline">
+                        <svg viewBox="0 0 120 36" preserveAspectRatio="none">
+                            <defs><linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#10b981" stop-opacity=".18"/>
+                                <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                            </linearGradient></defs>
+                            <polygon points="0,28 20,24 40,22 60,20 80,22 100,17 120,15 120,36 0,36" fill="url(#gGreen)"/>
+                            <polyline points="0,28 20,24 40,22 60,20 80,22 100,17 120,15" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Recent Job Applications -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">
+                        <i class="fa-solid fa-clipboard-list"></i> Recent Job Applications
+                    </h2>
+                    <a href="{{ url_for('admin_applications') }}" class="panel__badge" style="text-decoration:none;">{{ total_apps }} total &rarr;</a>
+                </div>
+                <div class="table-wrap">
+                    {% if recent_apps %}
+                    {% set avatar_colors = ['blue','indigo','green','amber','pink'] %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Applied For</th>
+                                <th>Phone</th>
+                                <th>Experience</th>
+                                <th>Date Applied</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for app in recent_apps %}
+                        {% set color = avatar_colors[loop.index0 % 5] %}
+                        {% set exp_text = app.experience_formatted or 'Fresher' %}
+                            <tr>
+                                <td>
+                                    <div class="applicant-cell">
+                                        <div class="applicant-avatar applicant-avatar--{{ color }}">
+                                            {{ app.first_name[0] | upper }}{{ app.last_name[0] | upper if app.last_name else '' }}
+                                        </div>
+                                        <div>
+                                            <strong>{{ app.first_name }} {{ app.last_name }}</strong>
+                                            <span class="applicant-email">{{ app.email }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if app.job %}
+                                    <span class="pos-tag pos-tag--blue">{{ app.job.title }}</span>
+                                    {% else %}
+                                    <span class="pos-tag pos-tag--indigo">General</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size:13px;white-space:nowrap;">{{ app.phone or '&mdash;' }}</td>
+                                <td style="font-size:12.5px;color:var(--text-mid);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+                                    title="{{ exp_text }}">{{ exp_text }}</td>
+                                <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                                    {{ app.created_at.strftime('%b %d, %Y') if app.created_at else '&mdash;' }}<br>
+                                    <span style="font-size:11px;">{{ app.created_at.strftime('%I:%M %p') if app.created_at else '' }}</span>
+                                </td>
+                                <td>
+                                    <button class="btn-view" onclick="openModal(this)"
+                                        data-name="{{ app.first_name }} {{ app.last_name }}"
+                                        data-position="{{ app.job.title if app.job else 'General Application' }}"
+                                        data-location="{{ app.phone }}"
+                                        data-email="{{ app.email }}"
+                                        data-experience="{{ 'Fresher' if exp_text | lower == 'fresher' else 'Experienced' }}"
+                                        data-details="{{ exp_text | e }}">
+                                        <i class="fa-solid fa-eye"></i> View
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="text-align:center;padding:48px 24px;color:var(--text-muted);">
+                        <i class="fa-regular fa-folder-open" style="font-size:40px;opacity:.35;display:block;margin-bottom:12px;"></i>
+                        <p style="font-size:13.5px;">No applications yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Inquiries -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">
+                        <i class="fa-solid fa-envelope-open-text"></i> Recent Inquiries
+                    </h2>
+                    <a href="{{ url_for('admin_inquiries') }}" class="panel__badge" style="text-decoration:none;">{{ total_inquiries }} total &rarr;</a>
+                </div>
+                <div class="table-wrap">
+                    {% if recent_inquiries %}
+                    {% set inq_colors = ['blue','indigo','green','amber','pink'] %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name &amp; Contact</th>
+                                <th>Service Interest</th>
+                                <th>Source Page</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for inq in recent_inquiries %}
+                        {% set color = inq_colors[loop.index0 % 5] %}
+                        {%- set initials = (inq.name.split()[0][0] if inq.name else '?') | upper %}
+                        {%- set initials = initials + ((inq.name.split()[1][0] if inq.name.split()|length > 1 else '') | upper) %}
+                            <tr>
+                                <td>
+                                    <div class="applicant-cell">
+                                        <div class="applicant-avatar applicant-avatar--{{ color }}">{{ initials }}</div>
+                                        <div>
+                                            <strong>{{ inq.name }}</strong>
+                                            <span class="applicant-email">{{ inq.email }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if inq.service_interest %}
+                                    <span class="pos-tag pos-tag--blue">{{ inq.service_interest }}</span>
+                                    {% else %}
+                                    <span class="pos-tag pos-tag--indigo">General</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size:12px;font-family:'Courier New',monospace;color:var(--text-mid);">
+                                    {{ inq.source_page or '&mdash;' }}
+                                </td>
+                                <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                                    {{ inq.created_at.strftime('%b %d, %Y') if inq.created_at else '&mdash;' }}<br>
+                                    <span style="font-size:11px;">{{ inq.created_at.strftime('%I:%M %p') if inq.created_at else '' }}</span>
+                                </td>
+                                <td>
+                                    {% if inq.status == 'New' %}
+                                    <span class="pos-tag" style="background:#eff6ff;color:#1d4ed8;">🔵 New</span>
+                                    {% elif inq.status == 'In Progress' %}
+                                    <span class="pos-tag" style="background:#fefce8;color:#854d0e;">🟡 In Progress</span>
+                                    {% else %}
+                                    <span class="pos-tag" style="background:#f0fdf4;color:#15803d;">🟢 Closed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="text-align:center;padding:48px 24px;color:var(--text-muted);">
+                        <i class="fa-regular fa-envelope" style="font-size:40px;opacity:.35;display:block;margin-bottom:12px;"></i>
+                        <p style="font-size:13.5px;">No inquiries yet. They will appear here once visitors submit the contact or hire forms.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title">
+                        <i class="fa-solid fa-bolt"></i> Quick Actions
+                    </h2>
+                </div>
+                <div class="quick-actions">
+                    <a href="{{ url_for('admin_portfolio_build') }}" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#2F55F4,#4f72ff)">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <span>New Project</span>
+                    </a>
+                    <a href="{{ url_for('admin_blog') }}" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#6366f1,#818cf8)">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </div>
+                        <span>Blog Posts</span>
+                    </a>
+                    <a href="{{ url_for('admin_applications') }}" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#10b981,#34d399)">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <span>Applications</span>
+                    </a>
+                    <a href="{{ url_for('admin_inquiries') }}" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#06b6d4,#22d3ee)">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <span>Inquiries</span>
+                    </a>
+                    <a href="{{ url_for('admin_portfolio') }}" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <span>Portfolio</span>
+                    </a>
+                    <a href="/" target="_blank" class="action-card">
+                        <div class="action-card__icon" style="background:linear-gradient(135deg,#ec4899,#f472b6)">
+                            <i class="fa-solid fa-globe"></i>
+                        </div>
+                        <span>View Website</span>
+                    </a>
+                </div>
+            </div>
+
+{% endblock %}
+
+{% block body_extras %}
+    <!-- ── Profile Modal ─────────────────────────────────────── -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-card">
+            <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            <div class="modal-header">
+                <div class="modal-avatar" id="mAvatar">HV</div>
+                <div>
+                    <h3 class="modal-name" id="mName">—</h3>
+                    <span class="modal-pos" id="mPos">—</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-row"><i class="fa-solid fa-phone"></i><span id="mLoc">—</span></div>
+                <div class="modal-info-row"><i class="fa-solid fa-envelope"></i><span id="mEmail">—</span></div>
+                <div class="modal-info-row"><i class="fa-solid fa-medal"></i><span id="mExp">—</span></div>
+                <hr class="modal-hr">
+                <div class="modal-details" id="mDetails">—</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+    (function() {
+        /* Greeting */
+        const h = new Date().getHours();
+        const greeting = h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening';
+        const name = document.getElementById('greetTitle').textContent.split(',')[1]?.trim() || '';
+        document.getElementById('greetTitle').textContent = greeting + ', ' + name;
+
+        /* Modal */
+        const modal = document.getElementById('profileModal');
+        function openModal(btn) {
+            document.getElementById('mAvatar').textContent  = btn.dataset.name.split(' ').map(w => w[0]).join('');
+            document.getElementById('mName').textContent    = btn.dataset.name;
+            document.getElementById('mPos').textContent     = btn.dataset.position;
+            document.getElementById('mLoc').textContent     = btn.dataset.location;
+            document.getElementById('mEmail').textContent   = btn.dataset.email;
+            document.getElementById('mExp').textContent     = btn.dataset.experience;
+            document.getElementById('mDetails').innerHTML   = btn.dataset.details;
+            modal.classList.add('show');
+        }
+        window.openModal = openModal;
+        document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('show'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+    })();
+    </script>
+{% endblock %}
