@@ -881,6 +881,15 @@ def create_admin():
 def inject_globals():
     return {'now': datetime.utcnow()}
 
+# ── Favicon Route ─────────────────────────────────────────────────────────────
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.static_folder, 'images', 'favicon'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
+
 # ── Page Routes ────────────────────────────────────────────────────────────────
 @app.route('/')
 def index_page():
