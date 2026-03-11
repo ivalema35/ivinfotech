@@ -26,8 +26,13 @@ instance/
 *.sqlite
 *.sqlite3
 
-# ── Uploads (user-generated content) ─────────────────────────────────────────
-uploads/resumes/
+# =========================
+# 3. Windows VPS & Deployment Tools
+# =========================
+nssm.exe
+web.config
+*.log
+error-log.txt
 
 # ── VS Code ───────────────────────────────────────────────────────────────────
 .vscode/
