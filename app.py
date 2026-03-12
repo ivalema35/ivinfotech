@@ -11,7 +11,7 @@ import json
 import secrets
 from datetime import datetime
 
-from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, abort, send_from_directory
+from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, abort, send_from_directory, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -1032,6 +1032,86 @@ def contact():
 @app.route('/index')
 def index_redirect():
     return redirect(url_for('index_page'))
+
+# ── Dynamic Sitemap ────────────────────────────────────────────────────────────
+@app.route('/sitemap.xml')
+def sitemap():
+    base = 'https://www.ivinfotech.com'
+    today = datetime.utcnow().strftime('%Y-%m-%d')
+
+    # Static pages: (url, changefreq, priority)
+    static_pages = [
+        ('/',                                          'weekly',  '1.0'),
+        ('/about',                                     'monthly', '0.8'),
+        ('/services',                                  'monthly', '0.8'),
+        ('/portfolio',                                 'weekly',  '0.9'),
+        ('/blog',                                      'weekly',  '0.9'),
+        ('/contact',                                   'monthly', '0.7'),
+        ('/career',                                    'monthly', '0.7'),
+        ('/our-team',                                  'monthly', '0.6'),
+        ('/testimonials',                              'monthly', '0.6'),
+        ('/custom-website-software-development',       'monthly', '0.8'),
+        ('/custom-mobile-application-development',     'monthly', '0.8'),
+        ('/crm-erp-custom-software-development',       'monthly', '0.8'),
+        ('/ecommerce-website-app-development-india',   'monthly', '0.8'),
+        ('/digital-marketing',                         'monthly', '0.8'),
+        ('/ui-ux-design-agency-india',                 'monthly', '0.8'),
+        ('/best-web-hosting-services',                 'monthly', '0.7'),
+        ('/ai-automation',                             'monthly', '0.8'),
+        ('/hire-php-developers',                       'monthly', '0.7'),
+        ('/hire-laravel-developers',                   'monthly', '0.7'),
+        ('/hire-android-developers',                   'monthly', '0.7'),
+        ('/hire-flutter-developers',                   'monthly', '0.7'),
+        ('/hire-html-developers',                      'monthly', '0.7'),
+        ('/hire-ui-ux-designers',                      'monthly', '0.7'),
+        ('/hire-ai-engineers',                         'monthly', '0.7'),
+    ]
+
+    urls = []
+    for path, changefreq, priority in static_pages:
+        urls.append({
+            'loc':        base + path,
+            'lastmod':    today,
+            'changefreq': changefreq,
+            'priority':   priority,
+        })
+
+    # Dynamic: published portfolio items
+    portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
+    for p in portfolios:
+        lastmod = p.created_at.strftime('%Y-%m-%d') if p.created_at else today
+        urls.append({
+            'loc':        f'{base}/portfolio/{p.slug}',
+            'lastmod':    lastmod,
+            'changefreq': 'monthly',
+            'priority':   '0.8',
+        })
+
+    # Dynamic: published blog posts
+    posts = BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).all()
+    for post in posts:
+        lastmod = post.created_at.strftime('%Y-%m-%d') if post.created_at else today
+        urls.append({
+            'loc':        f'{base}/blog/{post.slug}',
+            'lastmod':    lastmod,
+            'changefreq': 'monthly',
+            'priority':   '0.7',
+        })
+
+    xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for u in urls:
+        xml_lines.append('  <url>')
+        xml_lines.append(f'    <loc>{u["loc"]}</loc>')
+        xml_lines.append(f'    <lastmod>{u["lastmod"]}</lastmod>')
+        xml_lines.append(f'    <changefreq>{u["changefreq"]}</changefreq>')
+        xml_lines.append(f'    <priority>{u["priority"]}</priority>')
+        xml_lines.append('  </url>')
+    xml_lines.append('</urlset>')
+
+    response = make_response('\n'.join(xml_lines))
+    response.headers['Content-Type'] = 'application/xml; charset=utf-8'
+    return response
 
 # ── Contact Form (POST) ────────────────────────────────────────────────────────
 @app.route('/contact/submit', methods=['POST'])
