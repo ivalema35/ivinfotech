@@ -52,6 +52,205 @@
   <!-- ═══ PAGE-SPECIFIC SCOPED CSS (loaded AFTER global) ═══ -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/portfolio-details.min.css') }}" />
 
+  <!-- ═══ MOBILE-FIRST RESPONSIVE OVERRIDES ═══ -->
+  <style id="ivb-responsive">
+    /* ══ Base: ensure sections breathe on all screens ══ */
+    #portfolio-view-page .container-xxl { padding-left: 20px !important; padding-right: 20px !important; }
+    @media (min-width: 576px)  { #portfolio-view-page .container-xxl { padding-left: 24px !important; padding-right: 24px !important; } }
+    @media (min-width: 1200px) { #portfolio-view-page .container-xxl { padding-left: 40px !important; padding-right: 40px !important; } }
+
+    /* ══ HERO SECTION ══ */
+    #portfolio-view-page .belzzo-hero { padding-top: 110px !important; padding-bottom: 60px !important; }
+    @media (min-width: 992px) { #portfolio-view-page .belzzo-hero { padding-top: 140px !important; padding-bottom: 80px !important; } }
+    #portfolio-view-page .belzzo-hero-title { font-size: clamp(1.75rem, 5.5vw, 3rem) !important; line-height: 1.2 !important; }
+    #portfolio-view-page .belzzo-kpi-row { display: flex !important; flex-wrap: wrap !important; gap: 12px !important; margin-top: 24px !important; }
+    #portfolio-view-page .belzzo-kpi-card { flex: 1 1 100px !important; min-width: 90px !important; max-width: 180px !important; }
+    #portfolio-view-page .belzzo-kpi-value { font-size: clamp(1.4rem, 4vw, 2.2rem) !important; }
+    @media (max-width: 991px) {
+      #portfolio-view-page .belzzo-hero-visual { margin-top: 32px !important; }
+      #portfolio-view-page .belzzo-hero-cta { flex-wrap: wrap !important; gap: 12px !important; }
+    }
+
+    /* ══ SECTION HEADERS ══ */
+    #portfolio-view-page h2, #portfolio-view-page h3 { font-size: clamp(1.5rem, 4.5vw, 2.4rem) !important; line-height: 1.25 !important; }
+    #portfolio-view-page .belzzo-eyebrow { font-size: 0.7rem !important; letter-spacing: 1.5px !important; }
+
+    /* ══ FEATURES SECTION — full card content, no height cutoff ══ */
+    #portfolio-view-page .belzzo-features-section { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-feature-card {
+      height: auto !important;
+      min-height: unset !important;
+      overflow: visible !important;
+      border-radius: 18px !important;
+      padding: 28px 22px !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    #portfolio-view-page .belzzo-feature-icon {
+      width: 62px !important; height: 62px !important;
+      border-radius: 14px !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      margin-bottom: 20px !important; flex-shrink: 0 !important;
+      font-size: 26px !important;
+    }
+    #portfolio-view-page .belzzo-feature-icon i { font-size: 26px !important; }
+    #portfolio-view-page .belzzo-feature-icon svg { width: 26px !important; height: 26px !important; }
+    #portfolio-view-page .belzzo-feature-card h4 { font-size: 1rem !important; font-weight: 700 !important; margin-bottom: 10px !important; line-height: 1.4 !important; }
+    #portfolio-view-page .belzzo-feature-card p  { font-size: 0.9rem !important; line-height: 1.65 !important; flex: 1 !important; }
+    #portfolio-view-page .belzzo-feature-benefit { display: flex !important; align-items: flex-start !important; gap: 8px !important; margin-top: 16px !important; padding-top: 16px !important; border-top: 1px dashed rgba(0,0,0,.08) !important; font-size: 0.85rem !important; font-weight: 600 !important; }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-features-section .col-sm-6 { flex: 0 0 100% !important; max-width: 100% !important; }
+    }
+    @media (min-width: 576px) and (max-width: 991px) {
+      #portfolio-view-page .belzzo-features-section .col-sm-6.col-lg-3 { flex: 0 0 50% !important; max-width: 50% !important; }
+    }
+
+    /* ══ RESULT CARDS ══ */
+    #portfolio-view-page .belzzo-results-section { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-result-card {
+      height: auto !important; min-height: unset !important; overflow: visible !important;
+      border-radius: 20px !important; padding: 36px 28px !important; text-align: center !important;
+      display: flex !important; flex-direction: column !important; align-items: center !important;
+    }
+    #portfolio-view-page .belzzo-result-icon {
+      width: 58px !important; height: 58px !important; border-radius: 14px !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      margin: 0 auto 18px !important; flex-shrink: 0 !important;
+      background: color-mix(in srgb, var(--pf-primary) 10%, transparent) !important;
+      color: var(--pf-primary) !important; font-size: 22px !important;
+    }
+    #portfolio-view-page .belzzo-result-icon i   { font-size: 22px !important; }
+    #portfolio-view-page .belzzo-result-icon svg { width: 22px !important; height: 22px !important; }
+    #portfolio-view-page .belzzo-result-metric { font-size: clamp(2rem, 6vw, 3.2rem) !important; font-weight: 800 !important; line-height: 1.1 !important; margin-bottom: 8px !important; }
+    #portfolio-view-page .belzzo-result-label  { font-size: 0.95rem !important; font-weight: 600 !important; margin-bottom: 14px !important; }
+    #portfolio-view-page .belzzo-result-insight {
+      font-size: 0.85rem !important; color: var(--pf-text-muted) !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      gap: 6px !important; flex-wrap: wrap !important;
+    }
+    #portfolio-view-page .belzzo-insight-icon {
+      display: inline-flex !important; align-items: center !important;
+      color: var(--pf-primary) !important; font-size: 13px !important;
+    }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-results-section .col-md-4 { flex: 0 0 100% !important; max-width: 100% !important; }
+    }
+    @media (min-width: 576px) and (max-width: 767px) {
+      #portfolio-view-page .belzzo-results-section .col-md-4 { flex: 0 0 100% !important; max-width: 100% !important; }
+    }
+
+    /* ══ CHALLENGE CARDS ══ */
+    #portfolio-view-page .belzzo-challenge-section { padding: 80px 0 !important; }
+    #portfolio-view-page .challenge-card { border-radius: 18px !important; padding: 28px !important; height: auto !important; overflow: visible !important; }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-challenge-section .col-md-6,
+      #portfolio-view-page .belzzo-challenge-section .col-lg-4 { flex: 0 0 100% !important; max-width: 100% !important; }
+    }
+
+    /* ══ SOLUTION TIMELINE ══ */
+    #portfolio-view-page .belzzo-solution-section { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-process-card { overflow: visible !important; height: auto !important; border-radius: 16px !important; }
+    @media (max-width: 767px) {
+      #portfolio-view-page .belzzo-process-timeline { gap: 24px !important; }
+      #portfolio-view-page .belzzo-process-step { flex-direction: row !important; gap: 16px !important; }
+      #portfolio-view-page .belzzo-process-node-wrap { flex-direction: column !important; align-items: center !important; flex-shrink: 0 !important; }
+      #portfolio-view-page .belzzo-process-line { width: 2px !important; flex: 1 !important; }
+    }
+
+    /* ══ SERVICES STACK ══ */
+    #portfolio-view-page .belzzo-services-section { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-stack-item { height: auto !important; overflow: visible !important; }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-delivery-stack { grid-template-columns: 1fr !important; }
+      #portfolio-view-page .belzzo-stack-item { flex-direction: column !important; }
+      #portfolio-view-page .belzzo-stack-tags { flex-wrap: wrap !important; }
+    }
+
+    /* ══ CLIENT BACKGROUND ══ */
+    #portfolio-view-page .belzzo-background { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-story { border-radius: 18px !important; overflow: visible !important; }
+    #portfolio-view-page .belzzo-snapshot-card { border-radius: 18px !important; }
+    @media (max-width: 767px) {
+      #portfolio-view-page .belzzo-snapshot-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-snapshot-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* ══ GALLERY ══ */
+    #portfolio-view-page .belzzo-gallery-section { padding: 80px 0 !important; }
+
+    /* ── Mobile slider fix (≤640px) ─────────────────────────────────────────
+       The minified CSS uses calc(-50vw+40px) which is invalid because CSS
+       requires whitespace around binary + in calc(). We override here with
+       the correct syntax so the active slide centers properly on mobile.    */
+    @media (max-width: 640px) {
+      #portfolio-view-page .bz-slide {
+        width: calc(100vw - 80px) !important;
+        margin-left: calc(-50vw + 40px) !important;  /* valid: spaces around + */
+      }
+      #portfolio-view-page .bz-pslider { height: 300px !important; }
+
+      /* Active slide: no 3D tilt */
+      #portfolio-view-page .bz-slide[data-pos="0"] {
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+      }
+      /* Hide side slides — prevents partial off-screen overlaps */
+      #portfolio-view-page .bz-slide[data-pos="-1"],
+      #portfolio-view-page .bz-slide[data-pos="1"],
+      #portfolio-view-page .bz-slide[data-pos="-2"],
+      #portfolio-view-page .bz-slide[data-pos="2"],
+      #portfolio-view-page .bz-slide[data-pos="-3"],
+      #portfolio-view-page .bz-slide[data-pos="3"] {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+      /* Label: prevent text overflow */
+      #portfolio-view-page .bz-slide-label {
+        font-size: 0.65rem !important;
+        padding: 4px 10px !important;
+        max-width: calc(100vw - 100px) !important;
+        white-space: normal !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+      /* Arrow buttons */
+      #portfolio-view-page .bz-ps-arrow {
+        width: 36px !important;
+        height: 36px !important;
+        top: calc(50% - 22px) !important;
+      }
+      #portfolio-view-page .bz-ps-prev { left: 4px !important; }
+      #portfolio-view-page .bz-ps-next { right: 4px !important; }
+
+      /* App slider: taller to accommodate portrait aspect ratio */
+      #portfolio-view-page .bz-pslider-wrap--app .bz-pslider { height: 430px !important; }
+    }
+
+    /* ══ TESTIMONIALS ══ */
+    #portfolio-view-page .belzzo-testimonial-section { padding: 80px 0 !important; }
+    #portfolio-view-page .belzzo-tcard { border-radius: 18px !important; }
+
+    /* ══ RESULTS TABLE ══ */
+    #portfolio-view-page .belzzo-results-table-wrapper { overflow-x: auto !important; border-radius: 16px !important; }
+    #portfolio-view-page .belzzo-results-table { min-width: 420px !important; }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-results-table { font-size: 0.85rem !important; }
+      #portfolio-view-page .belzzo-results-table th,
+      #portfolio-view-page .belzzo-results-table td { padding: 10px 12px !important; }
+    }
+
+    /* ══ TRUST BAR — wrap on mobile ══ */
+    #portfolio-view-page .belzzo-trust-bar { flex-wrap: wrap !important; gap: 8px 0 !important; }
+    @media (max-width: 575px) {
+      #portfolio-view-page .belzzo-trust-sep { display: none !important; }
+      #portfolio-view-page .belzzo-trust-item { flex: 0 0 50% !important; }
+    }
+  </style>
+
   <!-- ═══ Project theme colors — CSS variables only (postMessage replaces this block) ═══ -->
   <style id="ivb-theme-vars">
     {%- set _p  = portfolio.primary_color   or '#2F55F4' -%}
@@ -1010,7 +1209,7 @@
           <div class="col-md-4">
             <div class="belzzo-result-card" data-metric="{{ loop.index }}">
               <div class="belzzo-result-icon">
-                {%- if card.icon and card.icon.startswith('fa-') %}
+                {%- if card.icon and 'fa-' in card.icon %}
                 <i class="{{ card.icon }}" style="font-size:22px;"></i>
                 {%- else %}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1020,10 +1219,11 @@
               </div>
               <div class="belzzo-result-metric">{{ card.metric }}</div>
               <div class="belzzo-result-label">{{ card.label }}</div>
+              {%- if card.insight %}
               <div class="belzzo-result-insight">
-                <span class="belzzo-insight-icon">{{ card.icon or '↑' }}</span>
                 <span>{{ card.insight }}</span>
               </div>
+              {%- endif %}
             </div>
           </div>
           {% endfor %}
@@ -1031,7 +1231,7 @@
 
         <!-- Detailed Metrics Table -->
         {% if res.get('rows') %}
-        <div class="belzzo-results-table-wrapper">
+        <div class="belzzo-results-table-wrapper" style="overflow-x:auto;">
           <h4 class="belzzo-table-title">Performance Metrics Comparison</h4>
           <div class="table-responsive">
             <table class="belzzo-results-table">
