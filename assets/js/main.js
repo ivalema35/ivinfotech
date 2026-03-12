@@ -85,7 +85,7 @@ function setActiveLink() {
     });
 }
 
-const IV_CHAT_WEBHOOK_URL = 'https://n8n.srv1010073.hstgr.cloud/webhook/iv-infotech-Chat-bot';
+const IV_CHAT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech-Chat-bot';
 let ivChatRequestInFlight = false;
 
 function initializeIvChatWidget() {
