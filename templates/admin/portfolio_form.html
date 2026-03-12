@@ -99,12 +99,18 @@
             </div>
             <div class="form-section-cols" style="margin-bottom:16px;">
                 <div>
-                    <label class="form-label">Category *</label>
-                    <select name="category" class="form-select">
+                    <label class="form-label">Category * <span style="font-weight:400;color:var(--text-muted);font-size:11px;">(ek ya zyada select karen)</span></label>
+                    {%- set current_cats = portfolio.get_categories() if portfolio else ['Web'] %}
+                    <div class="d-flex flex-wrap gap-3 mt-2">
                         {% for c in ['Web','CRM','App','AI'] %}
-                        <option value="{{ c }}" {{ 'selected' if portfolio and portfolio.category == c }}>{{ c }}</option>
+                        <div class="form-check" style="min-width:70px;">
+                            <input type="checkbox" name="category" value="{{ c }}" id="pcat_{{ c }}"
+                                   class="form-check-input" {{ 'checked' if c in current_cats }}>
+                            <label class="form-check-label" for="pcat_{{ c }}" style="font-size:13.5px;cursor:pointer;">{{ c }}</label>
+                        </div>
                         {% endfor %}
-                    </select>
+                    </div>
+                    <p class="help-text" style="margin-top:6px;">Web, CRM, App ya AI — multiple select ho sakta hai.</p>
                 </div>
                 <div>
                     <label class="form-label">Client Name</label>

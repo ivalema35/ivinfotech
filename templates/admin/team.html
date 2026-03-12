@@ -69,11 +69,27 @@
 
     /* Modal */
     .modal-content  { border-radius: var(--radius); border: none; box-shadow: 0 20px 60px rgba(0,0,0,.18); }
-    .modal-header   { background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: var(--radius) var(--radius) 0 0; padding: 20px 24px; }
+    .modal-header   { background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: var(--radius) var(--radius) 0 0; padding: 20px 24px; flex-shrink: 0; }
     .modal-header .modal-title { color: #fff; font-weight: 700; font-size: 16px; }
     .modal-header .btn-close   { filter: invert(1); opacity: .8; }
-    .modal-body  { padding: 24px; }
-    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); }
+    .modal-body  { padding: 24px; overflow-y: auto; flex: 1 1 auto; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); flex-shrink: 0; }
+
+    /* Scrollable modal fix */
+    .modal-dialog-scrollable { max-height: calc(100% - 3.5rem); }
+    .modal-dialog-scrollable .modal-content {
+        max-height: calc(100vh - 3.5rem);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    .modal-dialog-scrollable form {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        overflow: hidden;
+        min-height: 0;
+    }
 
     .form-label { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 5px; }
     .form-control, .form-select {
