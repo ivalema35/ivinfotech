@@ -445,8 +445,13 @@
                 {%- set _cat_class_map = {'Web': 'web', 'CRM': 'crm', 'App': 'app', 'AI': 'ai-bucket'} %}
                 {%- set _cat_label_map = {'Web': 'WEB APPLICATION', 'CRM': 'CRM &amp; ERP', 'App': 'MOBILE APP', 'AI': 'AI &amp; AUTOMATION'} %}
                 {% for item in portfolios %}
-                {%- set cat_class = _cat_class_map.get(item.category, 'web') %}
-                {%- set cat_label = _cat_label_map.get(item.category, item.category | upper) %}
+                {%- set ns = namespace(cat_classes='', cat_labels='') %}
+                {%- for c in item.get_categories() %}
+                  {%- set ns.cat_classes = ns.cat_classes + ' ' + _cat_class_map.get(c, 'web') %}
+                  {%- set ns.cat_labels = ns.cat_labels + (', ' if ns.cat_labels else '') + _cat_label_map.get(c, c | upper) %}
+                {%- endfor %}
+                {%- set cat_class = ns.cat_classes.strip() %}
+                {%- set cat_label = ns.cat_labels %}
                 {%- set card_img = item.hero_image_web or item.hero_image_app or 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' %}
                 <div class="col-12 portfolio-item-wrapper {{ cat_class }}" data-aos="fade-up"{% if not loop.first %} data-aos-delay="{{ [(loop.index0 % 3) * 100, 0] | max }}"{% endif %}>
                     <article class="portfolio-card-premium">

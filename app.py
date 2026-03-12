@@ -223,6 +223,10 @@ class Portfolio(db.Model):
         try: return json.loads(self.gallery or '[]')
         except: return []
 
+    def get_categories(self):
+        """Return list of individual categories from comma-separated string."""
+        return [c.strip() for c in (self.category or 'Web').split(',') if c.strip()]
+
 
 class TeamMember(db.Model):
     """A team member or founder shown on the /our-team page."""
@@ -616,7 +620,14 @@ def _portfolio_from_form(p, form, files):
     p.title           = form.get('title', '').strip()
     raw_slug          = form.get('slug', '').strip()
     p.slug            = re.sub(r'[^a-z0-9-]', '', raw_slug.lower().replace(' ', '-')) or p.slug
-    p.category        = form.get('category', 'Web').strip()
+    # Handle multiple categories (checkboxes send multiple 'category' values)
+    if hasattr(form, 'getlist'):
+        cats = form.getlist('category')
+    else:
+        raw_cat = form.get('category', 'Web')
+        cats = raw_cat if isinstance(raw_cat, list) else [raw_cat]
+    cats = [c.strip() for c in cats if c.strip()]
+    p.category        = ','.join(cats) if cats else 'Web'
     p.client_name     = form.get('client_name', '').strip()
     p.primary_color   = form.get('primary_color', form.get('theme_color', '#2F55F4')).strip()
     p.secondary_color = form.get('secondary_color', '#10B981').strip()

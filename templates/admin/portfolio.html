@@ -102,10 +102,11 @@
                     </td>
                     <td style="font-size:13px;color:var(--text-mid);">{{ p.client_name or '—' }}</td>
                     <td>
-                        {% set cat = p.category %}
-                        <span class="cat-badge cat-{{ 'web' if cat == 'Web' else 'crm' if cat == 'CRM' else 'app' if cat == 'App' else 'ai' }}">
+                        {% for cat in p.get_categories() %}
+                        <span class="cat-badge cat-{{ 'web' if cat == 'Web' else 'crm' if cat == 'CRM' else 'app' if cat == 'App' else 'ai' }}" style="margin-right:3px;">
                             {{ cat }}
                         </span>
+                        {% endfor %}
                     </td>
                     <td>
                         <span class="color-swatch" style="background:{{ p.primary_color or p.theme_color }};"></span>

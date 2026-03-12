@@ -524,13 +524,16 @@ var VB_INIT = {
               <div class="vb-input-hint">/portfolio/<span id="slugPreview">…</span></div>
             </div>
             <div class="vb-field">
-              <label class="vb-label">Category</label>
-              <select class="vb-select" id="f_category" data-bind="category">
-                <option value="Web">Web App</option>
-                <option value="App">Mobile App</option>
-                <option value="CRM">CRM / ERP</option>
-                <option value="AI">AI &amp; Automation</option>
-              </select>
+              <label class="vb-label">Category <span style="font-weight:400;font-size:10px;opacity:.7;">(multiple select)</span></label>
+              <div style="display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:4px;" id="f_category_wrap">
+                {% for cv, cl in [('Web','Web App'),('App','Mobile App'),('CRM','CRM / ERP'),('AI','AI & Automation')] %}
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;font-weight:500;color:var(--vb-text);">
+                  <input type="checkbox" class="cat-check" value="{{ cv }}"
+                         style="width:14px;height:14px;accent-color:#6c63ff;cursor:pointer;">
+                  {{ cl }}
+                </label>
+                {% endfor %}
+              </div>
             </div>
             <div class="vb-field">
               <label class="vb-label">Client Name</label>
@@ -910,7 +913,7 @@ function markDirty() { isDirty = true; $('unsavedDot').style.display = 'inline-b
 /* ── Populate initial form values ── */
 function populateForm() {
   const map = {
-    f_title: 'title', f_slug: 'slug', f_category: 'category',
+    f_title: 'title', f_slug: 'slug',
     f_client_name: 'client_name', f_industry: 'industry',
     f_market: 'market', f_goal: 'goal',
     f_hero_outcome: 'hero_outcome', f_hero_description: 'hero_description',
@@ -925,6 +928,12 @@ function populateForm() {
   }
   $('f_is_published').checked = !!state.is_published;
   $('slugPreview').textContent = state.slug || '…';
+
+  // Populate category checkboxes
+  var activeCats = (state.category || 'Web').split(',').map(function(c){ return c.trim(); });
+  document.querySelectorAll('#f_category_wrap .cat-check').forEach(function(cb) {
+    cb.checked = activeCats.indexOf(cb.value) !== -1;
+  });
 
   // Colors
   setColor('primary',   state.primary_color   || '#2F55F4');
@@ -964,6 +973,19 @@ document.addEventListener('input', function(e) {
   // Push text change to preview iframe via postMessage
   var ivbKey = el.dataset.ivbPreview;
   if (ivbKey) sendToPreview({ source:'ivb', type:'text', key:ivbKey, value:el.value });
+});
+
+/* ── Category checkboxes: update state.category as comma-separated string ── */
+document.querySelectorAll('#f_category_wrap .cat-check').forEach(function(cb) {
+  cb.addEventListener('change', function() {
+    var checked = [];
+    document.querySelectorAll('#f_category_wrap .cat-check:checked').forEach(function(c) {
+      checked.push(c.value);
+    });
+    state.category = checked.length ? checked.join(',') : 'Web';
+    markDirty();
+    scheduleAutoSave();
+  });
 });
 
 document.getElementById('f_is_published').addEventListener('change', function() {
