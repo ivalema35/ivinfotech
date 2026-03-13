@@ -34,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    setupTestimonialCards();
+
     const navbar = document.querySelector('.navbar');
     if (navbar) {
         const toggleNavbarShadow = () => {
@@ -61,6 +63,107 @@ document.addEventListener("DOMContentLoaded", function () {
     // Lottie Player is now handled by the web component automatically
     // No need for manual initialization
 });
+
+function setupTestimonialCards() {
+    const testimonialSwiper = document.querySelector('.testimonial-swiper');
+    const modalElement = document.getElementById('testimonialModal');
+
+    if (!testimonialSwiper) {
+        return;
+    }
+
+    const modal = typeof bootstrap !== 'undefined' && modalElement
+        ? bootstrap.Modal.getOrCreateInstance(modalElement)
+        : null;
+    const modalTitle = document.getElementById('testimonialModalLabel');
+    const modalRole = document.getElementById('testimonialModalRole');
+    const modalAvatar = document.getElementById('testimonialModalAvatar');
+    const modalContent = document.getElementById('testimonialModalContent');
+    const closeModal = () => {
+        if (modal) {
+            modal.hide();
+            return;
+        }
+
+        if (!modalElement) {
+            return;
+        }
+
+        modalElement.classList.remove('show');
+        modalElement.style.display = 'none';
+        modalElement.setAttribute('aria-hidden', 'true');
+        modalElement.removeAttribute('aria-modal');
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('padding-right');
+        document.querySelectorAll('.modal-backdrop').forEach((backdrop) => backdrop.remove());
+    };
+
+    const syncOverflowButtons = () => {
+        testimonialSwiper.querySelectorAll('.testimonial-card').forEach((card) => {
+            const text = card.querySelector('.testimonial-text');
+            const button = card.querySelector('.testimonial-view-more');
+
+            if (!text || !button) {
+                return;
+            }
+
+            button.hidden = text.scrollHeight <= text.clientHeight + 4;
+        });
+    };
+
+    testimonialSwiper.addEventListener('click', (event) => {
+        const button = event.target.closest('.testimonial-view-more');
+
+        if (!button || !modal || !modalTitle || !modalRole || !modalAvatar || !modalContent) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const card = button.closest('.testimonial-card');
+        const text = card ? card.querySelector('.testimonial-text') : null;
+        const name = card ? card.querySelector('.testimonial-name') : null;
+        const role = card ? card.querySelector('.testimonial-role') : null;
+        const avatar = card ? card.querySelector('.testimonial-avatar') : null;
+        const fullQuote = text ? (text.dataset.fullQuote || text.textContent || '').trim() : '';
+        const clientRole = role ? role.textContent.trim() : '';
+
+        modalTitle.textContent = name ? name.textContent.trim() : 'Client testimonial';
+        modalRole.textContent = clientRole;
+        modalRole.hidden = !clientRole;
+        modalAvatar.textContent = avatar ? avatar.textContent.trim() : 'IV';
+        modalContent.textContent = fullQuote;
+        modal.show();
+    });
+
+    if (modalElement) {
+        modalElement.addEventListener('click', (event) => {
+            const dismissTrigger = event.target.closest('[data-bs-dismiss="modal"]');
+            const clickedBackdrop = event.target === modalElement;
+
+            if (!dismissTrigger && !clickedBackdrop) {
+                return;
+            }
+
+            event.preventDefault();
+            closeModal();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modalElement.classList.contains('show')) {
+                closeModal();
+            }
+        });
+    }
+
+    syncOverflowButtons();
+    window.addEventListener('load', syncOverflowButtons);
+    window.addEventListener('resize', () => {
+        window.clearTimeout(setupTestimonialCards.resizeTimer);
+        setupTestimonialCards.resizeTimer = window.setTimeout(syncOverflowButtons, 120);
+    });
+}
 
 function setActiveLink() {
     const currentPath = window.location.pathname.split('/').pop() || 'index';
