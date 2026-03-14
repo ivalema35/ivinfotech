@@ -22,9 +22,11 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% include 'components/tracking_head.html' %}
 </head>
 
 <body>
+{% include 'components/tracking_body.html' %}
     {%- include 'components/preloader.html' %}
     {%- include 'components/navbar.html' %}
 
