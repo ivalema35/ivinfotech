@@ -10,6 +10,8 @@ import re
 import json
 import secrets
 from datetime import datetime
+from urllib import request as urllib_request
+from urllib.error import URLError, HTTPError
 
 from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, abort, send_from_directory, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -49,6 +51,8 @@ os.makedirs(PORTFOLIO_IMG_FOLDER, exist_ok=True)
 # ── Team photo upload (inside static so Flask can serve directly) ─────────────
 TEAM_IMG_FOLDER = os.path.join(basedir, 'assets', 'uploads', 'team')
 os.makedirs(TEAM_IMG_FOLDER, exist_ok=True)
+
+CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -249,6 +253,8 @@ class Inquiry(db.Model):
     name             = db.Column(db.String(120), nullable=False)
     email            = db.Column(db.String(120), nullable=False)
     phone            = db.Column(db.String(30),  nullable=True)
+    city             = db.Column(db.String(120), nullable=False, default='Mehsana')
+    state            = db.Column(db.String(120), nullable=False, default='Gujarat')
     service_interest = db.Column(db.String(120), nullable=True)
     message          = db.Column(db.Text,        nullable=True)
     source_page      = db.Column(db.String(255), nullable=True)
@@ -576,12 +582,14 @@ def admin_blog_delete(pid):
 
 # ── DB migration helper (add missing columns to existing SQLite tables) ─────────
 def _migrate_db():
-    """Idempotent: add new Portfolio columns to the existing DB without data loss."""
+    """Idempotent: add new columns to existing DB tables without data loss."""
     from sqlalchemy import text
     migrations = [
         ("portfolios", "primary_color",   "VARCHAR(20) NOT NULL DEFAULT '#2F55F4'"),
         ("portfolios", "secondary_color", "VARCHAR(20) NOT NULL DEFAULT '#10B981'"),
         ("portfolios", "bg_color",        "VARCHAR(20) NOT NULL DEFAULT '#0f1117'"),
+        ("inquiries", "city",             "VARCHAR(120) NOT NULL DEFAULT 'Mehsana'"),
+        ("inquiries", "state",            "VARCHAR(120) NOT NULL DEFAULT 'Gujarat'"),
     ]
     try:
         with db.engine.connect() as conn:
@@ -591,6 +599,10 @@ def _migrate_db():
                 if col not in existing:
                     conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {typedef}"))
                     conn.commit()
+
+            conn.execute(text("UPDATE inquiries SET city='Mehsana' WHERE city IS NULL OR TRIM(city)=''"))
+            conn.execute(text("UPDATE inquiries SET state='Gujarat' WHERE state IS NULL OR TRIM(state)=''"))
+            conn.commit()
     except Exception:
         pass  # table may not exist yet on first run — db.create_all() will create it
 
@@ -1134,12 +1146,16 @@ def api_submit_inquiry():
     data = request.get_json(silent=True) or {}
     name  = (data.get('name') or '').strip()
     email = (data.get('email') or '').strip()
+    city  = (data.get('city') or '').strip() or 'Mehsana'
+    state = (data.get('state') or '').strip() or 'Gujarat'
     if not name or not email:
         return jsonify({'success': False, 'error': 'Name and email are required.'}), 400
     inquiry = Inquiry(
         name             = name,
         email            = email,
         phone            = (data.get('phone') or '').strip() or None,
+        city             = city,
+        state            = state,
         service_interest = (data.get('service_interest') or '').strip() or None,
         message          = (data.get('message') or '').strip() or None,
         source_page      = (data.get('source_page') or '').strip() or None,
@@ -1147,6 +1163,33 @@ def api_submit_inquiry():
     )
     db.session.add(inquiry)
     db.session.commit()
+
+    webhook_payload = {
+        'name': name,
+        'email': email,
+        'phone': (data.get('phone') or '').strip(),
+        'city': city,
+        'state': state,
+        'service_interest': (data.get('service_interest') or '').strip(),
+        'message': (data.get('message') or '').strip(),
+        'source_page': (data.get('source_page') or '').strip(),
+        'submitted_at': datetime.utcnow().isoformat() + 'Z',
+    }
+
+    try:
+        req = urllib_request.Request(
+            CONTACT_WEBHOOK_URL,
+            data=json.dumps(webhook_payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST',
+        )
+        with urllib_request.urlopen(req, timeout=8) as webhook_response:
+            status_code = getattr(webhook_response, 'status', 200)
+            if status_code >= 400:
+                app.logger.warning('Contact webhook returned status %s', status_code)
+    except (HTTPError, URLError, TimeoutError) as webhook_error:
+        app.logger.warning('Contact webhook submit failed: %s', webhook_error)
+
     return jsonify({'success': True, 'message': 'Inquiry submitted successfully!'})
 
 
