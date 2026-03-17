@@ -450,6 +450,80 @@
             }
         }
 
+        /* ========== SERVICE CARDS ========== */
+        .service-card {
+            border: 1px solid rgba(15, 23, 42, 0.07) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Gradient top-accent bar that slides in on hover */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #2F55F4 0%, #6366f1 100%);
+            transform: scaleX(0);
+            transform-origin: left center;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px) !important;
+            border-color: rgba(47, 85, 244, 0.18) !important;
+            box-shadow: 0 24px 50px rgba(47, 85, 244, 0.13) !important;
+        }
+
+        /* Icon: light gradient → solid gradient on hover */
+        .service-card .icon-wrapper {
+            background: linear-gradient(135deg, rgba(47, 85, 244, 0.1) 0%, rgba(99, 102, 241, 0.14) 100%) !important;
+            color: #2F55F4 !important;
+            transition: background 0.35s ease, transform 0.35s ease, color 0.2s ease;
+        }
+
+        .service-card:hover .icon-wrapper {
+            background: linear-gradient(135deg, #2F55F4 0%, #6366f1 100%) !important;
+            color: #ffffff !important;
+            transform: scale(1.1) rotate(-4deg);
+        }
+
+        /* Arrow slides right on hover */
+        .service-card a .fa-arrow-right {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .service-card:hover a .fa-arrow-right {
+            transform: translateX(6px);
+        }
+
+        /* ========== FAQ ACCORDION ========== */
+        #ivFaqAccordion .accordion-button:focus {
+            box-shadow: none !important;
+            outline: none;
+        }
+
+        #ivFaqAccordion .accordion-button:not(.collapsed) {
+            background: #ffffff;
+            color: #2F55F4;
+            box-shadow: none;
+        }
+
+        #ivFaqAccordion .accordion-button:not(.collapsed)::after {
+            filter: invert(29%) sepia(98%) saturate(2000%) hue-rotate(220deg) brightness(95%);
+        }
+
+        #ivFaqAccordion .accordion-item {
+            border: 1px solid rgba(15, 23, 42, 0.07) !important;
+        }
+
         /* Responsive hero tweaks */
         @media (max-width: 991.98px) {
             .hero-section::before {
@@ -506,11 +580,14 @@
                 <!-- Left Column — Text -->
                 <div class="col-lg-6 mb-5 mb-lg-0" data-aos="fade-up">
                     <span class="trust-badge mb-4 d-inline-block">✨ Trusted by 100+ Businesses Worldwide</span>
-                    <h1 class="hero-headline-new mb-4">
-                        Top IT Company in Mehsana &amp; Gujarat: Transforming Ideas into <span class="text-gradient-primary">Digital Reality</span>
+                    <h1 class="display-4 fw-bold mb-3" style="color: #0b1c3c; line-height: 1.15;">
+                        Best IT Company<br>
+                        <span style="background: linear-gradient(135deg, #2F55F4 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">in Mehsana</span><br>
+                        Best Web and App Company<br>
+                        <span style="background: linear-gradient(135deg, #2F55F4 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">in Gujarat.</span>
                     </h1>
-                    <p class="lead text-muted mb-4" style="font-size:1.12rem;line-height:1.8;max-width:520px;">
-                        Based in Mehsana, serving the globe — we deliver world-class web development, mobile apps, and AI solutions engineered for your business growth.
+                    <p class="lead mb-4" style="color: #4b5563;">
+                        <strong>Take your Online Presence to the Next Level with IV Infotech.</strong> At IV Infotech, we provide high-performance web development, innovative mobile apps, and result-driven digital marketing services in Mehsana to customers all around Gujarat and the world. With the help of AI-based automation solutions, we convert your vision into a scalable digital reality.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
                         <a href="contact" class="btn-hero-primary">Get a Free Quote <i class="fas fa-arrow-right"></i></a>
@@ -597,7 +674,7 @@
     </section>
 
     <!-- Services Overview -->
-    <section class="py-5 bg-white">
+    <section class="py-5" style="background: linear-gradient(160deg, #eef1ff 0%, #f5f7ff 25%, #ffffff 65%);">
         <div class="container-xxl">
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge bg-primary-subtle text-primary mb-2 rounded-pill px-3 py-2">What We Do</span>
@@ -605,58 +682,101 @@
                 <p class="text-muted lead">Tailored IT solutions for modern businesses.</p>
             </div>
 
-            <div class="row g-4">
-                <!-- Service 1 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center d-flex flex-column">
-                            <div class="icon-box">
-                                <i class="fas fa-code fa-2x"></i>
-                            </div>
-                            <h4 class="card-title fw-bold mb-3">Web Development</h4>
-                            <p class="card-text text-muted flex-grow-1">Custom, high-performance websites built with React, Vue, and
-                                modern frameworks.</p>
-                            <a href="services#web"
-                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
-                                    class="fas fa-arrow-right small ms-1"></i></a>
+            <div class="row g-4 justify-content-center">
+                <!-- AI & Automation -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="50">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-robot"></i>
                         </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">AI &amp; Automation</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Future-proof your business with smart AI models and workflow automation.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
-                <!-- Service 2 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center d-flex flex-column">
-                            <div class="icon-box">
-                                <i class="fas fa-mobile-alt fa-2x"></i>
-                            </div>
-                            <h4 class="card-title fw-bold mb-3">Mobile Apps</h4>
-                            <p class="card-text text-muted flex-grow-1">Native and hybrid mobile applications for iOS and Android
-                                platforms.</p>
-                            <a href="services#mobile"
-                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
-                                    class="fas fa-arrow-right small ms-1"></i></a>
+                <!-- Web Development -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-code"></i>
                         </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">Web Development</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Custom react built, node, and php websites with search engine optimization.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
-                <!-- Service 3 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card h-100 p-4 border-0">
-                        <div class="card-body text-center d-flex flex-column">
-                            <div class="icon-box">
-                                <i class="fas fa-pencil-ruler fa-2x"></i>
-                            </div>
-                            <h4 class="card-title fw-bold mb-3">UI/UX Design</h4>
-                            <p class="card-text text-muted flex-grow-1">User-centric designs that drive engagement and retention.
-                            </p>
-                            <a href="services#ui-ux"
-                                class="btn btn-link text-primary text-decoration-none fw-bold mt-auto">Learn More <i
-                                    class="fas fa-arrow-right small ms-1"></i></a>
+                <!-- Mobile Apps -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="150">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-mobile-screen"></i>
                         </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">Mobile Apps</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Native and Hybrid mobile app development for iOS and Android: User-friendly and smooth user interface.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- UI/UX Design -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-pen-nib"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">UI/UX Design</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Conversion-driven and modern designs that make the user interact and engage.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- E-commerce Solutions -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="250">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-cart-shopping"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">E-commerce Solutions</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Online stores with guaranteed security and scalability.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Digital Marketing -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">Digital Marketing</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">The strategic use of search engine optimization, social media marketing, and Google ads in order to occupy the top ranks.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Custom CRM/ERP -->
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="350">
+                    <div class="service-card h-100 bg-white p-4 p-lg-5 rounded-4 border-0 shadow-sm" style="transition: all 0.3s ease;">
+                        <div class="icon-wrapper mb-4 d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style="width: 70px; height: 70px; font-size: 1.75rem;">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3" style="color: #0b1c3c;">Custom CRM/ERP</h4>
+                        <p class="text-muted mb-4" style="line-height: 1.6;">Custom software solutions for automating your business.</p>
+                        <a href="/services" class="text-primary fw-semibold text-decoration-none d-inline-flex align-items-center gap-2">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-5" data-aos="fade-up">
-                <a href="services" class="btn btn-outline-primary px-4 py-2">View All Services</a>
+                <a href="/services" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold">View All Services</a>
             </div>
         </div>
     </section>
@@ -678,28 +798,33 @@
                 </div>
                 <div class="col-lg-6 mt-4 mt-lg-0 ps-lg-5" data-aos="fade-left">
                     <span class="text-primary fw-bold text-uppercase ls-wide">Why Choose Us</span>
-                    <h2 class="fw-bold display-5 mb-4">Global Quality, <br> Local Trust</h2>
-                    <p class="text-muted mb-4">
-                        Located in the heart of Mehsana at Radhanpur Road, IV Infotech combines local accessibility with international coding standards. Visit us at S-Cube for a consultation.
-                    </p>
+                    <h2 class="fw-bold display-5 mb-4">Why Choose IV Infotech?</h2>
 
                     <div class="d-flex align-items-start mb-3">
                         <div class="flex-shrink-0 text-primary mt-1">
-                            <i class="fas fa-users fa-lg feature-icon"></i>
+                            <i class="fas fa-globe fa-lg feature-icon"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="fw-bold">Experienced Team</h5>
-                            <p class="text-muted small">Certified certified developers with years of industry
-                                experience.</p>
+                            <h5 class="fw-bold mb-1">Local Expertise, Global Standards</h5>
+                            <p class="text-muted small mb-0">Being one of the best IT companies in Mehsana, we are bringing global quality tech solutions to your doorstep.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start mb-3">
                         <div class="flex-shrink-0 text-primary mt-1">
-                            <i class="fas fa-star fa-lg feature-icon"></i>
+                            <i class="fas fa-chart-line fa-lg feature-icon"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="fw-bold">Quality First</h5>
-                            <p class="text-muted small">Stringent QA processes to ensure bug-free deliverables.</p>
+                            <h5 class="fw-bold mb-1">Data-Driven Strategies</h5>
+                            <p class="text-muted small mb-0">We do not create, we streamline. Our Digital Marketing agency in Mehsana is ROI-oriented.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0 text-primary mt-1">
+                            <i class="fas fa-laptop-code fa-lg feature-icon"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="fw-bold mb-1">Tailor Made Solutions</h5>
+                            <p class="text-muted small mb-0">There is no general solution. We develop software according to your business needs.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start mb-3">
@@ -707,14 +832,24 @@
                             <i class="fas fa-rocket fa-lg feature-icon"></i>
                         </div>
                         <div class="ms-3">
-                            <h5 class="fw-bold">On-Time Delivery</h5>
-                            <p class="text-muted small">We respect deadlines and follow agile methodologies.</p>
+                            <h5 class="fw-bold mb-1">Agile Methodology</h5>
+                            <p class="text-muted small mb-0">We deliver quickly, and there is transparency in all levels.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0 text-primary mt-1">
+                            <i class="fas fa-headset fa-lg feature-icon"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="fw-bold mb-1">24/7 Support</h5>
+                            <p class="text-muted small mb-0">Trusting web hosting services to ensure your business is always up and running (99.9%).</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Technologies We Master — Infinite Marquee -->
     <section class="py-5 bg-white">
@@ -798,6 +933,63 @@
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section class="py-5" style="background: #f8f9fc;">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">FAQs</span>
+                <h2 class="fw-bold" style="color: #0b1c3c;">Frequently Asked Questions</h2>
+                <p class="text-muted">Everything you need to know about our services and process.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="ivFaqAccordion">
+
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                            <h2 class="accordion-header" id="faqHeading1">
+                                <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1" style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
+                                    Which is the best IT company in Mehsana for small businesses?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse1" class="accordion-collapse collapse show" aria-labelledby="faqHeading1" data-bs-parent="#ivFaqAccordion">
+                                <div class="accordion-body text-muted" style="background: #fff; padding: 0 24px 24px 24px; line-height: 1.7;">
+                                    IV Infotech is the top IT company in Mehsana that provides the most affordable and reliable web and app development services specifically tailored for small and large-scale business organizations.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                            <h2 class="accordion-header" id="faqHeading2">
+                                <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2" style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
+                                    Does IV Infotech provide IT services outside of Gujarat?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#ivFaqAccordion">
+                                <div class="accordion-body text-muted" style="background: #fff; padding: 0 24px 24px 24px; line-height: 1.7;">
+                                    Yes, although IV Infotech is a leading IT company in Gujarat, it has served numerous global clients across the USA, UK, and Australia with the most reliable and result-oriented software development and digital marketing services.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                            <h2 class="accordion-header" id="faqHeading3">
+                                <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3" style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
+                                    How much does it cost to develop a custom website in Mehsana?
+                                </button>
+                            </h2>
+                            <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#ivFaqAccordion">
+                                <div class="accordion-body text-muted" style="background: #fff; padding: 0 24px 24px 24px; line-height: 1.7;">
+                                    The costs of creating a website in Mehsana vary depending on the complexity of the project. However, we offer the most competitive prices for web development services.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Footer Placeholder -->
     {%- include 'components/footer.html' %}
 
