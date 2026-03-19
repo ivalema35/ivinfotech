@@ -913,6 +913,10 @@ def favicon():
         mimetype='image/vnd.microsoft.icon'
     )
 
+@app.route('/robots.txt')
+def robots_txt():
+    return send_from_directory(app.root_path, 'robots.txt', mimetype='text/plain')
+
 # ── Page Routes ────────────────────────────────────────────────────────────────
 @app.route('/')
 def index_page():
