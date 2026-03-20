@@ -2190,7 +2190,7 @@ footer a:hover {
 
 .industries-section-premium {
     background: linear-gradient(135deg, #f8fafc 0%, #f0f4ff 100%);
-    padding: 90px 0;
+    padding: 90px 0 120px;
     position: relative;
     overflow: hidden;
 }
@@ -2218,12 +2218,18 @@ footer a:hover {
 }
 
 #industriesCarousel .carousel-inner {
-    overflow: visible;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
 #industriesCarousel .carousel-item {
     opacity: 0;
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 30px 20px;
+    min-height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #industriesCarousel .carousel-item.active {
@@ -2240,6 +2246,7 @@ footer a:hover {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
     height: 100%;
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -2265,9 +2272,9 @@ a.industry-card-premium {
 
 a.industry-card-premium:hover,
 .industry-card-premium:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(47, 85, 244, 0.2);
-    border-color: rgba(47, 85, 244, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(47, 85, 244, 0.15);
+    border-color: rgba(47, 85, 244, 0.4);
 }
 
 a.industry-card-premium:hover::before,
@@ -2293,15 +2300,16 @@ a.industry-card-premium:hover::before,
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     flex: 1;
     position: relative;
     z-index: 1;
+    justify-content: center;
 }
 
 .industry-card-premium__media {
     width: 100%;
-    min-height: 80px;
+    height: 85px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2309,12 +2317,12 @@ a.industry-card-premium:hover::before,
 }
 
 .industry-card-premium:hover .industry-card-premium__media {
-    transform: scale(1.08);
+    transform: scale(1.06);
 }
 
 .industry-card-premium__img {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 85px;
     object-fit: contain;
     border-radius: 12px;
 }
@@ -2323,40 +2331,42 @@ a.industry-card-premium:hover::before,
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 80px;
     width: 100%;
+    height: 85px;
 }
 
 .industry-card-premium__embed iframe,
 .industry-card-premium__embed embed,
 .industry-card-premium__embed img {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 85px;
     border: none;
 }
 
 /* Premium Avatar */
 .industry-card-premium__avatar {
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
     border-radius: 16px;
     background: linear-gradient(135deg, #2F55F4 0%, #6366f1 100%);
     color: #fff;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(47, 85, 244, 0.3);
+    box-shadow: 0 10px 28px rgba(47, 85, 244, 0.25);
+    flex-shrink: 0;
 }
 
 .industry-card-premium__name {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #1f2937;
     letter-spacing: 0.005em;
     margin: 0;
     transition: color 0.3s ease;
+    line-height: 1.4;
 }
 
 a.industry-card-premium .industry-card-premium__name {
@@ -2364,13 +2374,13 @@ a.industry-card-premium .industry-card-premium__name {
 }
 
 .industry-card-premium__badge {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     margin: 0;
-    padding: 4px 12px;
+    padding: 5px 12px;
     background: rgba(47, 85, 244, 0.1);
     border-radius: 20px;
     display: inline-block;
@@ -2387,14 +2397,17 @@ a.industry-card-premium .industry-card-premium__badge {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.9);
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 50%;
     border: 2px solid #f0f4ff;
     opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 15;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #industriesCarousel:hover .carousel-control-prev,
@@ -2405,26 +2418,29 @@ a.industry-card-premium .industry-card-premium__badge {
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
     background: #2F55F4;
-    box-shadow: 0 10px 25px rgba(47, 85, 244, 0.3);
+    box-shadow: 0 12px 28px rgba(47, 85, 244, 0.35);
+    transform: translateY(-50%) scale(1.05);
 }
 
 .carousel-control-prev:hover .carousel-control-prev-icon,
 .carousel-control-next:hover .carousel-control-next-icon {
-    filter: invert(1);
+    filter: invert(1) brightness(1.2);
 }
 
 .carousel-control-prev {
-    left: -70px;
+    left: -35px;
 }
 
 .carousel-control-next {
-    right: -70px;
+    right: -35px;
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    filter: invert(0);
+    filter: invert(0.3) brightness(1.1);
     transition: filter 0.3s ease;
+    width: 20px;
+    height: 20px;
 }
 
 /* Custom Indicators */
@@ -2434,19 +2450,230 @@ a.industry-card-premium .industry-card-premium__badge {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
 }
 
 .carousel-indicators-custom button {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     border: 2px solid #2F55F4;
     background: transparent;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
+}
+
+.carousel-indicators-custom button.active {
+    background: #2F55F4;
+    width: 28px;
+    border-radius: 5px;
+}
+
+.carousel-indicators-custom button:hover {
+    background: #2F55F4;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .industries-section-premium {
+        background: linear-gradient(135deg, #1a1f2e 0%, #252d3d 100%);
+    }
+
+    .industries-bg-pattern {
+        background-image: 
+            radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+    }
+
+    .industry-card-premium {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .industry-card-premium__name {
+        color: #e5e7eb;
+    }
+
+    a.industry-card-premium .industry-card-premium__name {
+        color: #93c5fd;
+    }
+
+    .industry-card-premium__badge {
+        background: rgba(99, 102, 241, 0.15);
+        color: #cbd5e1;
+    }
+
+    a.industry-card-premium .industry-card-premium__badge {
+        background: rgba(93, 155, 245, 0.15);
+        color: #93c5fd;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    .carousel-indicators-custom button {
+        border-color: #6366f1;
+    }
+
+    .carousel-indicators-custom button.active {
+        background: #6366f1;
+    }
+}
+
+/* Tablet & Landscape */
+@media (max-width: 1024px) {
+    #industriesCarousel .carousel-item {
+        min-height: 360px;
+        padding: 25px 15px;
+    }
+
+    .industry-card-premium {
+        padding: 30px 20px;
+        min-height: 260px;
+    }
+
+    .carousel-control-prev {
+        left: -25px;
+    }
+
+    .carousel-control-next {
+        right: -25px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .industries-section-premium {
+        padding: 70px 0 110px;
+    }
+
+    #industriesCarousel .carousel-item {
+        min-height: 340px;
+        padding: 20px 10px;
+    }
+
+    .industry-card-premium {
+        padding: 25px 18px;
+        min-height: 250px;
+    }
+
+    .industry-card-premium__media {
+        height: 75px;
+    }
+
+    .industry-card-premium__img,
+    .industry-card-premium__embed {
+        max-height: 75px;
+    }
+
+    .industry-card-premium__avatar {
+        width: 75px;
+        height: 75px;
+        font-size: 32px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 42px;
+        height: 42px;
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .carousel-control-prev {
+        left: 10px;
+    }
+
+    .carousel-control-next {
+        right: 10px;
+    }
+
+    .carousel-indicators-custom {
+        bottom: -45px;
+        gap: 10px;
+    }
+
+    .carousel-indicators-custom button {
+        width: 8px;
+        height: 8px;
+    }
+
+    .carousel-indicators-custom button.active {
+        width: 24px;
+    }
+
+    .industry-card-premium__name {
+        font-size: 0.95rem;
+    }
+
+    .industry-card-premium__badge {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .industries-section-premium {
+        padding: 60px 0 100px;
+    }
+
+    #industriesCarousel .carousel-item {
+        min-height: 320px;
+        padding: 15px 5px;
+    }
+
+    .industry-card-premium {
+        padding: 22px 16px;
+        min-height: 240px;
+    }
+
+    .industry-card-premium__media {
+        height: 70px;
+        margin-bottom: 8px;
+    }
+
+    .industry-card-premium__img,
+    .industry-card-premium__embed {
+        max-height: 70px;
+    }
+
+    .industry-card-premium__avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+
+    .industry-card-premium__inner {
+        gap: 10px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 38px;
+        height: 38px;
+    }
+
+    .carousel-indicators-custom {
+        bottom: -40px;
+    }
+
+    .carousel-indicators-custom button {
+        width: 7px;
+        height: 7px;
+    }
+
+    .carousel-indicators-custom button.active {
+        width: 20px;
+    }
+
+    .industry-card-premium__name {
+        font-size: 0.9rem;
+    }
 }
 
 .carousel-indicators-custom button.active {
