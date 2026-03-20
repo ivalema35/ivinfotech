@@ -144,6 +144,19 @@ img {
     box-shadow: none !important;
 }
 
+/* Exclude embed images inside industry cards from global img styles */
+.industry-card-premium__embed img,
+.industry-card-premium__embed a img {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    max-width: 100%;
+    max-height: 85px;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 h1,
 h2,
 h3,
@@ -2358,6 +2371,14 @@ a.industry-card-premium:hover::before,
     justify-content: center;
     width: 100%;
     height: 85px;
+}
+
+.industry-card-premium__embed a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .industry-card-premium__embed iframe,
