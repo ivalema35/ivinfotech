@@ -2283,7 +2283,7 @@ footer a:hover {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
     width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
     min-height: unset;
     height: auto;
     display: flex;
