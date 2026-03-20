@@ -953,52 +953,47 @@
             </div>
 
             <!-- Carousel -->
-            <div class="industries-carousel-wrapper">
-                <div id="industriesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row g-4 justify-content-center align-items-stretch">
-                                {% for ind in industries %}
-                                <div class="col-12 col-md-6 col-lg-4 d-flex">
-                                    {% if ind.profile_url %}
-                                    <a href="{{ ind.profile_url }}" target="_blank" rel="noopener noreferrer"
-                                        class="industry-card-premium d-block w-100 text-decoration-none">
-                                    {% else %}
-                                    <div class="industry-card-premium w-100">
-                                    {% endif %}
+            <div class="industries-carousel-wrapper mt-5">
+                <div class="swiper industry-swiper">
+                    <div class="swiper-wrapper">
+                        {% for ind in industries %}
+                        <div class="swiper-slide h-auto">
+                            {% if ind.profile_url %}
+                            <a href="{{ ind.profile_url }}" target="_blank" rel="noopener noreferrer" class="industry-card-premium d-flex flex-column w-100 text-decoration-none">
+                            {% else %}
+                            <div class="industry-card-premium d-flex flex-column w-100">
+                            {% endif %}
 
-                                        <div class="industry-card-premium__inner">
-                                            <div class="industry-card-premium__media">
-                                                {% if ind.image_type == 'upload' and ind.image_filename %}
-                                                <img src="/assets/{{ ind.image_filename }}" alt="{{ ind.name }}" 
-                                                     class="industry-card-premium__img" loading="lazy">
-                                                {% elif ind.image_type == 'code' and ind.embed_code %}
-                                                <div class="industry-card-premium__embed">
-                                                    {{ ind.embed_code | safe }}
-                                                </div>
-                                                {% else %}
-                                                <div class="industry-card-premium__avatar">
-                                                    {{ ind.name[0] | upper }}
-                                                </div>
-                                                {% endif %}
-                                            </div>
-
-                                            <h4 class="industry-card-premium__name">{{ ind.name }}</h4>
-                                            <p class="industry-card-premium__badge">Recognition Platform</p>
+                                <div class="industry-card-premium__inner">
+                                    <div class="industry-card-premium__media">
+                                        {% if ind.image_type == 'upload' and ind.image_filename %}
+                                        <img src="/assets/{{ ind.image_filename }}" alt="{{ ind.name }}" class="industry-card-premium__img" loading="lazy">
+                                        {% elif ind.image_type == 'code' and ind.embed_code %}
+                                        <div class="industry-card-premium__embed">
+                                            {{ ind.embed_code | safe }}
                                         </div>
-
-                                        <div class="industry-card-premium__overlay"></div>
-
-                                    {% if ind.profile_url %}
-                                    </a>
-                                    {% else %}
+                                        {% else %}
+                                        <div class="industry-card-premium__avatar">
+                                            {{ ind.name[0] | upper }}
+                                        </div>
+                                        {% endif %}
                                     </div>
-                                    {% endif %}
+
+                                    <h4 class="industry-card-premium__name">{{ ind.name }}</h4>
+                                    <p class="industry-card-premium__badge">Recognition Platform</p>
                                 </div>
-                                {% endfor %}
+
+                                <div class="industry-card-premium__overlay"></div>
+
+                            {% if ind.profile_url %}
+                            </a>
+                            {% else %}
                             </div>
+                            {% endif %}
                         </div>
+                        {% endfor %}
                     </div>
+                    <div class="swiper-pagination mt-4 position-relative bottom-0"></div>
                 </div>
             </div>
         </div>
@@ -1130,6 +1125,33 @@
             const statSection = document.querySelector('.stats-floating-card');
             if (statSection) {
                 observer.observe(statSection);
+            }
+
+            // Initialize Industry Swiper
+            if (typeof Swiper !== 'undefined' && document.querySelector('.industry-swiper')) {
+                new Swiper('.industry-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 24,
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 30,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 40,
+                        }
+                    }
+                });
             }
         });
     </script>
