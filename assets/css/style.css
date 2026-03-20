@@ -2264,13 +2264,13 @@ footer a:hover {
 }
 
 .industry-swiper .swiper-wrapper {
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .industry-swiper .swiper-slide {
     height: auto;
     display: flex;
-    align-self: stretch;
+    align-items: stretch;
 }
 
 /* Premium Card */
@@ -2278,15 +2278,18 @@ footer a:hover {
     background: #ffffff;
     border: 2px solid rgba(0, 0, 0, 0.05);
     border-radius: 20px;
-    padding: 35px 25px;
+    padding: 30px 25px;
     text-align: center;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
-    height: 100%;
-    min-height: 300px;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    min-height: unset;
+    height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     position: relative;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -2517,7 +2520,6 @@ a.industry-card-premium .industry-card-premium__badge {
 
     .industry-card-premium {
         padding: 30px 20px;
-        min-height: 260px;
     }
 }
 
@@ -2533,7 +2535,6 @@ a.industry-card-premium .industry-card-premium__badge {
 
     .industry-card-premium {
         padding: 25px 18px;
-        min-height: 250px;
     }
 
     .industry-card-premium__media {
@@ -2580,7 +2581,6 @@ a.industry-card-premium .industry-card-premium__badge {
 
     .industry-card-premium {
         padding: 22px 16px;
-        min-height: 240px;
     }
 
     .industry-card-premium__media {
