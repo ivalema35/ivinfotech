@@ -935,6 +935,96 @@
         </div>
     </section>
 
+    {% if industries %}
+    <!-- ── Industry Recognition Section ── -->
+    <section class="industries-section-premium" id="industry-recognitions">
+        <div class="industries-bg-pattern"></div>
+        <div class="container position-relative z-1">
+
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <span class="section-badge">Recognized on Leading Platforms</span>
+                    <h2 class="section-title mt-3 mb-3">Industry We <span class="text-gradient">Recognize</span></h2>
+                    <p class="section-subtitle">
+                        Showcasing our company profiles and recognitions on trusted platforms
+                        like Clutch and similar directories.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Carousel -->
+            <div class="industries-carousel-wrapper">
+                <div id="industriesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                    <div class="carousel-inner">
+                        {% set chunks = industries | batch(3) %}
+                        {% for chunk in chunks %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <div class="row g-4 justify-content-center">
+                                {% for ind in chunk %}
+                                <div class="col-md-6 col-lg-4 d-flex">
+                                    {% if ind.profile_url %}
+                                    <a href="{{ ind.profile_url }}" target="_blank" rel="noopener noreferrer"
+                                        class="industry-card-premium d-block w-100 text-decoration-none">
+                                    {% else %}
+                                    <div class="industry-card-premium w-100">
+                                    {% endif %}
+
+                                        <div class="industry-card-premium__inner">
+                                            <div class="industry-card-premium__media">
+                                                {% if ind.image_type == 'upload' and ind.image_filename %}
+                                                <img src="/assets/{{ ind.image_filename }}" alt="{{ ind.name }}" 
+                                                     class="industry-card-premium__img" loading="lazy">
+                                                {% elif ind.image_type == 'code' and ind.embed_code %}
+                                                <div class="industry-card-premium__embed">
+                                                    {{ ind.embed_code | safe }}
+                                                </div>
+                                                {% else %}
+                                                <div class="industry-card-premium__avatar">
+                                                    {{ ind.name[0] | upper }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <h4 class="industry-card-premium__name">{{ ind.name }}</h4>
+                                            <p class="industry-card-premium__badge">Recognition Platform</p>
+                                        </div>
+
+                                        <div class="industry-card-premium__overlay"></div>
+
+                                    {% if ind.profile_url %}
+                                    </a>
+                                    {% else %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#industriesCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#industriesCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </button>
+
+                    <!-- Carousel Indicators -->
+                    <div class="carousel-indicators-custom">
+                        {% set num_slides = (industries | length + 2) // 3 %}
+                        {% for i in range(num_slides) %}
+                        <button type="button" data-bs-target="#industriesCarousel" data-bs-slide-to="{{ i }}" 
+                                class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}"></button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- FAQ Section -->
     <section class="py-5" style="background: #f8f9fc;">
         <div class="container-xxl">

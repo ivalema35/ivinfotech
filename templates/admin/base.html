@@ -75,6 +75,10 @@
                class="sidebar__link {% if request.endpoint in ['admin_team','admin_team_add','admin_team_edit','admin_team_delete'] %}sidebar__link--active{% endif %}">
                 <i class="fa-solid fa-users"></i><span>Team Members</span>
             </a>
+                <a href="{{ url_for('admin_industries') }}"
+                    class="sidebar__link {% if request.endpoint in ['admin_industries','admin_industries_add','admin_industries_toggle','admin_industries_delete'] %}sidebar__link--active{% endif %}">
+                         <i class="fa-solid fa-industry"></i><span>Recognitions</span>
+                </a>
 
             <span class="sidebar__section-label">System</span>
             <a href="{{ url_for('admin_settings') }}"
