@@ -956,13 +956,10 @@
             <div class="industries-carousel-wrapper">
                 <div id="industriesCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
                     <div class="carousel-inner">
-                        {% set batch_size = 2 if industries|length <= 4 else 3 %}
-                        {% set chunks = industries | batch(batch_size) %}
-                        {% for chunk in chunks %}
-                        <div class="carousel-item {% if loop.first %}active{% endif %}">
-                            <div class="row g-4 justify-content-center align-items-center">
-                                {% for ind in chunk %}
-                                <div class="col-md-6 col-lg-5 d-flex">
+                        <div class="carousel-item active">
+                            <div class="row g-4 justify-content-center align-items-stretch">
+                                {% for ind in industries %}
+                                <div class="col-12 col-md-6 col-lg-4 d-flex">
                                     {% if ind.profile_url %}
                                     <a href="{{ ind.profile_url }}" target="_blank" rel="noopener noreferrer"
                                         class="industry-card-premium d-block w-100 text-decoration-none">
@@ -1001,40 +998,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#industriesCarousel" data-bs-slide="prev" aria-label="Previous">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#industriesCarousel" data-bs-slide="next" aria-label="Next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-
-                    <!-- Carousel Indicators -->
-                    <div class="carousel-indicators-custom">
-                        {% set num_slides = (industries | length + (batch_size - 1)) // batch_size %}
-                        {% for i in range(num_slides) %}
-                        <button type="button" data-bs-target="#industriesCarousel" data-bs-slide-to="{{ i }}" 
-                                class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}"></button>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-
-                    <!-- Carousel Indicators -->
-                    <div class="carousel-indicators-custom">
-                        {% set num_slides = (industries | length + 2) // 3 %}
-                        {% for i in range(num_slides) %}
-                        <button type="button" data-bs-target="#industriesCarousel" data-bs-slide-to="{{ i }}" 
-                                class="{% if i == 0 %}active{% endif %}" aria-label="Slide {{ i + 1 }}"></button>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
