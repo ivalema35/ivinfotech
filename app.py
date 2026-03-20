@@ -52,6 +52,10 @@ os.makedirs(PORTFOLIO_IMG_FOLDER, exist_ok=True)
 TEAM_IMG_FOLDER = os.path.join(basedir, 'assets', 'uploads', 'team')
 os.makedirs(TEAM_IMG_FOLDER, exist_ok=True)
 
+# ── Industry recognition image upload (inside static) ─────────────────────────
+INDUSTRY_IMG_FOLDER = os.path.join(basedir, 'assets', 'uploads', 'industries')
+os.makedirs(INDUSTRY_IMG_FOLDER, exist_ok=True)
+
 CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
 db = SQLAlchemy(app)
@@ -245,6 +249,19 @@ class TeamMember(db.Model):
     twitter_url    = db.Column(db.String(512),  nullable=True)
     display_order  = db.Column(db.Integer,      nullable=False, default=0)
     is_active      = db.Column(db.Boolean,      nullable=False, default=True)
+
+
+class IndustryRecognition(db.Model):
+    __tablename__ = 'industry_recognitions'
+    id             = db.Column(db.Integer, primary_key=True)
+    name           = db.Column(db.String(120), nullable=False)
+    profile_url    = db.Column(db.String(512), nullable=True)
+    image_type     = db.Column(db.String(20), nullable=False, default='upload')  # 'upload' or 'code'
+    image_filename = db.Column(db.String(512), nullable=True)  # when image_type='upload'
+    embed_code     = db.Column(db.Text, nullable=True)  # when image_type='code'
+    display_order  = db.Column(db.Integer, nullable=False, default=0)
+    is_active      = db.Column(db.Boolean, nullable=False, default=True)
+    created_at     = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 class Inquiry(db.Model):
@@ -517,6 +534,19 @@ def _save_team_img(file_obj):
     unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
     file_obj.save(os.path.join(TEAM_IMG_FOLDER, unique))
     return 'uploads/team/' + unique
+
+
+def _save_industry_img(file_obj):
+    """Save an uploaded industry image. Returns static-relative path or None."""
+    if not file_obj or not file_obj.filename:
+        return None
+    ext = file_obj.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMG_EXT:
+        return None
+    safe = secure_filename(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    file_obj.save(os.path.join(INDUSTRY_IMG_FOLDER, unique))
+    return 'uploads/industries/' + unique
 
 
 @app.route('/admin/blog/add', methods=['GET', 'POST'])
@@ -921,7 +951,16 @@ def robots_txt():
 @app.route('/')
 def index_page():
     home_testimonials = Testimonial.query.filter_by(is_active=True).order_by(Testimonial.created_at.desc()).all()
-    return render_template('index.html', active_page='home', testimonials=home_testimonials)
+    industries = IndustryRecognition.query.filter_by(is_active=True).order_by(
+        IndustryRecognition.display_order.asc(),
+        IndustryRecognition.created_at.desc()
+    ).all()
+    return render_template(
+        'index.html',
+        active_page='home',
+        testimonials=home_testimonials,
+        industries=industries,
+    )
 
 @app.route('/about')
 def about():
@@ -1283,6 +1322,143 @@ def admin_team_delete(mid):
     db.session.commit()
     flash('Team member deleted.', 'info')
     return redirect(url_for('admin_team'))
+
+
+# ── Admin: Industry Recognition Platforms CRUD ────────────────────────────────
+@app.route('/admin/industries')
+@login_required
+def admin_industries():
+    industries = IndustryRecognition.query.order_by(
+        IndustryRecognition.display_order.asc(),
+        IndustryRecognition.created_at.desc()
+    ).all()
+    return render_template('admin/industries.html', industries=industries)
+
+
+@app.route('/admin/industries/add', methods=['POST'])
+@login_required
+def admin_industries_add():
+    name        = request.form.get('name', '').strip()
+    profile_url = request.form.get('profile_url', '').strip()
+    image_type  = request.form.get('image_type', 'upload').strip().lower()  # 'upload' or 'code'
+    embed_code  = request.form.get('embed_code', '').strip()
+    is_active   = 'is_active' in request.form
+
+    try:
+        display_order = int(request.form.get('display_order', 0) or 0)
+    except (ValueError, TypeError):
+        display_order = 0
+
+    if not name:
+        flash('Platform name is required.', 'danger')
+        return redirect(url_for('admin_industries'))
+
+    if image_type not in ('upload', 'code'):
+        image_type = 'upload'
+
+    image_filename = None
+    if image_type == 'upload':
+        image_filename = _save_industry_img(request.files.get('image_file'))
+
+    ind = IndustryRecognition(
+        name=name,
+        profile_url=profile_url or None,
+        image_type=image_type,
+        image_filename=image_filename,
+        embed_code=embed_code if image_type == 'code' else None,
+        display_order=display_order,
+        is_active=is_active,
+    )
+    db.session.add(ind)
+    db.session.commit()
+    flash('Recognition platform added successfully.', 'success')
+    return redirect(url_for('admin_industries'))
+
+
+@app.route('/admin/industries/<int:ind_id>/edit', methods=['POST'])
+@login_required
+def admin_industries_edit(ind_id):
+    ind = db.session.get(IndustryRecognition, ind_id)
+    if not ind:
+        abort(404)
+
+    name        = request.form.get('name', '').strip()
+    profile_url = request.form.get('profile_url', '').strip()
+    image_type  = request.form.get('image_type', 'upload').strip().lower()
+    embed_code  = request.form.get('embed_code', '').strip()
+    is_active   = 'is_active' in request.form
+
+    try:
+        display_order = int(request.form.get('display_order', 0) or 0)
+    except (ValueError, TypeError):
+        display_order = 0
+
+    if not name:
+        flash('Platform name is required.', 'danger')
+        return redirect(url_for('admin_industries'))
+
+    if image_type not in ('upload', 'code'):
+        image_type = 'upload'
+
+    # Handle image update
+    if image_type == 'upload':
+        if 'image_file' in request.files and request.files['image_file'].filename:
+            # Delete old image if exists
+            if ind.image_filename:
+                old_img_path = os.path.join(basedir, 'assets', ind.image_filename)
+                if os.path.exists(old_img_path):
+                    os.remove(old_img_path)
+            # Save new image
+            ind.image_filename = _save_industry_img(request.files.get('image_file'))
+        # Keep existing filename if no new file uploaded
+    else:
+        # If switching from upload to code, clear the old image
+        if ind.image_type == 'upload' and ind.image_filename:
+            old_img_path = os.path.join(basedir, 'assets', ind.image_filename)
+            if os.path.exists(old_img_path):
+                os.remove(old_img_path)
+            ind.image_filename = None
+
+    ind.name           = name
+    ind.profile_url    = profile_url or None
+    ind.image_type     = image_type
+    ind.embed_code     = embed_code if image_type == 'code' else None
+    ind.display_order  = display_order
+    ind.is_active      = is_active
+
+    db.session.commit()
+    flash(f'Recognition platform "{ind.name}" updated successfully.', 'success')
+    return redirect(url_for('admin_industries'))
+
+
+@app.route('/admin/industries/<int:ind_id>/toggle', methods=['POST'])
+@login_required
+def admin_industries_toggle(ind_id):
+    ind = db.session.get(IndustryRecognition, ind_id)
+    if not ind:
+        abort(404)
+    ind.is_active = not ind.is_active
+    db.session.commit()
+    flash(f'Recognition platform "{ind.name}" updated.', 'success')
+    return redirect(url_for('admin_industries'))
+
+
+@app.route('/admin/industries/<int:ind_id>/delete', methods=['POST'])
+@login_required
+def admin_industries_delete(ind_id):
+    ind = db.session.get(IndustryRecognition, ind_id)
+    if not ind:
+        abort(404)
+
+    if ind.image_filename:
+        img_path = os.path.join(basedir, 'assets', ind.image_filename)
+        if os.path.exists(img_path):
+            os.remove(img_path)
+
+    db.session.delete(ind)
+    db.session.commit()
+    flash(f'Recognition platform "{ind.name}" deleted.', 'success')
+    return redirect(url_for('admin_industries'))
 
 
 # ── Admin: Site Settings ───────────────────────────────────────────────────────
