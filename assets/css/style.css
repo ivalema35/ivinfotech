@@ -2188,8 +2188,8 @@ footer a:hover {
    INDUSTRIES - RECOGNITION SECTION (PREMIUM)
    ═══════════════════════════════════════════════ */
 
-/* ── Industry Section — Missing heading styles ── */
-.section-badge {
+/* Scoped heading styles — only inside industry recognition section */
+.industries-section-premium .section-badge {
     display: inline-block;
     background: rgba(47, 85, 244, 0.08);
     color: #2F55F4;
@@ -2202,7 +2202,7 @@ footer a:hover {
     border: 1px solid rgba(47, 85, 244, 0.15);
 }
 
-.section-title {
+.industries-section-premium .section-title {
     font-family: 'Poppins', sans-serif;
     font-size: clamp(1.8rem, 3vw, 2.4rem);
     font-weight: 700;
@@ -2210,7 +2210,7 @@ footer a:hover {
     line-height: 1.2;
 }
 
-.section-subtitle {
+.industries-section-premium .section-subtitle {
     color: #6b7280;
     font-size: 1rem;
     line-height: 1.7;
