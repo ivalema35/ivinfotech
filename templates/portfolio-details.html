@@ -1400,6 +1400,7 @@
             '</div>' +
             '<div class="belzzo-tcard-right">' +
               '<div class="belzzo-tcard-stars" aria-label="5 stars">★★★★★</div>' +
+              (t.company_name ? '<div class="belzzo-tcard-logo">' + escHtml(t.company_name) + '</div>' : '') +
             '</div>' +
           '</div>';
         track.appendChild(card);

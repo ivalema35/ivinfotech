@@ -223,6 +223,7 @@ class Portfolio(db.Model):
                     'role':     t.get('client_role', ''),
                     'rating':   int(t.get('rating', 5)),
                     'initials': initials,
+                    'company':  t.get('company_name', ''),
                 })
             return result
         except:
