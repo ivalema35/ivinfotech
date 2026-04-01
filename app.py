@@ -184,6 +184,7 @@ class Portfolio(db.Model):
     features        = db.Column(db.Text, nullable=True)  # JSON: [{icon,title,desc,benefit}]
     testimonials    = db.Column(db.Text, nullable=True)  # JSON: [{quote,client_name,client_role,rating}]
     gallery         = db.Column(db.Text, nullable=True)  # JSON: [{type:"web"|"app",url,label,alt}]
+    trust_badges    = db.Column(db.Text, nullable=True)  # JSON: [{icon,text}]
     created_at      = db.Column(db.DateTime, default=datetime.utcnow)
 
     # ── helpers ──
@@ -230,6 +231,21 @@ class Portfolio(db.Model):
     def get_gallery(self):
         try: return json.loads(self.gallery or '[]')
         except: return []
+
+    def get_trust_badges(self):
+        defaults = [
+            {'icon': 'fa-solid fa-gauge-high', 'text': 'Core Web Vitals'},
+            {'icon': 'fa-solid fa-chart-line', 'text': 'GA4 Tracking'},
+            {'icon': 'fa-solid fa-shield-halved', 'text': 'Secure Payments'},
+            {'icon': 'fa-solid fa-magnifying-glass', 'text': 'SEO-ready'},
+        ]
+        try:
+            items = json.loads(self.trust_badges or '[]')
+            if isinstance(items, list) and items:
+                return items
+        except:
+            pass
+        return defaults
 
     def get_categories(self):
         """Return list of individual categories from comma-separated string."""
@@ -690,18 +706,24 @@ def _portfolio_from_form(p, form, files):
     p.goal            = form.get('goal', '').strip()
     p.client_story_p1 = form.get('client_story_p1', '').strip()
     p.client_story_p2 = form.get('client_story_p2', '').strip()
-    # JSON text fields passed as raw JSON strings
-    for field in ('challenges', 'solution_steps', 'services', 'results', 'features', 'testimonials', 'gallery'):
-        raw = form.get(field, '')
+    # JSON text fields — always serialise to a TEXT string before touching the session.
+    for field in ('challenges', 'solution_steps', 'services', 'results', 'features', 'testimonials', 'gallery', 'trust_badges'):
+        raw = form.get(field)   # None when key is absent
+        if raw is None:
+            continue             # key not in payload — leave DB value unchanged
         if isinstance(raw, (list, dict)):
+            # Python object straight from request.get_json() — serialise it
             setattr(p, field, json.dumps(raw))
         elif isinstance(raw, str):
             raw = raw.strip()
+            if not raw:
+                continue         # empty string — leave DB value unchanged
             try:
-                json.loads(raw)   # validate only
+                json.loads(raw)  # validate only; raises ValueError on bad JSON
                 setattr(p, field, raw)
             except ValueError:
-                pass   # leave existing value untouched on bad JSON
+                pass             # leave existing DB value untouched on bad JSON
+        # Any other type (int, bool, …) is silently ignored — never reaches SQLite
     # Hero images (only for multipart/form-data, not JSON)
     if files:
         new_web = _save_portfolio_img(files.get('hero_image_web'), slug=p.slug or None)
@@ -795,7 +817,11 @@ def admin_portfolio_preview(slug):
     """Renders portfolio-details.html for any portfolio regardless of published status.
     Used exclusively as the iframe src in the Visual Builder so draft edits are visible."""
     portfolio = Portfolio.query.filter_by(slug=slug).first_or_404()
-    return render_template('portfolio-details.html', active_page='portfolio', portfolio=portfolio)
+    # Pass as a separate variable — never assign a Python list to a session-tracked
+    # model attribute, as it marks the object dirty and triggers autoflush errors.
+    trust_badges = portfolio.get_trust_badges()
+    return render_template('portfolio-details.html', active_page='portfolio',
+                           portfolio=portfolio, trust_badges=trust_badges)
 
 
 # ── Admin: Visual Builder (split-screen live editor) ──────────────────────────
@@ -844,8 +870,26 @@ def admin_portfolio_save():
 
     # Override is_published based on action
     data['is_published'] = (action == 'publish')
-    _portfolio_from_form(p, data, None)
-    db.session.commit()
+    # Ensure trust_badges is persisted as JSON text for TEXT column backends.
+    raw_badges = data.get('trust_badges', [])
+    if isinstance(raw_badges, str):
+        try:
+            json.loads(raw_badges)
+            data['trust_badges'] = raw_badges
+        except ValueError:
+            data['trust_badges'] = json.dumps([])
+    else:
+        data['trust_badges'] = json.dumps(raw_badges or [])
+
+    # Wrap BOTH form-mapping AND commit so that ANY failure triggers rollback.
+    # Without this, an exception inside _portfolio_from_form leaves the session
+    # in a failed state and causes PendingRollbackError on every subsequent request.
+    try:
+        _portfolio_from_form(p, data, None)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': f'Database save failed: {e}'}), 500
     return jsonify({'success': True, 'id': p.id, 'slug': p.slug,
                     'status': 'Published' if p.is_published else 'Draft'})
 
@@ -1054,7 +1098,11 @@ def portfolio():
 @app.route('/portfolio/<slug>')
 def portfolio_detail(slug):
     portfolio = Portfolio.query.filter_by(slug=slug, is_published=True).first_or_404()
-    return render_template('portfolio-details.html', active_page='portfolio', portfolio=portfolio)
+    # Pass as a separate variable — never assign a Python list to a session-tracked
+    # model attribute, as it marks the object dirty and triggers autoflush errors.
+    trust_badges = portfolio.get_trust_badges()
+    return render_template('portfolio-details.html', active_page='portfolio',
+                           portfolio=portfolio, trust_badges=trust_badges)
 
 @app.route('/portfolio-details')
 def portfolio_details():
