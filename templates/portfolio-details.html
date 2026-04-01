@@ -383,19 +383,20 @@
       color: #ffffff !important;
     }
 
-    /* 2. Kill text gradients → solid primary color ──────────────────────────── */
+    /* 2. Hero title — solid primary color, no text-fill tricks ───────────────── */
     .text-gradient-primary, .belzzo-hero-title span {
       background: none !important;
-      -webkit-text-fill-color: var(--pf-primary) !important;
+      -webkit-text-fill-color: initial !important;
       color: var(--pf-primary) !important;
     }
 
-    /* 3. Kill pink glows → primary-tinted radial gradients ──────────────────── */
+    /* 3. Remove all ambient glows — clean white background ───────────────────── */
     .belzzo-hero::before, .belzzo-hero::after,
     .belzzo-hero-bg, .belzzo-background-glow,
     .belzzo-challenge-glow, .belzzo-solution-glow,
     .bz-pslider-glow {
-      background: radial-gradient(circle, color-mix(in srgb, var(--pf-primary) 8%, transparent) 0%, transparent 70%) !important;
+      background: none !important;
+      display: none !important;
     }
 
     /* 4. Category pills, tags, badges ──────────────────────────────────────── */
@@ -475,12 +476,11 @@
       color: #4b5563 !important;
     }
 
-    /* 9. KPI cards — de-pinked gradient border ──────────────────────────────── */
+    /* 9. KPI cards — solid white background ───────────────────────────────────── */
     .belzzo-kpi-card {
-      background: linear-gradient(135deg,
-        color-mix(in srgb, var(--pf-bg) 97%, #ffffff) 0%,
-        var(--pf-bg) 100%) !important;
-      border-color: color-mix(in srgb, var(--pf-primary) 15%, transparent) !important;
+      background: var(--pf-card-bg, #ffffff) !important;
+      border-color: var(--pf-primary-border) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
     }
 
     /* 10. Story card — de-pinked border ─────────────────────────────────────── */
@@ -498,7 +498,7 @@
     #portfolio-view-page .belzzo-module-tag,
     #portfolio-view-page .belzzo-stack-icon svg      { color: var(--pf-primary) !important; stroke: var(--pf-primary) !important; }
     #portfolio-view-page .belzzo-kpi-value           { color: var(--pf-primary) !important; }
-    #portfolio-view-page .belzzo-snapshot-gradient-bar { background: linear-gradient(90deg, var(--pf-primary), color-mix(in srgb, var(--pf-primary) 30%, #ffffff)) !important; }
+    #portfolio-view-page .belzzo-snapshot-gradient-bar { background: var(--pf-primary) !important; opacity: 0.8; }
     #portfolio-view-page .bz-mseverity--critical     { color: var(--pf-primary) !important; }
     #portfolio-view-page .belzzo-deliverable         { background: color-mix(in srgb, var(--pf-secondary) 15%, transparent) !important; color: var(--pf-secondary) !important; border-color: color-mix(in srgb, var(--pf-secondary) 30%, transparent) !important; }
     #portfolio-view-page .belzzo-result-card         { border-top-color: var(--pf-secondary) !important; }
