@@ -1594,7 +1594,7 @@ function sendTestimonialsToPreview() {
   sendToPreview({ source: 'ivb', type: 'testimonials', testimonials: state.testimonials });
 }
 function addTestimonial(data) {
-  var d = data || { quote: '', client_name: '', client_role: '', rating: 5 };
+  var d = data || { quote: '', client_name: '', client_role: '', rating: 5, company_name: '' };
   state.testimonials.push(d);
   renderTestimonial(d, state.testimonials.length - 1);
   markDirty();
@@ -1616,6 +1616,8 @@ function renderTestimonial(d, idx) {
     + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_name" value="' + esc(d.client_name) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Testimonial\';sendTestimonialsToPreview()" /></div>'
     + '<div class="vb-field"><label class="vb-label">Client Role / Title</label>'
     + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_role" value="' + esc(d.client_role) + '" oninput="updateArrayField(this);sendTestimonialsToPreview()" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Company / Brand Name</label>'
+    + '<input class="vb-input" type="text" data-arr="testimonials" data-field="company_name" value="' + esc(d.company_name || '') + '" placeholder="e.g. Belzzo, IV Infotech" oninput="updateArrayField(this);sendTestimonialsToPreview()" /></div>'
     + '</div>';
   arr.appendChild(item);
 }
