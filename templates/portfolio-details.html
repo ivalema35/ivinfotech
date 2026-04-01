@@ -149,7 +149,16 @@
 
     /* ══ CHALLENGE CARDS ══ */
     #portfolio-view-page .belzzo-challenge-section { padding: 80px 0 !important; }
-    #portfolio-view-page .challenge-card { border-radius: 18px !important; padding: 28px !important; height: auto !important; overflow: visible !important; }
+    #portfolio-view-page .challenge-card {
+      border-radius: 18px !important;
+      padding: 28px !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: visible !important;
+    }
+    /* Grow the top content block so Impact is always pinned to the bottom */
+    #portfolio-view-page .challenge-card .challenge-content-wrap { flex-grow: 1 !important; }
     @media (max-width: 575px) {
       #portfolio-view-page .belzzo-challenge-section .col-md-6,
       #portfolio-view-page .belzzo-challenge-section .col-lg-4 { flex: 0 0 100% !important; max-width: 100% !important; }
@@ -157,12 +166,25 @@
 
     /* ══ SOLUTION TIMELINE ══ */
     #portfolio-view-page .belzzo-solution-section { padding: 80px 0 !important; }
-    #portfolio-view-page .belzzo-process-card { overflow: visible !important; height: auto !important; border-radius: 16px !important; }
+    /* Desktop: horizontal equal-height row */
+    #portfolio-view-page .belzzo-process-timeline { display: flex !important; align-items: stretch !important; gap: 24px !important; }
+    #portfolio-view-page .belzzo-process-step { flex: 1 !important; display: flex !important; flex-direction: column !important; }
+    #portfolio-view-page .belzzo-process-card {
+      overflow: visible !important;
+      height: 100% !important;
+      border-radius: 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    /* Bullet list grows to fill card so all cards reach the same bottom edge */
+    #portfolio-view-page .belzzo-module-list { flex-grow: 1 !important; margin-bottom: 0 !important; }
     @media (max-width: 767px) {
-      #portfolio-view-page .belzzo-process-timeline { gap: 24px !important; }
-      #portfolio-view-page .belzzo-process-step { flex-direction: row !important; gap: 16px !important; }
+      /* Revert to vertical stacked timeline on mobile */
+      #portfolio-view-page .belzzo-process-timeline { flex-direction: column !important; gap: 24px !important; }
+      #portfolio-view-page .belzzo-process-step { flex: unset !important; flex-direction: row !important; gap: 16px !important; }
       #portfolio-view-page .belzzo-process-node-wrap { flex-direction: column !important; align-items: center !important; flex-shrink: 0 !important; }
       #portfolio-view-page .belzzo-process-line { width: 2px !important; flex: 1 !important; }
+      #portfolio-view-page .belzzo-process-card { height: auto !important; }
     }
 
     /* ══ SERVICES STACK ══ */
@@ -1012,17 +1034,20 @@
         <div class="row g-4 mt-2">
           {% for ch in portfolio.get_challenges() %}
           <div class="col-md-6 col-lg-4">
-            <div class="challenge-card" style="background:var(--pf-card-bg);border:1px solid var(--pf-card-border);border-radius:16px;padding:32px;height:100%;box-shadow:0 10px 30px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="icon-box" style="width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--pf-secondary) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--pf-secondary);font-size:1.2rem;flex-shrink:0;">
-                  {% if ch.icon and ch.icon.startswith('fa-') %}<i class="{{ ch.icon }}"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}
+            <div class="challenge-card" style="background:var(--pf-card-bg);border:1px solid var(--pf-card-border);border-radius:16px;padding:32px;box-shadow:0 10px 30px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;">
+              <!-- challenge-content-wrap grows to push Impact to the bottom -->
+              <div class="challenge-content-wrap">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div class="icon-box" style="width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--pf-secondary) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--pf-secondary);font-size:1.2rem;flex-shrink:0;">
+                    {% if ch.icon and ch.icon.startswith('fa-') %}<i class="{{ ch.icon }}"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}
+                  </div>
+                  <span class="badge" style="background:color-mix(in srgb,var(--pf-primary) 15%,transparent);color:var(--pf-primary);font-size:0.75rem;font-weight:600;padding:5px 10px;border-radius:6px;">{{ ch.tag }}</span>
                 </div>
-                <span class="badge" style="background:color-mix(in srgb,var(--pf-primary) 15%,transparent);color:var(--pf-primary);font-size:0.75rem;font-weight:600;padding:5px 10px;border-radius:6px;">{{ ch.tag }}</span>
+                <h4 style="font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--pf-text-main);line-height:1.4;">{{ ch.title }}</h4>
+                <p style="font-size:0.93rem;color:var(--pf-text-muted);margin-bottom:0;line-height:1.65;">{{ ch.desc }}</p>
               </div>
-              <h4 style="font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--pf-text-main);line-height:1.4;">{{ ch.title }}</h4>
-              <p style="font-size:0.93rem;color:var(--pf-text-muted);margin-bottom:18px;line-height:1.65;">{{ ch.desc }}</p>
               {% if ch.impact %}
-              <div style="border-top:1px dashed var(--pf-card-border);padding-top:16px;">
+              <div class="mt-auto pt-3" style="border-top:1px dashed var(--pf-card-border);">
                 <strong style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--pf-primary);">Impact</strong>
                 <p style="font-size:0.9rem;margin-top:6px;margin-bottom:0;color:var(--pf-text-main);">{{ ch.impact }}</p>
               </div>
