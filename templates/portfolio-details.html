@@ -770,26 +770,14 @@
                 {% endif %}
               </div>
 
-              <div class="belzzo-trust-bar">
+              <div class="belzzo-trust-bar" id="preview-trust-badges">
+                {% for badge in trust_badges %}
+                {% if not loop.first %}<span class="belzzo-trust-sep"></span>{% endif %}
                 <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  Core Web Vitals
+                  <i class="{{ badge.icon or 'fa-solid fa-shield-halved' }}"></i>
+                  {{ badge.text }}
                 </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17l-5-5-4 4-4-7"/></svg>
-                  GA4 Tracking
-                </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-                  Secure Payments
-                </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  SEO-ready
-                </span>
+                {% endfor %}
               </div>
 
               <div class="belzzo-hero-cta">
@@ -1453,6 +1441,29 @@
   <script>
     (function () {
       'use strict';
+      function escHtml(s) {
+        return (s || '').toString()
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function renderTrustBadges(items) {
+        var wrap = document.getElementById('preview-trust-badges');
+        if (!wrap) return;
+        var badges = Array.isArray(items) ? items : [];
+        var html = '';
+        badges.forEach(function (b, i) {
+          if (i > 0) html += '<span class="belzzo-trust-sep"></span>';
+          html += '<span class="belzzo-trust-item">'
+            + '<i class="' + escHtml(b.icon || 'fa-solid fa-shield-halved') + '"></i>'
+            + escHtml(b.text || 'Badge')
+            + '</span>';
+        });
+        wrap.innerHTML = html;
+      }
+
       window.addEventListener('message', function (evt) {
         var d = evt.data;
         if (!d || d.source !== 'ivb') return;
@@ -1467,6 +1478,11 @@
           window.BZ_TESTIMONIALS = d.testimonials;
           if (typeof window.bzReinitTestimonials === 'function') {
             window.bzReinitTestimonials(d.testimonials);
+          }
+
+        } else if (d.type === 'array_update') {
+          if (d.key === 'trust_badges') {
+            renderTrustBadges(d.data);
           }
 
         } else if (d.type === 'text') {
