@@ -448,6 +448,7 @@ var VB_INIT = {
   features:       {{ (_p.features or '[]') | tojson }},
   testimonials:   {{ (_p.testimonials or '[]') | tojson }},
   gallery:        {{ (_p.gallery or '[]') | tojson }},
+  trust_badges:   {{ (_p.trust_badges or '[]') | tojson }},
 };
 </script>
 {% else %}
@@ -459,7 +460,7 @@ var VB_INIT = {
   hero_image_web: '', hero_image_app: '',
   kpi_1_value:'', kpi_1_label:'', kpi_2_value:'', kpi_2_label:'', kpi_3_value:'', kpi_3_label:'',
   industry:'', market:'', goal:'', client_story_p1:'', client_story_p2:'',
-  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]'
+  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]', trust_badges:'[]'
 };
 </script>
 {% endif %}
@@ -667,6 +668,21 @@ var VB_INIT = {
                 <button class="vb-img-preview__remove" onclick="clearImg('hero_image_app','dz_hero_app','imgprev_hero_app')">×</button>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- ─── Section: Trust Badges ─── -->
+        <div class="vb-section" id="sec-trust-badges">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-shield-halved fa-fw" style="color:#22c55e;font-size:12px;"></i>
+            Trust Badges
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <div class="vb-array" id="arr-trust_badges"></div>
+            <button class="vb-array__add" onclick="addTrustBadge()">
+              <i class="fa-solid fa-plus"></i> Add Badge
+            </button>
           </div>
         </div>
 
@@ -886,11 +902,11 @@ var VB_INIT = {
 /* ── State ── */
 const state = Object.assign({
   challenges: [], solution_steps: [], services: [],
-  results: { cards: [], rows: [] }, features: [], testimonials: [], gallery: []
+  results: { cards: [], rows: [] }, features: [], testimonials: [], gallery: [], trust_badges: []
 }, VB_INIT);
 
 // Parse JSON string fields from VB_INIT into proper objects
-['challenges','solution_steps','services','features','testimonials'].forEach(function(k) {
+['challenges','solution_steps','services','features','testimonials','trust_badges'].forEach(function(k) {
   try { state[k] = typeof state[k] === 'string' ? JSON.parse(state[k]) : state[k]; } catch(e) { state[k] = []; }
 });
 try {
@@ -899,6 +915,14 @@ try {
   if (!state.results.rows)  state.results.rows  = [];
 } catch(e) { state.results = { cards:[], rows:[] }; }
 try { state.gallery = typeof state.gallery === 'string' ? JSON.parse(state.gallery) : state.gallery; } catch(e) { state.gallery = []; }
+if (!Array.isArray(state.trust_badges) || !state.trust_badges.length) {
+  state.trust_badges = [
+    { icon: 'fa-solid fa-gauge-high', text: 'Core Web Vitals' },
+    { icon: 'fa-solid fa-chart-line', text: 'GA4 Tracking' },
+    { icon: 'fa-solid fa-shield-halved', text: 'Secure Payments' },
+    { icon: 'fa-solid fa-magnifying-glass', text: 'SEO-ready' }
+  ];
+}
 
 let portfolioId   = VB_INIT.id;
 let portfolioSlug = VB_INIT.slug;
@@ -952,6 +976,7 @@ function populateForm() {
   state.features.forEach(renderFeature);
   state.testimonials.forEach(renderTestimonial);
   state.gallery.forEach(renderGalleryThumb);
+  state.trust_badges.forEach(renderTrustBadge);
 }
 
 /* ── Field binding: listen for all input events ── */
@@ -1115,6 +1140,7 @@ window.addEventListener('message', function(evt) {
     // Re-push current state after iframe reloads
     pushColorCSS();
     sendTestimonialsToPreview();
+    sendTrustBadgesToPreview();
   }
   if (d.type === 'edit') {
     // User edited something directly in the preview (contenteditable)
@@ -1298,6 +1324,42 @@ function removeGalleryItem(idx, btn) {
 }
 
 /* ══ JSON ARRAY BUILDERS ══ */
+
+/* ─── Trust Badges ─── */
+function sendTrustBadgesToPreview() {
+  sendToPreview({ source: 'ivb', type: 'array_update', key: 'trust_badges', data: state.trust_badges });
+}
+function addTrustBadge(data) {
+  var d = data || { icon:'fa-solid fa-shield-halved', text:'New Badge' };
+  state.trust_badges.push(d);
+  renderTrustBadge(d, state.trust_badges.length - 1);
+  markDirty();
+  sendTrustBadgesToPreview();
+}
+function renderTrustBadge(d, idx) {
+  var arr  = $('arr-trust_badges');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  var iconVal = esc(d.icon || 'fa-solid fa-shield-halved');
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (esc(d.text) || 'Badge ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'trust_badges\',this.closest(\'.vb-array__item\'));event.stopPropagation()" title="Remove"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Icon</label>'
+    + '<div class="vb-icon-picker-group">'
+    + '<input type="hidden" class="vb-icon-hidden" data-arr="trust_badges" data-field="icon" oninput="updateArrayField(this)" value="' + iconVal + '">'
+    + '<button type="button" class="icon-select-btn" onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">'
+    + '<i class="' + iconVal + ' preview-icon"></i> Select Icon'
+    + '</button>'
+    + '</div></div>'
+    + '<div class="vb-field"><label class="vb-label">Badge Text</label>'
+    + '<input class="vb-input" type="text" data-arr="trust_badges" data-field="text" value="' + esc(d.text) + '" '
+    + 'oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Badge\'" /></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
 
 /* ─── Challenges ─── */
 function addChallenge(data) {
@@ -1532,7 +1594,7 @@ function sendTestimonialsToPreview() {
   sendToPreview({ source: 'ivb', type: 'testimonials', testimonials: state.testimonials });
 }
 function addTestimonial(data) {
-  var d = data || { quote: '', client_name: '', client_role: '', rating: 5 };
+  var d = data || { quote: '', client_name: '', client_role: '', rating: 5, company_name: '' };
   state.testimonials.push(d);
   renderTestimonial(d, state.testimonials.length - 1);
   markDirty();
@@ -1554,6 +1616,8 @@ function renderTestimonial(d, idx) {
     + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_name" value="' + esc(d.client_name) + '" oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\'Testimonial\';sendTestimonialsToPreview()" /></div>'
     + '<div class="vb-field"><label class="vb-label">Client Role / Title</label>'
     + '<input class="vb-input" type="text" data-arr="testimonials" data-field="client_role" value="' + esc(d.client_role) + '" oninput="updateArrayField(this);sendTestimonialsToPreview()" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Company / Brand Name</label>'
+    + '<input class="vb-input" type="text" data-arr="testimonials" data-field="company_name" value="' + esc(d.company_name || '') + '" placeholder="e.g. Belzzo, IV Infotech" oninput="updateArrayField(this);sendTestimonialsToPreview()" /></div>'
     + '</div>';
   arr.appendChild(item);
 }
@@ -1586,6 +1650,7 @@ function updateArrayField(el, customValue) {
   if (idx < 0 || !state[arr] || state[arr][idx] === undefined) return;
   state[arr][idx][field] = value;
   markDirty();
+  if (arr === 'trust_badges') sendTrustBadgesToPreview();
 }
 function removeArrayItem(arr, el) {
   var items = Array.from(el.parentElement.querySelectorAll('.vb-array__item'));
@@ -1593,6 +1658,7 @@ function removeArrayItem(arr, el) {
   if (idx >= 0) state[arr].splice(idx, 1);
   el.remove();
   markDirty();
+  if (arr === 'trust_badges') sendTrustBadgesToPreview();
 }
 
 /* ── HTML entity escape ── */
@@ -1632,6 +1698,7 @@ function collectPayload(action) {
     features:       state.features,
     testimonials:   state.testimonials,
     gallery:        state.gallery,
+    trust_badges:   state.trust_badges,
   };
 }
 

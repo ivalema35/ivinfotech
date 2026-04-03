@@ -64,8 +64,16 @@
     @media (min-width: 992px) { #portfolio-view-page .belzzo-hero { padding-top: 140px !important; padding-bottom: 80px !important; } }
     #portfolio-view-page .belzzo-hero-title { font-size: clamp(1.75rem, 5.5vw, 3rem) !important; line-height: 1.2 !important; }
     #portfolio-view-page .belzzo-kpi-row { display: flex !important; flex-wrap: wrap !important; gap: 12px !important; margin-top: 24px !important; }
-    #portfolio-view-page .belzzo-kpi-card { flex: 1 1 100px !important; min-width: 90px !important; max-width: 180px !important; }
-    #portfolio-view-page .belzzo-kpi-value { font-size: clamp(1.4rem, 4vw, 2.2rem) !important; }
+    #portfolio-view-page .belzzo-kpi-card { flex: 1 1 100px !important; min-width: 90px !important; max-width: 160px !important; overflow: hidden !important; }
+    #portfolio-view-page .belzzo-kpi-value { font-size: clamp(1.25rem, 3.2vw, 2rem) !important; word-break: break-word !important; overflow-wrap: break-word !important; }
+    #portfolio-view-page .belzzo-kpi-label { word-break: break-word !important; overflow-wrap: break-word !important; white-space: normal !important; }
+    /* Hero text column: hard right-padding buffer prevents content bleeding into the visual column */
+    @media (min-width: 992px) {
+      #portfolio-view-page .belzzo-hero-content { padding-right: 3rem !important; max-width: 100% !important; overflow-wrap: break-word !important; }
+    }
+    @media (min-width: 1200px) {
+      #portfolio-view-page .belzzo-hero-content { padding-right: 4rem !important; }
+    }
     @media (max-width: 991px) {
       #portfolio-view-page .belzzo-hero-visual { margin-top: 32px !important; }
       #portfolio-view-page .belzzo-hero-cta { flex-wrap: wrap !important; gap: 12px !important; }
@@ -141,7 +149,16 @@
 
     /* ══ CHALLENGE CARDS ══ */
     #portfolio-view-page .belzzo-challenge-section { padding: 80px 0 !important; }
-    #portfolio-view-page .challenge-card { border-radius: 18px !important; padding: 28px !important; height: auto !important; overflow: visible !important; }
+    #portfolio-view-page .challenge-card {
+      border-radius: 18px !important;
+      padding: 28px !important;
+      height: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: visible !important;
+    }
+    /* Grow the top content block so Impact is always pinned to the bottom */
+    #portfolio-view-page .challenge-card .challenge-content-wrap { flex-grow: 1 !important; }
     @media (max-width: 575px) {
       #portfolio-view-page .belzzo-challenge-section .col-md-6,
       #portfolio-view-page .belzzo-challenge-section .col-lg-4 { flex: 0 0 100% !important; max-width: 100% !important; }
@@ -149,12 +166,25 @@
 
     /* ══ SOLUTION TIMELINE ══ */
     #portfolio-view-page .belzzo-solution-section { padding: 80px 0 !important; }
-    #portfolio-view-page .belzzo-process-card { overflow: visible !important; height: auto !important; border-radius: 16px !important; }
+    /* Desktop: horizontal equal-height row */
+    #portfolio-view-page .belzzo-process-timeline { display: flex !important; align-items: stretch !important; gap: 24px !important; }
+    #portfolio-view-page .belzzo-process-step { flex: 1 !important; display: flex !important; flex-direction: column !important; }
+    #portfolio-view-page .belzzo-process-card {
+      overflow: visible !important;
+      height: 100% !important;
+      border-radius: 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    /* Bullet list grows to fill card so all cards reach the same bottom edge */
+    #portfolio-view-page .belzzo-module-list { flex-grow: 1 !important; margin-bottom: 0 !important; }
     @media (max-width: 767px) {
-      #portfolio-view-page .belzzo-process-timeline { gap: 24px !important; }
-      #portfolio-view-page .belzzo-process-step { flex-direction: row !important; gap: 16px !important; }
+      /* Revert to vertical stacked timeline on mobile */
+      #portfolio-view-page .belzzo-process-timeline { flex-direction: column !important; gap: 24px !important; }
+      #portfolio-view-page .belzzo-process-step { flex: unset !important; flex-direction: row !important; gap: 16px !important; }
       #portfolio-view-page .belzzo-process-node-wrap { flex-direction: column !important; align-items: center !important; flex-shrink: 0 !important; }
       #portfolio-view-page .belzzo-process-line { width: 2px !important; flex: 1 !important; }
+      #portfolio-view-page .belzzo-process-card { height: auto !important; }
     }
 
     /* ══ SERVICES STACK ══ */
@@ -353,19 +383,20 @@
       color: #ffffff !important;
     }
 
-    /* 2. Kill text gradients → solid primary color ──────────────────────────── */
+    /* 2. Hero title — solid primary color, no text-fill tricks ───────────────── */
     .text-gradient-primary, .belzzo-hero-title span {
       background: none !important;
-      -webkit-text-fill-color: var(--pf-primary) !important;
+      -webkit-text-fill-color: initial !important;
       color: var(--pf-primary) !important;
     }
 
-    /* 3. Kill pink glows → primary-tinted radial gradients ──────────────────── */
+    /* 3. Remove all ambient glows — clean white background ───────────────────── */
     .belzzo-hero::before, .belzzo-hero::after,
     .belzzo-hero-bg, .belzzo-background-glow,
     .belzzo-challenge-glow, .belzzo-solution-glow,
     .bz-pslider-glow {
-      background: radial-gradient(circle, color-mix(in srgb, var(--pf-primary) 8%, transparent) 0%, transparent 70%) !important;
+      background: none !important;
+      display: none !important;
     }
 
     /* 4. Category pills, tags, badges ──────────────────────────────────────── */
@@ -445,12 +476,11 @@
       color: #4b5563 !important;
     }
 
-    /* 9. KPI cards — de-pinked gradient border ──────────────────────────────── */
+    /* 9. KPI cards — solid white background ───────────────────────────────────── */
     .belzzo-kpi-card {
-      background: linear-gradient(135deg,
-        color-mix(in srgb, var(--pf-bg) 97%, #ffffff) 0%,
-        var(--pf-bg) 100%) !important;
-      border-color: color-mix(in srgb, var(--pf-primary) 15%, transparent) !important;
+      background: var(--pf-card-bg, #ffffff) !important;
+      border-color: var(--pf-primary-border) !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
     }
 
     /* 10. Story card — de-pinked border ─────────────────────────────────────── */
@@ -468,7 +498,7 @@
     #portfolio-view-page .belzzo-module-tag,
     #portfolio-view-page .belzzo-stack-icon svg      { color: var(--pf-primary) !important; stroke: var(--pf-primary) !important; }
     #portfolio-view-page .belzzo-kpi-value           { color: var(--pf-primary) !important; }
-    #portfolio-view-page .belzzo-snapshot-gradient-bar { background: linear-gradient(90deg, var(--pf-primary), color-mix(in srgb, var(--pf-primary) 30%, #ffffff)) !important; }
+    #portfolio-view-page .belzzo-snapshot-gradient-bar { background: var(--pf-primary) !important; opacity: 0.8; }
     #portfolio-view-page .bz-mseverity--critical     { color: var(--pf-primary) !important; }
     #portfolio-view-page .belzzo-deliverable         { background: color-mix(in srgb, var(--pf-secondary) 15%, transparent) !important; color: var(--pf-secondary) !important; border-color: color-mix(in srgb, var(--pf-secondary) 30%, transparent) !important; }
     #portfolio-view-page .belzzo-result-card         { border-top-color: var(--pf-secondary) !important; }
@@ -724,8 +754,8 @@
     <section id="overview" class="belzzo-hero">
       <div class="belzzo-hero-bg"></div>
       <div class="container-xxl position-relative">
-        <div class="row align-items-center g-5">
-          <div class="col-lg-6">
+        <div class="row align-items-center g-lg-5 gy-4 justify-content-between">
+          <div class="col-lg-6 pe-xl-3">
             <div class="belzzo-hero-content">
               <span class="belzzo-category-pill">
                 <svg class="belzzo-pill-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -770,26 +800,14 @@
                 {% endif %}
               </div>
 
-              <div class="belzzo-trust-bar">
+              <div class="belzzo-trust-bar" id="preview-trust-badges">
+                {% for badge in trust_badges %}
+                {% if not loop.first %}<span class="belzzo-trust-sep"></span>{% endif %}
                 <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  Core Web Vitals
+                  <i class="{{ badge.icon or 'fa-solid fa-shield-halved' }}"></i>
+                  {{ badge.text }}
                 </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17l-5-5-4 4-4-7"/></svg>
-                  GA4 Tracking
-                </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-                  Secure Payments
-                </span>
-                <span class="belzzo-trust-sep"></span>
-                <span class="belzzo-trust-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                  SEO-ready
-                </span>
+                {% endfor %}
               </div>
 
               <div class="belzzo-hero-cta">
@@ -826,14 +844,14 @@
                 </div>
                 
                 {% if portfolio.kpi_1_label %}
-                <div class="belzzo-floating-label belzzo-label-1">
+                <div class="belzzo-floating-label belzzo-label-1 d-none">
                   <div class="belzzo-label-dot"></div>
                   <div class="belzzo-label-text">{{ portfolio.kpi_1_label }}</div>
                 </div>
                 {% endif %}
                 
                 {% if portfolio.kpi_2_label %}
-                <div class="belzzo-floating-label belzzo-label-2">
+                <div class="belzzo-floating-label belzzo-label-2 d-none">
                   <div class="belzzo-label-dot"></div>
                   <div class="belzzo-label-text">{{ portfolio.kpi_2_label }}</div>
                 </div>
@@ -1016,17 +1034,20 @@
         <div class="row g-4 mt-2">
           {% for ch in portfolio.get_challenges() %}
           <div class="col-md-6 col-lg-4">
-            <div class="challenge-card" style="background:var(--pf-card-bg);border:1px solid var(--pf-card-border);border-radius:16px;padding:32px;height:100%;box-shadow:0 10px 30px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="icon-box" style="width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--pf-secondary) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--pf-secondary);font-size:1.2rem;flex-shrink:0;">
-                  {% if ch.icon and ch.icon.startswith('fa-') %}<i class="{{ ch.icon }}"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}
+            <div class="challenge-card" style="background:var(--pf-card-bg);border:1px solid var(--pf-card-border);border-radius:16px;padding:32px;box-shadow:0 10px 30px rgba(0,0,0,0.06);transition:transform 0.3s,box-shadow 0.3s;">
+              <!-- challenge-content-wrap grows to push Impact to the bottom -->
+              <div class="challenge-content-wrap">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                  <div class="icon-box" style="width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--pf-secondary) 14%,transparent);display:flex;align-items:center;justify-content:center;color:var(--pf-secondary);font-size:1.2rem;flex-shrink:0;">
+                    {% if ch.icon and ch.icon.startswith('fa-') %}<i class="{{ ch.icon }}"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}
+                  </div>
+                  <span class="badge" style="background:color-mix(in srgb,var(--pf-primary) 15%,transparent);color:var(--pf-primary);font-size:0.75rem;font-weight:600;padding:5px 10px;border-radius:6px;">{{ ch.tag }}</span>
                 </div>
-                <span class="badge" style="background:color-mix(in srgb,var(--pf-primary) 15%,transparent);color:var(--pf-primary);font-size:0.75rem;font-weight:600;padding:5px 10px;border-radius:6px;">{{ ch.tag }}</span>
+                <h4 style="font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--pf-text-main);line-height:1.4;">{{ ch.title }}</h4>
+                <p style="font-size:0.93rem;color:var(--pf-text-muted);margin-bottom:0;line-height:1.65;">{{ ch.desc }}</p>
               </div>
-              <h4 style="font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--pf-text-main);line-height:1.4;">{{ ch.title }}</h4>
-              <p style="font-size:0.93rem;color:var(--pf-text-muted);margin-bottom:18px;line-height:1.65;">{{ ch.desc }}</p>
               {% if ch.impact %}
-              <div style="border-top:1px dashed var(--pf-card-border);padding-top:16px;">
+              <div class="mt-auto pt-3" style="border-top:1px dashed var(--pf-card-border);">
                 <strong style="font-size:0.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--pf-primary);">Impact</strong>
                 <p style="font-size:0.9rem;margin-top:6px;margin-bottom:0;color:var(--pf-text-main);">{{ ch.impact }}</p>
               </div>
@@ -1379,6 +1400,7 @@
             '</div>' +
             '<div class="belzzo-tcard-right">' +
               '<div class="belzzo-tcard-stars" aria-label="5 stars">★★★★★</div>' +
+              (t.company_name ? '<div class="belzzo-tcard-logo">' + escHtml(t.company_name) + '</div>' : '') +
             '</div>' +
           '</div>';
         track.appendChild(card);
@@ -1453,6 +1475,29 @@
   <script>
     (function () {
       'use strict';
+      function escHtml(s) {
+        return (s || '').toString()
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function renderTrustBadges(items) {
+        var wrap = document.getElementById('preview-trust-badges');
+        if (!wrap) return;
+        var badges = Array.isArray(items) ? items : [];
+        var html = '';
+        badges.forEach(function (b, i) {
+          if (i > 0) html += '<span class="belzzo-trust-sep"></span>';
+          html += '<span class="belzzo-trust-item">'
+            + '<i class="' + escHtml(b.icon || 'fa-solid fa-shield-halved') + '"></i>'
+            + escHtml(b.text || 'Badge')
+            + '</span>';
+        });
+        wrap.innerHTML = html;
+      }
+
       window.addEventListener('message', function (evt) {
         var d = evt.data;
         if (!d || d.source !== 'ivb') return;
@@ -1467,6 +1512,11 @@
           window.BZ_TESTIMONIALS = d.testimonials;
           if (typeof window.bzReinitTestimonials === 'function') {
             window.bzReinitTestimonials(d.testimonials);
+          }
+
+        } else if (d.type === 'array_update') {
+          if (d.key === 'trust_badges') {
+            renderTrustBadges(d.data);
           }
 
         } else if (d.type === 'text') {
