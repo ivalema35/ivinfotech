@@ -635,6 +635,7 @@ def _migrate_db():
         ("portfolios", "primary_color",   "VARCHAR(20) NOT NULL DEFAULT '#2F55F4'"),
         ("portfolios", "secondary_color", "VARCHAR(20) NOT NULL DEFAULT '#10B981'"),
         ("portfolios", "bg_color",        "VARCHAR(20) NOT NULL DEFAULT '#0f1117'"),
+        ("portfolios", "trust_badges", "TEXT"),
         ("inquiries", "city",             "VARCHAR(120) NOT NULL DEFAULT 'Mehsana'"),
         ("inquiries", "state",            "VARCHAR(120) NOT NULL DEFAULT 'Gujarat'"),
     ]
