@@ -1140,10 +1140,14 @@
                 const expType          = expDropdown.value;                   // 'Fresher' | 'Experienced'
                 const experienceString = formatExperienceForWhatsApp();
 
-                /* Assemble FormData — file sent as binary (multipart/form-data).
-                   Two separate FormData objects are needed because a file stream
-                   can only be consumed once per fetch call. */
-                function buildFormData() {
+                /* Capture a standalone copy of the file blob upfront.
+                   File.stream() can only be consumed once per fetch(), so we
+                   use .slice() to create an independent Blob that can be
+                   appended to multiple FormData instances. */
+                const resumeBlob = resumeInput.files[0] ? resumeInput.files[0].slice() : null;
+                const resumeName = resumeInput.files[0] ? resumeInput.files[0].name : 'resume.pdf';
+
+                function buildFormData(fileBlob, fileName) {
                     const fd = new FormData();
                     fd.append('job_role',        document.getElementById('job_role').value.trim());
                     fd.append('job_id',          document.getElementById('job_id').value.trim());
@@ -1156,7 +1160,9 @@
                     if (expType === 'Experienced') {
                         fd.append('experience_formatted', experienceString);
                     }
-                    fd.append('resume_file', resumeInput.files[0]);
+                    if (fileBlob) {
+                        fd.append('resume_file', fileBlob, fileName);
+                    }
                     return fd;
                 }
 
@@ -1168,11 +1174,11 @@
                     const [apiResponse] = await Promise.all([
                         fetch('/api/apply_job', {
                             method: 'POST',
-                            body:   buildFormData()
+                            body:   buildFormData(resumeBlob, resumeName)
                         }),
                         fetch(WEBHOOK_URL, {
                             method: 'POST',
-                            body:   buildFormData()
+                            body:   buildFormData(resumeBlob, resumeName)
                         }).catch(function () { /* webhook failure is non-fatal */ })
                     ]);
 
