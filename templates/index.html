@@ -568,9 +568,9 @@
            PORTFOLIO COMPACT CARD (for home page slider)
         ========================================================== */
         .portfolio-card-compact {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
         }
 
         .portfolio-card-compact .portfolio-img-premium {
@@ -590,6 +590,17 @@
         .portfolio-card-compact .btn-case-study {
             padding: 9px 22px;
             font-size: .85rem;
+            margin-top: auto;
+        }
+
+        /* Portfolio description text — clamp to 3 lines */
+        .portfolio-description {
+            display: -webkit-box !important;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
         }
 
         /* ==========================================================
@@ -601,9 +612,9 @@
             border-radius: 20px;
             border: 1px solid rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
             text-decoration: none;
         }
 
@@ -689,10 +700,12 @@
             color: #6b7280;
             font-size: .88rem;
             line-height: 1.65;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
             margin-bottom: 0;
         }
 
@@ -751,6 +764,9 @@
             border: 2px solid rgba(47, 85, 244, .15);
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             overflow: hidden;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
         }
 
         .portfolio-card-premium:hover {
@@ -1271,7 +1287,7 @@
                             <div class="p-4 d-flex flex-column flex-grow-1">
                                 <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold align-self-start" style="letter-spacing:1px;font-size:.75rem;">{{ item.category | upper }}</span>
                                 <h3 class="fw-bold mb-2" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.15rem;">{{ item.title }}</h3>
-                                <p class="text-muted mb-3 small" style="line-height:1.6;flex-grow:1;">{{ item.hero_description }}</p>
+                                <p class="text-muted mb-3 small portfolio-description">{{ item.hero_description }}</p>
                                 {% if item.hero_outcome %}
                                 <div class="mb-3">
                                     <span class="result-badge-premium"><i class="fas fa-chart-line"></i> {{ item.hero_outcome }}</span>
