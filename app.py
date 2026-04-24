@@ -1001,11 +1001,15 @@ def index_page():
         IndustryRecognition.display_order.asc(),
         IndustryRecognition.created_at.desc()
     ).all()
+    portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
+    recent_posts = BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).limit(3).all()
     return render_template(
         'index.html',
         active_page='home',
         testimonials=home_testimonials,
         industries=industries,
+        portfolios=portfolios,
+        recent_posts=recent_posts,
     )
 
 @app.route('/about')

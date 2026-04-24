@@ -563,6 +563,253 @@
                 font-size: .82rem;
             }
         }
+
+        /* ==========================================================
+           PORTFOLIO COMPACT CARD (for home page slider)
+        ========================================================== */
+        .portfolio-card-compact {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .portfolio-card-compact .portfolio-img-premium {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            height: auto;
+        }
+
+        .portfolio-card-compact .portfolio-img-col {
+            border-right: none;
+            border-bottom: 2px solid #2F55F4;
+            overflow: hidden;
+        }
+
+        .portfolio-card-compact .btn-case-study {
+            padding: 9px 22px;
+            font-size: .85rem;
+        }
+
+        /* ==========================================================
+           BLOG CARD (for home page recent posts)
+        ========================================================== */
+        .blog-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #fff;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.15);
+        }
+
+        .blog-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .blog-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .blog-card:hover .blog-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .badge-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #2F55F4;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: .78rem;
+            z-index: 2;
+            backdrop-filter: blur(6px);
+        }
+
+        .blog-card-body {
+            padding: 22px 24px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #9ca3af;
+            font-size: .8rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .blog-meta .dot {
+            width: 4px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 50%;
+        }
+
+        .article-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: #0b1c3c;
+            font-size: 1.08rem;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .blog-card:hover .article-title {
+            color: #2F55F4;
+        }
+
+        .blog-excerpt {
+            color: #6b7280;
+            font-size: .88rem;
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .blog-card-footer {
+            padding: 14px 24px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .blog-card-footer .author-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .blog-card-footer .author-mini img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .blog-card-footer .author-mini span {
+            font-weight: 600;
+            color: #374151;
+            font-size: .82rem;
+        }
+
+        .blog-card-footer .card-action {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f3f4f6;
+            color: #6b7280;
+            transition: all 0.3s;
+            font-size: .85rem;
+            text-decoration: none;
+        }
+
+        .blog-card:hover .card-action {
+            background: #2F55F4;
+            color: #fff;
+        }
+
+        /* Portfolio card premium (reuse from portfolio page) */
+        .portfolio-card-premium {
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 2px solid rgba(47, 85, 244, .15);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden;
+        }
+
+        .portfolio-card-premium:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #2F55F4;
+        }
+
+        .result-badge-premium {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16, 185, 129, .08);
+            color: #059669;
+            font-size: .82rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .result-badge-premium i {
+            font-size: .75rem;
+        }
+
+        .btn-case-study {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid #2F55F4;
+            color: #2F55F4;
+            background: transparent;
+            font-weight: 700;
+            padding: 11px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: .92rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-case-study:hover {
+            background: #2F55F4;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(47, 85, 244, .25);
+            transform: translateY(-2px);
+        }
+
+        .btn-case-study i {
+            transition: transform 0.3s;
+        }
+
+        .btn-case-study:hover i {
+            transform: translateX(4px);
+        }
+
+        @media (max-width: 575.98px) {
+            .blog-img-wrapper {
+                height: 200px;
+            }
+        }
     </style>
 {% include 'components/tracking_head.html' %}
 </head>
@@ -1000,6 +1247,104 @@
     </section>
     {% endif %}
 
+    <!-- ============================================
+         PORTFOLIO CARDS SLIDER
+    ============================================= -->
+    {% if portfolios %}
+    <section class="py-5" style="background: #ffffff;">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">Our Work</span>
+                <h2 class="fw-bold" style="color: #0b1c3c;">Premium Case Studies</h2>
+                <p class="text-muted">Real projects, real results — explore our best work across industries.</p>
+            </div>
+
+            <div class="swiper portfolio-swiper" data-aos="fade-up">
+                <div class="swiper-wrapper">
+                    {% for item in portfolios %}
+                    {% set card_img = item.hero_image_web or item.hero_image_app or 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' %}
+                    <div class="swiper-slide h-auto">
+                        <article class="portfolio-card-premium portfolio-card-compact">
+                            <div class="portfolio-img-col">
+                                <img src="{{ card_img }}" class="portfolio-img-premium" alt="{{ item.title }}" loading="lazy">
+                            </div>
+                            <div class="p-4 d-flex flex-column flex-grow-1">
+                                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold align-self-start" style="letter-spacing:1px;font-size:.75rem;">{{ item.category | upper }}</span>
+                                <h3 class="fw-bold mb-2" style="font-family:'Poppins',sans-serif;color:#0b1c3c;font-size:1.15rem;">{{ item.title }}</h3>
+                                <p class="text-muted mb-3 small" style="line-height:1.6;flex-grow:1;">{{ item.hero_description }}</p>
+                                {% if item.hero_outcome %}
+                                <div class="mb-3">
+                                    <span class="result-badge-premium"><i class="fas fa-chart-line"></i> {{ item.hero_outcome }}</span>
+                                </div>
+                                {% endif %}
+                                <a href="{{ url_for('portfolio_detail', slug=item.slug) }}" class="btn-case-study align-self-start">View Case Study <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </article>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination mt-4 position-relative bottom-0"></div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- ============================================
+         RECENT BLOG POSTS
+    ============================================= -->
+    {% if recent_posts %}
+    <section class="py-5" style="background: #f9fbfd;">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">Our Blog</span>
+                <h2 class="fw-bold" style="color: #0b1c3c;">Latest Insights</h2>
+                <p class="text-muted">Stay updated with our latest articles, tips, and industry trends.</p>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for post in recent_posts %}
+                <div class="col" data-aos="fade-up" {% if loop.index % 3 == 2 %}data-aos-delay="100"{% elif loop.index % 3 == 0 %}data-aos-delay="200"{% endif %}>
+                    <article class="blog-card">
+                        <a href="{{ url_for('blog_post', slug=post.slug) }}" class="d-block blog-img-wrapper">
+                            <span class="badge-category">{{ post.category }}</span>
+                            {% if post.featured_image %}
+                            <img src="{{ post.featured_image }}" alt="{{ post.title }}" loading="lazy">
+                            {% else %}
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80" alt="{{ post.title }}" loading="lazy">
+                            {% endif %}
+                        </a>
+                        <div class="blog-card-body">
+                            <div class="blog-meta">
+                                <span>{{ post.created_at.strftime('%b %d, %Y') }}</span>
+                                {% if post.read_time %}
+                                <span class="dot"></span>
+                                <span>{{ post.read_time }}</span>
+                                {% endif %}
+                            </div>
+                            <a href="{{ url_for('blog_post', slug=post.slug) }}" style="text-decoration:none;">
+                                <h3 class="article-title">{{ post.title }}</h3>
+                            </a>
+                            <p class="blog-excerpt">{{ post.excerpt or '' }}</p>
+                        </div>
+                        <div class="blog-card-footer">
+                            <div class="author-mini">
+                                <img src="https://ui-avatars.com/api/?name={{ post.author_name | urlencode }}&background=2F55F4&color=fff&size=64" alt="{{ post.author_name }}">
+                                <span>{{ post.author_name }}</span>
+                            </div>
+                            <a href="{{ url_for('blog_post', slug=post.slug) }}" class="card-action"><i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-5" data-aos="fade-up">
+                <a href="{{ url_for('blog') }}" class="btn-case-study">View All Articles <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- FAQ Section -->
     <section class="py-5" style="background: #f8f9fc;">
         <div class="container-xxl">
@@ -1233,6 +1578,34 @@
                             slidesPerView: 1.2,
                             spaceBetween: 16,
                         },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 24,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 30,
+                        }
+                    }
+                });
+            }
+
+            // Initialize Portfolio Swiper
+            if (typeof Swiper !== 'undefined' && document.querySelector('.portfolio-swiper')) {
+                new Swiper('.portfolio-swiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: false,
+                    autoplay: {
+                        delay: 4000,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                    },
+                    pagination: {
+                        el: '.portfolio-swiper .swiper-pagination',
+                        clickable: true,
+                    },
+                    breakpoints: {
                         768: {
                             slidesPerView: 2,
                             spaceBetween: 24,
