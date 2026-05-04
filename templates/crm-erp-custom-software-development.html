@@ -480,17 +480,13 @@
         </div>
         <div class="industries-marquee-wrapper">
             <div class="industries-marquee-track">
-                {% for ind in service.get_industries() %}
-                <div class="industries-pill">
-                    <i class="{{ ind.icon }}"></i>
-                    <span>{{ ind.name }}</span>
-                </div>
-                {% endfor %}
-                {% for ind in service.get_industries() %}
-                <div class="industries-pill">
-                    <i class="{{ ind.icon }}"></i>
-                    <span>{{ ind.name }}</span>
-                </div>
+                {% for _ in range(10) %}
+                    {% for ind in service.get_industries() %}
+                    <div class="industries-pill">
+                        <i class="{{ ind.icon }}"></i>
+                        <span>{{ ind.name }}</span>
+                    </div>
+                    {% endfor %}
                 {% endfor %}
             </div>
         </div>
