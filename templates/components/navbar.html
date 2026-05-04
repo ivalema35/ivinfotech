@@ -93,3 +93,42 @@
         </div>
     </div>
 </nav>
+
+<!-- IV Chat Widget — toggled by askIvBtn -->
+<div id="ivChatWidget" role="dialog" aria-modal="true" aria-label="IV Assistant chat">
+    <div class="iv-chat-header">
+        <div class="iv-chat-title">
+            <div class="iv-chat-avatar">
+                <i class="fa-solid fa-robot" style="font-size:16px;color:#fff;"></i>
+            </div>
+            <div>
+                <strong>IV Assistant</strong>
+                <small>Online · Replies instantly</small>
+            </div>
+        </div>
+        <button class="iv-chat-close" onclick="toggleChatWindow(false)" aria-label="Close chat">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div class="iv-chat-body" id="ivChatBody">
+        <!-- Welcome message -->
+        <div class="iv-message iv-bot">
+            <div class="iv-bubble">👋 Hi! I'm IV Assistant. How can I help you today?</div>
+        </div>
+        <!-- Quick reply chips -->
+        <div class="iv-quick-replies" id="ivQuickReplies">
+            <button class="iv-chip" onclick="sendQuickReply('Tell me about your services')">Our Services</button>
+            <button class="iv-chip" onclick="sendQuickReply('I want to hire a developer')">Hire a Developer</button>
+            <button class="iv-chip" onclick="sendQuickReply('Get a project quote')">Get a Quote</button>
+            <button class="iv-chip" onclick="sendQuickReply('How to contact IV Infotech?')">Contact Info</button>
+        </div>
+    </div>
+
+    <div class="iv-chat-input-wrap">
+        <input id="ivChatInput" type="text" placeholder="Type a message…" autocomplete="off" aria-label="Chat message input">
+        <button id="ivChatSendBtn" onclick="sendMessage()" aria-label="Send message">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
