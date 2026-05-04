@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block topbar_title %}{{ 'Edit Service' if service else 'Add Service' }}{% endblock %}
-{% block topbar_sub %}{{ 'Update the service page and its FAQs.' if service else 'Create a new service page with FAQs.' }}{% endblock %}
+{% block topbar_sub %}{{ 'Update the service page, FAQs, and industries.' if service else 'Create a new service page with FAQs and industries.' }}{% endblock %}
 
 {% block content %}
 
@@ -100,6 +100,21 @@
                     <i class="fa-solid fa-plus"></i> Add FAQ
                 </button>
                 <textarea name="faqs" id="faqsJson" style="display:none;">{{ service.faqs if service else '[]' }}</textarea>
+            </div>
+
+            <!-- ── 3. Industries We Serve ──────────────────── -->
+            <div class="editor-card">
+                <h2><i class="fa-solid fa-industry" style="color:var(--primary-blue);"></i> Industries We Serve</h2>
+                <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                    Each row is one industry served by this service page. Pick a FontAwesome icon for each.
+                </p>
+                <div id="industryRows" class="faq-section">
+                    <!-- Industry rows injected by JS -->
+                </div>
+                <button type="button" class="btn-add-row" onclick="addIndustryRow()">
+                    <i class="fa-solid fa-plus"></i> Add Industry
+                </button>
+                <textarea name="industries" id="industriesJson" style="display:none;">{{ service.industries if service else '[]' }}</textarea>
             </div>
 
             <!-- ── Submit ─────────────────────────────────── -->
@@ -210,6 +225,89 @@
         document.getElementById('faqsJson').value = JSON.stringify(faqs);
     }
 
+    /* ══════════════════════════════════════════════════════════════
+       INDUSTRIES ARRAY STATE
+       ══════════════════════════════════════════════════════════════ */
+    var industries = [];
+
+    // Parse existing Industries from hidden textarea
+    try {
+        var rawInd = document.getElementById('industriesJson').value;
+        industries = rawInd ? JSON.parse(rawInd) : [];
+    } catch(e) { industries = []; }
+
+    /* ── Render a single Industry row ─────────────────────────── */
+    function renderIndustryRow(data, idx) {
+        var container = document.getElementById('industryRows');
+        var row = el('div', {class:'faq-row', 'data-index': idx});
+
+        var nameVal = escHtml(data.name || '');
+        var iconVal = escHtml(data.icon || 'fa-solid fa-industry');
+
+        row.innerHTML =
+            '<button type="button" class="remove-row" onclick="removeIndustryRow(this)" title="Remove this industry">' +
+                '<i class="fa-solid fa-xmark"></i> Remove' +
+            '</button>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+                '<div>' +
+                    '<span class="sub-label">Industry Name</span>' +
+                    '<input type="text" class="form-control mini-input industry-name" ' +
+                           'value="' + nameVal + '" ' +
+                           'placeholder="e.g. Healthcare, E-commerce, Fintech" ' +
+                           'oninput="updateIndustryField(this)">' +
+                '</div>' +
+                '<div>' +
+                    '<span class="sub-label">Icon</span>' +
+                    '<div class="icon-picker-group d-flex align-items-center gap-2" style="margin-top:2px;">' +
+                        '<input type="hidden" class="industry-icon-input" value="' + iconVal + '" oninput="updateIndustryField(this)">' +
+                        '<button type="button" class="icon-select-btn" ' +
+                                'onclick="openIconPicker(this.previousElementSibling, this.querySelector(\'.preview-icon\'))">' +
+                            '<i class="' + iconVal + ' preview-icon"></i> Select Icon' +
+                        '</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        container.appendChild(row);
+    }
+
+    /* ── Exposed: add an Industry row ─────────────────────────── */
+    window.addIndustryRow = function(data) {
+        var d = data || { name: '', icon: 'fa-solid fa-industry' };
+        industries.push(d);
+        renderIndustryRow(d, industries.length - 1);
+        syncIndustriesJson();
+    };
+
+    /* ── Exposed: remove an Industry row ──────────────────────── */
+    window.removeIndustryRow = function(btn) {
+        var row = btn.closest('.faq-row');
+        var idx = Array.prototype.indexOf.call(row.parentNode.children, row);
+        industries.splice(idx, 1);
+        row.remove();
+        // Re-index remaining rows
+        var rows = document.getElementById('industryRows').children;
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].setAttribute('data-index', i);
+        }
+        syncIndustriesJson();
+    };
+
+    /* ── Update state when input changes ─────────────────────── */
+    window.updateIndustryField = function(input) {
+        var row = input.closest('.faq-row');
+        var idx = parseInt(row.getAttribute('data-index'), 10);
+        var name = row.querySelector('.industry-name').value.trim();
+        var icon = row.querySelector('.industry-icon-input').value.trim();
+        industries[idx] = { name: name, icon: icon || 'fa-solid fa-industry' };
+        syncIndustriesJson();
+    };
+
+    /* ── Sync hidden textarea with JSON ──────────────────────── */
+    function syncIndustriesJson() {
+        document.getElementById('industriesJson').value = JSON.stringify(industries);
+    }
+
     /* ── Auto-slug from title ────────────────────────────────── */
     window.autoSlug = function(titleInput) {
         var slugInput = document.getElementById('slug');
@@ -238,6 +336,11 @@
     /* ── Init: render existing FAQ rows ──────────────────────── */
     faqs.forEach(function(d, i) {
         renderFaqRow(d, i);
+    });
+
+    /* ── Init: render existing Industry rows ─────────────────── */
+    industries.forEach(function(d, i) {
+        renderIndustryRow(d, i);
     });
 
 })();

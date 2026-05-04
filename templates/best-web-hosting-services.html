@@ -484,6 +484,11 @@
         }
     </style>
 {% include 'components/tracking_head.html' %}
+{% if service and service.get_faqs() %}
+    <script type="application/ld+json">
+{{ service.get_faqs() | faq_schema | safe }}
+    </script>
+{% endif %}
 </head>
 
 <body>
@@ -782,6 +787,31 @@
             </div>
         </div>
     </section>
+
+    {% if service and service.get_industries() %}
+    <!-- Industries We Serve – Infinite Marquee -->
+    <section class="py-5 bg-white">
+        <div class="container text-center mb-4">
+            <h6 class="fw-bold text-muted" style="letter-spacing: 2px;">INDUSTRIES WE SERVE</h6>
+        </div>
+        <div class="industries-marquee-wrapper">
+            <div class="industries-marquee-track">
+                {% for ind in service.get_industries() %}
+                <div class="industries-pill">
+                    <i class="{{ ind.icon }}"></i>
+                    <span>{{ ind.name }}</span>
+                </div>
+                {% endfor %}
+                {% for ind in service.get_industries() %}
+                <div class="industries-pill">
+                    <i class="{{ ind.icon }}"></i>
+                    <span>{{ ind.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     {% if service and service.get_faqs() %}
     <!-- FAQ Section -->
