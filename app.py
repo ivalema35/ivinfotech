@@ -304,6 +304,41 @@ class SiteSettings(db.Model):
     value = db.Column(db.Text, nullable=True, default='')
 
 
+class Service(db.Model):
+    """A service-page record with dynamic FAQ support.
+
+    The ``faqs`` column stores a JSON array of question/answer objects,
+    mirroring the ``Portfolio`` model's approach for dynamic content::
+
+        [{"question": "...", "answer": "..."}, ...]
+
+    Use ``get_faqs()`` to safely retrieve the parsed list.
+    """
+    __tablename__ = 'services'
+    id        = db.Column(db.Integer, primary_key=True)
+    slug      = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    title     = db.Column(db.String(255), nullable=False)
+    is_active = db.Column(db.Boolean, default=True, nullable=False)
+    faqs      = db.Column(db.Text, nullable=True)   # JSON: [{"question":"...","answer":"..."}]
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def get_faqs(self):
+        """Return the ``faqs`` column parsed as a Python list of dicts.
+
+        Returns an empty list when the column is ``None``, empty, or contains
+        invalid JSON — never raises.
+        """
+        if not self.faqs:
+            return []
+        try:
+            return json.loads(self.faqs)
+        except (json.JSONDecodeError, TypeError):
+            return []
+
+    def __repr__(self):
+        return f'<Service {self.slug!r}>'
+
+
 # ── Site Settings helpers ──────────────────────────────────────────────────────
 _SETTINGS_DEFAULTS = {
     # Company
@@ -459,6 +494,82 @@ def admin_testimonials_delete(tid):
     db.session.commit()
     flash('Testimonial deleted.', 'info')
     return redirect(url_for('admin_testimonials'))
+
+
+# ── Admin: Services CRUD ────────────────────────────────────────────────────────
+@app.route('/admin/services')
+@login_required
+def admin_services():
+    services = Service.query.order_by(Service.created_at.desc()).all()
+    return render_template('admin/services.html', services=services)
+
+
+@app.route('/admin/services/add', methods=['GET', 'POST'])
+@login_required
+def admin_services_add():
+    if request.method == 'POST':
+        slug = request.form['slug'].strip()
+        if not slug:
+            flash('Slug is required.', 'error')
+            return redirect(url_for('admin_services_add'))
+        # Check slug uniqueness
+        if Service.query.filter_by(slug=slug).first():
+            flash(f'A service with slug "{slug}" already exists.', 'error')
+            return redirect(url_for('admin_services_add'))
+
+        s = Service(
+            slug=slug,
+            title=request.form['title'].strip(),
+            is_active='is_active' in request.form,
+            faqs=request.form.get('faqs', '[]'),
+        )
+        db.session.add(s)
+        db.session.commit()
+        flash('Service created successfully.', 'success')
+        return redirect(url_for('admin_services'))
+
+    return render_template('admin/service_form.html', service=None)
+
+
+@app.route('/admin/services/edit/<int:sid>', methods=['GET', 'POST'])
+@login_required
+def admin_services_edit(sid):
+    s = db.session.get(Service, sid)
+    if s is None:
+        abort(404)
+
+    if request.method == 'POST':
+        slug = request.form['slug'].strip()
+        if not slug:
+            flash('Slug is required.', 'error')
+            return redirect(url_for('admin_services_edit', sid=sid))
+        # Check slug uniqueness (exclude current record)
+        existing = Service.query.filter_by(slug=slug).first()
+        if existing and existing.id != sid:
+            flash(f'A service with slug "{slug}" already exists.', 'error')
+            return redirect(url_for('admin_services_edit', sid=sid))
+
+        s.slug      = slug
+        s.title     = request.form['title'].strip()
+        s.is_active = 'is_active' in request.form
+        s.faqs      = request.form.get('faqs', '[]')
+        db.session.commit()
+        flash('Service updated successfully.', 'success')
+        return redirect(url_for('admin_services'))
+
+    return render_template('admin/service_form.html', service=s)
+
+
+@app.route('/admin/services/delete/<int:sid>', methods=['POST'])
+@login_required
+def admin_services_delete(sid):
+    s = db.session.get(Service, sid)
+    if s is None:
+        abort(404)
+    db.session.delete(s)
+    db.session.commit()
+    flash(f'Service "{s.title}" deleted.', 'info')
+    return redirect(url_for('admin_services'))
 
 
 # ── Admin: Job Openings CRUD ───────────────────────────────────────────────────
@@ -1038,35 +1149,91 @@ def services():
 
 @app.route('/custom-mobile-application-development')
 def custom_mobile_app():
-    return render_template('custom-mobile-application-development.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='custom-mobile-application-development', is_active=True
+    ).first()
+    return render_template(
+        'custom-mobile-application-development.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/custom-website-software-development')
 def custom_website_dev():
-    return render_template('custom-website-software-development.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='custom-website-software-development', is_active=True
+    ).first()
+    return render_template(
+        'custom-website-software-development.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/crm-erp-custom-software-development')
 def crm_erp_dev():
-    return render_template('crm-erp-custom-software-development.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='crm-erp-custom-software-development', is_active=True
+    ).first()
+    return render_template(
+        'crm-erp-custom-software-development.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/ecommerce-website-app-development-india')
 def ecommerce_dev():
-    return render_template('ecommerce-website-app-development-india.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='ecommerce-website-app-development-india', is_active=True
+    ).first()
+    return render_template(
+        'ecommerce-website-app-development-india.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/digital-marketing')
 def digital_marketing():
-    return render_template('digital-marketing.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='digital-marketing', is_active=True
+    ).first()
+    return render_template(
+        'digital-marketing.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/ui-ux-design-agency-india')
 def ui_ux_design():
-    return render_template('ui-ux-design-agency-india.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='ui-ux-design-agency-india', is_active=True
+    ).first()
+    return render_template(
+        'ui-ux-design-agency-india.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/best-web-hosting-services')
 def web_hosting():
-    return render_template('best-web-hosting-services.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='best-web-hosting-services', is_active=True
+    ).first()
+    return render_template(
+        'best-web-hosting-services.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/ai-automation')
 def ai_automation():
-    return render_template('ai-automation.html', active_page='services')
+    service = Service.query.filter_by(
+        slug='ai-automation', is_active=True
+    ).first()
+    return render_template(
+        'ai-automation.html',
+        active_page='services',
+        service=service,
+    )
 
 @app.route('/hire-php-developers')
 def hire_php():

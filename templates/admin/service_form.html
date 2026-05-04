@@ -1,0 +1,245 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit' if service else 'Add' }} Service{% endblock %}
+
+{% block head_extra %}
+    <style>
+        .page-header-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
+        .page-header-bar h1 { font-size:20px; font-weight:700; color:var(--text-dark); margin:0; }
+        .page-header-bar p  { font-size:13px; color:var(--text-muted); margin:2px 0 0; }
+        .form-label { font-size:13px; font-weight:600; color:var(--text-mid); margin-bottom:5px; display:block; }
+        .form-control, .form-select { border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 12px; font-size:13.5px; font-family:'Poppins',sans-serif; color:var(--text-dark); width:100%; transition:border-color .18s, box-shadow .18s; background:#fff; }
+        .form-control:focus, .form-select:focus { border-color:var(--primary-blue); box-shadow:0 0 0 3px rgba(47,85,244,.12); outline:none; }
+        textarea.form-control { resize:vertical; min-height:80px; }
+        .help-text { font-size:11.5px; color:var(--text-muted); margin-top:4px; }
+        .btn-save { background:var(--primary-blue); color:#fff; border:none; border-radius:var(--radius-sm); padding:9px 24px; font-size:13.5px; font-weight:600; font-family:'Poppins',sans-serif; cursor:pointer; transition:background .18s; }
+        .btn-save:hover { background:var(--primary-dark); }
+        .btn-cancel-md { background:var(--bg-body); border:1px solid var(--border); color:var(--text-mid); border-radius:var(--radius-sm); padding:9px 20px; font-size:13.5px; font-family:'Poppins',sans-serif; cursor:pointer; text-decoration:none; display:inline-block; }
+        .tgl-wrap { display:flex; align-items:center; gap:8px; margin-top:4px; }
+        .tgl-wrap input[type=checkbox] { width:17px; height:17px; accent-color:var(--primary-blue); cursor:pointer; }
+        .tgl-wrap label { font-size:13px; color:var(--text-mid); margin:0; cursor:pointer; }
+        .editor-wrapper { max-width:960px; margin:0 auto; }
+        .editor-card { background:#fff; border-radius:var(--radius); border:1px solid var(--border); padding:28px 30px; margin-bottom:22px; }
+        .editor-card h2 { font-size:14px; font-weight:700; color:var(--text-dark); margin:0 0 18px; padding-bottom:10px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+        .slug-group { position:relative; }
+        .slug-group .slug-prefix { position:absolute; left:0; top:0; bottom:0; display:flex; align-items:center; padding:0 12px; background:var(--bg-table-head); border-right:1px solid var(--border); border-radius:var(--radius-sm) 0 0 var(--radius-sm); font-size:13px; color:var(--text-muted); white-space:nowrap; pointer-events:none; }
+        .slug-group input { padding-left:110px; }
+
+        /* ── FAQ dynamic array rows ── */
+        .faq-section { margin-top:0; }
+        .faq-row { background:var(--bg-body); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; position:relative; }
+        .faq-row .remove-row { position:absolute; top:10px; right:12px; background:#fee2e2; color:#dc2626; border:none; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:700; cursor:pointer; }
+        .faq-row .remove-row:hover { background:#fca5a5; }
+        .btn-add-row { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; background:var(--primary-light); color:var(--primary-blue); border:1px dashed var(--primary-blue); border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer; margin-top:6px; transition:background .18s; }
+        .btn-add-row:hover { background:#dce5fd; }
+        .sub-label { font-size:11.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; display:block; }
+        .mini-input { font-size:12.5px; padding:6px 10px; }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}{{ 'Edit Service' if service else 'Add Service' }}{% endblock %}
+{% block topbar_sub %}{{ 'Update the service page and its FAQs.' if service else 'Create a new service page with FAQs.' }}{% endblock %}
+
+{% block content %}
+
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, msg in msgs %}
+    <div class="alert alert-{{ 'success' if cat == 'success' else 'danger' }} alert-dismissible fade show" role="alert" style="border-radius:var(--radius-sm);font-size:13.5px;margin-bottom:18px;">
+        <i class="fa-solid fa-{{ 'circle-check' if cat == 'success' else 'triangle-exclamation' }}" style="margin-right:8px;"></i>{{ msg }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    <div class="editor-wrapper">
+        <form method="POST" id="serviceForm">
+
+            <!-- ── 1. Basic Info ──────────────────────────── -->
+            <div class="editor-card">
+                <h2><i class="fa-solid fa-info-circle" style="color:var(--primary-blue);"></i> Basic Information</h2>
+
+                <div style="margin-bottom:16px;">
+                    <label class="form-label" for="title">Service Title <span style="color:#ef4444">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title"
+                           value="{{ service.title if service else '' }}"
+                           placeholder="e.g. Custom Web & Software Development"
+                           required maxlength="255"
+                           oninput="autoSlug(this)">
+                </div>
+
+                <div style="margin-bottom:16px;">
+                    <label class="form-label" for="slug">Slug <span style="color:#ef4444">*</span></label>
+                    <div class="slug-group">
+                        <span class="slug-prefix">/ services /</span>
+                        <input type="text" class="form-control" id="slug" name="slug"
+                               value="{{ service.slug if service else '' }}"
+                               placeholder="custom-web-development"
+                               required maxlength="255"
+                               style="padding-left:110px;">
+                    </div>
+                    <p class="help-text">URL-friendly identifier. Auto-generated from the title, but you can edit it manually.</p>
+                </div>
+
+                <div class="tgl-wrap">
+                    <input type="checkbox" id="is_active" name="is_active"
+                           {{ 'checked' if (service and service.is_active) or not service else '' }}>
+                    <label for="is_active">Show this service on the website (Active)</label>
+                </div>
+            </div>
+
+            <!-- ── 2. FAQs ────────────────────────────────── -->
+            <div class="editor-card">
+                <h2><i class="fa-solid fa-circle-question" style="color:var(--primary-blue);"></i> Frequently Asked Questions</h2>
+                <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+                    Each row is one question & answer pair for this service page.
+                </p>
+                <div id="faqRows" class="faq-section">
+                    <!-- FAQ rows injected by JS -->
+                </div>
+                <button type="button" class="btn-add-row" onclick="addFaqRow()">
+                    <i class="fa-solid fa-plus"></i> Add FAQ
+                </button>
+                <textarea name="faqs" id="faqsJson" style="display:none;">{{ service.faqs if service else '[]' }}</textarea>
+            </div>
+
+            <!-- ── Submit ─────────────────────────────────── -->
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:24px;">
+                <a href="{{ url_for('admin_services') }}" class="btn-cancel-md">Cancel</a>
+                <button type="submit" class="btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    {{ 'Update Service' if service else 'Create Service' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block body_extras %}
+<script>
+(function() {
+    /* ── Helpers ──────────────────────────────────────────────── */
+    function escHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&')
+            .replace(/</g, '<')
+            .replace(/>/g, '>')
+            .replace(/"/g, '"')
+            .replace(/'/g, '&#039;');
+    }
+
+    function el(tag, attrs) {
+        var e = document.createElement(tag);
+        if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+        return e;
+    }
+
+    /* ── FAQ Array State ─────────────────────────────────────── */
+    var faqs = [];
+
+    // Parse existing FAQs from the hidden textarea
+    try {
+        var raw = document.getElementById('faqsJson').value;
+        faqs = raw ? JSON.parse(raw) : [];
+    } catch(e) { faqs = []; }
+
+    /* ── Render a single FAQ row ─────────────────────────────── */
+    function renderFaqRow(data, idx) {
+        var container = document.getElementById('faqRows');
+        var row = el('div', {class:'faq-row', 'data-index': idx});
+
+        row.innerHTML =
+            '<button type="button" class="remove-row" onclick="removeFaqRow(this)" title="Remove this FAQ">' +
+                '<i class="fa-solid fa-xmark"></i> Remove' +
+            '</button>' +
+            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+                '<div>' +
+                    '<span class="sub-label">Question</span>' +
+                    '<input type="text" class="form-control mini-input faq-question" ' +
+                           'value="' + escHtml(data.question) + '" ' +
+                           'placeholder="e.g. What technologies do you use?" ' +
+                           'oninput="updateFaqField(this)">' +
+                '</div>' +
+                '<div>' +
+                    '<span class="sub-label">Answer</span>' +
+                    '<textarea class="form-control mini-input faq-answer" rows="3" ' +
+                              'placeholder="e.g. We use React, Node.js, Python..." ' +
+                              'oninput="updateFaqField(this)">' + escHtml(data.answer) + '</textarea>' +
+                '</div>' +
+            '</div>';
+
+        container.appendChild(row);
+    }
+
+    /* ── Exposed: add a FAQ row ──────────────────────────────── */
+    window.addFaqRow = function(data) {
+        var d = data || { question: '', answer: '' };
+        faqs.push(d);
+        renderFaqRow(d, faqs.length - 1);
+        syncFaqsJson();
+    };
+
+    /* ── Exposed: remove a FAQ row ───────────────────────────── */
+    window.removeFaqRow = function(btn) {
+        var row = btn.closest('.faq-row');
+        var idx = Array.prototype.indexOf.call(row.parentNode.children, row);
+        faqs.splice(idx, 1);
+        row.remove();
+        // Re-index remaining rows (update data-index)
+        var rows = document.getElementById('faqRows').children;
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].setAttribute('data-index', i);
+        }
+        syncFaqsJson();
+    };
+
+    /* ── Update state when input changes ─────────────────────── */
+    window.updateFaqField = function(input) {
+        var row = input.closest('.faq-row');
+        var idx = parseInt(row.getAttribute('data-index'), 10);
+        var question = row.querySelector('.faq-question').value.trim();
+        var answer   = row.querySelector('.faq-answer').value.trim();
+        faqs[idx] = { question: question, answer: answer };
+        syncFaqsJson();
+    };
+
+    /* ── Sync hidden textarea with JSON ──────────────────────── */
+    function syncFaqsJson() {
+        document.getElementById('faqsJson').value = JSON.stringify(faqs);
+    }
+
+    /* ── Auto-slug from title ────────────────────────────────── */
+    window.autoSlug = function(titleInput) {
+        var slugInput = document.getElementById('slug');
+        // Only auto-fill if slug is empty or was previously auto-generated
+        if (!slugInput.dataset.userEdited) {
+            slugInput.value = titleInput.value
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+    };
+
+    // Mark slug as user-edited when manually changed
+    document.getElementById('slug').addEventListener('input', function() {
+        this.dataset.userEdited = 'true';
+    });
+
+    // Reset user-edited flag if slug was pre-filled from DB (edit mode)
+    var slugInput = document.getElementById('slug');
+    if (slugInput.value) {
+        slugInput.dataset.userEdited = 'true';
+    }
+
+    /* ── Init: render existing FAQ rows ──────────────────────── */
+    faqs.forEach(function(d, i) {
+        renderFaqRow(d, i);
+    });
+
+})();
+</script>
+{% endblock %}

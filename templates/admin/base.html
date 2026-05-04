@@ -59,6 +59,10 @@
             </a>
 
             <span class="sidebar__section-label">Content</span>
+            <a href="{{ url_for('admin_services') }}"
+               class="sidebar__link {% if request.endpoint in ['admin_services','admin_services_add','admin_services_edit'] %}sidebar__link--active{% endif %}">
+                <i class="fa-solid fa-gears"></i><span>Services</span>
+            </a>
             <a href="{{ url_for('admin_portfolio') }}"
                class="sidebar__link {% if request.endpoint in ['admin_portfolio','admin_portfolio_add','admin_portfolio_edit','admin_portfolio_build'] %}sidebar__link--active{% endif %}">
                 <i class="fa-solid fa-folder-open"></i><span>Portfolio</span>
