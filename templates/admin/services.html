@@ -1,0 +1,214 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Services{% endblock %}
+
+{% block head_extra %}
+    <style>
+        .page-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .page-header-bar h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+        .page-header-bar p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 2px 0 0;
+        }
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 20px;
+            background: var(--primary-blue);
+            color: #fff;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background: var(--primary-dark); color: #fff; }
+
+        .btn-edit {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            background: var(--primary-light);
+            color: var(--primary-blue);
+            border: none; border-radius: 6px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background .18s;
+        }
+        .btn-edit:hover { background: #dce5fd; }
+        .btn-delete {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 5px 12px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none; border-radius: 6px;
+            font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: background .18s;
+        }
+        .btn-delete:hover { background: #fca5a5; }
+
+        .faq-count {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: .4; }
+        .empty-state p { font-size: 14px; margin: 0; }
+
+        /* Delete confirm modal */
+        .modal-danger .modal-header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+        .btn-danger-confirm {
+            background: #dc2626; color: #fff;
+            border: none; border-radius: var(--radius-sm);
+            padding: 9px 24px; font-size: 13.5px; font-weight: 600;
+            font-family: 'Poppins', sans-serif; cursor: pointer;
+            transition: background .18s;
+        }
+        .btn-danger-confirm:hover { background: #b91c1c; }
+    </style>
+{% endblock %}
+
+{% block topbar_title %}Manage Services{% endblock %}
+{% block topbar_sub %}Add, edit, or remove service pages and their FAQs.{% endblock %}
+
+{% block content %}
+
+            <!-- Page header -->
+            <div class="page-header-bar">
+                <div>
+                    <h1><i class="fa-solid fa-gears" style="color:var(--primary-blue);margin-right:8px;"></i>Services</h1>
+                    <p>{{ services | length }} service{{ 's' if services | length != 1 }} in the database</p>
+                </div>
+                <a href="{{ url_for('admin_services_add') }}" class="btn-add">
+                    <i class="fa-solid fa-plus"></i> Add Service
+                </a>
+            </div>
+
+            <!-- Main table panel -->
+            <div class="panel">
+                <div class="panel__header">
+                    <h2 class="panel__title"><i class="fa-solid fa-list"></i> All Services</h2>
+                    <span class="panel__badge">{{ services | length }} total</span>
+                </div>
+                <div class="table-wrap">
+                    {% if services %}
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th>Slug</th>
+                                <th>FAQs</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in services %}
+                            {% set faq_list = s.get_faqs() %}
+                            <tr>
+                                <td style="color:var(--text-muted);font-size:12px;">{{ loop.index }}</td>
+                                <td>
+                                    <strong style="font-size:13.5px;">{{ s.title }}</strong>
+                                </td>
+                                <td style="font-size:13px;color:var(--text-mid);font-family:monospace;">
+                                    {{ s.slug }}
+                                </td>
+                                <td>
+                                    <span class="faq-count">{{ faq_list | length }} Q&A pair{{ 's' if faq_list | length != 1 }}</span>
+                                </td>
+                                <td>
+                                    {% if s.is_active %}
+                                    <span class="status-pill status-pill--green">Active</span>
+                                    {% else %}
+                                    <span class="status-pill status-pill--red">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size:12.5px;color:var(--text-muted);white-space:nowrap;">
+                                    {{ s.created_at.strftime('%b %d, %Y') if s.created_at else '—' }}
+                                </td>
+                                <td>
+                                    <div style="display:flex;gap:6px;align-items:center;">
+                                        <a href="{{ url_for('admin_services_edit', sid=s.id) }}" class="btn-edit">
+                                            <i class="fa-solid fa-pen"></i> Edit
+                                        </a>
+                                        <button class="btn-delete"
+                                            onclick="openDeleteModal({{ s.id }}, '{{ s.title | replace("'", "\\'") }}')">
+                                            <i class="fa-solid fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fa-regular fa-file-lines"></i>
+                        <p>No services yet. Click <strong>Add Service</strong> to get started.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+{% endblock %}
+
+{% block body_extras %}
+    <!-- ── Delete Confirm Modal ─────────────────────────────────── -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;">
+                    <h5 class="modal-title" id="deleteModalLabel" style="color:#fff;">
+                        <i class="fa-solid fa-trash me-2"></i>Delete Service
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" id="deleteForm">
+                    <div class="modal-body">
+                        <p style="font-size:14px;color:var(--text-mid);margin:0;">
+                            Are you sure you want to delete <strong id="deleteItemName"></strong>?
+                        </p>
+                        <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer" style="border:none;padding-top:0;">
+                        <button type="button" class="btn-cancel-md" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn-danger-confirm">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openDeleteModal(id, title) {
+        document.getElementById('deleteItemName').textContent = title;
+        document.getElementById('deleteForm').action = '/admin/services/delete/' + id;
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+    </script>
+{% endblock %}
