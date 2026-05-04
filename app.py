@@ -80,6 +80,45 @@ def hex_rgb_filter(hex_color):
         return '0,0,0'
 
 
+@app.template_filter('faq_schema')
+def faq_schema_filter(faqs):
+    """Convert a list of FAQ dicts into a JSON-LD FAQPage schema string.
+
+    Accepts the output of ``Service.get_faqs()`` — a list of dicts with
+    ``question`` and ``answer`` keys.  Returns a minified JSON string
+    suitable for ``<script type=\"application/ld+json\">``.
+
+    Usage in template::
+
+        {{ service.get_faqs() | faq_schema | safe }}
+    """
+    if not faqs or not isinstance(faqs, list):
+        return ''
+    main_entity = []
+    for faq in faqs:
+        q = (faq.get('question') or '').strip()
+        a = (faq.get('answer') or '').strip()
+        if not q or not a:
+            continue
+        main_entity.append({
+            '@type': 'Question',
+            'name': q,
+            'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': a,
+            },
+        })
+    if not main_entity:
+        return ''
+    import json
+    schema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': main_entity,
+    }
+    return json.dumps(schema, ensure_ascii=False, separators=(',', ':'))
+
+
 # ── Models ─────────────────────────────────────────────────────────────────────
 class AdminUser(UserMixin, db.Model):
     __tablename__ = 'admin_users'

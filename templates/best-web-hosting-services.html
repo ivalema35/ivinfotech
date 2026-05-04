@@ -484,6 +484,11 @@
         }
     </style>
 {% include 'components/tracking_head.html' %}
+{% if service and service.get_faqs() %}
+    <script type="application/ld+json">
+{{ service.get_faqs() | faq_schema | safe }}
+    </script>
+{% endif %}
 </head>
 
 <body>

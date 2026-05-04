@@ -71,13 +71,14 @@
     }
     </script>
 
-    <!-- Stylesheets -->
+    <!-- Stylesheets (render-blocking mitigated: local CSS uses preload + noscript fallback) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="preload" href="{{ url_for('static', filename='css/style.min.css') }}" as="style" onload="this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}"></noscript>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" async></script>
 
     <style>
         /* ==========================================================
@@ -402,6 +403,61 @@
                 background: transparent !important;
             }
         }
+
+        /* ========== LOAD MORE ========== */
+        .portfolio-loader-wrap {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .portfolio-load-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: .95rem;
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: 2px solid #2F55F4;
+            background: #2F55F4;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(47, 85, 244, .3);
+        }
+        .portfolio-load-more:hover {
+            background: #1a3fd6;
+            border-color: #1a3fd6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(47, 85, 244, .4);
+        }
+        .portfolio-load-more:disabled,
+        .portfolio-load-more.loaded {
+            background: #e9ecef;
+            border-color: #dee2e6;
+            color: #6c757d;
+            cursor: default;
+            box-shadow: none;
+            transform: none;
+        }
+        .portfolio-load-more .spinner-border {
+            width: 1.1rem;
+            height: 1.1rem;
+            border-width: 2px;
+            display: none;
+        }
+        .portfolio-load-more.loading .spinner-border {
+            display: inline-block;
+        }
+        .portfolio-load-more.loading .btn-text {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .portfolio-load-more {
+                padding: 12px 32px;
+                font-size: .88rem;
+            }
+        }
     </style>
 {% include 'components/tracking_head.html' %}
 </head>
@@ -423,6 +479,7 @@
                     <p class="lead mt-3">Explore how we help global brands and startups build scalable Web Apps, AI Automations, and robust CRMs from our Mehsana headquarters.</p>
                 </div>
                 <div class="col-lg-5 text-center" data-aos="fade-left">
+                    <link rel="preload" as="fetch" crossorigin="anonymous" href="https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json">
                     <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json"
                         background="transparent" speed="1"
                         style="width: 100%; max-width: 420px; margin: 0 auto;" loop autoplay>
@@ -466,12 +523,13 @@
                 {%- set cat_class = ns.cat_classes.strip() %}
                 {%- set cat_label = ns.cat_labels %}
                 {%- set card_img = item.hero_image_web or item.hero_image_app or 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' %}
-                <div class="col-12 portfolio-item-wrapper {{ cat_class }}" data-aos="fade-up"{% if not loop.first %} data-aos-delay="{{ [(loop.index0 % 3) * 100, 0] | max }}"{% endif %}>
+                {%- set is_first_item = loop.first %}
+                <div class="col-12 portfolio-item-wrapper {{ cat_class }}" data-aos="fade-up" data-index="{{ loop.index0 }}"{% if not loop.first %} data-aos-delay="{{ [(loop.index0 % 3) * 100, 0] | max }}"{% endif %}>
                     <article class="portfolio-card-premium">
                         <div class="row g-0 align-items-center">
                             <div class="col-lg-6 portfolio-img-col">
                                 <img src="{{ card_img }}"
-                                    class="portfolio-img-premium" alt="{{ item.title }} — IV Infotech" loading="lazy">
+                                    class="portfolio-img-premium" alt="{{ item.title }} — IV Infotech"{% if not is_first_item %} loading="lazy"{% endif %}>
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-4 p-lg-5">
@@ -494,8 +552,19 @@
                 </div>
                 {% endfor %}
 
-
             </div>
+
+            {% if portfolios | length > 6 %}
+            <!-- Load More -->
+            <div class="portfolio-loader-wrap">
+                <button id="portfolioLoadMore" class="portfolio-load-more" type="button">
+                    <span class="btn-text">Load More Projects</span>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            {% endif %}
+
         </div>
     </section>
 
@@ -525,43 +594,117 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/main.min.js') }}" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const portfolioItems = document.querySelectorAll('.portfolio-item-wrapper');
+            /* ── State ─────────────────────────────────────────── */
+            const ITEMS_PER_PAGE = 6;
+            const filterBtns      = document.querySelectorAll('.filter-btn');
+            const portfolioItems  = document.querySelectorAll('.portfolio-item-wrapper');
+            const loadMoreBtn     = document.getElementById('portfolioLoadMore');
+            const totalItems      = portfolioItems.length;
+            let visibleCount      = ITEMS_PER_PAGE;
+            let activeFilter      = 'all';
 
+            /* ── Helpers ───────────────────────────────────────── */
+            function matchFilter(item, filter) {
+                return filter === 'all' || item.classList.contains(filter);
+            }
+
+            function applyVisibility() {
+                portfolioItems.forEach(function (item, idx) {
+                    const matches = matchFilter(item, activeFilter);
+
+                    if (activeFilter === 'all') {
+                        /* When "All" is active, obey the load-more limit */
+                        if (idx < visibleCount && matches) {
+                            item.classList.remove('hide', 'd-none');
+                            item.style.display = '';
+                        } else {
+                            item.classList.add('hide');
+                            item.style.display = 'none';
+                        }
+                    } else {
+                        /* Specific filter: show ALL matching items */
+                        if (matches) {
+                            item.classList.remove('hide', 'd-none');
+                            item.style.display = '';
+                        } else {
+                            item.classList.add('hide');
+                            item.style.display = 'none';
+                        }
+                    }
+                });
+
+                updateLoadMoreButton();
+            }
+
+            function updateLoadMoreButton() {
+                if (!loadMoreBtn) return;
+
+                if (activeFilter !== 'all') {
+                    loadMoreBtn.style.display = 'none';
+                    return;
+                }
+                loadMoreBtn.style.display = '';
+
+                const remaining = totalItems - visibleCount;
+                if (remaining <= 0) {
+                    loadMoreBtn.disabled = true;
+                    loadMoreBtn.classList.add('loaded');
+                    loadMoreBtn.querySelector('.btn-text').textContent = 'All Projects Loaded';
+                    loadMoreBtn.querySelector('i').style.display = 'none';
+                } else {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.classList.remove('loaded');
+                    const nextBatch = Math.min(remaining, ITEMS_PER_PAGE);
+                    loadMoreBtn.querySelector('.btn-text').textContent =
+                        'Load More (' + nextBatch + ' Project' + (nextBatch > 1 ? 's' : '') + ')';
+                    loadMoreBtn.querySelector('i').style.display = '';
+                }
+            }
+
+            /* ── Load More click ───────────────────────────────── */
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function () {
+                    visibleCount += ITEMS_PER_PAGE;
+                    applyVisibility();
+                });
+            }
+
+            /* ── Filter clicks ─────────────────────────────────── */
             filterBtns.forEach(function (btn) {
                 btn.addEventListener('click', function () {
-                    // Remove active state from all buttons
+                    /* Update active button state */
                     filterBtns.forEach(function (b) {
                         b.classList.remove('active', 'btn-primary');
                         b.classList.add('btn-outline-primary');
                     });
-
-                    // Set active on the clicked button
                     this.classList.remove('btn-outline-primary');
                     this.classList.add('active', 'btn-primary');
 
-                    const filterValue = this.getAttribute('data-filter');
+                    activeFilter = this.getAttribute('data-filter');
 
-                    portfolioItems.forEach(function (item) {
-                        if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                            item.classList.remove('hide');
-                            item.style.display = '';
-                        } else {
-                            item.classList.add('hide');
-                            // Delay display:none until CSS transition completes
-                            setTimeout(function () {
-                                if (item.classList.contains('hide')) {
-                                    item.style.display = 'none';
-                                }
-                            }, 500);
-                        }
-                    });
+                    /* When switching to a specific filter,
+                       temporarily reveal all matching items.
+                       When switching back to "All", reset visible count. */
+                    if (activeFilter === 'all') {
+                        /* Reset visibleCount so only first batch shows */
+                        visibleCount = ITEMS_PER_PAGE;
+                    }
+
+                    applyVisibility();
+
+                    /* Re-init AOS for newly revealed items */
+                    if (typeof AOS !== 'undefined') {
+                        setTimeout(function () { AOS.refresh(); }, 600);
+                    }
                 });
             });
+
+            /* ── Init ──────────────────────────────────────────── */
+            applyVisibility();
         });
     </script>
 </body>
