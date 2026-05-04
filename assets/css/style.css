@@ -2641,3 +2641,113 @@ a.industry-card-premium .industry-card-premium__badge {
     }
 }
 
+/* ========== INDUSTRIES MARQUEE (Service Pages) ========== */
+.industries-marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 30px 0;
+    background: #f8f9fc;
+    border-top: 1px solid rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .03);
+}
+
+/* Gradient fade on edges */
+.industries-marquee-wrapper::before,
+.industries-marquee-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 150px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.industries-marquee-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, #f8f9fc 0%, transparent 100%);
+}
+
+.industries-marquee-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, #f8f9fc 0%, transparent 100%);
+}
+
+.industries-marquee-track {
+    display: inline-flex;
+    gap: 20px;
+    animation: scrollMarquee 35s linear infinite;
+    padding-left: 20px;
+}
+
+.industries-marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Industry Pill Styling */
+.industries-pill {
+    background-color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    color: #4a5568;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    border: 1px solid rgba(0, 0, 0, .02);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    cursor: default;
+    white-space: nowrap;
+}
+
+.industries-pill i {
+    font-size: 1.5rem;
+    color: #2F55F4;
+}
+
+.industries-pill span {
+    font-size: 14px;
+    color: #0b1c3c;
+}
+
+.industries-pill:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(47, 85, 244, .15);
+    color: #0b1c3c;
+    border-color: rgba(47, 85, 244, .2);
+}
+
+/* Disable hover transforms on touch */
+@media (hover: none) {
+    .industries-pill:hover {
+        transform: none !important;
+    }
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .industries-marquee-wrapper::before,
+    .industries-marquee-wrapper::after {
+        width: 60px;
+    }
+
+    .industries-pill {
+        padding: 10px 18px;
+    }
+
+    .industries-pill i {
+        font-size: 1.2rem;
+    }
+
+    .industries-marquee-track {
+        gap: 14px;
+    }
+}
+

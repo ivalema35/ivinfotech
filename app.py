@@ -344,21 +344,26 @@ class SiteSettings(db.Model):
 
 
 class Service(db.Model):
-    """A service-page record with dynamic FAQ support.
+    """A service-page record with dynamic FAQ and Industries support.
 
     The ``faqs`` column stores a JSON array of question/answer objects,
     mirroring the ``Portfolio`` model's approach for dynamic content::
 
         [{"question": "...", "answer": "..."}, ...]
 
-    Use ``get_faqs()`` to safely retrieve the parsed list.
+    The ``industries`` column stores a JSON array of industry objects::
+
+        [{"name": "Healthcare", "icon": "fa-solid fa-heart-pulse"}, ...]
+
+    Use ``get_faqs()`` / ``get_industries()`` to safely retrieve parsed lists.
     """
     __tablename__ = 'services'
-    id        = db.Column(db.Integer, primary_key=True)
-    slug      = db.Column(db.String(255), unique=True, nullable=False, index=True)
-    title     = db.Column(db.String(255), nullable=False)
-    is_active = db.Column(db.Boolean, default=True, nullable=False)
-    faqs      = db.Column(db.Text, nullable=True)   # JSON: [{"question":"...","answer":"..."}]
+    id         = db.Column(db.Integer, primary_key=True)
+    slug       = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    title      = db.Column(db.String(255), nullable=False)
+    is_active  = db.Column(db.Boolean, default=True, nullable=False)
+    faqs       = db.Column(db.Text, nullable=True)       # JSON: [{"question":"...","answer":"..."}]
+    industries = db.Column(db.Text, nullable=True)       # JSON: [{"name":"...","icon":"..."}]
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def get_faqs(self):
@@ -371,6 +376,19 @@ class Service(db.Model):
             return []
         try:
             return json.loads(self.faqs)
+        except (json.JSONDecodeError, TypeError):
+            return []
+
+    def get_industries(self):
+        """Return the ``industries`` column parsed as a Python list of dicts.
+
+        Each dict has keys ``name`` and ``icon``. Returns an empty list when
+        the column is ``None``, empty, or contains invalid JSON.
+        """
+        if not self.industries:
+            return []
+        try:
+            return json.loads(self.industries)
         except (json.JSONDecodeError, TypeError):
             return []
 
@@ -561,6 +579,7 @@ def admin_services_add():
             title=request.form['title'].strip(),
             is_active='is_active' in request.form,
             faqs=request.form.get('faqs', '[]'),
+            industries=request.form.get('industries', '[]'),
         )
         db.session.add(s)
         db.session.commit()
@@ -588,10 +607,11 @@ def admin_services_edit(sid):
             flash(f'A service with slug "{slug}" already exists.', 'error')
             return redirect(url_for('admin_services_edit', sid=sid))
 
-        s.slug      = slug
-        s.title     = request.form['title'].strip()
-        s.is_active = 'is_active' in request.form
-        s.faqs      = request.form.get('faqs', '[]')
+        s.slug       = slug
+        s.title      = request.form['title'].strip()
+        s.is_active  = 'is_active' in request.form
+        s.faqs       = request.form.get('faqs', '[]')
+        s.industries = request.form.get('industries', '[]')
         db.session.commit()
         flash('Service updated successfully.', 'success')
         return redirect(url_for('admin_services'))

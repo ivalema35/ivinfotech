@@ -61,6 +61,26 @@ def update_database():
         else:
             print("SKIP: 'services' table already exists.")
 
+        # ── 3. Service: add industries column ──────────────────────────────────
+        if 'services' in tables:
+            columns = [col['name'] for col in inspector.get_columns('services')]
+
+            if 'industries' not in columns:
+                print("Adding 'industries' column to 'services' table...")
+                try:
+                    db.session.execute(text(
+                        'ALTER TABLE services ADD COLUMN industries TEXT'
+                    ))
+                    db.session.commit()
+                    print("SUCCESS: Added 'industries' column.")
+                except Exception as e:
+                    db.session.rollback()
+                    print(f"ERROR updating database: {e}")
+            else:
+                print("SKIP: 'industries' column already exists.")
+        else:
+            print("ERROR: 'services' table not found.")
+
 
 if __name__ == '__main__':
     update_database()
