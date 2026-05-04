@@ -2769,10 +2769,11 @@ a.industry-card-premium .industry-card-premium__badge {
 }
 
 .industries-marquee-track {
-    display: inline-flex;
-    gap: 20px;
-    animation: scrollMarquee 35s linear infinite;
-    padding-left: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    gap: 1.5rem;
+    animation: scrollMarquee 40s linear infinite;
 }
 
 .industries-marquee-track:hover {
