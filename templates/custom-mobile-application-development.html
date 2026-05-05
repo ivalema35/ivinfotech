@@ -16,21 +16,23 @@
     <meta name="ICBM" content="23.0225, 72.5714">
     <link rel="canonical" href="https://www.ivinfotech.com/custom-mobile-application-development">
 
+     <!-- opengrapg meta tag -->
     <meta property="og:title" content="Custom Mobile App Development Company in India | IV Infotech">
     <meta property="og:description" content="IV Infotech offers mobile app development services in India, including Android, iOS, and Flutter apps for startups and businesses across Gujarat. Build scalable, high-performance mobile apps." />
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.ivinfotech.com/custom-mobile-application-development">
-    <meta property="og:image" content="assets/images/logo.png">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/mobileappdevelopment_ogimage.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="IV Infotech">
     <meta property="og:locale" content="en_IN">
     <meta property="og:image:alt" content="Mobile App Development Services in India by IV Infotech">
+    
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Mobile App Development Services in India | IV Infotech">
     <meta name="twitter:description" content="Build Android, iOS, and Flutter apps with IV Infotech. Trusted mobile app development company for startups and businesses in Gujarat and India.">
-    <meta name="twitter:image" content="https://www.ivinfotech.com/static/images/mobile-app-development-og.jpg">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/mobileappdevelopment_ogimage.png">
     <meta name="twitter:site" content="@ivinfotech">
     <meta name="twitter:creator" content="@ivinfotech">
     
@@ -55,6 +57,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+     <!--services schema -->
     <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -73,6 +77,70 @@
   "serviceType": "Custom Mobile App Development",
   "description": "IV Infotech offers mobile app development services in India, including Android, iOS, and Flutter app development for startups and businesses across Gujarat.",
   "url": "https://www.ivinfotech.com/custom-mobile-application-development"
+}
+</script>
+     <!-- FAQ schema -->
+      <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is mobile app development?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Mobile app development is the process of designing, building, and deploying applications for Android and iOS platforms tailored to business needs."
+    }
+  },{
+    "@type": "Question",
+    "name": "How much does it cost to build an app in India?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Mobile app development cost in India typically ranges from ₹50,000 to ₹10,00,000+, depending on features, complexity, and platform (Android, iOS, or Flutter)."
+    }
+  },{
+    "@type": "Question",
+    "name": "How long does it take to build a mobile app?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "It usually takes 4 to 16 weeks to develop a mobile app, depending on the app’s features, design, and overall project scope."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do you provide Android and iOS app development services?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, we offer Android app development services, iOS app development solutions, and cross-platform app development using Flutter."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do you offer custom mobile app development services?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, we build custom mobile applications tailored to your business requirements with scalable architecture and modern UI."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I hire mobile app developers in India from your company?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, you can hire dedicated mobile app developers in India from our team for your project with flexible engagement models."
+    }
+  },{
+    "@type": "Question",
+    "name": "Do you provide post-launch support and maintenance?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, we provide ongoing support, updates, and maintenance to ensure your mobile app performs smoothly after launch."
+    }
+  },{
+    "@type": "Question",
+    "name": "Which industries do you serve for mobile app development?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "We provide mobile app development services for industries like ecommerce, healthcare, education, fintech, and logistics."
+    }
+  }]
 }
 </script>
 
@@ -320,6 +388,11 @@
         }
     </style>
 {% include 'components/tracking_head.html' %}
+{% if service and service.get_faqs() %}
+    <script type="application/ld+json">
+{{ service.get_faqs() | faq_schema | safe }}
+    </script>
+{% endif %}
 </head>
 
 <body>
@@ -514,6 +587,88 @@
             </div>
         </div>
     </section>
+
+    {% if service and service.get_industries() %}
+    <!-- Industries We Serve – Infinite Marquee -->
+    <section class="py-5 bg-white">
+        <div class="container text-center mb-4">
+            <h6 class="fw-bold text-muted" style="letter-spacing: 2px;">INDUSTRIES WE SERVE</h6>
+        </div>
+        <div class="industries-marquee-wrapper">
+            <div class="industries-marquee-track">
+                {% for _ in range(10) %}
+                    {% for ind in service.get_industries() %}
+                    <div class="industries-pill">
+                        <i class="{{ ind.icon }}"></i>
+                        <span>{{ ind.name }}</span>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if service and service.get_faqs() %}
+    <!-- FAQ Section -->
+    <section class="py-5" style="background: #f8f9fc;">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">FAQs</span>
+                <h2 class="fw-bold" style="color: #0b1c3c;">Frequently Asked Questions</h2>
+                <p class="text-muted">Everything you need to know about {{ service.title | lower }}.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="serviceFaqAccordion">
+
+                        {% for faq in service.get_faqs() %}
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ 100 + loop.index0 * 100 }}">
+                            <h2 class="accordion-header" id="faqHeading-{{ loop.index }}">
+                                <button class="accordion-button fw-semibold {{ 'collapsed' if not loop.first }}" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#faqCollapse-{{ loop.index }}"
+                                    aria-expanded="{{ 'true' if loop.first else 'false' }}"
+                                    aria-controls="faqCollapse-{{ loop.index }}"
+                                    style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
+                                    {{ faq.question }}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse-{{ loop.index }}"
+                                class="accordion-collapse collapse {{ 'show' if loop.first else '' }}"
+                                aria-labelledby="faqHeading-{{ loop.index }}"
+                                data-bs-parent="#serviceFaqAccordion">
+                                <div class="accordion-body text-muted" style="background: #fff; padding: 0 24px 24px 24px; line-height: 1.7;">
+                                    {{ faq.answer }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        #serviceFaqAccordion .accordion-button:focus {
+            box-shadow: none !important;
+            outline: none;
+        }
+        #serviceFaqAccordion .accordion-button:not(.collapsed) {
+            background: #ffffff;
+            color: #2F55F4;
+            box-shadow: none;
+        }
+        #serviceFaqAccordion .accordion-button:not(.collapsed)::after {
+            filter: invert(29%) sepia(98%) saturate(2000%) hue-rotate(220deg) brightness(95%);
+        }
+        #serviceFaqAccordion .accordion-item {
+            border: 1px solid rgba(15, 23, 42, 0.07) !important;
+        }
+    </style>
+    {% endif %}
 
     <!-- Floating CTA Strip -->
     <section class="container px-4">

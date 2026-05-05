@@ -484,6 +484,11 @@
         }
     </style>
 {% include 'components/tracking_head.html' %}
+{% if service and service.get_faqs() %}
+    <script type="application/ld+json">
+{{ service.get_faqs() | faq_schema | safe }}
+    </script>
+{% endif %}
 </head>
 
 <body>
@@ -782,6 +787,88 @@
             </div>
         </div>
     </section>
+
+    {% if service and service.get_industries() %}
+    <!-- Industries We Serve – Infinite Marquee -->
+    <section class="py-5 bg-white">
+        <div class="container text-center mb-4">
+            <h6 class="fw-bold text-muted" style="letter-spacing: 2px;">INDUSTRIES WE SERVE</h6>
+        </div>
+        <div class="industries-marquee-wrapper">
+            <div class="industries-marquee-track">
+                {% for _ in range(10) %}
+                    {% for ind in service.get_industries() %}
+                    <div class="industries-pill">
+                        <i class="{{ ind.icon }}"></i>
+                        <span>{{ ind.name }}</span>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% if service and service.get_faqs() %}
+    <!-- FAQ Section -->
+    <section class="py-5" style="background: #f8f9fc;">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">FAQs</span>
+                <h2 class="fw-bold" style="color: #0b1c3c;">Frequently Asked Questions</h2>
+                <p class="text-muted">Everything you need to know about {{ service.title | lower }}.</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="serviceFaqAccordion">
+
+                        {% for faq in service.get_faqs() %}
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ 100 + loop.index0 * 100 }}">
+                            <h2 class="accordion-header" id="faqHeading-{{ loop.index }}">
+                                <button class="accordion-button fw-semibold {{ 'collapsed' if not loop.first }}" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#faqCollapse-{{ loop.index }}"
+                                    aria-expanded="{{ 'true' if loop.first else 'false' }}"
+                                    aria-controls="faqCollapse-{{ loop.index }}"
+                                    style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
+                                    {{ faq.question }}
+                                </button>
+                            </h2>
+                            <div id="faqCollapse-{{ loop.index }}"
+                                class="accordion-collapse collapse {{ 'show' if loop.first else '' }}"
+                                aria-labelledby="faqHeading-{{ loop.index }}"
+                                data-bs-parent="#serviceFaqAccordion">
+                                <div class="accordion-body text-muted" style="background: #fff; padding: 0 24px 24px 24px; line-height: 1.7;">
+                                    {{ faq.answer }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        #serviceFaqAccordion .accordion-button:focus {
+            box-shadow: none !important;
+            outline: none;
+        }
+        #serviceFaqAccordion .accordion-button:not(.collapsed) {
+            background: #ffffff;
+            color: #2F55F4;
+            box-shadow: none;
+        }
+        #serviceFaqAccordion .accordion-button:not(.collapsed)::after {
+            filter: invert(29%) sepia(98%) saturate(2000%) hue-rotate(220deg) brightness(95%);
+        }
+        #serviceFaqAccordion .accordion-item {
+            border: 1px solid rgba(15, 23, 42, 0.07) !important;
+        }
+    </style>
+    {% endif %}
 
     <!-- ===== FLOATING CTA STRIP ===== -->
     <section class="container px-4">
