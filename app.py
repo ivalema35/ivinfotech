@@ -65,6 +65,33 @@ login_manager.login_message_category = 'warning'
 
 
 # ── Jinja2 custom filters ──────────────────────────────────────────────────────
+@app.template_filter('webp_url')
+def webp_url_filter(filename):
+    """Return WebP version of an asset path if it exists on disk, else original.
+    Handles static filenames (uploads/team/x.jpg) and URL paths (/assets/uploads/...).
+    Usage: {{ member.image_filename | webp_url }}  or  {{ portfolio.hero_image_web | webp_url }}
+    """
+    if not filename:
+        return filename
+    base, ext = os.path.splitext(filename)
+    if ext.lower() not in ('.png', '.jpg', '.jpeg'):
+        return filename
+
+    if filename.startswith('/assets/'):
+        # Full URL path like /assets/uploads/portfolio/slug/file.png
+        rel = filename[len('/assets/'):]          # uploads/portfolio/slug/file.png
+        disk_webp = os.path.join(basedir, 'assets', os.path.splitext(rel)[0] + '.webp')
+        if os.path.exists(disk_webp):
+            return '/assets/' + os.path.splitext(rel)[0] + '.webp'
+    else:
+        # Relative path like uploads/team/file.jpg
+        disk_webp = os.path.join(basedir, 'assets', base + '.webp')
+        if os.path.exists(disk_webp):
+            return base + '.webp'
+
+    return filename
+
+
 @app.template_filter('hex_rgb')
 def hex_rgb_filter(hex_color):
     """Convert #RRGGBB (or #RGB) to 'R,G,B' string for use in CSS rgba() calls.
