@@ -1,4 +1,7 @@
 User-agent: *
-Disallow: 
-Disallow: /cgi-bin/
+
+Allow: /
+
+Disallow: /admin/
+
 Sitemap: https://www.ivinfotech.com/sitemap.xml
