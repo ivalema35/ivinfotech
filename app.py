@@ -9,11 +9,11 @@ import os
 import re
 import json
 import secrets
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib import request as urllib_request
 from urllib.error import URLError, HTTPError
 
-from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, abort, send_from_directory, make_response
+from flask import Flask, render_template, redirect, url_for, request, jsonify, flash, abort, send_from_directory, make_response, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,6 +21,25 @@ from werkzeug.utils import secure_filename
 
 # ── App factory ────────────────────────────────────────────────────────────────
 basedir = os.path.abspath(os.path.dirname(__file__))
+IS_PRODUCTION = os.environ.get('PRODUCTION', '').lower() in ('1', 'true', 'yes')
+
+
+def _load_secret_key():
+    """Use a stable secret so sessions survive app restarts (required behind reverse proxy)."""
+    env_key = os.environ.get('SECRET_KEY')
+    if env_key:
+        return env_key
+    key_file = os.path.join(basedir, '.secret_key')
+    if os.path.exists(key_file):
+        with open(key_file, encoding='utf-8') as fh:
+            stored = fh.read().strip()
+            if stored:
+                return stored
+    key = secrets.token_hex(32)
+    with open(key_file, 'w', encoding='utf-8') as fh:
+        fh.write(key)
+    return key
+
 
 app = Flask(
     __name__,
@@ -29,9 +48,22 @@ app = Flask(
     static_url_path='/assets',
 )
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(32))
+app.config['SECRET_KEY'] = _load_secret_key()
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'admin.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['REMEMBER_COOKIE_HTTPONLY'] = True
+app.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
+
+if IS_PRODUCTION:
+    # CyberPanel / OpenLiteSpeed terminates SSL and proxies to Waitress on HTTP.
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['REMEMBER_COOKIE_SECURE'] = True
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # ── Upload folder (resumes — stored OUTSIDE static for security) ───────────────
 UPLOAD_FOLDER = os.path.join(basedir, 'uploads', 'resumes')
@@ -494,6 +526,7 @@ def admin_login():
         user = AdminUser.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user, remember=True)
+            session.permanent = True
             flash('Welcome back, ' + user.username + '!', 'success')
             return redirect(request.args.get('next') or url_for('admin_dashboard'))
         flash('Invalid username or password.', 'danger')
