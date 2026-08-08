@@ -90,6 +90,36 @@ os.makedirs(INDUSTRY_IMG_FOLDER, exist_ok=True)
 
 CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
+# IV-CRM26 bridge — set both env vars on the website host:
+#   CRM_BRIDGE_URL   e.g. https://crm.ivinfotech.ca  or  http://127.0.0.1:5050
+#   CRM_BRIDGE_TOKEN same secret as CRM backend CRM_BRIDGE_TOKEN
+CRM_BRIDGE_URL = (os.environ.get('CRM_BRIDGE_URL') or '').rstrip('/')
+CRM_BRIDGE_TOKEN = (os.environ.get('CRM_BRIDGE_TOKEN') or '').strip()
+
+
+def push_to_crm(path, payload):
+    """Best-effort POST to CRM website bridge. Never fails the public form response."""
+    if not CRM_BRIDGE_URL or not CRM_BRIDGE_TOKEN:
+        return
+    url = f'{CRM_BRIDGE_URL}/api/website{path}'
+    try:
+        req = urllib_request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={
+                'Content-Type': 'application/json',
+                'X-Bridge-Token': CRM_BRIDGE_TOKEN,
+            },
+            method='POST',
+        )
+        with urllib_request.urlopen(req, timeout=8) as crm_resp:
+            code = getattr(crm_resp, 'status', 200)
+            if code >= 400:
+                app.logger.warning('CRM bridge %s returned status %s', path, code)
+    except (HTTPError, URLError, TimeoutError, OSError) as crm_err:
+        app.logger.warning('CRM bridge push failed (%s): %s', path, crm_err)
+
+
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'admin_login'
@@ -1187,6 +1217,27 @@ def api_apply_job():
     )
     db.session.add(application)
     db.session.commit()
+
+    job_title = ''
+    if job_id:
+        opening = db.session.get(JobOpening, job_id)
+        if opening is not None:
+            job_title = opening.title or ''
+
+    site_created_ms = int(application.created_at.timestamp() * 1000) if application.created_at else None
+    push_to_crm('/applications', {
+        'external_id': str(application.id),
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'phone': phone,
+        'experience_formatted': exp_fmt,
+        'job_id': str(job_id) if job_id else '',
+        'job_title': job_title,
+        'resume_filename': resume_filename or '',
+        'created_at': site_created_ms,
+    })
+
     return jsonify({'success': True, 'message': 'Application saved.'})
 
 
@@ -1547,15 +1598,20 @@ def api_submit_inquiry():
     db.session.add(inquiry)
     db.session.commit()
 
+    phone = (data.get('phone') or '').strip()
+    service_interest = (data.get('service_interest') or '').strip()
+    message = (data.get('message') or '').strip()
+    source_page = (data.get('source_page') or '').strip()
+
     webhook_payload = {
         'name': name,
         'email': email,
-        'phone': (data.get('phone') or '').strip(),
+        'phone': phone,
         'city': city,
         'state': state,
-        'service_interest': (data.get('service_interest') or '').strip(),
-        'message': (data.get('message') or '').strip(),
-        'source_page': (data.get('source_page') or '').strip(),
+        'service_interest': service_interest,
+        'message': message,
+        'source_page': source_page,
         'submitted_at': datetime.utcnow().isoformat() + 'Z',
     }
 
@@ -1572,6 +1628,21 @@ def api_submit_inquiry():
                 app.logger.warning('Contact webhook returned status %s', status_code)
     except (HTTPError, URLError, TimeoutError) as webhook_error:
         app.logger.warning('Contact webhook submit failed: %s', webhook_error)
+
+    # Push to IV-CRM26 (does not block or fail form if CRM is down)
+    site_created_ms = int(inquiry.created_at.timestamp() * 1000) if inquiry.created_at else None
+    push_to_crm('/inquiries', {
+        'external_id': str(inquiry.id),
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'city': city,
+        'state': state,
+        'service_interest': service_interest,
+        'message': message,
+        'source_page': source_page,
+        'created_at': site_created_ms,
+    })
 
     return jsonify({'success': True, 'message': 'Inquiry submitted successfully!'})
 
