@@ -21,6 +21,60 @@ from werkzeug.utils import secure_filename
 
 # ── App factory ────────────────────────────────────────────────────────────────
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+
+def _parse_dotenv_file(path):
+    """Minimal KEY=VALUE parser (no python-dotenv dependency)."""
+    out = {}
+    try:
+        if not path or not os.path.isfile(path):
+            return out
+        with open(path, encoding='utf-8-sig') as fh:
+            for raw in fh:
+                line = raw.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                key, _, val = line.partition('=')
+                key = key.strip()
+                if not key or key.startswith('export '):
+                    key = key[7:].strip() if key.startswith('export ') else key
+                val = val.strip()
+                if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
+                    val = val[1:-1]
+                out[key] = val
+    except OSError:
+        pass
+    return out
+
+
+def _load_local_dotenv():
+    """Load /var/www/ivinfotech/.env into process env if present.
+
+    Production often edits .env but Waitress/systemd never exports those vars.
+    Always re-apply CRM_BRIDGE_* from the file so bridge works after edit + reload.
+    """
+    candidates = (
+        os.path.join(basedir, '.env'),
+        os.path.join(basedir, '.env.local'),
+        '/etc/ivinfotech.env',
+    )
+    for path in candidates:
+        parsed = _parse_dotenv_file(path)
+        if not parsed:
+            continue
+        for key, val in parsed.items():
+            if key.startswith('CRM_BRIDGE_') or key not in os.environ:
+                os.environ[key] = val
+
+
+_load_local_dotenv()
+# Optional python-dotenv if installed (does not replace manual load above)
+try:
+    from dotenv import load_dotenv as _load_dotenv
+    _load_dotenv(os.path.join(basedir, '.env'))
+except Exception:
+    pass
+
 IS_PRODUCTION = os.environ.get('PRODUCTION', '').lower() in ('1', 'true', 'yes')
 
 
@@ -90,24 +144,32 @@ os.makedirs(INDUSTRY_IMG_FOLDER, exist_ok=True)
 
 CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
-# IV-CRM26 bridge — set both env vars on the website host (or website .env):
-#   CRM_BRIDGE_URL   e.g. https://crm.ivinfotech.ca  or  http://127.0.0.1:5050
+# IV-CRM26 bridge — set both in website .env (next to app.py) OR real process env:
+#   CRM_BRIDGE_URL   e.g. https://crm.ivinfotech.ca
 #   CRM_BRIDGE_TOKEN same secret as CRM backend CRM_BRIDGE_TOKEN
-try:
-    from dotenv import load_dotenv as _load_dotenv
-    _load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
-except Exception:
-    pass
 
 
 def _crm_bridge_settings():
-    """Read bridge settings at call time (env can change without code reload quirks)."""
-    url = (os.environ.get('CRM_BRIDGE_URL') or '').strip().rstrip('/')
-    token = (os.environ.get('CRM_BRIDGE_TOKEN') or '').strip()
+    """URL + token from process env, with .env file fallback every call.
+
+    503 "token not set" usually means the file exists but the running process
+    never loaded it — we always re-read basedir/.env here.
+    """
+    file_vals = _parse_dotenv_file(os.path.join(basedir, '.env'))
+    url = (
+        os.environ.get('CRM_BRIDGE_URL')
+        or file_vals.get('CRM_BRIDGE_URL')
+        or ''
+    ).strip().rstrip('/')
+    token = (
+        os.environ.get('CRM_BRIDGE_TOKEN')
+        or file_vals.get('CRM_BRIDGE_TOKEN')
+        or ''
+    ).strip()
     return url, token
 
 
-# Back-compat aliases (read once; push_to_crm re-reads via _crm_bridge_settings)
+# Back-compat aliases (push_to_crm / token checks re-read via _crm_bridge_settings)
 CRM_BRIDGE_URL, CRM_BRIDGE_TOKEN = _crm_bridge_settings()
 
 
