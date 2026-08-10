@@ -120,6 +120,21 @@ def push_to_crm(path, payload):
         app.logger.warning('CRM bridge push failed (%s): %s', path, crm_err)
 
 
+def _require_crm_bridge_token():
+    """Validate shared CRM_BRIDGE_TOKEN for server-to-server CRM calls."""
+    expected = CRM_BRIDGE_TOKEN
+    if not expected:
+        return jsonify({'success': False, 'error': 'Bridge not configured'}), 503
+    provided = (request.headers.get('X-Bridge-Token') or '').strip()
+    if not provided:
+        auth = request.headers.get('Authorization') or ''
+        if auth.lower().startswith('bearer '):
+            provided = auth[7:].strip()
+    if not provided or not secrets.compare_digest(provided, expected):
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 401
+    return None
+
+
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'admin_login'
@@ -1170,6 +1185,30 @@ def admin_download_resume(filename):
     """Serve resume files — protected behind login."""
     safe = secure_filename(filename)
     return send_from_directory(app.config['UPLOAD_FOLDER'], safe)
+
+
+@app.route('/api/crm/resumes/<path:filename>', methods=['GET'])
+def api_crm_resume(filename):
+    """Serve a resume to CRM via shared bridge token (not public).
+
+    CRM sets header: X-Bridge-Token: <CRM_BRIDGE_TOKEN>
+    Files live in /var/www/ivinfotech/uploads/resumes on the VPS.
+    """
+    err = _require_crm_bridge_token()
+    if err:
+        return err
+    safe = secure_filename(os.path.basename(filename or ''))
+    if not safe:
+        return jsonify({'success': False, 'error': 'Invalid filename'}), 400
+    # Block path traversal even after secure_filename
+    full = os.path.join(app.config['UPLOAD_FOLDER'], safe)
+    if not os.path.isfile(full):
+        return jsonify({'success': False, 'error': 'Resume not found'}), 404
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'],
+        safe,
+        as_attachment=False,
+    )
 
 
 # ── Public API: Receive job application (dual-submit alongside n8n) ────────────
