@@ -90,39 +90,73 @@ os.makedirs(INDUSTRY_IMG_FOLDER, exist_ok=True)
 
 CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
-# IV-CRM26 bridge — set both env vars on the website host:
+# IV-CRM26 bridge — set both env vars on the website host (or website .env):
 #   CRM_BRIDGE_URL   e.g. https://crm.ivinfotech.ca  or  http://127.0.0.1:5050
 #   CRM_BRIDGE_TOKEN same secret as CRM backend CRM_BRIDGE_TOKEN
-CRM_BRIDGE_URL = (os.environ.get('CRM_BRIDGE_URL') or '').rstrip('/')
-CRM_BRIDGE_TOKEN = (os.environ.get('CRM_BRIDGE_TOKEN') or '').strip()
+try:
+    from dotenv import load_dotenv as _load_dotenv
+    _load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+except Exception:
+    pass
+
+
+def _crm_bridge_settings():
+    """Read bridge settings at call time (env can change without code reload quirks)."""
+    url = (os.environ.get('CRM_BRIDGE_URL') or '').strip().rstrip('/')
+    token = (os.environ.get('CRM_BRIDGE_TOKEN') or '').strip()
+    return url, token
+
+
+# Back-compat aliases (read once; push_to_crm re-reads via _crm_bridge_settings)
+CRM_BRIDGE_URL, CRM_BRIDGE_TOKEN = _crm_bridge_settings()
 
 
 def push_to_crm(path, payload):
     """Best-effort POST to CRM website bridge. Never fails the public form response."""
-    if not CRM_BRIDGE_URL or not CRM_BRIDGE_TOKEN:
-        return
-    url = f'{CRM_BRIDGE_URL}/api/website{path}'
+    url_base, token = _crm_bridge_settings()
+    if not url_base or not token:
+        app.logger.warning(
+            'CRM bridge SKIPPED %s — set CRM_BRIDGE_URL and CRM_BRIDGE_TOKEN on website host, then restart',
+            path,
+        )
+        return False
+    url = f'{url_base}/api/website{path}'
     try:
         req = urllib_request.Request(
             url,
             data=json.dumps(payload).encode('utf-8'),
             headers={
                 'Content-Type': 'application/json',
-                'X-Bridge-Token': CRM_BRIDGE_TOKEN,
+                'X-Bridge-Token': token,
             },
             method='POST',
         )
-        with urllib_request.urlopen(req, timeout=8) as crm_resp:
+        with urllib_request.urlopen(req, timeout=12) as crm_resp:
             code = getattr(crm_resp, 'status', 200)
             if code >= 400:
                 app.logger.warning('CRM bridge %s returned status %s', path, code)
-    except (HTTPError, URLError, TimeoutError, OSError) as crm_err:
+                return False
+            app.logger.info('CRM bridge OK %s status=%s', path, code)
+            return True
+    except HTTPError as crm_err:
+        body = ''
+        try:
+            body = crm_err.read().decode('utf-8', errors='replace')[:300]
+        except Exception:
+            pass
+        app.logger.warning(
+            'CRM bridge push failed (%s) HTTP %s: %s',
+            path, getattr(crm_err, 'code', '?'), body or crm_err,
+        )
+        return False
+    except (URLError, TimeoutError, OSError) as crm_err:
         app.logger.warning('CRM bridge push failed (%s): %s', path, crm_err)
+        return False
 
 
 def _crm_bridge_token_ok():
     """True when request carries a valid shared CRM_BRIDGE_TOKEN."""
-    expected = (CRM_BRIDGE_TOKEN or '').strip()
+    _, expected = _crm_bridge_settings()
     if not expected:
         return False
     provided = (request.headers.get('X-Bridge-Token') or '').strip()
@@ -143,7 +177,7 @@ def _crm_bridge_token_ok():
 
 def _require_crm_bridge_token():
     """Validate shared CRM_BRIDGE_TOKEN for server-to-server CRM calls."""
-    expected = (CRM_BRIDGE_TOKEN or '').strip()
+    _, expected = _crm_bridge_settings()
     if not expected:
         return jsonify({
             'success': False,
@@ -1243,6 +1277,60 @@ def api_crm_resume(filename):
     return _serve_resume_file(filename)
 
 
+@app.route('/api/crm/export/applications', methods=['GET'])
+def api_crm_export_applications():
+    """List all job applications for CRM pull-sync (X-Bridge-Token required)."""
+    err = _require_crm_bridge_token()
+    if err:
+        return err
+    apps = JobApplication.query.order_by(JobApplication.id.asc()).all()
+    items = []
+    for a in apps:
+        job_title = ''
+        if a.job_id:
+            opening = db.session.get(JobOpening, a.job_id)
+            if opening is not None:
+                job_title = opening.title or ''
+        created_ms = int(a.created_at.timestamp() * 1000) if a.created_at else None
+        items.append({
+            'external_id': str(a.id),
+            'first_name': a.first_name or '',
+            'last_name': a.last_name or '',
+            'email': a.email or '',
+            'phone': a.phone or '',
+            'experience_formatted': a.experience_formatted or '',
+            'job_id': str(a.job_id) if a.job_id else '',
+            'job_title': job_title,
+            'resume_filename': a.resume_filename or '',
+            'created_at': created_ms,
+        })
+    return jsonify({'ok': True, 'items': items, 'count': len(items)})
+
+
+@app.route('/api/crm/export/inquiries', methods=['GET'])
+def api_crm_export_inquiries():
+    """List all contact inquiries for CRM pull-sync (X-Bridge-Token required)."""
+    err = _require_crm_bridge_token()
+    if err:
+        return err
+    rows = Inquiry.query.order_by(Inquiry.id.asc()).all()
+    items = []
+    for q in rows:
+        created_ms = int(q.created_at.timestamp() * 1000) if q.created_at else None
+        items.append({
+            'external_id': str(q.id),
+            'name': q.name or '',
+            'email': q.email or '',
+            'phone': q.phone or '',
+            'city': q.city or '',
+            'service': q.service_interest or '',
+            'message': q.message or '',
+            'source_page': q.source_page or '',
+            'created_at': created_ms,
+        })
+    return jsonify({'ok': True, 'items': items, 'count': len(items)})
+
+
 # ── Public API: Receive job application (dual-submit alongside n8n) ────────────
 @app.route('/api/apply_job', methods=['POST'])
 def api_apply_job():
@@ -1255,6 +1343,7 @@ def api_apply_job():
 
     exp_fmt    = request.form.get('experience_formatted') or request.form.get('experience_type', 'Fresher')
     job_id_raw = request.form.get('job_id', '').strip()
+    job_role   = request.form.get('job_role', '').strip()
 
     # Resolve FK — silently ignore invalid ids
     job_id = None
@@ -1294,9 +1383,11 @@ def api_apply_job():
         opening = db.session.get(JobOpening, job_id)
         if opening is not None:
             job_title = opening.title or ''
+    if not job_title:
+        job_title = job_role
 
     site_created_ms = int(application.created_at.timestamp() * 1000) if application.created_at else None
-    push_to_crm('/applications', {
+    pushed = push_to_crm('/applications', {
         'external_id': str(application.id),
         'first_name': first_name,
         'last_name': last_name,
@@ -1308,6 +1399,11 @@ def api_apply_job():
         'resume_filename': resume_filename or '',
         'created_at': site_created_ms,
     })
+    if not pushed:
+        app.logger.warning(
+            'Job application id=%s saved on website but NOT pushed to CRM (check CRM_BRIDGE_* env)',
+            application.id,
+        )
 
     return jsonify({'success': True, 'message': 'Application saved.'})
 
