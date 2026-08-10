@@ -120,19 +120,53 @@ def push_to_crm(path, payload):
         app.logger.warning('CRM bridge push failed (%s): %s', path, crm_err)
 
 
-def _require_crm_bridge_token():
-    """Validate shared CRM_BRIDGE_TOKEN for server-to-server CRM calls."""
-    expected = CRM_BRIDGE_TOKEN
+def _crm_bridge_token_ok():
+    """True when request carries a valid shared CRM_BRIDGE_TOKEN."""
+    expected = (CRM_BRIDGE_TOKEN or '').strip()
     if not expected:
-        return jsonify({'success': False, 'error': 'Bridge not configured'}), 503
+        return False
     provided = (request.headers.get('X-Bridge-Token') or '').strip()
     if not provided:
         auth = request.headers.get('Authorization') or ''
         if auth.lower().startswith('bearer '):
             provided = auth[7:].strip()
-    if not provided or not secrets.compare_digest(provided, expected):
+    if not provided:
+        # Optional query for health checks only — prefer header
+        provided = (request.args.get('bridge_token') or '').strip()
+    if not provided:
+        return False
+    try:
+        return secrets.compare_digest(provided, expected)
+    except Exception:
+        return False
+
+
+def _require_crm_bridge_token():
+    """Validate shared CRM_BRIDGE_TOKEN for server-to-server CRM calls."""
+    expected = (CRM_BRIDGE_TOKEN or '').strip()
+    if not expected:
+        return jsonify({
+            'success': False,
+            'error': 'Bridge not configured — set CRM_BRIDGE_TOKEN on the website host',
+        }), 503
+    if not _crm_bridge_token_ok():
         return jsonify({'success': False, 'error': 'Unauthorized'}), 401
     return None
+
+
+def _serve_resume_file(filename):
+    """Send a resume from UPLOAD_FOLDER; return 404 JSON if missing."""
+    safe = secure_filename(os.path.basename(filename or ''))
+    if not safe:
+        return jsonify({'success': False, 'error': 'Invalid filename'}), 400
+    full = os.path.join(app.config['UPLOAD_FOLDER'], safe)
+    if not os.path.isfile(full):
+        return jsonify({'success': False, 'error': 'Resume not found'}), 404
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'],
+        safe,
+        as_attachment=False,
+    )
 
 
 db = SQLAlchemy(app)
@@ -1180,11 +1214,20 @@ def admin_applications():
 
 
 @app.route('/admin/applications/resume/<path:filename>')
-@login_required
 def admin_download_resume(filename):
-    """Serve resume files — protected behind login."""
-    safe = secure_filename(filename)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], safe)
+    """Serve resume files.
+
+    - Browser admin: requires normal session login
+    - CRM server: X-Bridge-Token (same CRM_BRIDGE_TOKEN as CRM) — no session needed
+
+    Production path example:
+      https://ivinfotech.com/admin/applications/resume/<file>.pdf
+    """
+    if _crm_bridge_token_ok():
+        return _serve_resume_file(filename)
+    if not current_user.is_authenticated:
+        return redirect(url_for('admin_login', next=request.path))
+    return _serve_resume_file(filename)
 
 
 @app.route('/api/crm/resumes/<path:filename>', methods=['GET'])
@@ -1197,18 +1240,7 @@ def api_crm_resume(filename):
     err = _require_crm_bridge_token()
     if err:
         return err
-    safe = secure_filename(os.path.basename(filename or ''))
-    if not safe:
-        return jsonify({'success': False, 'error': 'Invalid filename'}), 400
-    # Block path traversal even after secure_filename
-    full = os.path.join(app.config['UPLOAD_FOLDER'], safe)
-    if not os.path.isfile(full):
-        return jsonify({'success': False, 'error': 'Resume not found'}), 404
-    return send_from_directory(
-        app.config['UPLOAD_FOLDER'],
-        safe,
-        as_attachment=False,
-    )
+    return _serve_resume_file(filename)
 
 
 # ── Public API: Receive job application (dual-submit alongside n8n) ────────────
