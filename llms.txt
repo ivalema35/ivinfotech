@@ -1,0 +1,34 @@
+# IV Infotech
+
+> IV Infotech is an IT services company based in Mehsana, Gujarat, India, offering web development, mobile app development, CRM/ERP solutions, e-commerce development, digital marketing, UI/UX design, web hosting, and AI automation services for startups, SMEs, and enterprises across India.
+
+## Services
+
+- [Custom Mobile Application Development](https://www.ivinfotech.com/custom-mobile-application-development): Custom Android, iOS, Flutter & React Native mobile app development services in India
+- [Custom Website & Software Development](https://www.ivinfotech.com/custom-website-software-development): Custom website and software development solutions
+- [CRM & ERP Custom Software Development](https://www.ivinfotech.com/crm-erp-custom-software-development): Custom CRM and ERP software development
+- [E-Commerce Solution](https://www.ivinfotech.com/ecommerce-website-app-development-india): E-commerce website and app development in India
+- [Digital Marketing](https://www.ivinfotech.com/digital-marketing): SEO, PPC, and digital marketing services
+- [UI/UX Design](https://www.ivinfotech.com/ui-ux-design-agency-india): UI/UX design agency services in India
+- [Web Hosting Services](https://www.ivinfotech.com/best-web-hosting-services): Web hosting services
+- [AI & Automation](https://www.ivinfotech.com/ai-automation): AI and automation solutions for businesses
+
+## Hire Developers
+
+- [Hire PHP Developers](https://www.ivinfotech.com/hire-php-developers): Dedicated PHP developers for hire
+- [Hire Laravel Developers](https://www.ivinfotech.com/hire-laravel-developers): Dedicated Laravel developers for hire
+- [Hire Android Developers](https://www.ivinfotech.com/hire-android-developers): Dedicated Android developers for hire
+- [Hire Flutter Developers](https://www.ivinfotech.com/hire-flutter-developers): Dedicated Flutter developers for hire
+- [Hire HTML Developers](https://www.ivinfotech.com/hire-html-developers): Dedicated HTML developers for hire
+- [Hire UI/UX Designers](https://www.ivinfotech.com/hire-ui-ux-designers): Dedicated UI/UX designers for hire
+- [Hire AI Automation Engineers](https://www.ivinfotech.com/hire-ai-engineers): Dedicated AI automation engineers for hire
+
+## Company
+
+- [About Us](https://www.ivinfotech.com/about): Company background and team
+- [Our Team](https://www.ivinfotech.com/our-team): Meet the IV Infotech team
+- [Testimonials](https://www.ivinfotech.com/testimonials): Client testimonials and reviews
+- [Career](https://www.ivinfotech.com/career): Career opportunities at IV Infotech
+- [Portfolio](https://www.ivinfotech.com/portfolio): Past projects and case studies
+- [Blog](https://www.ivinfotech.com/blog): Articles on SEO, technology, and digital marketing
+- [Contact Us](https://www.ivinfotech.com/contact): Get in touch and request a quote
