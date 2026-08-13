@@ -212,12 +212,12 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(11, 28, 60, .1);
+            aspect-ratio: 16 / 9;
         }
 
         .featured-cover img {
             width: 100%;
-            height: auto;
-            max-height: 480px;
+            height: 100%;
             object-fit: cover;
             display: block;
         }
@@ -582,7 +582,7 @@
         .blog-img-wrapper {
             position: relative;
             overflow: hidden;
-            height: 220px;
+            aspect-ratio: 16 / 9;
         }
 
         .blog-img-wrapper img {
@@ -744,9 +744,6 @@
                 margin-top: 2rem;
             }
 
-            .featured-cover img {
-                max-height: 340px;
-            }
         }
 
         @media (max-width: 768px) {
@@ -772,10 +769,6 @@
 
             .share-strip {
                 flex-wrap: wrap;
-            }
-
-            .featured-cover img {
-                max-height: 260px;
             }
 
             .article-content {

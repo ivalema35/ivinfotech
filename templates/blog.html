@@ -183,8 +183,7 @@
         .featured-img-wrapper {
             position: relative;
             overflow: hidden;
-            height: 100%;
-            min-height: 280px;
+            aspect-ratio: 16 / 9;
         }
 
         .featured-img-wrapper img {
@@ -371,7 +370,7 @@
         .blog-img-wrapper {
             position: relative;
             overflow: hidden;
-            height: 220px;
+            aspect-ratio: 16 / 9;
         }
 
         .blog-img-wrapper img {
@@ -561,10 +560,6 @@
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 991px) {
-            .featured-img-wrapper {
-                min-height: 260px;
-            }
-
             .featured-content {
                 padding: 28px 24px;
             }
