@@ -2794,15 +2794,19 @@ def seed_team_cmd():
         print('Done.')
 
 
+# ── DB init ──────────────────────────────────────────────────────────────────
+# Runs on import so it also fires under a WSGI server (gunicorn/uWSGI/Passenger),
+# not just when the script is executed directly with `python app.py`.
+with app.app_context():
+    db.create_all()
+    _migrate_db()   # add any new columns to existing tables
+    _seed_testimonials()
+    _seed_jobs()
+    _seed_blogs()
+    _seed_portfolio()
+    _seed_team()
+    seed_settings()
+
 # ── Dev server ─────────────────────────────────────────────────────────────────
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-        _migrate_db()   # add any new columns to existing tables
-        _seed_testimonials()
-        _seed_jobs()
-        _seed_blogs()
-        _seed_portfolio()
-        _seed_team()
-        seed_settings()
     app.run(debug=True, host='0.0.0.0', port=5000)
