@@ -449,6 +449,7 @@ var VB_INIT = {
   testimonials:   {{ (_p.testimonials or '[]') | tojson }},
   gallery:        {{ (_p.gallery or '[]') | tojson }},
   trust_badges:   {{ (_p.trust_badges or '[]') | tojson }},
+  interlinks:     {{ (_p.interlinks or '[]') | tojson }},
 };
 </script>
 {% else %}
@@ -460,7 +461,7 @@ var VB_INIT = {
   hero_image_web: '', hero_image_app: '',
   kpi_1_value:'', kpi_1_label:'', kpi_2_value:'', kpi_2_label:'', kpi_3_value:'', kpi_3_label:'',
   industry:'', market:'', goal:'', client_story_p1:'', client_story_p2:'',
-  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]', trust_badges:'[]'
+  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]', trust_badges:'[]', interlinks:'[]'
 };
 </script>
 {% endif %}
@@ -825,6 +826,27 @@ var VB_INIT = {
           </div>
         </div>
 
+        <!-- ─── Section: Interlinks (SEO internal links) ─── -->
+        <div class="vb-section" id="sec-interlinks">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-link fa-fw" style="color:#38bdf8;font-size:12px;"></i>
+            Interlinks
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <p class="vb-input-hint" style="margin-bottom:8px;">
+              Internal links shown as a "You Might Also Like" strip at the bottom of this
+              project page — e.g. link to another portfolio case study, a relevant service
+              page, or a blog post. Use site-relative URLs like <code>/portfolio/other-slug</code>,
+              <code>/services/web-development</code>, or <code>/blog/some-post</code>.
+            </p>
+            <div class="vb-array" id="arr-interlinks"></div>
+            <button class="vb-array__add" onclick="addInterlink()">
+              <i class="fa-solid fa-plus"></i> Add Interlink
+            </button>
+          </div>
+        </div>
+
       </div><!-- /.vb-controls__scroll -->
     </aside><!-- /.vb-controls -->
 
@@ -902,11 +924,11 @@ var VB_INIT = {
 /* ── State ── */
 const state = Object.assign({
   challenges: [], solution_steps: [], services: [],
-  results: { cards: [], rows: [] }, features: [], testimonials: [], gallery: [], trust_badges: []
+  results: { cards: [], rows: [] }, features: [], testimonials: [], gallery: [], trust_badges: [], interlinks: []
 }, VB_INIT);
 
 // Parse JSON string fields from VB_INIT into proper objects
-['challenges','solution_steps','services','features','testimonials','trust_badges'].forEach(function(k) {
+['challenges','solution_steps','services','features','testimonials','trust_badges','interlinks'].forEach(function(k) {
   try { state[k] = typeof state[k] === 'string' ? JSON.parse(state[k]) : state[k]; } catch(e) { state[k] = []; }
 });
 try {
@@ -977,6 +999,7 @@ function populateForm() {
   state.testimonials.forEach(renderTestimonial);
   state.gallery.forEach(renderGalleryThumb);
   state.trust_badges.forEach(renderTrustBadge);
+  state.interlinks.forEach(renderInterlink);
 }
 
 /* ── Field binding: listen for all input events ── */
@@ -1589,6 +1612,34 @@ function renderFeature(d, idx) {
   arr.appendChild(item);
 }
 
+/* ─── Interlinks (SEO internal links) ─── */
+function addInterlink(data) {
+  var d = data || { title:'', url:'', description:'' };
+  state.interlinks.push(d);
+  renderInterlink(d, state.interlinks.length - 1);
+  markDirty();
+}
+function renderInterlink(d, idx) {
+  var arr  = $('arr-interlinks');
+  var item = document.createElement('div');
+  item.className = 'vb-array__item';
+  item.innerHTML = '<div class="vb-array__item-head" onclick="toggleArrayItem(this)">'
+    + '<span class="vb-array__drag">≡</span>'
+    + '<span style="flex:1;font-size:12px;">' + (d.title || 'Interlink ' + (idx+1)) + '</span>'
+    + '<button class="vb-array__remove" onclick="removeArrayItem(\'interlinks\',this.closest(\'.vb-array__item\'));event.stopPropagation()" title="Remove"><i class="fa-solid fa-xmark"></i></button>'
+    + '</div>'
+    + '<div class="vb-array__item-body" style="display:none;">'
+    + '<div class="vb-field"><label class="vb-label">Link Title</label>'
+    + '<input class="vb-input" type="text" data-arr="interlinks" data-field="title" value="' + esc(d.title) + '" placeholder="e.g. Belzzo Kids Footwear" '
+    + 'oninput="updateArrayField(this);this.closest(\'.vb-array__item\').querySelector(\'.vb-array__item-head span:nth-child(2)\').textContent=this.value||\' Interlink\'" /></div>'
+    + '<div class="vb-field"><label class="vb-label">URL</label>'
+    + '<input class="vb-input" type="text" data-arr="interlinks" data-field="url" value="' + esc(d.url) + '" placeholder="/portfolio/other-slug" oninput="updateArrayField(this)" /></div>'
+    + '<div class="vb-field"><label class="vb-label">Description (optional)</label>'
+    + '<textarea class="vb-textarea" rows="2" data-arr="interlinks" data-field="description" oninput="updateArrayField(this)">' + esc(d.description) + '</textarea></div>'
+    + '</div>';
+  arr.appendChild(item);
+}
+
 /* ─── Testimonials ─── */
 function sendTestimonialsToPreview() {
   sendToPreview({ source: 'ivb', type: 'testimonials', testimonials: state.testimonials });
@@ -1699,6 +1750,7 @@ function collectPayload(action) {
     testimonials:   state.testimonials,
     gallery:        state.gallery,
     trust_badges:   state.trust_badges,
+    interlinks:     state.interlinks,
   };
 }
 
