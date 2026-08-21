@@ -83,6 +83,10 @@
                     class="sidebar__link {% if request.endpoint in ['admin_industries','admin_industries_add','admin_industries_toggle','admin_industries_delete'] %}sidebar__link--active{% endif %}">
                          <i class="fa-solid fa-industry"></i><span>Recognitions</span>
                 </a>
+                <a href="{{ url_for('admin_brands') }}"
+                    class="sidebar__link {% if request.endpoint in ['admin_brands','admin_brands_add','admin_brands_edit','admin_brands_toggle','admin_brands_delete'] %}sidebar__link--active{% endif %}">
+                         <i class="fa-solid fa-award"></i><span>Trusted Brands</span>
+                </a>
 
             <span class="sidebar__section-label">System</span>
             <a href="{{ url_for('admin_settings') }}"

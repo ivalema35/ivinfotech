@@ -486,6 +486,14 @@
             font-size: 1rem;
         }
 
+        .logo-marquee-track .brand-badge img {
+            height: 22px;
+            width: auto;
+            max-width: 90px;
+            object-fit: contain;
+            margin-right: 8px;
+        }
+
         .logo-marquee-track .brand-badge:hover {
             color: #374151;
             border-color: rgba(47, 85, 244, .25);
@@ -1010,29 +1018,24 @@
     </section>
 
     <!-- Client Logo Marquee -->
+    {% if trusted_brands %}
     <section class="logo-marquee-section">
         <p class="marquee-label">Trusted by Innovative Brands</p>
         <div class="logo-marquee-track">
-            <!-- Set 1 -->
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-building text-primary me-2" aria-hidden="true"></i>Acme Corp</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-microchip text-primary me-2" aria-hidden="true"></i>NovaTech</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-lightbulb text-primary me-2" aria-hidden="true"></i>BrightEdge</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-cloud text-primary me-2" aria-hidden="true"></i>CloudNine</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-chart-line text-primary me-2" aria-hidden="true"></i>FinServ</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-heart-pulse text-primary me-2" aria-hidden="true"></i>HealthPlus</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-graduation-cap text-primary me-2" aria-hidden="true"></i>EduSpark</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-cart-shopping text-primary me-2" aria-hidden="true"></i>RetailMax</span>
-            <!-- Set 2 (duplicate for seamless infinite scroll) -->
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-building text-primary me-2" aria-hidden="true"></i>Acme Corp</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-microchip text-primary me-2" aria-hidden="true"></i>NovaTech</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-lightbulb text-primary me-2" aria-hidden="true"></i>BrightEdge</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-cloud text-primary me-2" aria-hidden="true"></i>CloudNine</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-chart-line text-primary me-2" aria-hidden="true"></i>FinServ</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-heart-pulse text-primary me-2" aria-hidden="true"></i>HealthPlus</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-graduation-cap text-primary me-2" aria-hidden="true"></i>EduSpark</span>
-            <span class="brand-badge d-flex align-items-center"><i class="fa-solid fa-cart-shopping text-primary me-2" aria-hidden="true"></i>RetailMax</span>
+            <!-- Set 1 + Set 2 duplicated for seamless infinite scroll -->
+            {% for i in range(2) %}
+            {% for brand in trusted_brands %}
+            <span class="brand-badge d-flex align-items-center">
+                {% if brand.logo_filename %}
+                <img src="/assets/{{ brand.logo_filename }}" alt="{{ brand.name }}" loading="lazy">
+                {% endif %}
+                {{ brand.name }}
+            </span>
+            {% endfor %}
+            {% endfor %}
         </div>
     </section>
+    {% endif %}
 
     <!-- Stats Counter Section -->
     <section class="stats-floating-section bg-light">
