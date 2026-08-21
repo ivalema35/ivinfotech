@@ -462,6 +462,7 @@ class Portfolio(db.Model):
     testimonials    = db.Column(db.Text, nullable=True)  # JSON: [{quote,client_name,client_role,rating}]
     gallery         = db.Column(db.Text, nullable=True)  # JSON: [{type:"web"|"app",url,label,alt}]
     trust_badges    = db.Column(db.Text, nullable=True)  # JSON: [{icon,text}]
+    interlinks      = db.Column(db.Text, nullable=True)  # JSON: [{title,url,description}]
     created_at      = db.Column(db.DateTime, default=datetime.utcnow)
 
     # ── helpers ──
@@ -524,6 +525,10 @@ class Portfolio(db.Model):
         except:
             pass
         return defaults
+
+    def get_interlinks(self):
+        try: return json.loads(self.interlinks or '[]')
+        except: return []
 
     def get_categories(self):
         """Return list of individual categories from comma-separated string."""
@@ -1068,6 +1073,7 @@ def _migrate_db():
         ("portfolios", "secondary_color", "VARCHAR(20) NOT NULL DEFAULT '#10B981'"),
         ("portfolios", "bg_color",        "VARCHAR(20) NOT NULL DEFAULT '#0f1117'"),
         ("portfolios", "trust_badges", "TEXT"),
+        ("portfolios", "interlinks", "TEXT"),
         ("inquiries", "city",             "VARCHAR(120) NOT NULL DEFAULT 'Mehsana'"),
         ("inquiries", "state",            "VARCHAR(120) NOT NULL DEFAULT 'Gujarat'"),
     ]
@@ -1141,7 +1147,7 @@ def _portfolio_from_form(p, form, files):
     p.client_story_p1 = form.get('client_story_p1', '').strip()
     p.client_story_p2 = form.get('client_story_p2', '').strip()
     # JSON text fields — always serialise to a TEXT string before touching the session.
-    for field in ('challenges', 'solution_steps', 'services', 'results', 'features', 'testimonials', 'gallery', 'trust_badges'):
+    for field in ('challenges', 'solution_steps', 'services', 'results', 'features', 'testimonials', 'gallery', 'trust_badges', 'interlinks'):
         raw = form.get(field)   # None when key is absent
         if raw is None:
             continue             # key not in payload — leave DB value unchanged
@@ -1254,8 +1260,9 @@ def admin_portfolio_preview(slug):
     # Pass as a separate variable — never assign a Python list to a session-tracked
     # model attribute, as it marks the object dirty and triggers autoflush errors.
     trust_badges = portfolio.get_trust_badges()
+    interlinks = portfolio.get_interlinks()
     return render_template('portfolio-details.html', active_page='portfolio',
-                           portfolio=portfolio, trust_badges=trust_badges)
+                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks)
 
 
 # ── Admin: Visual Builder (split-screen live editor) ──────────────────────────
@@ -1709,8 +1716,9 @@ def portfolio_detail(slug):
     # Pass as a separate variable — never assign a Python list to a session-tracked
     # model attribute, as it marks the object dirty and triggers autoflush errors.
     trust_badges = portfolio.get_trust_badges()
+    interlinks = portfolio.get_interlinks()
     return render_template('portfolio-details.html', active_page='portfolio',
-                           portfolio=portfolio, trust_badges=trust_badges)
+                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks)
 
 @app.route('/portfolio-details')
 def portfolio_details():

@@ -264,6 +264,55 @@
     #portfolio-view-page .belzzo-testimonial-section { padding: 80px 0 !important; }
     #portfolio-view-page .belzzo-tcard { border-radius: 18px !important; }
 
+    /* ══ EXPLORE MORE / INTERLINKS ══ */
+    #portfolio-view-page .belzzo-interlinks-section { padding: 60px 0 90px !important; }
+    #portfolio-view-page .belzzo-interlinks-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+      gap: 20px !important;
+      margin-top: 32px !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+      padding: 22px 24px !important;
+      border-radius: 16px !important;
+      background: #fff !important;
+      border: 1px solid rgba(0,0,0,.08) !important;
+      box-shadow: 0 4px 14px rgba(0,0,0,.04) !important;
+      text-decoration: none !important;
+      transition: all .3s ease !important;
+      position: relative !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card:hover {
+      transform: translateY(-4px) !important;
+      border-color: rgba(47,85,244,.3) !important;
+      box-shadow: 0 12px 28px rgba(47,85,244,.12) !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card__title {
+      font-weight: 700 !important;
+      font-size: 1rem !important;
+      color: #0b1c3c !important;
+      padding-right: 24px !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card__desc {
+      font-size: .88rem !important;
+      color: #6b7280 !important;
+      line-height: 1.55 !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card__arrow {
+      position: absolute !important;
+      top: 20px !important;
+      right: 20px !important;
+      color: #2F55F4 !important;
+      font-size: 1.1rem !important;
+      transition: transform .3s ease !important;
+    }
+    #portfolio-view-page .belzzo-interlink-card:hover .belzzo-interlink-card__arrow {
+      transform: translateX(4px) !important;
+    }
+
     /* ══ RESULTS TABLE ══ */
     #portfolio-view-page .belzzo-results-table-wrapper { overflow-x: auto !important; border-radius: 16px !important; }
     #portfolio-view-page .belzzo-results-table { min-width: 420px !important; }
@@ -1355,6 +1404,28 @@
 
       </div>
     </section>
+
+    {% if interlinks %}
+    <section id="explore-more" class="case-study-section belzzo-interlinks-section">
+      <div class="container-xxl">
+        <div class="belzzo-tslider-header">
+          <span class="belzzo-eyebrow">EXPLORE MORE</span>
+          <h3>You Might Also Like</h3>
+        </div>
+        <div class="belzzo-interlinks-grid">
+          {% for link in interlinks %}
+          <a class="belzzo-interlink-card" href="{{ link.url }}">
+            <span class="belzzo-interlink-card__title">{{ link.title }}</span>
+            {% if link.description %}
+            <span class="belzzo-interlink-card__desc">{{ link.description }}</span>
+            {% endif %}
+            <span class="belzzo-interlink-card__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
 
   </main>
   <!-- ═══ END #portfolio-view-page ═══ -->
