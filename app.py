@@ -142,6 +142,10 @@ os.makedirs(TEAM_IMG_FOLDER, exist_ok=True)
 INDUSTRY_IMG_FOLDER = os.path.join(basedir, 'assets', 'uploads', 'industries')
 os.makedirs(INDUSTRY_IMG_FOLDER, exist_ok=True)
 
+# ── Trusted brand logo upload (inside static) ─────────────────────────────────
+BRAND_IMG_FOLDER = os.path.join(basedir, 'assets', 'uploads', 'brands')
+os.makedirs(BRAND_IMG_FOLDER, exist_ok=True)
+
 CONTACT_WEBHOOK_URL = 'https://ai.ivinfotech.com/webhook/iv-infotech/contact'
 
 # IV-CRM26 bridge — set both in website .env (next to app.py) OR real process env:
@@ -549,6 +553,16 @@ class IndustryRecognition(db.Model):
     image_type     = db.Column(db.String(20), nullable=False, default='upload')  # 'upload' or 'code'
     image_filename = db.Column(db.String(512), nullable=True)  # when image_type='upload'
     embed_code     = db.Column(db.Text, nullable=True)  # when image_type='code'
+    display_order  = db.Column(db.Integer, nullable=False, default=0)
+    is_active      = db.Column(db.Boolean, nullable=False, default=True)
+    created_at     = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class TrustedBrand(db.Model):
+    __tablename__ = 'trusted_brands'
+    id             = db.Column(db.Integer, primary_key=True)
+    name           = db.Column(db.String(120), nullable=False)
+    logo_filename  = db.Column(db.String(512), nullable=True)
     display_order  = db.Column(db.Integer, nullable=False, default=0)
     is_active      = db.Column(db.Boolean, nullable=False, default=True)
     created_at     = db.Column(db.DateTime, default=datetime.utcnow)
@@ -969,6 +983,19 @@ def _save_industry_img(file_obj):
     unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
     file_obj.save(os.path.join(INDUSTRY_IMG_FOLDER, unique))
     return 'uploads/industries/' + unique
+
+
+def _save_brand_img(file_obj):
+    """Save an uploaded trusted-brand logo. Returns static-relative path or None."""
+    if not file_obj or not file_obj.filename:
+        return None
+    ext = file_obj.filename.rsplit('.', 1)[-1].lower()
+    if ext not in ALLOWED_IMG_EXT:
+        return None
+    safe = secure_filename(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    file_obj.save(os.path.join(BRAND_IMG_FOLDER, unique))
+    return 'uploads/brands/' + unique
 
 
 @app.route('/admin/blog/add', methods=['GET', 'POST'])
@@ -1517,6 +1544,10 @@ def index_page():
     ).all()
     portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
     recent_posts = BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).limit(3).all()
+    trusted_brands = TrustedBrand.query.filter_by(is_active=True).order_by(
+        TrustedBrand.display_order.asc(),
+        TrustedBrand.created_at.desc()
+    ).all()
     return render_template(
         'index.html',
         active_page='home',
@@ -1524,6 +1555,7 @@ def index_page():
         industries=industries,
         portfolios=portfolios,
         recent_posts=recent_posts,
+        trusted_brands=trusted_brands,
     )
 
 @app.route('/about')
@@ -2103,6 +2135,111 @@ def admin_industries_delete(ind_id):
     db.session.commit()
     flash(f'Recognition platform "{ind.name}" deleted.', 'success')
     return redirect(url_for('admin_industries'))
+
+
+# ── Admin: Trusted Brands CRUD ─────────────────────────────────────────────────
+@app.route('/admin/brands')
+@login_required
+def admin_brands():
+    brands = TrustedBrand.query.order_by(
+        TrustedBrand.display_order.asc(),
+        TrustedBrand.created_at.desc()
+    ).all()
+    return render_template('admin/brands.html', brands=brands)
+
+
+@app.route('/admin/brands/add', methods=['POST'])
+@login_required
+def admin_brands_add():
+    name = request.form.get('name', '').strip()
+    is_active = 'is_active' in request.form
+
+    try:
+        display_order = int(request.form.get('display_order', 0) or 0)
+    except (ValueError, TypeError):
+        display_order = 0
+
+    if not name:
+        flash('Brand name is required.', 'danger')
+        return redirect(url_for('admin_brands'))
+
+    logo_filename = _save_brand_img(request.files.get('logo_file'))
+
+    brand = TrustedBrand(
+        name=name,
+        logo_filename=logo_filename,
+        display_order=display_order,
+        is_active=is_active,
+    )
+    db.session.add(brand)
+    db.session.commit()
+    flash('Brand added successfully.', 'success')
+    return redirect(url_for('admin_brands'))
+
+
+@app.route('/admin/brands/<int:brand_id>/edit', methods=['POST'])
+@login_required
+def admin_brands_edit(brand_id):
+    brand = db.session.get(TrustedBrand, brand_id)
+    if not brand:
+        abort(404)
+
+    name = request.form.get('name', '').strip()
+    is_active = 'is_active' in request.form
+
+    try:
+        display_order = int(request.form.get('display_order', 0) or 0)
+    except (ValueError, TypeError):
+        display_order = 0
+
+    if not name:
+        flash('Brand name is required.', 'danger')
+        return redirect(url_for('admin_brands'))
+
+    if 'logo_file' in request.files and request.files['logo_file'].filename:
+        if brand.logo_filename:
+            old_img_path = os.path.join(basedir, 'assets', brand.logo_filename)
+            if os.path.exists(old_img_path):
+                os.remove(old_img_path)
+        brand.logo_filename = _save_brand_img(request.files.get('logo_file'))
+
+    brand.name = name
+    brand.display_order = display_order
+    brand.is_active = is_active
+
+    db.session.commit()
+    flash(f'Brand "{brand.name}" updated successfully.', 'success')
+    return redirect(url_for('admin_brands'))
+
+
+@app.route('/admin/brands/<int:brand_id>/toggle', methods=['POST'])
+@login_required
+def admin_brands_toggle(brand_id):
+    brand = db.session.get(TrustedBrand, brand_id)
+    if not brand:
+        abort(404)
+    brand.is_active = not brand.is_active
+    db.session.commit()
+    flash(f'Brand "{brand.name}" updated.', 'success')
+    return redirect(url_for('admin_brands'))
+
+
+@app.route('/admin/brands/<int:brand_id>/delete', methods=['POST'])
+@login_required
+def admin_brands_delete(brand_id):
+    brand = db.session.get(TrustedBrand, brand_id)
+    if not brand:
+        abort(404)
+
+    if brand.logo_filename:
+        img_path = os.path.join(basedir, 'assets', brand.logo_filename)
+        if os.path.exists(img_path):
+            os.remove(img_path)
+
+    db.session.delete(brand)
+    db.session.commit()
+    flash(f'Brand "{brand.name}" deleted.', 'success')
+    return redirect(url_for('admin_brands'))
 
 
 # ── Admin: Site Settings ───────────────────────────────────────────────────────

@@ -1,0 +1,235 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Trusted Brands{% endblock %}
+{% block topbar_title %}Trusted Brands{% endblock %}
+{% block topbar_sub %}Manage the client/brand logos shown in the homepage "Trusted by" strip{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+  :root {
+    --primary-blue: #2F55F4;
+    --primary-dark: #1e3a8a;
+    --border: #e5e7eb;
+    --text-dark: #1f2937;
+    --text-mid: #6b7280;
+    --text-muted: #9ca3af;
+    --bg-body: #f9fafb;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  .modal-content { border-radius: var(--radius); border: none; box-shadow: 0 20px 60px rgba(0,0,0,.15); }
+  .modal-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark));
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 20px 24px;
+  }
+  .modal-header .modal-title { color: #fff; font-weight: 700; font-size: 16px; }
+  .modal-header .btn-close { filter: invert(1); opacity: .8; }
+  .modal-body { padding: 24px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); background: #f9fafb; }
+
+  .form-label { font-size: 13px; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; display: block; }
+  .form-control, .form-check-input {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-size: 13.5px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+  }
+  .form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(47,85,244,.12);
+    outline: none;
+  }
+  .form-check-input { width: 18px; height: 18px; }
+  .form-check-input:checked { background-color: var(--primary-blue); border-color: var(--primary-blue); }
+
+  .help-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  .btn-save { background: var(--primary-blue); color: #fff; border: none; border-radius: 6px; padding: 10px 28px; font-size: 13.5px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background .2s; }
+  .btn-save:hover { background: var(--primary-dark); }
+
+  .btn-cancel { background: #cbd5e1; color: var(--text-dark); border: none; border-radius: 6px; padding: 10px 24px; font-size: 13.5px; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background .2s; }
+  .btn-cancel:hover { background: #94a3b8; }
+
+  .field-group { margin-bottom: 18px; }
+  .modal-lg { max-width: 480px; }
+
+  .hover-shadow { transition: all 0.3s ease; }
+  .hover-shadow:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important; transform: translateY(-2px); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3 py-lg-4">
+  <!-- Header Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+      <h2 class="mb-1 fs-4"><i class="fas fa-award me-2 text-primary"></i>Trusted Brands</h2>
+      <p class="text-muted mb-0 small">Manage the logos shown in the homepage "Trusted by Innovative Brands" strip</p>
+    </div>
+    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addModal">
+      <i class="fas fa-plus me-2"></i>Add New Brand
+    </button>
+  </div>
+
+  <!-- Brands List -->
+  {% if brands %}
+  <div class="row g-3">
+    {% for brand in brands %}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
+        <div class="card-body d-flex flex-column">
+          <!-- Header with Order and Status -->
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <span class="badge bg-light text-dark fw-semibold">Order: {{ brand.display_order }}</span>
+            <form method="post" action="{{ url_for('admin_brands_toggle', brand_id=brand.id) }}" class="d-inline">
+              <button type="submit" class="btn btn-sm btn-{{ 'success' if brand.is_active else 'secondary' }} rounded-pill">
+                <i class="fas fa-{{ 'check' if brand.is_active else 'times' }} me-1"></i>{{ 'Active' if brand.is_active else 'Inactive' }}
+              </button>
+            </form>
+          </div>
+
+          <!-- Logo Preview -->
+          <div class="mb-3 p-3 bg-light rounded" style="min-height: 90px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            {% if brand.logo_filename %}
+              <img src="/assets/{{ brand.logo_filename }}" alt="{{ brand.name }}" class="img-fluid" style="max-height: 60px; max-width: 100%;">
+            {% else %}
+              <span class="text-muted small"><i class="fas fa-image me-2"></i>No Logo</span>
+            {% endif %}
+          </div>
+
+          <!-- Brand Name -->
+          <h5 class="card-title mb-3 fw-bold text-dark text-center">{{ brand.name }}</h5>
+
+          <!-- Actions -->
+          <div class="d-grid gap-2 d-sm-flex mt-auto">
+            <button class="btn btn-outline-primary btn-sm flex-grow-1" data-bs-toggle="modal" data-bs-target="#editModal{{ brand.id }}">
+              <i class="fas fa-edit me-1"></i>Edit
+            </button>
+            <form method="post"
+                  action="{{ url_for('admin_brands_delete', brand_id=brand.id) }}"
+                  onsubmit="return confirm('Are you sure? This action cannot be undone.');"
+                  class="flex-grow-1">
+              <button type="submit" class="btn btn-outline-danger btn-sm w-100">
+                <i class="fas fa-trash me-1"></i>Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal{{ brand.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <form method="post" action="{{ url_for('admin_brands_edit', brand_id=brand.id) }}" enctype="multipart/form-data">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Edit Brand</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="field-group">
+                <label class="form-label">Brand Name *</label>
+                <input type="text" name="name" class="form-control" value="{{ brand.name }}" required maxlength="120">
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Display Order</label>
+                <input type="number" name="display_order" class="form-control" value="{{ brand.display_order }}" min="0">
+                <small class="help-text">Lower number = appears first</small>
+              </div>
+
+              <div class="field-group">
+                <label class="form-label">Logo File (PNG, JPG, GIF, WEBP)</label>
+                <input type="file" name="logo_file" class="form-control" accept=".png,.jpg,.jpeg,.gif,.webp">
+                {% if brand.logo_filename %}
+                <small class="help-text">Current: <strong>{{ brand.logo_filename.split('/')[-1] }}</strong></small>
+                {% endif %}
+                <small class="help-text d-block">Leave empty to keep current logo. Transparent PNG/SVG-exported-as-PNG works best.</small>
+              </div>
+
+              <div class="field-group">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" name="is_active" id="isActiveEdit{{ brand.id }}"
+                         {% if brand.is_active %}checked{% endif %}>
+                  <label class="form-check-label" for="isActiveEdit{{ brand.id }}">
+                    Active (visible in homepage strip)
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn-save"><i class="fas fa-save me-1"></i>Save Changes</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="card border-0 shadow-sm text-center py-5">
+    <div class="card-body">
+      <i class="fas fa-inbox fa-3x text-muted mb-3 d-block"></i>
+      <h5 class="card-title text-muted mb-2">No Brands Yet</h5>
+      <p class="card-text text-muted mb-3">Add brands to show them in the homepage "Trusted by" strip.</p>
+      <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addModal">
+        <i class="fas fa-plus me-2"></i>Add Your First Brand
+      </button>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <form method="post" action="{{ url_for('admin_brands_add') }}" enctype="multipart/form-data">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fas fa-award me-2"></i>Add New Brand</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="field-group">
+              <label class="form-label">Brand Name *</label>
+              <input type="text" name="name" class="form-control" placeholder="e.g. Client / Company name" required maxlength="120">
+            </div>
+
+            <div class="field-group">
+              <label class="form-label">Display Order</label>
+              <input type="number" name="display_order" class="form-control" value="0" min="0">
+              <small class="help-text">Lower number = appears first</small>
+            </div>
+
+            <div class="field-group">
+              <label class="form-label">Logo File (PNG, JPG, GIF, WEBP)</label>
+              <input type="file" name="logo_file" class="form-control" accept=".png,.jpg,.jpeg,.gif,.webp">
+              <small class="help-text">Recommended: transparent background, ~200px height</small>
+            </div>
+
+            <div class="field-group">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="is_active" id="isActiveAdd" checked>
+                <label class="form-check-label" for="isActiveAdd">
+                  Active (visible in homepage strip)
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn-save"><i class="fas fa-save me-1"></i>Add Brand</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
