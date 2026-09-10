@@ -4,7 +4,7 @@
 
 ## Services
 
-- [Custom Mobile Application Development](https://www.ivinfotech.com/custom-mobile-application-development): Custom Android, iOS, Flutter & React Native mobile app development services in India
+- [Custom Mobile Application Development](https://www.ivinfotech.com/custom-mobile-application-development): Custom Android, iOS, Flutter & React Native mobile app development company and services in India, with real client case studies
 - [Custom Website & Software Development](https://www.ivinfotech.com/custom-website-software-development): Custom website and software development solutions
 - [CRM & ERP Custom Software Development](https://www.ivinfotech.com/crm-erp-custom-software-development): Custom CRM and ERP software development
 - [E-Commerce Solution](https://www.ivinfotech.com/ecommerce-website-app-development-india): E-commerce website and app development in India
@@ -22,6 +22,31 @@
 - [Hire HTML Developers](https://www.ivinfotech.com/hire-html-developers): Dedicated HTML developers for hire
 - [Hire UI/UX Designers](https://www.ivinfotech.com/hire-ui-ux-designers): Dedicated UI/UX designers for hire
 - [Hire AI Automation Engineers](https://www.ivinfotech.com/hire-ai-engineers): Dedicated AI automation engineers for hire
+
+## Case Studies
+
+- [Salon Appointment Booking Website — Rosenthal Barbershop](https://ivinfotech.com/portfolio/salon-appointment-booking-website-development): Custom salon booking system with multi-barber scheduling, real-time slots, and full admin dashboard
+- [Institute Management Software Development](https://ivinfotech.com/portfolio/custom-institute-management-software-case-study): Education ERP automating student management, fee collection, attendance, and inquiries
+- [PawCount – Animal Welfare & Dog Tracking Software](https://ivinfotech.com/portfolio/animal-welfare-dog-tracking-software): GIS-powered platform for stray dog surveys, ABC programs, and shelter management
+- [AI-Ready Travel Portal — SafarVibes](https://ivinfotech.com/portfolio/ai-ready-travel-portal-safarvibes-success-story): Mobile-first, AEO-ready travel booking platform
+- [Smart Mandi — Agriculture ERP & E-commerce Solution](https://ivinfotech.com/portfolio/agri-tech-erp-mandi-workflow-automation): APMC digital transformation with 45% higher operational efficiency and 60% faster payment settlement
+- [Scalable Job Portal & SaaS Recruitment Software](https://ivinfotech.com/portfolio/custom-job-portal-saas-recruitment-software): Laravel and Flutter-based multi-tenant recruitment platform
+- [Healthcare SaaS Ecosystem — Eye Care Hospital](https://ivinfotech.com/portfolio/eye-care-hospital-software-india): Web & mobile app architecture for hospital digital transformation
+- [Ecommerce Website Development — Belzzo](https://ivinfotech.com/portfolio/ecommerce-website-for-footwear-brand): High-converting ecommerce store for a footwear brand
+
+## Blog Posts
+
+- [How to Choose a Mobile App Development Company in India](https://ivinfotech.com/blog/how-to-choose-mobile-app-development-company-india): A practical 6-point checklist covering experience, tech stack, process, and engagement models
+- [E-commerce Website Development Cost in India (2026)](https://ivinfotech.com/blog/ecommerce-website-development-cost-in-india-2026): Real pricing breakdown by platform, features, and business size
+- [How AI is Revolutionizing Mobile Apps in 2026](https://ivinfotech.com/blog/ai-revolutionizing-mobile-apps-2026-trends): Agentic AI, predictive analytics, and edge computing in mobile app development
+- [10 Benefits of Laravel Development](https://ivinfotech.com/blog/10-beneifts-of-laravel-development): Why Laravel is used for fast and secure web development
+- [How AI-Powered Automation Is Transforming Small Businesses in 2026](https://ivinfotech.com/blog/how-ai-powered-automation-is-transforming-small-businesses-in-2026): How SMBs cut operational costs and streamline workflows with AI automation
+- [Next.js vs Nuxt.js: Which Framework Should You Choose in 2026?](https://ivinfotech.com/blog/nextjs-vs-nuxtjs-which-framework-should-you-choose-in-2026): Performance, SEO, and ecosystem comparison for choosing a meta-framework
+- [Building Custom GPT-Powered Chatbots for Enterprise Customer Support](https://ivinfotech.com/blog/building-custom-gpt-powered-chatbots-for-enterprise-customer-support): Building context-aware AI chatbots with OpenAI APIs, LangChain, and RAG
+- [10 SEO Strategies That Actually Work in 2026](https://ivinfotech.com/blog/10-seo-strategies-that-actually-work-in-2026): SEO playbook backed by campaign data from 50+ client websites
+- [Flutter vs React Native in 2026](https://ivinfotech.com/blog/flutter-vs-react-native-in-2026-the-definitive-cross-platform-showdown): Performance, UI fidelity, and plugin ecosystem comparison
+- [Building Design Systems That Scale](https://ivinfotech.com/blog/building-design-systems-that-scale-a-startups-practical-guide): A startup's practical guide to scalable design systems
+- [Headless CMS vs Traditional CMS](https://ivinfotech.com/blog/headless-cms-vs-traditional-cms-what-enterprise-teams-need-to-know): Comparing Strapi, Sanity, and WordPress for enterprise teams
 
 ## Company
 
