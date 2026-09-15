@@ -410,6 +410,9 @@ class BlogPost(db.Model):
     read_time      = db.Column(db.String(40), nullable=True)
     is_published   = db.Column(db.Boolean, default=False, nullable=False)
     created_at     = db.Column(db.DateTime, default=datetime.utcnow)
+    cta_title       = db.Column(db.String(120), nullable=True)
+    cta_description = db.Column(db.String(300), nullable=True)
+    cta_link         = db.Column(db.String(255), nullable=True)
 
 
 class JobApplication(db.Model):
@@ -1019,6 +1022,9 @@ def admin_blog_add():
             author_role=request.form.get('author_role', '').strip(),
             read_time=request.form.get('read_time', '').strip(),
             is_published='is_published' in request.form,
+            cta_title=request.form.get('cta_title', '').strip() or None,
+            cta_description=request.form.get('cta_description', '').strip() or None,
+            cta_link=request.form.get('cta_link', '').strip() or None,
         )
         db.session.add(post)
         db.session.commit()
@@ -1043,6 +1049,9 @@ def admin_blog_edit(pid):
         post.author_role = request.form.get('author_role', '').strip()
         post.read_time   = request.form.get('read_time', '').strip()
         post.is_published = 'is_published' in request.form
+        post.cta_title       = request.form.get('cta_title', '').strip() or None
+        post.cta_description = request.form.get('cta_description', '').strip() or None
+        post.cta_link         = request.form.get('cta_link', '').strip() or None
         new_img = _save_blog_image(request.files.get('featured_image'))
         if new_img:
             post.featured_image = new_img

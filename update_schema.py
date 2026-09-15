@@ -81,6 +81,31 @@ def update_database():
         else:
             print("ERROR: 'services' table not found.")
 
+        # ── 4. BlogPost: add CTA widget columns ──────────────────────────────────
+        if 'blog_posts' in tables:
+            columns = [col['name'] for col in inspector.get_columns('blog_posts')]
+
+            for col_name, col_type in [
+                ('cta_title', 'VARCHAR(120)'),
+                ('cta_description', 'VARCHAR(300)'),
+                ('cta_link', 'VARCHAR(255)'),
+            ]:
+                if col_name not in columns:
+                    print(f"Adding '{col_name}' column to 'blog_posts' table...")
+                    try:
+                        db.session.execute(text(
+                            f'ALTER TABLE blog_posts ADD COLUMN {col_name} {col_type}'
+                        ))
+                        db.session.commit()
+                        print(f"SUCCESS: Added '{col_name}' column.")
+                    except Exception as e:
+                        db.session.rollback()
+                        print(f"ERROR updating database: {e}")
+                else:
+                    print(f"SKIP: '{col_name}' column already exists.")
+        else:
+            print("ERROR: 'blog_posts' table not found.")
+
 
 if __name__ == '__main__':
     update_database()

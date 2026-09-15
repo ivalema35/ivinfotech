@@ -277,6 +277,31 @@
                     <p class="help-text">Displayed on the blog listing page. Keep it under 180 characters.</p>
                 </div>
 
+                <!-- Card: Sidebar CTA Widget -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-bullhorn" style="color:var(--primary-blue);"></i> Sidebar CTA Widget (optional)</h2>
+                    <p class="help-text" style="margin-bottom:14px;">Controls the "Need Experts?" box in the article sidebar. Leave all three blank to use the default widget.</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Widget Title</label>
+                            <input type="text" class="form-control" name="cta_title"
+                                   value="{{ p.cta_title if is_edit and p.cta_title else '' }}"
+                                   placeholder="e.g. Need Mobile App Experts?" maxlength="120">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Button Link</label>
+                            <input type="text" class="form-control" name="cta_link"
+                                   value="{{ p.cta_link if is_edit and p.cta_link else '' }}"
+                                   placeholder="e.g. https://www.ivinfotech.com/custom-mobile-application-development" maxlength="255">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Widget Description</label>
+                            <textarea class="form-control" name="cta_description" rows="2" maxlength="300"
+                                      placeholder="e.g. Hire pre-vetted Flutter, React Native, Android &amp; iOS developers from our team in Mehsana.">{{ p.cta_description if is_edit and p.cta_description else '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Card 4: Article content -->
                 <div class="editor-card">
                     <h2><i class="fa-solid fa-file-pen" style="color:var(--primary-blue);"></i> Article Content</h2>
