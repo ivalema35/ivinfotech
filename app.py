@@ -1085,6 +1085,9 @@ def _migrate_db():
         ("portfolios", "interlinks", "TEXT"),
         ("inquiries", "city",             "VARCHAR(120) NOT NULL DEFAULT 'Mehsana'"),
         ("inquiries", "state",            "VARCHAR(120) NOT NULL DEFAULT 'Gujarat'"),
+        ("blog_posts", "cta_title",       "VARCHAR(120)"),
+        ("blog_posts", "cta_description", "VARCHAR(300)"),
+        ("blog_posts", "cta_link",        "VARCHAR(255)"),
     ]
     try:
         with db.engine.connect() as conn:
