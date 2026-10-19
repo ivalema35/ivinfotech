@@ -1814,6 +1814,16 @@ def hire_hub():
     # SEO: navbar ke "Hire" link ka hub page — saare hire-* pages yahan se linked hain
     return render_template('hire.html', active_page='hire')
 
+@app.route('/privacy-policy')
+def privacy_policy():
+    # SEO/trust page: footer ka Privacy Policy link (Google Ads aur forms ke liye zaroori)
+    return render_template('privacy-policy.html')
+
+@app.route('/terms-of-service')
+def terms_of_service():
+    # SEO/trust page: footer ka Terms of Service link
+    return render_template('terms-of-service.html')
+
 @app.route('/portfolio')
 def portfolio():
     portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
@@ -1993,6 +2003,8 @@ def sitemap():
         ('/career',                                    'monthly', '0.7'),
         ('/our-team',                                  'monthly', '0.6'),
         ('/testimonials',                              'monthly', '0.6'),
+        ('/privacy-policy',                            'yearly',  '0.3'),
+        ('/terms-of-service',                          'yearly',  '0.3'),
         ('/custom-website-software-development',       'monthly', '0.8'),
         ('/custom-mobile-application-development',     'monthly', '0.8'),
         ('/crm-erp-custom-software-development',       'monthly', '0.8'),
