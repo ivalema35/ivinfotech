@@ -55,3 +55,6 @@ logs/
 # ── Misc ──────────────────────────────────────────────────────────────────────
 *.bak
 ivinfotech.com_full_content.txt
+
+# ── Private uploads (job applicants ke resumes = personal data, git/GitHub me nahi jaane chahiye) ──
+uploads/resumes/

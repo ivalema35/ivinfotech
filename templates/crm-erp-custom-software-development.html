@@ -7,15 +7,19 @@
 
 <title>Custom ERP & CRM Software Development in Mehsana | IV Infotech</title>
     <meta name="description" content="Custom ERP & CRM Solutions in Mehsana, Gujarat. Automate your sales, inventory, HR, and finance with tailored software built at our S-Cube development center.">
-    <meta name="keywords" content="ERP Software Mehsana, CRM Development Gujarat, Business Automation India, Custom ERP Solutions, Sales Automation">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/crm-erp-custom-software-development" />
+    {% set page_url = "https://www.ivinfotech.com/crm-erp-custom-software-development" %}
+    <link rel="canonical" href="{{ page_url }}">
+    {# SEO #10: Service + BreadcrumbList schema — components/service_schema.html #}
+    {% set svc_name = "CRM & ERP Custom Software Development" %}
+    {% set svc_desc = "Custom ERP & CRM Solutions in Mehsana, Gujarat. Automate your sales, inventory, HR, and finance with tailored software built at our S-Cube development center." %}
+    {% include 'components/service_schema.html' %}
 
     <meta property="og:title" content="Streamline Operations with Custom ERP & CRM | IV Infotech">
     <meta property="og:description" content="Stop using spreadsheets. Automate your sales, inventory, and HR processes with tailored software built at our S-Cube, Mehsana development center.">
-    <meta property="og:image" content="assets/images/logo.png">
-    <meta property="og:url" content="https://ivinfotech.com/crm-erp-custom-software-development.html">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:type" content="website">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">

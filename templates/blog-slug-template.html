@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- SEO Meta Tags -->
-    <title>{{ post.title }} | IV Infotech Blog</title>
-    <meta name="description" content="{{ post.excerpt | striptags | truncate(160) if post.excerpt else post.title }}">
-    <meta name="keywords" content="{{ post.category }}, IV Infotech Blog">
+    {# SEO #6: admin me SEO Title / Meta Description bhare hon to wahi, warna purana title / excerpt #}
+    {% set seo_title = post.seo_title or (post.title ~ ' | IV Infotech Blog') %}
+    {% set seo_desc = post.meta_description or (post.excerpt | striptags | truncate(160) if post.excerpt else post.title) %}
+    <title>{{ seo_title }}</title>
+    <meta name="description" content="{{ seo_desc }}">
     <meta name="author" content="{{ post.author_name }}">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://www.ivinfotech.com/blog/{{ post.slug }}">
@@ -35,9 +37,9 @@
     <link rel="preconnect" href="https://ui-avatars.com">
 
     <meta property="og:url" content="https://www.ivinfotech.com/blog/{{ post.slug }}">
-    <meta property="og:title" content="{{ post.title }}">
-    <meta property="og:description" content="{{ post.excerpt | striptags | truncate(160) if post.excerpt else post.title }}">
-    <meta property="og:image" content="{{ post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og-blog.jpg' }}">
+    <meta property="og:title" content="{{ post.seo_title or post.title }}">
+    <meta property="og:description" content="{{ seo_desc }}">
+    <meta property="og:image" content="{{ post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og_image.png' }}">
     <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="IV Infotech">
     <meta property="article:published_time" content="{{ post.created_at.isoformat() }}">
@@ -48,9 +50,9 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://www.ivinfotech.com/blog/{{ post.slug }}">
-    <meta name="twitter:title" content="{{ post.title }}">
-    <meta name="twitter:description" content="{{ post.excerpt | striptags | truncate(160) if post.excerpt else post.title }}">
-    <meta name="twitter:image" content="{{ post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og-blog.jpg' }}">
+    <meta name="twitter:title" content="{{ post.seo_title or post.title }}">
+    <meta name="twitter:description" content="{{ seo_desc }}">
+    <meta name="twitter:image" content="{{ post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og_image.png' }}">
 
     <!-- JSON-LD Structured Data — BlogPosting -->
     <script type="application/ld+json">
@@ -63,14 +65,23 @@
         },
         "headline": {{ post.title | tojson }},
         "description": {{ (post.excerpt | striptags if post.excerpt else post.title) | tojson }},
-        "image": {{ (post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og-blog.jpg') | tojson }},
+        "image": {{ (post.featured_image if post.featured_image and post.featured_image.startswith('http') else ('https://www.ivinfotech.com' + post.featured_image) if post.featured_image else 'https://www.ivinfotech.com/assets/images/og_image.png') | tojson }},
         "datePublished": "{{ post.created_at.isoformat() }}",
         "dateModified": "{{ post.updated_at.isoformat() if post.updated_at else post.created_at.isoformat() }}",
+        {% if post.author %}
+        "author": {
+            "@type": "Person",
+            "name": {{ post.author.name | tojson }},
+            "jobTitle": {{ post.author.role | tojson }},
+            "url": "https://www.ivinfotech.com/author/{{ post.author.slug }}"
+        },
+        {% else %}
         "author": {
             "@type": "Organization",
-            "name": {{ post.author_name | tojson }},
+            "name": "IV Infotech",
             "url": "https://www.ivinfotech.com"
         },
+        {% endif %}
         "publisher": {
             "@type": "Organization",
             "name": "IV Infotech",
@@ -91,7 +102,8 @@
         "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ivinfotech.com/" },
             { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.ivinfotech.com/blog" },
-            { "@type": "ListItem", "position": 3, "name": {{ post.title | tojson }} }
+            { "@type": "ListItem", "position": 3, "name": {{ post.category | tojson }}, "item": "https://www.ivinfotech.com/blog/category/{{ post.category | category_slug }}" },
+            { "@type": "ListItem", "position": 4, "name": {{ post.title | tojson }}, "item": "https://www.ivinfotech.com/blog/{{ post.slug }}" }
         ]
     }
     </script>
@@ -808,7 +820,7 @@
                 <span class="separator">/</span>
                 <a href="{{ url_for('blog') }}">Blog</a>
                 <span class="separator">/</span>
-                <a href="{{ url_for('blog') }}">{{ post.category }}</a>
+                <a href="/blog/category/{{ post.category | category_slug }}">{{ post.category }}</a>
                 <span class="separator">/</span>
                 <span>{{ post.title | truncate(60) }}</span>
             </nav>
@@ -819,10 +831,14 @@
             <!-- Meta Bar -->
             <div class="post-meta-bar" data-aos="fade-up" data-aos-delay="100">
                 <div class="author-chip">
+                    {% if post.author %}
+                    <img loading="lazy" src="{{ url_for('static', filename=post.author.image_filename | webp_url) }}" alt="{{ post.author.name }}">
+                    {% else %}
                     <img loading="lazy" src="https://ui-avatars.com/api/?name={{ post.author_name | urlencode }}&background=6366f1&color=fff&size=84"
                         alt="{{ post.author_name }}">
+                    {% endif %}
                     <div>
-                        <div class="name">{{ post.author_name }}</div>
+                        <div class="name">{% if post.author %}<a href="/author/{{ post.author.slug }}" style="color:inherit;text-decoration:none;">{{ post.author.name }}</a>{% else %}{{ post.author_name }}{% endif %}</div>
                         <div class="role">{{ post.author_role or 'IV Infotech' }}</div>
                     </div>
                 </div>
@@ -961,12 +977,23 @@
 
                         <!-- ===== AUTHOR BIO BOX ===== -->
                         <div class="author-bio-box" data-aos="fade-up">
+                            {% if post.author %}
+                            {# SEO #7: asli author — photo, bio, author page aur LinkedIn #}
+                            <img loading="lazy" src="{{ url_for('static', filename=post.author.image_filename | webp_url) }}" alt="{{ post.author.name }}">
+                            <div>
+                                <h5><a href="/author/{{ post.author.slug }}" style="color:inherit;text-decoration:none;">{{ post.author.name }}</a></h5>
+                                <div class="author-role">{{ post.author.role }}</div>
+                                {% if post.author.bio %}<p>{{ post.author.bio }}</p>{% endif %}
+                                <p class="mt-2"><a href="/author/{{ post.author.slug }}">View all articles</a>{% if post.author.linkedin_url %} · <a href="{{ post.author.linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}</p>
+                            </div>
+                            {% else %}
                             <img loading="lazy" src="https://ui-avatars.com/api/?name={{ post.author_name | urlencode }}&background=6366f1&color=fff&size=144"
                                 alt="{{ post.author_name }}">
                             <div>
                                 <h5>{{ post.author_name }}</h5>
                                 <div class="author-role">{{ post.author_role or 'IV Infotech' }}</div>
                             </div>
+                            {% endif %}
                         </div>
 
                     </article>
@@ -987,10 +1014,11 @@
                             <div class="hire-icon">
                                 <i class="fas fa-code"></i>
                             </div>
-                            <h5>Need Laravel Experts?</h5>
-                            <p>Hire pre-vetted Laravel developers from our team in Mehsana. Flexible engagement models, strict NDA, and dedicated project management.</p>
-                            <a href="https://www.ivinfotech.com/contact" class="btn-hire-widget">
-                                Talk to Us <i class="fas fa-arrow-right"></i>
+                            {# SEO #7: box post ki category ke hisaab se badalta hai (admin ka Sidebar CTA bhara ho to wahi) — app.py _blog_sidebar_cta() #}
+                            <h5>{{ sidebar_cta.title }}</h5>
+                            <p>{{ sidebar_cta.description }}</p>
+                            <a href="{{ sidebar_cta.link }}" class="btn-hire-widget">
+                                {{ sidebar_cta.button }} <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
 

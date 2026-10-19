@@ -7,15 +7,19 @@
 
 <title>Custom eCommerce Website Development Company in India | IV Infotech</title>
     <meta name="description" content="Build your online store with IV Infotech — a leading custom eCommerce website development company in India. Shopify, WooCommerce & Magento experts.">
-    <meta name="keywords" content="eCommerce website development company in India, eCommerce app development company, custom eCommerce solutions, online store development, Shopify development India, WooCommerce development services, Magento website development, B2B eCommerce development, B2C eCommerce website, mobile app development for eCommerce, SEO friendly eCommerce website, custom shopping cart development, eCommerce software development company, IV Infotech">
      <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <link rel="canonical" href="https://www.ivinfotech.com/ecommerce-website-app-development-india">
+    {% set page_url = "https://www.ivinfotech.com/ecommerce-website-app-development-india" %}
+    <link rel="canonical" href="{{ page_url }}">
+    {# SEO #10: Service + BreadcrumbList schema — components/service_schema.html #}
+    {% set svc_name = "E-Commerce Website & App Development" %}
+    {% set svc_desc = "Build your online store with IV Infotech — a leading custom eCommerce website development company in India. Shopify, WooCommerce & Magento experts." %}
+    {% include 'components/service_schema.html' %}
 
     <meta property="og:title" content="Custom eCommerce Website Development Company in India | IV Infotech">
     <meta property="og:description" content="Hire expert developers for Shopify, WooCommerce & Magento. IV Infotech builds fast, mobile-friendly online stores that grow your business.">
     <meta property="og:image" content="https://www.ivinfotech.com/assets/images/ecommercewebsitedevelopment_ogimage.webp">
-    <meta property="og:url" content="https://www.ivinfotech.com/ecommerce-website-app-development-india">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:type" content="website">
     <!--twitter card-->
     <meta name="twitter:card" content="summary_large_image">

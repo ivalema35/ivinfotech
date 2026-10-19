@@ -379,6 +379,7 @@ class Testimonial(db.Model):
     content     = db.Column(db.Text, nullable=False)
     rating      = db.Column(db.Integer, default=5, nullable=False)
     is_active   = db.Column(db.Boolean, default=True, nullable=False)
+    review_type = db.Column(db.String(20), default='client', nullable=False)  # client | employee | intern (SEO #9)
     created_at  = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -413,6 +414,12 @@ class BlogPost(db.Model):
     cta_title       = db.Column(db.String(120), nullable=True)
     cta_description = db.Column(db.String(300), nullable=True)
     cta_link         = db.Column(db.String(255), nullable=True)
+    # SEO PDF #6/#7/#8: Google ke liye alag title/description, asli author (Our Team member), last-updated date
+    seo_title        = db.Column(db.String(255), nullable=True)   # khaali ho to post title use hota hai
+    meta_description = db.Column(db.String(400), nullable=True)   # khaali ho to excerpt use hota hai
+    updated_at       = db.Column(db.DateTime, nullable=True)      # edit par set hota hai (sitemap lastmod)
+    author_id        = db.Column(db.Integer, db.ForeignKey('team_members.id'), nullable=True)
+    author           = db.relationship('TeamMember', foreign_keys=[author_id], lazy='joined')
 
 
 class JobApplication(db.Model):
@@ -556,6 +563,11 @@ class TeamMember(db.Model):
     twitter_url    = db.Column(db.String(512),  nullable=True)
     display_order  = db.Column(db.Integer,      nullable=False, default=0)
     is_active      = db.Column(db.Boolean,      nullable=False, default=True)
+
+    @property
+    def slug(self):
+        # Author page ka URL naam se banta hai (/author/ronak-patel) — alag DB column ki zaroorat nahi
+        return re.sub(r'[^a-z0-9]+', '-', (self.name or '').lower()).strip('-')
 
 
 class IndustryRecognition(db.Model):
@@ -771,6 +783,15 @@ def admin_testimonials():
     return render_template('admin/testimonials.html', testimonials=all_testimonials)
 
 
+REVIEW_TYPES = ('client', 'employee', 'intern')
+
+
+def _review_type_from_form():
+    """SEO #9: sirf allowed values save hon — client reviews homepage par, employee/intern career page par."""
+    value = (request.form.get('review_type') or 'client').strip().lower()
+    return value if value in REVIEW_TYPES else 'client'
+
+
 @app.route('/admin/testimonials/add', methods=['POST'])
 @login_required
 def admin_testimonials_add():
@@ -780,6 +801,7 @@ def admin_testimonials_add():
         content=request.form['content'].strip(),
         rating=int(request.form.get('rating', 5)),
         is_active='is_active' in request.form,
+        review_type=_review_type_from_form(),
     )
     db.session.add(t)
     db.session.commit()
@@ -797,6 +819,7 @@ def admin_testimonials_edit(tid):
     t.client_role = request.form['client_role'].strip()
     t.content     = request.form['content'].strip()
     t.rating      = int(request.form.get('rating', 5))
+    t.review_type = _review_type_from_form()
     t.is_active   = 'is_active' in request.form
     db.session.commit()
     flash('Testimonial updated.', 'success')
@@ -957,6 +980,19 @@ def admin_blog():
     return render_template('admin/blog.html', posts=posts)
 
 
+def _clean_upload_name(original):
+    """SEO #12: upload hui image ka naam saaf karo — chhote akshar, space/underscore ki jagah '-', sirf ek extension.
+    'Screenshot 2026-02-26 121652.PNG' -> 'screenshot-2026-02-26-121652.png', 'hero-desktop.webp.png' -> 'hero-desktop.png'."""
+    name = original or ''
+    base, dot, ext = name.rpartition('.')
+    if not dot:
+        base, ext = name, ''
+    base = re.sub(r'(\.(png|jpe?g|gif|webp))+$', '', secure_filename(base), flags=re.I)   # andar chhupa extra extension
+    base = re.sub(r'[^a-z0-9]+', '-', base.lower()).strip('-') or 'image'
+    ext = re.sub(r'[^a-z0-9]', '', ext.lower())
+    return base + ('.' + ext if ext else '')
+
+
 def _save_blog_image(file_obj):
     """Save uploaded blog image and return the URL path, or None."""
     if not file_obj or not file_obj.filename:
@@ -964,8 +1000,8 @@ def _save_blog_image(file_obj):
     ext = file_obj.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_IMG_EXT:
         return None
-    safe = secure_filename(file_obj.filename)
-    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    safe = _clean_upload_name(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d-%H%M%S-') + safe
     file_obj.save(os.path.join(BLOG_IMG_FOLDER, unique))
     return '/assets/uploads/blog/' + unique
 
@@ -979,8 +1015,8 @@ def _save_team_img(file_obj):
     ext = file_obj.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_IMG_EXT:
         return None
-    safe   = secure_filename(file_obj.filename)
-    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    safe   = _clean_upload_name(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d-%H%M%S-') + safe
     file_obj.save(os.path.join(TEAM_IMG_FOLDER, unique))
     return 'uploads/team/' + unique
 
@@ -992,8 +1028,8 @@ def _save_industry_img(file_obj):
     ext = file_obj.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_IMG_EXT:
         return None
-    safe = secure_filename(file_obj.filename)
-    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    safe = _clean_upload_name(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d-%H%M%S-') + safe
     file_obj.save(os.path.join(INDUSTRY_IMG_FOLDER, unique))
     return 'uploads/industries/' + unique
 
@@ -1005,10 +1041,29 @@ def _save_brand_img(file_obj):
     ext = file_obj.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_IMG_EXT:
         return None
-    safe = secure_filename(file_obj.filename)
-    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    safe = _clean_upload_name(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d-%H%M%S-') + safe
     file_obj.save(os.path.join(BRAND_IMG_FOLDER, unique))
     return 'uploads/brands/' + unique
+
+
+def _author_choices():
+    """Blog author dropdown ke liye active team members (Our Team page wale log)."""
+    return (TeamMember.query.filter_by(is_active=True)
+            .order_by(TeamMember.category.desc(), TeamMember.display_order.asc()).all())
+
+
+def _apply_blog_seo_author(post):
+    """Blog form se SEO title/description aur author (team member) post par lagao — add aur edit dono me."""
+    post.seo_title = request.form.get('seo_title', '').strip() or None
+    post.meta_description = request.form.get('meta_description', '').strip() or None
+    author_id = request.form.get('author_id', '').strip()
+    member = db.session.get(TeamMember, int(author_id)) if author_id.isdigit() else None
+    post.author_id = member.id if member else None
+    if member:
+        # Blog cards / meta tags abhi bhi author_name padhte hain — isliye naam aur role bhi copy kar do
+        post.author_name = member.name
+        post.author_role = member.role
 
 
 @app.route('/admin/blog/add', methods=['GET', 'POST'])
@@ -1031,11 +1086,12 @@ def admin_blog_add():
             cta_description=request.form.get('cta_description', '').strip() or None,
             cta_link=request.form.get('cta_link', '').strip() or None,
         )
+        _apply_blog_seo_author(post)
         db.session.add(post)
         db.session.commit()
         flash('Blog post created successfully.', 'success')
         return redirect(url_for('admin_blog'))
-    return render_template('admin/blog.html', posts=[], _mode='add')
+    return render_template('admin/blog.html', posts=[], _mode='add', authors=_author_choices())
 
 
 @app.route('/admin/blog/edit/<int:pid>', methods=['GET', 'POST'])
@@ -1057,13 +1113,15 @@ def admin_blog_edit(pid):
         post.cta_title       = request.form.get('cta_title', '').strip() or None
         post.cta_description = request.form.get('cta_description', '').strip() or None
         post.cta_link         = request.form.get('cta_link', '').strip() or None
+        _apply_blog_seo_author(post)
+        post.updated_at = datetime.utcnow()  # sitemap lastmod + article dateModified
         new_img = _save_blog_image(request.files.get('featured_image'))
         if new_img:
             post.featured_image = new_img
         db.session.commit()
         flash('Blog post updated.', 'success')
         return redirect(url_for('admin_blog'))
-    return render_template('admin/blog.html', posts=[], _edit_post=post)
+    return render_template('admin/blog.html', posts=[], _edit_post=post, authors=_author_choices())
 
 
 @app.route('/admin/blog/delete/<int:pid>', methods=['POST'])
@@ -1097,6 +1155,11 @@ def _migrate_db():
         ("blog_posts", "cta_title",       "VARCHAR(120)"),
         ("blog_posts", "cta_description", "VARCHAR(300)"),
         ("blog_posts", "cta_link",        "VARCHAR(255)"),
+        ("blog_posts", "seo_title",        "VARCHAR(255)"),
+        ("blog_posts", "meta_description", "VARCHAR(400)"),
+        ("blog_posts", "updated_at",       "DATETIME"),
+        ("blog_posts", "author_id",        "INTEGER"),
+        ("testimonials", "review_type",    "VARCHAR(20) NOT NULL DEFAULT 'client'"),
     ]
     try:
         with db.engine.connect() as conn:
@@ -1106,6 +1169,15 @@ def _migrate_db():
                 if col not in existing:
                     conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {typedef}"))
                     conn.commit()
+                    if (table, col) == ("testimonials", "review_type"):
+                        # Sirf ek baar (column bante waqt): purane staff/intern reviews ko role se pehchaan ke mark karo.
+                        # Iske baad admin panel ka "Review Type" hi chalega.
+                        conn.execute(text("UPDATE testimonials SET review_type='intern' "
+                                          "WHERE lower(client_role) LIKE '%intern%' OR lower(client_role) LIKE '%trainee%'"))
+                        conn.execute(text("UPDATE testimonials SET review_type='employee' WHERE review_type='client' AND "
+                                          "(lower(client_role) LIKE '%developer%' OR lower(client_role) LIKE '%team member%' "
+                                          "OR lower(client_role) LIKE '%employee%')"))
+                        conn.commit()
 
             conn.execute(text("UPDATE inquiries SET city='Mehsana' WHERE city IS NULL OR TRIM(city)=''"))
             conn.execute(text("UPDATE inquiries SET state='Gujarat' WHERE state IS NULL OR TRIM(state)=''"))
@@ -1123,8 +1195,8 @@ def _save_portfolio_img(file_obj, slug=None):
     ext = file_obj.filename.rsplit('.', 1)[-1].lower()
     if ext not in ALLOWED_IMG_EXT:
         return None
-    safe = secure_filename(file_obj.filename)
-    unique = datetime.utcnow().strftime('%Y%m%d_%H%M%S_') + safe
+    safe = _clean_upload_name(file_obj.filename)
+    unique = datetime.utcnow().strftime('%Y%m%d-%H%M%S-') + safe
     if slug:
         folder = os.path.join(PORTFOLIO_IMG_FOLDER, secure_filename(slug))
         os.makedirs(folder, exist_ok=True)
@@ -1572,7 +1644,7 @@ def llms_txt():
 # ── Page Routes ────────────────────────────────────────────────────────────────
 @app.route('/')
 def index_page():
-    home_testimonials = Testimonial.query.filter_by(is_active=True).order_by(Testimonial.created_at.desc()).all()
+    home_testimonials = Testimonial.query.filter_by(is_active=True, review_type='client').order_by(Testimonial.created_at.desc()).all()
     industries = IndustryRecognition.query.filter_by(is_active=True).order_by(
         IndustryRecognition.display_order.asc(),
         IndustryRecognition.created_at.desc()
@@ -1605,13 +1677,17 @@ def our_team():
 
 @app.route('/testimonials')
 def testimonials():
-    testimonials = Testimonial.query.filter_by(is_active=True).order_by(Testimonial.created_at.desc()).all()
+    testimonials = Testimonial.query.filter_by(is_active=True, review_type='client').order_by(Testimonial.created_at.desc()).all()
     return render_template('testimonials.html', active_page='about', testimonials=testimonials)
 
 @app.route('/career')
 def career():
     jobs = JobOpening.query.filter_by(is_active=True).order_by(JobOpening.created_at.desc()).all()
-    return render_template('career.html', active_page='about', jobs=jobs)
+    # SEO #9: staff / intern reviews homepage se hata ke career page par dikhte hain
+    team_reviews = (Testimonial.query
+                    .filter(Testimonial.is_active == True, Testimonial.review_type != 'client')
+                    .order_by(Testimonial.created_at.desc()).all())
+    return render_template('career.html', active_page='about', jobs=jobs, team_reviews=team_reviews)
 
 @app.route('/services')
 def services():
@@ -1733,6 +1809,11 @@ def hire_ui_ux():
 def hire_ai():
     return render_template('hire-ai-engineers.html', active_page='hire')
 
+@app.route('/hire')
+def hire_hub():
+    # SEO: navbar ke "Hire" link ka hub page — saare hire-* pages yahan se linked hain
+    return render_template('hire.html', active_page='hire')
+
 @app.route('/portfolio')
 def portfolio():
     portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
@@ -1797,14 +1878,86 @@ def blog():
     posts = BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).all()
     return render_template('blog.html', active_page='blog', posts=posts)
 
+# Blog sidebar "Need Experts?" box — post ki category ke hisaab se sahi service page (SEO #7)
+BLOG_CATEGORY_CTA = {
+    'Web Development':   ('Need Web Development Experts?',
+                          'Get a fast, secure custom website or web app built by our full-stack team in Mehsana.',
+                          '/custom-website-software-development'),
+    'Mobile Apps':       ('Need Mobile App Experts?',
+                          'Build Android, iOS and Flutter apps with our experienced mobile team in Mehsana.',
+                          '/custom-mobile-application-development'),
+    'AI & Automation':   ('Need AI & Automation Experts?',
+                          'Automate repetitive work with custom chatbots, AI agents and workflow automation.',
+                          '/ai-automation'),
+    'Digital Marketing': ('Need More Leads from Google?',
+                          'Grow traffic and leads with SEO, Google Ads and social media marketing from our team.',
+                          '/digital-marketing'),
+    'UI/UX Design':      ('Need UI/UX Design Experts?',
+                          'Get research-driven, user-friendly designs for your website, app or software.',
+                          '/ui-ux-design-agency-india'),
+}
+DEFAULT_BLOG_CTA = ('Need a Technology Partner?',
+                    'Talk to our team in Mehsana about your website, app, CRM or automation project.',
+                    '/contact')
+
+
+def _blog_sidebar_cta(post):
+    """Admin me Sidebar CTA bhara ho to wahi, warna category ke hisaab se default box."""
+    title, description, link = BLOG_CATEGORY_CTA.get(post.category, DEFAULT_BLOG_CTA)
+    link = post.cta_link or link
+    return {
+        'title': post.cta_title or title,
+        'description': post.cta_description or description,
+        'link': link,
+        'button': 'Talk to Us' if link.rstrip('/').endswith('/contact') else 'Explore Service',
+    }
+
+
+# SEO #11: badle hue blog URLs — purana URL 301 se naye par jaata hai (Google ranking saath chali jaati hai)
+BLOG_SLUG_REDIRECTS = {
+    '10-beneifts-of-laravel-development': '10-benefits-of-laravel-development',
+}
+
+
+@app.template_filter('category_slug')
+def _category_slug(name):
+    """'AI & Automation' -> 'ai-automation' (blog category page ka URL, SEO #13)."""
+    return re.sub(r'[^a-z0-9]+', '-', (name or '').lower()).strip('-')
+
+
+@app.route('/blog/category/<cat_slug>')
+def blog_category(cat_slug):
+    # SEO #13: har blog category ka apna page — post ka breadcrumb isi par link karta hai
+    posts = [p for p in BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).all()
+             if _category_slug(p.category) == cat_slug]
+    if not posts:
+        abort(404)
+    return render_template('blog-category.html', active_page='blog', category=posts[0].category,
+                           cat_slug=cat_slug, posts=posts)
+
+
 @app.route('/blog/<slug>')
 def blog_post(slug):
+    if slug in BLOG_SLUG_REDIRECTS:
+        return redirect(url_for('blog_post', slug=BLOG_SLUG_REDIRECTS[slug]), 301)
     post = BlogPost.query.filter_by(slug=slug, is_published=True).first_or_404()
     related_posts = (BlogPost.query
                      .filter(BlogPost.slug != slug, BlogPost.is_published == True)
                      .order_by(db.func.random())
                      .limit(3).all())
-    return render_template('blog-slug-template.html', active_page='blog', post=post, related_posts=related_posts)
+    return render_template('blog-slug-template.html', active_page='blog', post=post, related_posts=related_posts,
+                           sidebar_cta=_blog_sidebar_cta(post))
+
+
+@app.route('/author/<slug>')
+def author_page(slug):
+    # SEO #7 (E-E-A-T): author page — data Our Team (TeamMember) se, slug naam se banta hai
+    member = next((m for m in TeamMember.query.filter_by(is_active=True).all() if m.slug == slug), None)
+    if member is None:
+        abort(404)
+    posts = (BlogPost.query.filter_by(author_id=member.id, is_published=True)
+             .order_by(BlogPost.created_at.desc()).all())
+    return render_template('author.html', active_page='blog', member=member, posts=posts)
 
 @app.route('/contact')
 def contact():
@@ -1812,9 +1965,18 @@ def contact():
 
 @app.route('/index')
 def index_redirect():
-    return redirect(url_for('index_page'))
+    return redirect(url_for('index_page'), 301)  # purana /index URL hamesha ke liye homepage par
 
 # ── Dynamic Sitemap ────────────────────────────────────────────────────────────
+def _template_lastmod(path):
+    """Static page ki asli 'last updated' date = uske template file ki modified date (SEO #8)."""
+    name = 'index.html' if path == '/' else path.strip('/') + '.html'
+    full = os.path.join(app.root_path, 'templates', name)
+    if not os.path.exists(full):
+        return None
+    return datetime.utcfromtimestamp(os.path.getmtime(full))
+
+
 @app.route('/sitemap.xml')
 def sitemap():
     base = 'https://www.ivinfotech.com'
@@ -1839,6 +2001,7 @@ def sitemap():
         ('/ui-ux-design-agency-india',                 'monthly', '0.8'),
         ('/best-web-hosting-services',                 'monthly', '0.7'),
         ('/ai-automation',                             'monthly', '0.8'),
+        ('/hire',                                      'monthly', '0.8'),
         ('/hire-php-developers',                       'monthly', '0.7'),
         ('/hire-laravel-developers',                   'monthly', '0.7'),
         ('/hire-android-developers',                   'monthly', '0.7'),
@@ -1848,36 +2011,55 @@ def sitemap():
         ('/hire-ai-engineers',                         'monthly', '0.7'),
     ]
 
-    urls = []
-    for path, changefreq, priority in static_pages:
-        urls.append({
-            'loc':        base + path,
-            'lastmod':    today,
-            'changefreq': changefreq,
-            'priority':   priority,
-        })
+    def _d(dt):
+        return dt.strftime('%Y-%m-%d') if dt else today
 
-    # Dynamic: published portfolio items
     portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
-    for p in portfolios:
-        lastmod = p.created_at.strftime('%Y-%m-%d') if p.created_at else today
-        urls.append({
-            'loc':        f'{base}/portfolio/{p.slug}',
-            'lastmod':    lastmod,
-            'changefreq': 'monthly',
-            'priority':   '0.8',
-        })
-
-    # Dynamic: published blog posts
     posts = BlogPost.query.filter_by(is_published=True).order_by(BlogPost.created_at.desc()).all()
+
+    # SEO #8: lastmod me asli 'last updated' date — har request par aaj ki date nahi.
+    # Static page = template file ki date; /blog aur /portfolio = sabse nayi post / case study (jo baad ki ho).
+    # changefreq / priority Google use nahi karta, isliye output se hata diye.
+    newest_post = max([p.updated_at or p.created_at for p in posts if (p.updated_at or p.created_at)], default=None)
+    newest_portfolio = max([p.created_at for p in portfolios if p.created_at], default=None)
+
+    urls = []
+    for path, _changefreq, _priority in static_pages:
+        dates = [_template_lastmod(path)]
+        if path == '/blog':
+            dates.append(newest_post)
+        elif path == '/portfolio':
+            dates.append(newest_portfolio)
+        dates = [d for d in dates if d]
+        urls.append({'loc': base + path, 'lastmod': _d(max(dates) if dates else None)})
+
+    for p in portfolios:
+        urls.append({'loc': f'{base}/portfolio/{p.slug}', 'lastmod': _d(p.created_at)})
+
     for post in posts:
-        lastmod = post.created_at.strftime('%Y-%m-%d') if post.created_at else today
-        urls.append({
-            'loc':        f'{base}/blog/{post.slug}',
-            'lastmod':    lastmod,
-            'changefreq': 'monthly',
-            'priority':   '0.7',
-        })
+        urls.append({'loc': f'{base}/blog/{post.slug}', 'lastmod': _d(post.updated_at or post.created_at)})
+
+    # Blog category pages (SEO #13)
+    cat_dates = {}
+    for post in posts:
+        cs = _category_slug(post.category)
+        if not cs:
+            continue
+        d = post.updated_at or post.created_at
+        prev = cat_dates.get(cs)
+        cat_dates[cs] = max(d, prev) if (d and prev) else (d or prev)
+    for cs, d in cat_dates.items():
+        urls.append({'loc': f'{base}/blog/category/{cs}', 'lastmod': _d(d)})
+
+    # Author pages (SEO #7) — sirf woh members jinki kam se kam ek published post hai
+    author_dates = {}
+    for post in posts:
+        if post.author and post.author.is_active:
+            d = post.updated_at or post.created_at
+            prev = author_dates.get(post.author.slug)
+            author_dates[post.author.slug] = max(d, prev) if (d and prev) else (d or prev)
+    for slug, d in author_dates.items():
+        urls.append({'loc': f'{base}/author/{slug}', 'lastmod': _d(d)})
 
     xml_lines = ['<?xml version="1.0" encoding="UTF-8"?>',
                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -1885,8 +2067,6 @@ def sitemap():
         xml_lines.append('  <url>')
         xml_lines.append(f'    <loc>{u["loc"]}</loc>')
         xml_lines.append(f'    <lastmod>{u["lastmod"]}</lastmod>')
-        xml_lines.append(f'    <changefreq>{u["changefreq"]}</changefreq>')
-        xml_lines.append(f'    <priority>{u["priority"]}</priority>')
         xml_lines.append('  </url>')
     xml_lines.append('</urlset>')
 

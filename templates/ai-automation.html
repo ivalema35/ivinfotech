@@ -7,14 +7,18 @@
 
 <title>Future-Proof Your Business with AI & Automation | IV Infotech Mehsana</title>
     <meta name="description" content="AI & Automation Agency in Mehsana, Gujarat. Custom ChatGPT Chatbots, n8n Workflow Automation, and AI Agents that reduce manual work by 70%.">
-    <meta name="keywords" content="AI Chatbot Development Gujarat, n8n Automation Mehsana, ChatGPT Integration India, LangChain Development, AI Workflow Automation">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/ai-automation">
+    {% set page_url = "https://www.ivinfotech.com/ai-automation" %}
+    <link rel="canonical" href="{{ page_url }}">
+    {# SEO #10: Service + BreadcrumbList schema — components/service_schema.html #}
+    {% set svc_name = "AI & Automation Services" %}
+    {% set svc_desc = "AI & Automation Agency in Mehsana, Gujarat. Custom ChatGPT Chatbots, n8n Workflow Automation, and AI Agents that reduce manual work by 70%." %}
+    {% include 'components/service_schema.html' %}
 
     <meta property="og:title" content="Future-Proof Your Business with AI & Automation | IV Infotech">
     <meta property="og:description" content="Reduce manual work by 70%. We build intelligent Chatbots, AI Agents, and Automated Workflows using Python & n8n right here in Mehsana.">
-    <meta property="og:image" content="assets/images/logo.png">
-    <meta property="og:url" content="https://www.ivinfotech.com/ai-automation.html">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:type" content="website">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">

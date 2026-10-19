@@ -12,11 +12,10 @@
     <title>Careers at IV Infotech | Join Our Team in Mehsana, Gujarat</title>
     <meta name="description"
         content="Join IV Infotech — Mehsana's leading IT company. Explore open positions in Laravel, AI/ML, UI/UX, Digital Marketing, and more. Apply today and build your future with us.">
-    <meta name="keywords"
-        content="IT Jobs Mehsana, Careers IV Infotech, Laravel Developer Jobs Gujarat, AI Engineer Jobs India, UI UX Designer Jobs, Software Developer Careers, Tech Jobs Mehsana">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/career">
+    {% set page_url = "https://www.ivinfotech.com/career" %}
+    <link rel="canonical" href="{{ page_url }}">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -34,11 +33,11 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://unpkg.com">
 
-    <meta property="og:url" content="https://www.ivinfotech.com/career.html">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:title" content="Careers at IV Infotech | Join Our Team in Mehsana">
     <meta property="og:description"
         content="We're hiring! Explore open positions in web development, AI, design, and marketing at IV Infotech.">
-    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og-careers.jpg">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
     <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="IV Infotech">
 
@@ -47,44 +46,15 @@
     <meta name="twitter:title" content="Careers at IV Infotech | We're Hiring!">
     <meta name="twitter:description"
         content="Explore open tech positions and apply online. Laravel, AI/ML, Flutter, UI/UX & more.">
-    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og-careers.jpg">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
 
     <!-- JSON-LD Structured Data -->
+    {# SEO #10: yahan pehle ek toota hua (invalid JSON) generic JobPosting tha — jobs list page par JobPosting
+       Google guidelines ke khilaf hai, isliye sirf breadcrumb schema rakha hai #}
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "JobPosting",
-        "title": "Multiple Open Positions",
-        "description": "IV Infotech is hiring developers, designers, and marketers in Mehsana, Gujarat.",
-        "hiringOrganization": {
-            "@type": "Organization",
-            "name": "IV Infotech",
-            "sameAs": "https://www.ivinfotech.com",
-            "logo": "https://www.ivinfotech.com/assets/images/logo.png"
-        },
-        "jobLocation": {
-            "@type": "Place",
-            "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "S Cube, T-332, Radhanpur Rd",
-                "addressLocality": "Mehsana",
-                "addressRegion": "Gujarat",
-                "postalCode": "384002",
-                "addressCountry": "IN"
-            }
-        },
-        "employmentType": "FULL_TIME",
-        "datePosted": "2026-02-01",
-        "validThrough": "2026-12-31T23:59:59Z", 
-    "baseSalary": {
-        "@type": "MonetaryAmount",
-        "currency": "INR",
-        "value": {
-            "@type": "QuantitativeValue",
-            "value": 25000,
-            "unitText": "MONTH"
-        }
-    }
+{{ {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+  {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.ivinfotech.com/'},
+  {'@type': 'ListItem', 'position': 2, 'name': 'Career', 'item': 'https://www.ivinfotech.com/career'}]} | tojson }}
     </script>
 
     <!-- Stylesheets -->
@@ -740,6 +710,29 @@
             </div>
         </div>
     </section>
+
+    {# SEO #9: staff / intern reviews (Review Type = employee / intern) homepage se hata ke yahan #}
+    {% if team_reviews %}
+    <section class="why-join pt-0">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-eyebrow" style="background:rgba(47,85,244,.08);color:#2F55F4;border:1px solid rgba(47,85,244,.2);">Team Voices</span>
+                <h2 class="mt-3" style="font-family:'Poppins',sans-serif;font-weight:700;color:#0b1c3c;font-size:clamp(1.6rem,3vw,2.2rem);">What Our Team Says</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for r in team_reviews %}
+                <div class="col" data-aos="fade-up">
+                    <div class="why-card h-100">
+                        <p>&ldquo;{{ r.content }}&rdquo;</p>
+                        <h5 class="mb-0 mt-3">{{ r.client_name }}</h5>
+                        <p class="mb-0" style="font-size:.85rem;">{{ r.client_role }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <!-- ============================================
          SECTION 3: OPEN POSITIONS

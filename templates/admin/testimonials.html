@@ -204,7 +204,7 @@
                                         <strong style="font-size:13.5px;">{{ t.client_name }}</strong>
                                     </div>
                                 </td>
-                                <td style="font-size:13px;color:var(--text-mid);">{{ t.client_role }}</td>
+                                <td style="font-size:13px;color:var(--text-mid);">{{ t.client_role }}{% if t.review_type and t.review_type != 'client' %} <span class="status-pill" style="background:#fef3c7;color:#92400e;">{{ t.review_type | title }}</span>{% endif %}</td>
                                 <td>
                                     <div class="content-cell" title="{{ t.content }}">{{ t.content }}</div>
                                 </td>
@@ -227,7 +227,7 @@
                                     <div style="display:flex;gap:6px;align-items:center;">
                                         <button class="btn-edit"
                                             onclick="openEditModal({{ t.id }}, '{{ t.client_name | replace("'", "\\'") }}', '{{ t.client_role | replace("'", "\\'") }}', {{ t.rating }}, {{ 'true' if t.is_active else 'false' }}, this)"
-                                            data-content="{{ t.content | e }}">
+                                            data-content="{{ t.content | e }}" data-type="{{ t.review_type or 'client' }}">
                                             <i class="fa-solid fa-pen"></i> Edit
                                         </button>
                                         <button class="btn-delete"
@@ -273,6 +273,14 @@
                             <label class="form-label" for="add_client_role">Role / Company <span style="color:#ef4444">*</span></label>
                             <input type="text" class="form-control" id="add_client_role" name="client_role"
                                 placeholder="e.g. CEO at XYZ / Client / Intern" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="add_review_type">Review Type</label>
+                            <select class="form-select" id="add_review_type" name="review_type">
+                                <option value="client">Client (shown on homepage and testimonials page)</option>
+                                <option value="employee">Employee (shown on career page)</option>
+                                <option value="intern">Intern / Trainee (shown on career page)</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="add_content">Review Content <span style="color:#ef4444">*</span></label>
@@ -324,6 +332,14 @@
                         <div class="mb-3">
                             <label class="form-label" for="edit_client_role">Role / Company <span style="color:#ef4444">*</span></label>
                             <input type="text" class="form-control" id="edit_client_role" name="client_role" required maxlength="120">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="edit_review_type">Review Type</label>
+                            <select class="form-select" id="edit_review_type" name="review_type">
+                                <option value="client">Client (shown on homepage and testimonials page)</option>
+                                <option value="employee">Employee (shown on career page)</option>
+                                <option value="intern">Intern / Trainee (shown on career page)</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="edit_content">Review Content <span style="color:#ef4444">*</span></label>
@@ -396,6 +412,7 @@
         document.getElementById('edit_content').value     = content;
         document.getElementById('edit_rating').value      = String(rating);
         document.getElementById('edit_is_active').checked = isActive;
+        document.getElementById('edit_review_type').value = btn.dataset.type || 'client';
         const modal = new bootstrap.Modal(document.getElementById('editModal'));
         modal.show();
     }
