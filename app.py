@@ -466,6 +466,11 @@ class Portfolio(db.Model):
     gallery         = db.Column(db.Text, nullable=True)  # JSON: [{type:"web"|"app",url,label,alt}]
     trust_badges    = db.Column(db.Text, nullable=True)  # JSON: [{icon,text}]
     interlinks      = db.Column(db.Text, nullable=True)  # JSON: [{title,url,description}]
+    # SEO & social overrides (Visual Builder → "SEO & Social"). Khali = template khud smart default banata hai.
+    seo_title       = db.Column(db.String(255), nullable=True)   # <title> / og:title override
+    seo_description = db.Column(db.String(400), nullable=True)   # meta description / og:description override
+    seo_keywords    = db.Column(db.String(400), nullable=True)   # meta keywords (comma separated)
+    og_image        = db.Column(db.String(512), nullable=True)   # social share image override (1200x630 best)
     created_at      = db.Column(db.DateTime, default=datetime.utcnow)
 
     # ── helpers ──
@@ -1083,6 +1088,10 @@ def _migrate_db():
         ("portfolios", "bg_color",        "VARCHAR(20) NOT NULL DEFAULT '#0f1117'"),
         ("portfolios", "trust_badges", "TEXT"),
         ("portfolios", "interlinks", "TEXT"),
+        ("portfolios", "seo_title",       "VARCHAR(255)"),
+        ("portfolios", "seo_description", "VARCHAR(400)"),
+        ("portfolios", "seo_keywords",    "VARCHAR(400)"),
+        ("portfolios", "og_image",        "VARCHAR(512)"),
         ("inquiries", "city",             "VARCHAR(120) NOT NULL DEFAULT 'Mehsana'"),
         ("inquiries", "state",            "VARCHAR(120) NOT NULL DEFAULT 'Gujarat'"),
         ("blog_posts", "cta_title",       "VARCHAR(120)"),
@@ -1189,6 +1198,12 @@ def _portfolio_from_form(p, form, files):
         p.hero_image_web = form.get('hero_image_web')
     if form.get('hero_image_app'):
         p.hero_image_app = form.get('hero_image_app')
+    # SEO & social overrides. Sirf tab update karte hain jab key payload me ho — purana multipart form
+    # (portfolio_form.html) ye fields nahi bhejta, usse save karne par existing SEO values mitni nahi chahiye.
+    for field, limit in (('seo_title', 255), ('seo_description', 400), ('seo_keywords', 400), ('og_image', 512)):
+        if field in form:
+            val = str(form.get(field) or '').strip()
+            setattr(p, field, val[:limit] or None)
 
 
 @app.route('/admin/portfolio')
@@ -1274,7 +1289,8 @@ def admin_portfolio_preview(slug):
     trust_badges = portfolio.get_trust_badges()
     interlinks = portfolio.get_interlinks()
     return render_template('portfolio-details.html', active_page='portfolio',
-                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks)
+                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks,
+                           related_projects=_related_portfolios(portfolio))
 
 
 # ── Admin: Visual Builder (split-screen live editor) ──────────────────────────
@@ -1722,6 +1738,38 @@ def portfolio():
     portfolios = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).all()
     return render_template('portfolio.html', active_page='portfolio', portfolios=portfolios)
 
+# Lead-specific campaign pages (sales outreach): sirf whitelist ke slug chalte hain, noindex, site ka navbar/footer wahi
+CAMPAIGN_PAGES = {
+    'rh-7k3q9x': 'campaign/riverview_heights.html',
+    'pride-aura-e6ph9g': 'campaign/lead_pride.html',
+    'brij-sandalwood-5mbzd3': 'campaign/lead_brij.html',
+    'nb-legacy-tower-x4vyv9': 'campaign/lead_nb.html',
+    'elenza-gardens-vyqa09': 'campaign/lead_elenza.html',
+    'rivanta-heritage-ttmbo7': 'campaign/lead_rivanta.html',
+}
+
+
+@app.route('/campaign/<slug>')
+def campaign_page(slug):
+    tpl = CAMPAIGN_PAGES.get(slug)
+    if not tpl:
+        abort(404)
+    resp = make_response(render_template(tpl, active_page=''))
+    resp.headers['X-Robots-Tag'] = 'noindex, nofollow, noarchive'
+    resp.headers['Cache-Control'] = 'no-cache'
+    return resp
+
+
+def _related_portfolios(portfolio, limit=3):
+    """'More case studies' block: pehle same category wale, phir baaki — dono newest-first.
+    Internal linking (SEO) + visitor ko agla project dikhane ke liye."""
+    others = Portfolio.query.filter(Portfolio.is_published.is_(True), Portfolio.id != portfolio.id) \
+                            .order_by(Portfolio.created_at.desc()).all()
+    mine = set(portfolio.get_categories())
+    others.sort(key=lambda r: 0 if mine & set(r.get_categories()) else 1)   # stable sort → newest-first order bacha rehta hai
+    return others[:limit]
+
+
 @app.route('/portfolio/<slug>')
 def portfolio_detail(slug):
     portfolio = Portfolio.query.filter_by(slug=slug, is_published=True).first_or_404()
@@ -1730,7 +1778,8 @@ def portfolio_detail(slug):
     trust_badges = portfolio.get_trust_badges()
     interlinks = portfolio.get_interlinks()
     return render_template('portfolio-details.html', active_page='portfolio',
-                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks)
+                           portfolio=portfolio, trust_badges=trust_badges, interlinks=interlinks,
+                           related_projects=_related_portfolios(portfolio))
 
 @app.route('/portfolio-details')
 def portfolio_details():
@@ -1740,7 +1789,8 @@ def portfolio_details():
         p = Portfolio.query.filter_by(is_published=True).order_by(Portfolio.created_at.desc()).first()
     if p:
         return redirect(url_for('portfolio_detail', slug=p.slug))
-    return render_template('portfolio-details.html', active_page='portfolio', portfolio=None)
+    # Koi published project nahi — detail template ko portfolio=None dene se crash hota tha, listing par bhejo
+    return redirect(url_for('portfolio'))
 
 @app.route('/blog')
 def blog():

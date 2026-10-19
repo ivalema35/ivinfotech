@@ -1,0 +1,45 @@
+{#- Portfolio card (listing + "more case studies" on the detail page).
+    Usage:  {% from 'components/portfolio_card.html' import pf_card %}  {{ pf_card(item, eager=loop.first) }}
+    Hinglish note: card ka saara content line-clamp me hota hai, isliye kam/zyada text se layout nahi tootta;
+    poora text case-study page par dikhta hai. -#}
+{% macro pf_card(item, eager=false, extra_class='') -%}
+  {%- set _cat_label = {'Web': 'Web App', 'App': 'Mobile App', 'CRM': 'CRM & ERP', 'AI': 'AI & Automation'} -%}
+  {%- set _cats = item.get_categories() -%}
+  {%- set _img = (item.hero_image_web or item.hero_image_app or '') -%}
+  {%- set _short = ((item.title or '').split('|')[0] | trim) or (item.title or 'Project') -%}
+  {%- set _c1 = item.primary_color if (item.primary_color and item.primary_color.startswith('#') and item.primary_color | length in [4, 7]) else '#2F55F4' -%}
+  {%- set _c2 = item.secondary_color if (item.secondary_color and item.secondary_color.startswith('#') and item.secondary_color | length in [4, 7]) else '#10B981' -%}
+  {%- set _meta = [item.industry, item.client_name] | select | join(' · ') -%}
+  <article class="pf-card {{ extra_class }}" style="--c: {{ _c1 }}; --c2: {{ _c2 }};"
+           data-cats="{{ _cats | map('lower') | join(' ') }}"
+           data-search="{{ ([_short, item.hero_description, item.industry, item.client_name, item.hero_outcome] | select | join(' ') | striptags | lower) }}">
+    <div class="pf-card__inner">
+      <div class="pf-card__media{% if _img %} has-img{% endif %}">
+        <span class="pf-card__mono" aria-hidden="true">{{ _short[:1] | upper }}</span>
+        {%- if _img %}
+        <img src="{{ _img | webp_url }}" alt="{{ _short }} — project preview" width="800" height="500"
+             {% if eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async"
+             onerror="this.parentNode.classList.remove('has-img');this.remove()">
+        {%- endif %}
+        <div class="pf-card__tags">
+          {%- for c in _cats[:2] %}<span class="pf-tag pf-tag--glass">{{ _cat_label.get(c, c) }}</span>{% endfor %}
+          {%- if _cats | length > 2 %}<span class="pf-tag pf-tag--glass">+{{ _cats | length - 2 }}</span>{% endif %}
+        </div>
+        {%- if item.hero_outcome %}
+        <p class="pf-sticker pf-card__sticker" title="{{ item.hero_outcome }}"><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i><span>{{ item.hero_outcome }}</span></p>
+        {%- endif %}
+      </div>
+      <div class="pf-card__body">
+        {%- if _meta %}<p class="pf-card__meta" title="{{ _meta }}">{{ _meta }}</p>{% endif %}
+        <h2 class="pf-card__title"><a href="{{ url_for('portfolio_detail', slug=item.slug) }}" title="{{ item.title }}">{{ _short }}</a></h2>
+        {%- if item.hero_description %}<p class="pf-card__desc">{{ item.hero_description }}</p>{% endif %}
+        <div class="pf-card__foot">
+          {%- if item.kpi_1_value %}
+          <div class="pf-card__kpi"><b>{{ item.kpi_1_value }}</b>{% if item.kpi_1_label %}<small>{{ item.kpi_1_label }}</small>{% endif %}</div>
+          {%- else %}<span></span>{% endif %}
+          <span class="pf-card__cta">Read case study <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+        </div>
+      </div>
+    </div>
+  </article>
+{%- endmacro %}
