@@ -180,6 +180,19 @@
 .vb-select option { background: #1e2028; }
 .vb-input-hint { font-size: 11px; color: var(--vb-text-muted); margin-top: 3px; }
 
+/* ── Content-health counters + Google snippet preview (SEO & Social) ── */
+.vb-count {
+  float: right; font-size: 10px; font-weight: 700; letter-spacing: .3px; text-transform: none;
+  padding: 1px 7px; border-radius: 999px; color: var(--vb-text-muted); background: rgba(255,255,255,.06);
+}
+.vb-count.is-ok    { color: #34d399; background: rgba(52,211,153,.13); }
+.vb-count.is-short { color: #fbbf24; background: rgba(251,191,36,.13); }
+.vb-count.is-long  { color: #f87171; background: rgba(248,113,113,.15); }
+.vb-serp { background: #fff; border-radius: 10px; padding: 12px 14px; margin-top: 6px; }
+.vb-serp__url   { font-size: 11.5px; color: #1e7a34; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vb-serp__title { font: 400 17px/1.3 Arial, sans-serif; color: #1a0dab; margin: 2px 0 3px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.vb-serp__desc  { font: 400 12.5px/1.5 Arial, sans-serif; color: #4d5156; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+
 /* ── Color Pickers ── */
 .vb-color-row {
   display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
@@ -450,6 +463,10 @@ var VB_INIT = {
   gallery:        {{ (_p.gallery or '[]') | tojson }},
   trust_badges:   {{ (_p.trust_badges or '[]') | tojson }},
   interlinks:     {{ (_p.interlinks or '[]') | tojson }},
+  seo_title:       {{ (_p.seo_title or '') | tojson }},
+  seo_description: {{ (_p.seo_description or '') | tojson }},
+  seo_keywords:    {{ (_p.seo_keywords or '') | tojson }},
+  og_image:        {{ (_p.og_image or '') | tojson }},
 };
 </script>
 {% else %}
@@ -461,7 +478,8 @@ var VB_INIT = {
   hero_image_web: '', hero_image_app: '',
   kpi_1_value:'', kpi_1_label:'', kpi_2_value:'', kpi_2_label:'', kpi_3_value:'', kpi_3_label:'',
   industry:'', market:'', goal:'', client_story_p1:'', client_story_p2:'',
-  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]', trust_badges:'[]', interlinks:'[]'
+  challenges:'[]', solution_steps:'[]', services:'[]', results:'{}', features:'[]', testimonials:'[]', gallery:'[]', trust_badges:'[]', interlinks:'[]',
+  seo_title:'', seo_description:'', seo_keywords:'', og_image:''
 };
 </script>
 {% endif %}
@@ -667,6 +685,56 @@ var VB_INIT = {
               <div class="vb-img-preview" id="imgprev_hero_app" style="display:none;">
                 <img id="imgthumb_hero_app" src="" alt="Preview" />
                 <button class="vb-img-preview__remove" onclick="clearImg('hero_image_app','dz_hero_app','imgprev_hero_app')">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Section: SEO & Social ─── -->
+        <div class="vb-section" id="sec-seo">
+          <div class="vb-section__head" onclick="toggleSection(this)">
+            <i class="fa-solid fa-magnifying-glass-chart fa-fw" style="color:#38bdf8;font-size:12px;"></i>
+            SEO &amp; Social
+            <i class="fa-solid fa-chevron-down vb-section__arrow"></i>
+          </div>
+          <div class="vb-section__body">
+            <p class="vb-input-hint" style="margin:0 0 12px;font-size:11.5px;">
+              <i class="fa-solid fa-circle-info" style="color:#38bdf8;"></i>
+              Leave a field empty and the page builds it automatically from the Page Title and Hero Description.
+              Fill it to control exactly what Google and social apps show.
+            </p>
+            <div class="vb-field">
+              <label class="vb-label" for="f_seo_title">SEO Title</label>
+              <input class="vb-input" id="f_seo_title" type="text" maxlength="255" placeholder="Auto: Page Title — Case Study | IV Infotech" data-bind="seo_title" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label" for="f_seo_description">Meta Description</label>
+              <textarea class="vb-textarea" id="f_seo_description" rows="3" maxlength="400" placeholder="Auto: first ~158 characters of the Hero Description" data-bind="seo_description"></textarea>
+            </div>
+            <div class="vb-field">
+              <label class="vb-label" for="f_seo_keywords">Keywords <span style="font-weight:400;font-size:10px;opacity:.7;text-transform:none;">(optional, comma separated)</span></label>
+              <input class="vb-input" id="f_seo_keywords" type="text" maxlength="400" placeholder="Auto: title, category, industry" data-bind="seo_keywords" />
+            </div>
+            <div class="vb-field">
+              <label class="vb-label">Social Share Image <span style="font-weight:400;font-size:10px;opacity:.7;text-transform:none;">(1200×630 best)</span></label>
+              <div class="vb-dropzone" id="dz_og" data-field="og_image">
+                <div class="vb-dropzone__icon"><i class="fa-brands fa-facebook"></i></div>
+                <div class="vb-dropzone__label">Click or drag &amp; drop</div>
+                <div class="vb-dropzone__sub">Shown when the page is shared · empty = hero image</div>
+                <input type="file" accept="image/*" onchange="handleDropzoneFile(this,'dz_og')" />
+              </div>
+              <div class="vb-upload-bar" id="upbar_og"><div class="vb-upload-bar__fill" id="upfill_og"></div></div>
+              <div class="vb-img-preview" id="imgprev_og" style="display:none;">
+                <img id="imgthumb_og" src="" alt="Preview" />
+                <button class="vb-img-preview__remove" onclick="clearImg('og_image','dz_og','imgprev_og')">×</button>
+              </div>
+            </div>
+            <div class="vb-field" style="margin-bottom:0;">
+              <label class="vb-label">Google preview</label>
+              <div class="vb-serp" aria-live="polite">
+                <div class="vb-serp__url" id="serpUrl"></div>
+                <div class="vb-serp__title" id="serpTitle"></div>
+                <div class="vb-serp__desc" id="serpDesc"></div>
               </div>
             </div>
           </div>
@@ -967,6 +1035,7 @@ function populateForm() {
     f_kpi_2_value: 'kpi_2_value', f_kpi_2_label: 'kpi_2_label',
     f_kpi_3_value: 'kpi_3_value', f_kpi_3_label: 'kpi_3_label',
     f_client_story_p1: 'client_story_p1', f_client_story_p2: 'client_story_p2',
+    f_seo_title: 'seo_title', f_seo_description: 'seo_description', f_seo_keywords: 'seo_keywords',
   };
   for (var id in map) {
     var el = $(id);
@@ -988,6 +1057,7 @@ function populateForm() {
   // Hero images
   if (state.hero_image_web) showImgPreview('hero_web', state.hero_image_web);
   if (state.hero_image_app) showImgPreview('hero_app', state.hero_image_app);
+  if (state.og_image) showImgPreview('og', state.og_image);
 
   // JSON arrays
   state.challenges.forEach(renderChallenge);
@@ -1751,6 +1821,10 @@ function collectPayload(action) {
     gallery:        state.gallery,
     trust_badges:   state.trust_badges,
     interlinks:     state.interlinks,
+    seo_title:       state.seo_title || '',
+    seo_description: state.seo_description || '',
+    seo_keywords:    state.seo_keywords || '',
+    og_image:        state.og_image || '',
   };
 }
 
@@ -1878,6 +1952,66 @@ function showToast(msg, type) {
 
 /* ══ INIT ══ */
 populateForm();
+
+/* ══ CONTENT HEALTH: live character counters + Google snippet preview ══
+   Hinglish note: ye sirf guidance hai (kuch block nahi karta). Recommended lengths SEO (search result me cut na ho)
+   aur page layout (cards me bahut lamba text) dono ke hisaab se hain. Public page ab kisi bhi length pe nahi tootta. */
+(function () {
+  // field id -> [min, max]   (min 0 = optional field)
+  var RULES = {
+    f_title: [25, 70], f_seo_title: [30, 60], f_hero_outcome: [20, 110],
+    f_hero_description: [100, 420], f_seo_description: [120, 160],
+    f_client_story_p1: [80, 700], f_client_story_p2: [0, 700],
+    f_industry: [0, 90], f_market: [0, 90], f_goal: [0, 180], f_client_name: [0, 60]
+  };
+  var counters = {};
+  Object.keys(RULES).forEach(function (id) {
+    var el = $(id);
+    var field = el && el.closest('.vb-field');
+    var label = field && field.querySelector('.vb-label');
+    if (!label) return;
+    var span = document.createElement('span');
+    span.className = 'vb-count';
+    label.appendChild(span);
+    counters[id] = span;
+  });
+  function paint(id) {
+    var el = $(id), span = counters[id], r = RULES[id];
+    if (!el || !span) return;
+    var n = el.value.length, min = r[0], max = r[1];
+    span.textContent = n + ' / ' + max;
+    span.className = 'vb-count' + (n === 0 ? '' : (n > max ? ' is-long' : (n < min ? ' is-short' : ' is-ok')));
+    span.title = n === 0 ? 'Recommended: ' + (min ? min + '–' : 'up to ') + max + ' characters'
+      : n > max ? 'Long — may be shortened in search results / project cards (the full text still shows on the page)'
+      : n < min ? 'A bit short — a little more detail helps' : 'Good length';
+  }
+  function clip(s, n) {
+    s = String(s || '').replace(/\s+/g, ' ').trim();
+    return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : s;
+  }
+  function autoTitle() {          // same rule as templates/portfolio-details.html
+    var t = String(state.title || '').trim();
+    if (!t) return '';
+    if (!/case study/i.test(t)) t += ' — Case Study';
+    if (!/iv infotech/i.test(t)) t += ' | IV Infotech';
+    return t;
+  }
+  function serp() {
+    var t = String(state.seo_title || '').trim() || autoTitle() || 'Your page title';
+    var d = String(state.seo_description || '').trim() || String(state.hero_description || '').trim() || 'Add a Hero Description or a Meta Description to control this text.';
+    $('serpTitle').textContent = clip(t, 60);
+    $('serpDesc').textContent = clip(d, 158);
+    $('serpUrl').textContent = 'www.ivinfotech.com › portfolio › ' + (state.slug || 'your-slug');
+  }
+  function refresh() { Object.keys(counters).forEach(paint); serp(); }
+  document.addEventListener('input', function (e) {
+    var id = e.target && e.target.id;
+    if (counters[id]) paint(id);
+    if (id && /^f_(title|slug|seo_|hero_description)/.test(id)) serp();
+  });
+  refresh();
+})();
+
 // Push initial color state to preview on first load
 previewFrame.addEventListener('load', function() { setTimeout(pushColorCSS, 200); });
 
