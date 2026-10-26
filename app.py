@@ -1709,10 +1709,17 @@ def custom_website_dev():
     service = Service.query.filter_by(
         slug='custom-website-software-development', is_active=True
     ).first()
+    # "Our Work" cards: teen case studies (live portfolio data — unpublished ho to card nahi dikhega)
+    work_slugs = ['visitor-parking-management-software',
+                  'hospital-management-software-development-case-study',
+                  'custom-institute-management-software-case-study']
+    found = {p.slug: p for p in Portfolio.query.filter(Portfolio.slug.in_(work_slugs),
+                                                       Portfolio.is_published == True).all()}
     return render_template(
         'custom-website-software-development.html',
         active_page='services',
         service=service,
+        featured_work=[found[s] for s in work_slugs if s in found],
     )
 
 @app.route('/crm-erp-custom-software-development')
@@ -1837,6 +1844,14 @@ CAMPAIGN_PAGES = {
     'nb-legacy-tower-x4vyv9': 'campaign/lead_nb.html',
     'elenza-gardens-vyqa09': 'campaign/lead_elenza.html',
     'rivanta-heritage-ttmbo7': 'campaign/lead_rivanta.html',
+    'great-spaces-aaroham-bdjo4z': 'campaign/lead_greatspaces.html',
+    'swagat-cilantra-w9e5oh': 'campaign/lead_swagat.html',
+    'parshwanath-emerald-i7m0wn': 'campaign/lead_parshwanath.html',
+    'space-age-consultants-qs0295': 'campaign/lead_spaceage.html',
+    'shyamal-park-lane-k4m8vz': 'campaign/lead_shyamal.html',
+    'vistara-anahata-p7q2xc': 'campaign/lead_vistara.html',
+    'blj-silver-square-t9d3wn': 'campaign/lead_blj.html',
+    'shree-namasya-r5h6jb': 'campaign/lead_namasya.html',
 }
 
 

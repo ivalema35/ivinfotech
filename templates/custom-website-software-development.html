@@ -4,23 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Custom Web & Software Development in Mehsana | IV Infotech</title>
-    <meta name="description" content="Custom Website & Software Development in Mehsana, Gujarat. Build scalable SaaS platforms, enterprise software, and dynamic websites from our S-Cube HQ with global standards.">
+{# Website development service page (2026-10-22): naya long-form content (SEO team ka docx "Website Design & Development
+   Company in India") + naya layout. Design patterns Mobbin se liye — services cards (Fibery), process stepper (Zaro),
+   numbered "why choose" rows (Craft Agency), cost table in card (Craft), map + address card (Upwork).
+   Saari nayi CSS ".wd-" prefix ke saath hai taaki site ki baaki styling se takraaye nahi.
+   FAQs database (Service.faqs) se aate hain — admin > Services me edit ho sakte hain. #}
+<title>Website Development Company in India | IV Infotech</title>
+    <meta name="description" content="IV Infotech is a website development company in India building fast, SEO-friendly websites and web apps from Mehsana, Gujarat. Get a free quote.">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
     {% set page_url = "https://www.ivinfotech.com/custom-website-software-development" %}
     <link rel="canonical" href="{{ page_url }}">
     {# SEO #10: Service + BreadcrumbList schema — components/service_schema.html #}
-    {% set svc_name = "Custom Website & Software Development" %}
-    {% set svc_desc = "Custom Website & Software Development in Mehsana, Gujarat. Build scalable SaaS platforms, enterprise software, and dynamic websites from our S-Cube HQ with global standards." %}
+    {% set svc_name = "Website Design & Development" %}
+    {% set svc_desc = "IV Infotech is a website development company in India building fast, SEO-friendly websites and web applications from Mehsana, Gujarat." %}
     {% include 'components/service_schema.html' %}
 
-    <meta property="og:title" content="Custom Web & Software Development | IV Infotech">
-    <meta property="og:description" content="We build scalable SaaS platforms, enterprise software, and dynamic websites. Engineered in Mehsana, deployed globally.">
-    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
-    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="IV Infotech">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:url" content="{{ page_url }}">
+    <meta property="og:title" content="Website Development Company in India | IV Infotech">
+    <meta property="og:description" content="Fast, search-friendly websites and web applications for growing businesses, designed and built by our team in Mehsana, Gujarat.">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Website Development Company in India | IV Infotech">
+    <meta name="twitter:description" content="Fast, search-friendly websites and web applications for growing businesses, designed and built by our team in Mehsana, Gujarat.">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
@@ -44,234 +56,140 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.8/dist/lottie-player.js" defer></script>
 
     <style>
-        /* Premium Page Enhancements */
-        .hero-section h1 {
-            font-family: 'Poppins', sans-serif;
-            color: #0b1c3c;
-            line-height: 1.2;
-        }
-
-        .hero-section .lead {
-            font-size: 1.25rem;
-            color: #6b7280;
-        }
-
-        .hero-lottie {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            min-height: 450px;
-        }
-
-        /* Tech Stack with Grayscale Hover */
-        .tech-stack {
-            border-top: 1px solid #eef1f5;
-            border-bottom: 1px solid #eef1f5;
-            background: #fafafa;
-        }
-
-        .tech-stack .tech-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 20px 30px;
-            transition: all 0.3s ease;
-        }
-
-        .tech-stack .tech-item i {
-            font-size: 48px;
-            filter: grayscale(100%);
-            opacity: 0.6;
-            transition: all 0.3s ease;
-        }
-
-        .tech-stack .tech-item span {
-            font-weight: 600;
-            color: #9aa3b2;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tech-stack .tech-item:hover i {
-            filter: grayscale(0%);
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .tech-stack .tech-item:hover i.fa-php { color: #777BB4; }
-        .tech-stack .tech-item:hover i.fa-node-js { color: #339933; }
+        /* ---------- Purani page styles (hero, tech strip, zig-zag, buttons, CTA) — waise hi rakhe ---------- */
+        .hero-section h1 { font-family: 'Poppins', sans-serif; color: #0b1c3c; line-height: 1.2; }
+        .hero-section .lead { font-size: 1.2rem; color: #4b5563; }
+        .hero-lottie { width: 100%; max-width: 600px; height: auto; min-height: 420px; }
+        .tech-stack { border-top: 1px solid #eef1f5; border-bottom: 1px solid #eef1f5; background: #fafafa; }
+        .tech-stack .tech-item { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 24px; transition: all 0.3s ease; }
+        .tech-stack .tech-item i { font-size: 44px; filter: grayscale(100%); opacity: 0.6; transition: all 0.3s ease; }
+        .tech-stack .tech-item span { font-weight: 600; color: #9aa3b2; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tech-stack .tech-item:hover i { filter: grayscale(0%); opacity: 1; transform: scale(1.1); }
+        .tech-stack .tech-item:hover i.fa-html5 { color: #E34F26; }
         .tech-stack .tech-item:hover i.fa-react { color: #61DAFB; }
+        .tech-stack .tech-item:hover i.fa-node-js { color: #339933; }
+        .tech-stack .tech-item:hover i.fa-php { color: #777BB4; }
         .tech-stack .tech-item:hover i.fa-laravel { color: #FF2D20; }
+        .tech-stack .tech-item:hover i.fa-wordpress { color: #21759B; }
+        .tech-stack .tech-item:hover i.fa-shopify { color: #7AB55C; }
         .tech-stack .tech-item:hover i.fa-database { color: #336791; }
-        .tech-stack .tech-item:hover i.fa-vuejs { color: #4FC08D; }
+        .section-alt { background-color: #f9fbfd; }
+        .zigzag-section h2 { font-family: 'Poppins', sans-serif; color: #0b1c3c; font-weight: 700; }
+        .zigzag-section p { color: #4b5563; font-size: 1.05rem; line-height: 1.75; }
+        .check-list { list-style: none; padding: 0; margin: 0; }
+        .check-list li { font-size: 1.05rem; color: #4b5563; margin-bottom: 12px; display: flex; align-items: flex-start; }
+        .check-list li i { color: #2F55F4; margin-right: 12px; font-size: 18px; margin-top: 4px; }
+        .cta-floating-strip { background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%); border-radius: 25px; padding: 50px 40px; color: #ffffff; box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25); margin: 60px auto; max-width: 1100px; position: relative; overflow: hidden; }
+        .cta-floating-strip::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
+        .cta-floating-strip h2, .cta-floating-strip p, .cta-floating-strip .wd-cta-actions { position: relative; z-index: 1; }
+        .cta-floating-strip h2 { font-family: 'Poppins', sans-serif; }
+        .btn-white-pop { background-color: #ffffff; color: #2F55F4; font-weight: 700; font-size: 1.05rem; padding: 14px 30px; transition: all 0.3s ease; border: 2px solid #ffffff; }
+        .btn-white-pop:hover { background-color: transparent; color: #ffffff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-ghost-white { color: #ffffff; border: 2px solid rgba(255,255,255,.6); font-weight: 600; padding: 14px 28px; transition: all .3s ease; }
+        .btn-ghost-white:hover { background: rgba(255,255,255,.12); color: #ffffff; border-color: #ffffff; }
+        .btn-primary { background: #2F55F4; border-color: #2F55F4; font-weight: 600; padding: 14px 32px; border-radius: 50px; transition: all 0.3s ease; }
+        .btn-primary:hover { background: #1a3fd6; border-color: #1a3fd6; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3); }
+        .btn-outline-dark { font-weight: 600; padding: 14px 32px; border-radius: 50px; transition: all 0.3s ease; }
+        .btn-outline-dark:hover { transform: translateY(-3px); }
 
-        /* Section Alternating Background */
-        .section-alt {
-            background-color: #f9fbfd;
+        /* ---------- Naye sections (.wd-*) ---------- */
+        .wd-section { padding: 80px 0; }
+        .wd-anchor { scroll-margin-top: 110px; }   /* navbar fixed hai — anchor jump par heading chhupe nahi */
+        .wd-eyebrow { display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #2F55F4; background: rgba(47,85,244,.08); border: 1px solid rgba(47,85,244,.18); padding: 6px 14px; border-radius: 50px; margin-bottom: 14px; }
+        .wd-title { font-family: 'Poppins', sans-serif; font-weight: 700; color: #0b1c3c; font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1.25; }
+        .wd-lead { color: #4b5563; font-size: 1.08rem; line-height: 1.75; }
+
+        /* In-page navigation chips */
+        .wd-jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .wd-jump a { font-size: .9rem; font-weight: 600; color: #0b1c3c; text-decoration: none; background: #fff; border: 1px solid #e3e8f2; border-radius: 50px; padding: 8px 18px; transition: all .25s ease; }
+        .wd-jump a:hover { border-color: #2F55F4; color: #2F55F4; transform: translateY(-2px); }
+
+        /* Definition callout (AEO: seedha jawab) */
+        .wd-answer { background: #ffffff; border: 1px solid #e8ecf4; border-left: 5px solid #2F55F4; border-radius: 0 18px 18px 0; padding: 32px 36px; box-shadow: 0 10px 30px rgba(11,28,60,.05); }
+        .wd-answer h2 { font-family: 'Poppins', sans-serif; font-weight: 700; color: #0b1c3c; font-size: clamp(1.35rem, 2.4vw, 1.75rem); margin-bottom: 14px; }
+        .wd-answer p { color: #4b5563; font-size: 1.08rem; line-height: 1.8; margin: 0; }
+
+        /* Service cards */
+        .wd-card { background: #fff; border: 1px solid #e8ecf4; border-radius: 20px; padding: 32px 28px; height: 100%; display: flex; flex-direction: column; transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease; }
+        .wd-card:hover { transform: translateY(-8px); border-color: rgba(47,85,244,.35); box-shadow: 0 20px 40px rgba(47,85,244,.10); }
+        .wd-card .wd-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); color: #2F55F4; font-size: 22px; margin-bottom: 20px; }
+        .wd-card h3 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0b1c3c; font-size: 1.2rem; margin-bottom: 10px; }
+        @media (min-width: 768px) { .wd-card { padding: 36px 34px; } }
+        .wd-card p { color: #6b7280; font-size: .97rem; line-height: 1.7; margin-bottom: 0; }
+        .wd-card .wd-link { margin-top: auto; padding-top: 18px; font-weight: 600; color: #2F55F4; text-decoration: none; font-size: .95rem; }
+        .wd-card .wd-link:hover { text-decoration: underline; }
+
+        .wd-example { background: #f4f7ff; border: 1px dashed rgba(47,85,244,.35); border-radius: 16px; padding: 18px 22px; color: #0b1c3c; font-size: .98rem; line-height: 1.7; }
+        .wd-example strong { color: #2F55F4; }
+        .wd-img { border-radius: 20px; }
+
+        /* Why choose — numbered rows */
+        .wd-why { border-top: 1px solid #e3e8f2; padding: 26px 0; display: flex; gap: 22px; align-items: flex-start; height: 100%; }
+        .wd-why .wd-num { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.6rem; line-height: 1; color: #2F55F4; min-width: 46px; }
+        .wd-why h3 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0b1c3c; font-size: 1.1rem; margin-bottom: 6px; }
+        .wd-why p { color: #6b7280; margin: 0; line-height: 1.7; }
+
+        /* Process stepper */
+        .wd-steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; position: relative; }
+        .wd-steps::before { content: ''; position: absolute; top: 9px; left: 8px; right: 8px; height: 2px; background: linear-gradient(90deg, #2F55F4, #c7d2fe); }
+        .wd-step { position: relative; padding-top: 34px; }
+        .wd-step .wd-dot { position: absolute; top: 0; left: 0; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid #2F55F4; box-shadow: 0 0 0 4px #f9fbfd; }
+        .wd-step .wd-step-no { font-size: .75rem; font-weight: 700; letter-spacing: 1.5px; color: #2F55F4; text-transform: uppercase; }
+        .wd-step h3 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0b1c3c; font-size: 1.05rem; margin: 6px 0 8px; }
+        .wd-step p { color: #6b7280; font-size: .93rem; line-height: 1.65; margin: 0; }
+
+        /* Tech groups */
+        .wd-tech { background: #fff; border: 1px solid #e8ecf4; border-radius: 18px; padding: 24px; height: 100%; }
+        .wd-tech h3 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0b1c3c; font-size: 1rem; margin-bottom: 14px; }
+        .wd-chip { display: inline-block; font-size: .87rem; font-weight: 600; color: #1e3a8a; background: #eef2ff; border-radius: 50px; padding: 6px 14px; margin: 0 6px 8px 0; }
+
+        /* Cost table in card */
+        .wd-table-card { background: #fff; border: 1px solid #e8ecf4; border-radius: 22px; box-shadow: 0 18px 40px rgba(11,28,60,.06); overflow: hidden; }
+        .wd-cost-table { width: 100%; border-collapse: collapse; margin: 0; }
+        .wd-cost-table th { background: #f4f7ff; color: #0b1c3c; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: .95rem; padding: 18px 24px; text-align: left; }
+        .wd-cost-table td { padding: 20px 24px; border-top: 1px solid #eef1f5; color: #4b5563; vertical-align: middle; }
+        .wd-cost-table td.wd-type { color: #0b1c3c; font-weight: 600; }
+        .wd-cost-table td.wd-type i { color: #2F55F4; width: 28px; }
+        .wd-badge-time { display: inline-block; font-weight: 600; font-size: .88rem; color: #065f46; background: #d1fae5; border-radius: 50px; padding: 5px 12px; white-space: nowrap; }
+
+        /* Location card */
+        .wd-location { background: #fff; border: 1px solid #e8ecf4; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(11,28,60,.06); }
+        .wd-location iframe { width: 100%; height: 100%; min-height: 360px; border: 0; display: block; }
+        .wd-location .wd-loc-body { padding: 36px; }
+        .wd-loc-row { display: flex; gap: 14px; margin-bottom: 16px; color: #4b5563; }
+        .wd-loc-row i { color: #2F55F4; font-size: 18px; width: 22px; margin-top: 3px; }
+        .wd-loc-row a { color: #0b1c3c; font-weight: 600; text-decoration: none; }
+        .wd-loc-row a:hover { color: #2F55F4; }
+
+        /* Case study cards */
+        .wd-work { background: #fff; border: 1px solid #e8ecf4; border-radius: 20px; overflow: hidden; height: 100%; display: flex; flex-direction: column; transition: transform .35s ease, box-shadow .35s ease; text-decoration: none; }
+        .wd-work:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(11,28,60,.10); }
+        .wd-work .wd-work-img { aspect-ratio: 16 / 10; background: #eef2ff; overflow: hidden; }
+        .wd-work .wd-work-img img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s ease; }
+        .wd-work:hover .wd-work-img img { transform: scale(1.04); }
+        .wd-work .wd-work-body { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .wd-work .wd-work-tag { font-size: .78rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2F55F4; margin-bottom: 8px; }
+        .wd-work h3 { font-family: 'Poppins', sans-serif; font-weight: 600; color: #0b1c3c; font-size: 1.08rem; margin-bottom: 8px; }
+        .wd-work p { color: #6b7280; font-size: .95rem; line-height: 1.65; }
+        .wd-work .wd-link { margin-top: auto; font-weight: 600; color: #2F55F4; }
+
+        @media (max-width: 991.98px) {
+            .wd-section { padding: 60px 0; }
+            .wd-steps { grid-template-columns: 1fr; gap: 0; }
+            .wd-steps::before { top: 10px; bottom: 10px; left: 9px; right: auto; width: 2px; height: auto; background: linear-gradient(180deg, #2F55F4, #c7d2fe); }
+            .wd-step { padding: 0 0 26px 40px; }
+            .wd-location iframe { min-height: 280px; }
         }
-
-        /* Zig-Zag Content Styles */
-        .zigzag-section h2 {
-            font-family: 'Poppins', sans-serif;
-            color: #0b1c3c;
-            font-weight: 700;
-        }
-
-        .zigzag-section p {
-            color: #4b5563;
-            font-size: 1.1rem;
-        }
-
-        .check-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .check-list li {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-        }
-
-        .check-list li i {
-            color: #2F55F4;
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
-        /* Feature Cards with Hover */
-        .feature-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 16px;
-            padding: 32px 28px;
-            height: 100%;
-            border-top: 4px solid transparent;
-            transition: all 0.4s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-top-color: #2F55F4;
-            box-shadow: 0 20px 40px rgba(47, 85, 244, 0.12);
-        }
-
-        .feature-card .icon-wrap {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .feature-card .icon-wrap i {
-            font-size: 24px;
-            color: #ffffff;
-        }
-
-        .feature-card h5 {
-            font-family: 'Poppins', sans-serif;
-            color: #0b1c3c;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .feature-card p {
-            color: #6b7280;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 0;
-        }
-
-        /* Floating CTA Strip */
-        .cta-floating-strip {
-            background: linear-gradient(135deg, #2F55F4 0%, #1a3fd6 100%);
-            border-radius: 25px;
-            padding: 50px 40px;
-            color: #ffffff;
-            box-shadow: 0 25px 50px rgba(47, 85, 244, 0.25);
-            margin: 60px auto;
-            max-width: 1100px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-floating-strip::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .cta-floating-strip h2 {
-            font-family: 'Poppins', sans-serif;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-floating-strip p {
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-white-pop {
-            background-color: #ffffff;
-            color: #2F55F4;
-            font-weight: 700;
-            font-size: 1.1rem;
-            padding: 15px 35px;
-            transition: all 0.3s ease;
-            border: 2px solid #ffffff;
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-white-pop:hover {
-            background-color: transparent;
-            color: #ffffff;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* Button Styles */
-        .btn-primary {
-            background: #2F55F4;
-            border-color: #2F55F4;
-            font-weight: 600;
-            padding: 14px 32px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #1a3fd6;
-            border-color: #1a3fd6;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(47, 85, 244, 0.3);
-        }
-
-        .btn-outline-dark {
-            font-weight: 600;
-            padding: 14px 32px;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-dark:hover {
-            transform: translateY(-3px);
+        @media (max-width: 767.98px) {
+            .wd-answer { padding: 24px; }
+            .wd-cost-table thead { display: none; }
+            .wd-cost-table, .wd-cost-table tbody, .wd-cost-table tr, .wd-cost-table td { display: block; width: 100%; }
+            .wd-cost-table tr { border-top: 1px solid #eef1f5; padding: 16px 20px; }
+            .wd-cost-table tr:first-child { border-top: 0; }
+            .wd-cost-table td { border: 0; padding: 4px 0; }
+            .wd-cost-table td[data-label]:not(.wd-type)::before { content: attr(data-label) ": "; font-weight: 600; color: #0b1c3c; }
+            .wd-location .wd-loc-body { padding: 26px; }
+            .cta-floating-strip { padding: 40px 24px; }
         }
     </style>
 {% include 'components/tracking_head.html' %}
@@ -287,18 +205,20 @@
     {%- include 'components/preloader.html' %}
     {%- include 'components/navbar.html' %}
 
+    {% set wa_link = "https://wa.me/919924426361?text=Hi%20IV%20Infotech%2C%20I%20want%20to%20discuss%20a%20website%20project." %}
+
     <!-- Hero Section -->
     <header class="hero-section py-3 bg-white">
         <div class="container py-3">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Top Web Developers in Gujarat</span>
-                    <h1 class="display-4 fw-bold mb-4">Custom Web & <span class="text-gradient-primary">Software Development.</span></h1>
-                    <p class="lead mb-4">We build scalable SaaS platforms, enterprise software, and dynamic websites. Engineered in Mehsana, deployed globally.</p>
-                    <p class="text-muted mb-4">From our S-Cube HQ on Radhanpur Road, Gujarat, we deliver clean, secure, and scalable code that powers businesses across industries.</p>
+                    <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Websites &amp; Web Applications</span>
+                    <h1 class="display-5 fw-bold mb-4">Website Design &amp; <span class="text-gradient-primary">Development Company in India</span></h1>
+                    <p class="lead mb-3">IV Infotech is a website development company in India that designs and builds fast, search-friendly websites and web applications for growing businesses. Whether you need a simple business website or a custom web portal, our team in Mehsana, Gujarat looks after design, development, testing and launch, so you work with one team from the first call to go-live.</p>
+                    <p class="text-muted mb-4">Founded in 2009, IV Infotech has been building websites and web applications for more than 17 years, for clients in India, Canada and beyond. Every website we build is planned around one question: how will this bring you more enquiries, bookings or sales?</p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="contact" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Start Your Project</a>
-                        <a href="/portfolio" class="btn btn-outline-dark btn-lg px-4 rounded-pill">View Case Studies</a>
+                        <a href="/contact" class="btn btn-primary btn-lg px-4 rounded-pill shadow-sm">Get a Free Quote</a>
+                        <a href="{{ wa_link }}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-lg px-4 rounded-pill"><i class="fab fa-whatsapp me-2"></i>WhatsApp Us</a>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center" data-aos="fade-left">
@@ -311,186 +231,335 @@
     <!-- Tech Stack Strip -->
     <section class="tech-stack py-4">
         <div class="container-xxl">
-            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-5">
-                <div class="tech-item">
-                    <i class="fab fa-php"></i>
-                    <span>PHP</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-node-js"></i>
-                    <span>Node.js</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-react"></i>
-                    <span>React</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-laravel"></i>
-                    <span>Laravel</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fab fa-vuejs"></i>
-                    <span>Vue.js</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-database"></i>
-                    <span>SQL</span>
-                </div>
+            <div class="d-flex flex-wrap justify-content-center gap-2 gap-md-4">
+                <div class="tech-item"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                <div class="tech-item"><i class="fab fa-react"></i><span>React</span></div>
+                <div class="tech-item"><i class="fab fa-node-js"></i><span>Node.js</span></div>
+                <div class="tech-item"><i class="fab fa-php"></i><span>PHP</span></div>
+                <div class="tech-item"><i class="fab fa-laravel"></i><span>Laravel</span></div>
+                <div class="tech-item"><i class="fab fa-wordpress"></i><span>WordPress</span></div>
+                <div class="tech-item"><i class="fab fa-shopify"></i><span>Shopify</span></div>
+                <div class="tech-item"><i class="fas fa-database"></i><span>MySQL</span></div>
             </div>
         </div>
     </section>
 
-    <!-- Zig-Zag Section 1: Custom Software Development -->
-    <section class="zigzag-section py-5 bg-white">
-        <div class="container-xxl py-4">
-            <div class="unified-feature-card">
-                <div class="row align-items-center g-5">
-                    <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="{{ url_for('static', filename='images/custom_web_1.webp') }}" class="img-fluid" alt="Custom Software Development" loading="lazy" decoding="async"> 
-                    </div>
-                    <div class="col-lg-6" data-aos="fade-left">
-                        <h2 class="fw-bold mb-3">Custom Software Development</h2>
-                        <p class="mb-4">Off-the-shelf software doesn't fit everyone. We build tailored solutions that match your unique business workflows and scale with your growth.</p>
-                        <ul class="check-list">
-                            <li><i class="fas fa-check-circle"></i>Full-Stack Development (MERN/LAMP)</li>
-                            <li><i class="fas fa-check-circle"></i>Legacy System Modernization</li>
-                            <li><i class="fas fa-check-circle"></i>Cloud-Native Architecture</li>
-                            <li><i class="fas fa-check-circle"></i>Secure & Scalable Code</li>
-                        </ul>
+    <!-- On this page -->
+    <nav class="py-4 bg-white" aria-label="On this page">
+        <div class="container-xxl">
+            <div class="wd-jump">
+                <a href="#services">Services</a>
+                <a href="#web-applications">Web Applications</a>
+                <a href="#process">Process</a>
+                <a href="#cost">Cost</a>
+                <a href="#our-work">Our Work</a>
+                <a href="#faq">FAQs</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- What does a website development company do? -->
+    <section class="pb-5 bg-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10" data-aos="fade-up">
+                    <div class="wd-answer">
+                        <h2>What Does a Website Development Company in India Do?</h2>
+                        <p>A website development company in India plans, designs, builds and maintains websites and web applications for businesses. The work usually covers UI/UX design, front-end and back-end development, CMS or e-commerce setup, speed and SEO optimisation, testing, hosting support and post-launch maintenance. A good partner also explains costs and timelines clearly before the project starts.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Zig-Zag Section 2: SaaS & API Integration -->
-    <section class="zigzag-section py-5 section-alt">
-        <div class="container-xxl py-4">
-            <div class="unified-feature-card">
-                <div class="row align-items-center g-5 flex-lg-row-reverse">
-                    <div class="col-lg-6 text-center" data-aos="fade-left"> 
-                        <img src="{{ url_for('static', filename='images/custom_web_2.webp') }}" class="img-fluid" alt="SaaS & API Integration" loading="lazy" decoding="async"> 
-                    </div>
-                    <div class="col-lg-6" data-aos="fade-right">
-                        <h2 class="fw-bold mb-3">SaaS & API Integration</h2>
-                        <p class="mb-4">Launch your own SaaS product or connect your existing tools with robust APIs. We specialize in multi-tenant architectures and third-party integrations.</p>
-                        <ul class="check-list">
-                            <li><i class="fas fa-check-circle"></i>Multi-Tenant SaaS Platforms</li>
-                            <li><i class="fas fa-check-circle"></i>Secure Payment Gateway Integration</li>
-                            <li><i class="fas fa-check-circle"></i>Third-Party API Connections</li>
-                            <li><i class="fas fa-check-circle"></i>Real-Time Data Sync</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Zig-Zag Section 3: E-Commerce Solutions -->
-    <section class="zigzag-section py-5 bg-white">
-        <div class="container-xxl py-4">
-            <div class="unified-feature-card">
-                <div class="row align-items-center g-5">
-                    <div class="col-lg-6 text-center" data-aos="fade-right"> 
-                        <img src="{{ url_for('static', filename='images/custom_web_3.webp') }}" class="img-fluid" alt="E-Commerce Solutions" loading="lazy" decoding="async"> 
-                    </div>
-                    <div class="col-lg-6" data-aos="fade-left">
-                        <h2 class="fw-bold mb-3">E-Commerce & Web Portals</h2>
-                        <p class="mb-4">From Shopify customizations to fully custom e-commerce platforms, we build conversion-focused online stores that drive revenue.</p>
-                        <ul class="check-list">
-                            <li><i class="fas fa-check-circle"></i>Custom E-Commerce Development</li>
-                            <li><i class="fas fa-check-circle"></i>Shopify & WooCommerce Experts</li>
-                            <li><i class="fas fa-check-circle"></i>Payment Gateway Integration (Razorpay/Stripe)</li>
-                            <li><i class="fas fa-check-circle"></i>Inventory & Order Management</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us - Feature Cards -->
-    <section class="py-5 section-alt">
-        <div class="container py-4">
+    <!-- Website Development Services -->
+    <section class="wd-section section-alt wd-anchor" id="services">
+        <div class="container">
             <div class="text-center mb-5" data-aos="fade-up">
-                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Why IV Infotech</span>
-                <h2 class="fw-bold" style="font-family: 'Poppins', sans-serif; color: #0b1c3c;">Why Businesses Choose Us</h2>
-                <p class="text-muted">Global standards with local support from Mehsana, Gujarat.</p>
+                <span class="wd-eyebrow">Our Services</span>
+                <h2 class="wd-title">Website Development Services in India</h2>
+                <p class="wd-lead mx-auto" style="max-width: 640px;">We offer web development services in India for businesses of every size. Here is what we build most often.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h5>ISO Quality Standards</h5>
-                        <p>Enterprise-grade QA, security reviews, and performance testing on every project.</p>
+                <div class="col-md-6" data-aos="fade-up">
+                    <div class="wd-card">
+                        <div class="wd-icon"><i class="fas fa-code"></i></div>
+                        <h3>Custom Website Development</h3>
+                        <p>Built from scratch around your business, not from a ready-made theme. Custom websites give you full control over design, features and performance, and they scale as your business grows. Ideal for service companies, institutes, hospitals, manufacturers and startups with specific workflows.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <h5>On-Time Delivery</h5>
-                        <p>Agile sprints with transparent milestones and predictable launches every time.</p>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="wd-card">
+                        <div class="wd-icon"><i class="fas fa-shopping-cart"></i></div>
+                        <h3>E-commerce Website Development</h3>
+                        <p>Online stores with product catalogues, secure payment gateways, inventory and order management, shipping integrations and GST-ready invoicing. We build on WooCommerce, Shopify or custom Laravel depending on your budget and growth plans.</p>
+                        <a href="/ecommerce-website-app-development-india" class="wd-link">E-commerce development <i class="fas fa-arrow-right ms-1"></i></a>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <h5>24/7 Support</h5>
-                        <p>Post-launch monitoring, optimization, and growth-focused updates always.</p>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="wd-card">
+                        <div class="wd-icon"><i class="fab fa-wordpress"></i></div>
+                        <h3>CMS and WordPress Development</h3>
+                        <p>Easy-to-manage websites where your team can update pages, blogs and images without writing code. We set up clean, lightweight WordPress builds with the plugins you actually need, nothing extra that slows the site down.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <h5>Clean Code Architecture</h5>
-                        <p>Maintainable, documented code following industry best practices and standards.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-expand-arrows-alt"></i>
-                        </div>
-                        <h5>Scalable Solutions</h5>
-                        <p>Built to handle growth from startup to enterprise with modular architecture.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
-                    <div class="feature-card">
-                        <div class="icon-wrap">
-                            <i class="fas fa-rupee-sign"></i>
-                        </div>
-                        <h5>Cost-Effective</h5>
-                        <p>Premium quality at competitive rates. Maximum ROI for your investment.</p>
+                <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="wd-card">
+                        <div class="wd-icon"><i class="fas fa-building"></i></div>
+                        <h3>Corporate and Business Websites</h3>
+                        <p>Professional websites that explain what you do, build trust and turn visitors into enquiries. Typical projects include company profiles, service pages, portfolio sections, blogs and lead forms connected to your email or CRM.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {% if service and service.get_industries() %}
-    <!-- Industries We Serve – Infinite Marquee -->
-    <section class="py-5 bg-white">
-        <div class="container text-center mb-4">
-            <h6 class="fw-bold text-muted" style="letter-spacing: 2px;">INDUSTRIES WE SERVE</h6>
-        </div>
-        <div class="industries-marquee-wrapper">
-            <div class="industries-marquee-track">
-                {% for _ in range(10) %}
-                    {% for ind in service.get_industries() %}
-                    <div class="industries-pill">
-                        <i class="{{ ind.icon }}"></i>
-                        <span>{{ ind.name }}</span>
+    <!-- Web Application Development -->
+    <section class="zigzag-section wd-section bg-white wd-anchor" id="web-applications">
+        <div class="container-xxl">
+            <div class="unified-feature-card mb-0">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6 text-center" data-aos="fade-right">
+                        <img src="{{ url_for('static', filename='images/custom_web_2.webp') }}" class="img-fluid wd-img" alt="Web application development: admin dashboard with reports" loading="lazy" decoding="async">
                     </div>
-                    {% endfor %}
+                    <div class="col-lg-6" data-aos="fade-left">
+                        <span class="wd-eyebrow">Beyond Websites</span>
+                        <h2 class="fw-bold mb-3">Web Application Development Services</h2>
+                        <p class="mb-3">Some businesses need more than a website. We develop web applications in India for companies that want to run operations online, such as booking systems, customer portals, admin dashboards, CRM and ERP tools, management software and SaaS products.</p>
+                        <p class="mb-3 fw-semibold" style="color:#0b1c3c;">Our web application work includes:</p>
+                        <ul class="check-list mb-4">
+                            <li><i class="fas fa-check-circle"></i>Custom workflows, roles and permissions</li>
+                            <li><i class="fas fa-check-circle"></i>Admin dashboards and reporting</li>
+                            <li><i class="fas fa-check-circle"></i>Payment, SMS, WhatsApp and email integrations</li>
+                            <li><i class="fas fa-check-circle"></i>API development and third-party integrations</li>
+                            <li><i class="fas fa-check-circle"></i>Secure, scalable architecture</li>
+                        </ul>
+                        <div class="wd-example"><strong>Typical example:</strong> a booking system where customers choose a service and a time slot, see live availability and pay online, while the business owner manages appointments, staff and reports from one dashboard.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Web Design and UI/UX -->
+    <section class="zigzag-section wd-section section-alt">
+        <div class="container-xxl">
+            <div class="unified-feature-card mb-0">
+                <div class="row align-items-center g-5 flex-lg-row-reverse">
+                    <div class="col-lg-6 text-center" data-aos="fade-left">
+                        <img src="{{ url_for('static', filename='images/custom_web_1.webp') }}" class="img-fluid wd-img" alt="Responsive website design for mobile, tablet and desktop" loading="lazy" decoding="async">
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <span class="wd-eyebrow">Design</span>
+                        <h2 class="fw-bold mb-3">Web Design and UI/UX Services</h2>
+                        <p class="mb-3">A website that looks good but confuses visitors does not bring business. Our designers create layouts that are clean, mobile-first and easy to navigate. We map the visitor journey first, then design pages with clear headings, trust signals and calls to action in the right places.</p>
+                        <p class="mb-4">We deliver wireframes, responsive designs for mobile, tablet and desktop, and a brand-consistent look that matches your logo, colours and tone.</p>
+                        <a href="/ui-ux-design-agency-india" class="btn btn-outline-dark rounded-pill px-4">UI/UX Design Services</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why choose IV Infotech -->
+    <section class="wd-section bg-white">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4" data-aos="fade-up">
+                    <span class="wd-eyebrow">Why IV Infotech</span>
+                    <h2 class="wd-title">Why Choose IV Infotech as Your Web Development Agency in India</h2>
+                </div>
+                <div class="col-lg-8">
+                    <div class="row g-0 gx-lg-5">
+                        <div class="col-md-6" data-aos="fade-up">
+                            <div class="wd-why"><span class="wd-num">01</span><div><h3>One team, end to end</h3><p>Design, development, SEO basics and support under one roof.</p></div></div>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="wd-why"><span class="wd-num">02</span><div><h3>Experience you can check</h3><p>Building websites since 2009, with live projects and case studies you can open and check.</p></div></div>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up">
+                            <div class="wd-why"><span class="wd-num">03</span><div><h3>Built for search</h3><p>Clean code, fast loading, proper heading structure, schema markup and mobile-first layouts from day one.</p></div></div>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="wd-why"><span class="wd-num">04</span><div><h3>Clear communication</h3><p>A fixed point of contact, regular updates and a written scope before work starts.</p></div></div>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up">
+                            <div class="wd-why"><span class="wd-num">05</span><div><h3>Transparent pricing</h3><p>You get a detailed quote with what is included, not a vague number.</p></div></div>
+                        </div>
+                        <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="wd-why"><span class="wd-num">06</span><div><h3>Local roots, global delivery</h3><p>Based in Gujarat, working with clients across India and Canada.</p></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="wd-section section-alt wd-anchor" id="process">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="wd-eyebrow">How We Work</span>
+                <h2 class="wd-title">Our Website Development Process</h2>
+            </div>
+            <ol class="wd-steps" data-aos="fade-up">
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 1</span><h3>Discovery call</h3><p>We understand your business, audience, competitors and goals.</p></li>
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 2</span><h3>Planning and sitemap</h3><p>We agree on pages, features, content needs and timeline.</p></li>
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 3</span><h3>Design</h3><p>Wireframes first, then full designs for your approval.</p></li>
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 4</span><h3>Development</h3><p>We build the site on the chosen stack with regular progress demos.</p></li>
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 5</span><h3>Testing</h3><p>Speed, mobile, browser, forms and security checks before launch.</p></li>
+                <li class="wd-step"><span class="wd-dot"></span><span class="wd-step-no">Step 6</span><h3>Launch and support</h3><p>Go-live, training for your team and post-launch support.</p></li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- Technologies -->
+    <section class="wd-section bg-white">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="wd-eyebrow">Tech Stack</span>
+                <h2 class="wd-title">Technologies We Use</h2>
+                <p class="wd-lead">Our team works with a modern, proven stack, chosen to fit your project and budget.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-sm-6 col-lg-4 col-xl" data-aos="fade-up">
+                    <div class="wd-tech"><h3><i class="fas fa-desktop me-2 text-primary"></i>Front end</h3>
+                        <span class="wd-chip">HTML5</span><span class="wd-chip">CSS3</span><span class="wd-chip">JavaScript</span><span class="wd-chip">React.js</span></div>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-xl" data-aos="fade-up" data-aos-delay="100">
+                    <div class="wd-tech"><h3><i class="fas fa-server me-2 text-primary"></i>Back end</h3>
+                        <span class="wd-chip">PHP</span><span class="wd-chip">Laravel</span><span class="wd-chip">Node.js</span></div>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-xl" data-aos="fade-up" data-aos-delay="200">
+                    <div class="wd-tech"><h3><i class="fas fa-store me-2 text-primary"></i>CMS and e-commerce</h3>
+                        <span class="wd-chip">WordPress</span><span class="wd-chip">WooCommerce</span><span class="wd-chip">Shopify</span></div>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-xl" data-aos="fade-up" data-aos-delay="300">
+                    <div class="wd-tech"><h3><i class="fas fa-database me-2 text-primary"></i>Database</h3>
+                        <span class="wd-chip">MySQL</span><span class="wd-chip">MongoDB</span></div>
+                </div>
+                <div class="col-sm-6 col-lg-4 col-xl" data-aos="fade-up" data-aos-delay="400">
+                    <div class="wd-tech"><h3><i class="fas fa-toolbox me-2 text-primary"></i>Tools</h3>
+                        <span class="wd-chip">Git</span><span class="wd-chip">cPanel and cloud hosting</span><span class="wd-chip">Figma</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost -->
+    <section class="wd-section section-alt wd-anchor" id="cost">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="text-center mb-4" data-aos="fade-up">
+                        <span class="wd-eyebrow">Pricing</span>
+                        <h2 class="wd-title">Website Development Cost in India</h2>
+                    </div>
+                    <p class="wd-lead text-center mb-5" data-aos="fade-up">The cost of building a website in India depends on the number of pages, design complexity, features, integrations and whether you need a CMS, e-commerce or a custom web application. A simple business website costs much less than a custom portal with dashboards and payment integrations. The table shows what affects the price in each case and how long it usually takes.</p>
+                    <div class="wd-table-card" data-aos="fade-up">
+                        <table class="wd-cost-table">
+                            <thead>
+                                <tr><th scope="col">Project type</th><th scope="col">What affects the price</th><th scope="col">Typical timeline</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="wd-type" data-label="Project type"><i class="fas fa-briefcase"></i>Basic business website (5-8 pages)</td>
+                                    <td data-label="What affects the price">Number of pages, custom design, content, forms</td>
+                                    <td data-label="Typical timeline"><span class="wd-badge-time">2-4 weeks</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="wd-type" data-label="Project type"><i class="fas fa-building"></i>Corporate / CMS website</td>
+                                    <td data-label="What affects the price">Page count, CMS setup, integrations, content migration</td>
+                                    <td data-label="Typical timeline"><span class="wd-badge-time">4-6 weeks</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="wd-type" data-label="Project type"><i class="fas fa-shopping-bag"></i>E-commerce website</td>
+                                    <td data-label="What affects the price">Number of products, payment gateways, shipping, inventory</td>
+                                    <td data-label="Typical timeline"><span class="wd-badge-time">6-10 weeks</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="wd-type" data-label="Project type"><i class="fas fa-layer-group"></i>Custom web application / portal</td>
+                                    <td data-label="What affects the price">Features, user roles, integrations, reports</td>
+                                    <td data-label="Typical timeline"><span class="wd-badge-time">10-16 weeks or more</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-4" data-aos="fade-up">
+                        <p class="wd-lead mb-4">Every project is different, so we give an itemised quote after understanding your requirements. Share what you want to build and we will tell you what it will cost and how long it will take.</p>
+                        <a href="/contact" class="btn btn-primary btn-lg rounded-pill px-4">Get an Itemised Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gujarat and Mehsana -->
+    <section class="wd-section bg-white">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="wd-eyebrow">Visit Us</span>
+                <h2 class="wd-title">Website Development Company in Gujarat and Mehsana</h2>
+                <p class="wd-lead mx-auto" style="max-width: 760px;">IV Infotech is based in Mehsana, Gujarat, and we work with businesses across Gujarat, including Ahmedabad, Gandhinagar, Surat, Vadodara and Rajkot. Being local means you can meet us in person, discuss your project face to face and get quick support when you need it.</p>
+            </div>
+            <div class="wd-location" data-aos="fade-up">
+                <div class="row g-0">
+                    <div class="col-lg-7">
+                        <iframe src="https://maps.google.com/maps?q=IV%20Infotech%2C%20S%20Cube%2C%20Radhanpur%20Road%2C%20Mehsana%2C%20Gujarat%20384002&z=15&output=embed"
+                                title="IV Infotech office location in Mehsana, Gujarat" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="wd-loc-body">
+                            <h3 class="h5 fw-bold mb-4" style="font-family:'Poppins',sans-serif;color:#0b1c3c;">IV Infotech, Mehsana</h3>
+                            <div class="wd-loc-row"><i class="fas fa-map-marker-alt"></i><div>T-332, S Cube, Radhanpur Rd, opp. Bansari Township, Mehsana, Gujarat 384002</div></div>
+                            <div class="wd-loc-row"><i class="fas fa-phone-alt"></i><div><a href="tel:+919924426361">+91 99244 26361</a></div></div>
+                            <div class="wd-loc-row"><i class="fas fa-envelope"></i><div><a href="mailto:info@ivinfotech.com">info@ivinfotech.com</a></div></div>
+                            <div class="wd-loc-row"><i class="fas fa-clock"></i><div>Monday to Saturday, 9:00 AM to 6:00 PM</div></div>
+                            <p class="text-muted mt-3 mb-4">If you are searching for a web development company in Mehsana or a website designing company near you, you are welcome to visit or book a call.</p>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="https://www.google.com/maps/search/?api=1&query=IV%20Infotech%20S%20Cube%20Radhanpur%20Road%20Mehsana" target="_blank" rel="noopener" class="btn btn-outline-dark rounded-pill px-4">Get Directions</a>
+                                <a href="/contact" class="btn btn-primary rounded-pill px-4">Book a Call</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# "Our Work" cards: live portfolio data (route custom_website_dev() se). Card ka text SEO content se. #}
+    {% set work_text = {
+        'visitor-parking-management-software': ('V-Parking: Visitor Parking CRM (Canada)', 'A web-based CRM for managing visitor parking, built for V-Parking in Toronto, Canada.', 'Property Management SaaS'),
+        'hospital-management-software-development-case-study': ('Eyenosis: Eye Hospital Software', 'A SaaS product for eye hospitals, developed by IV Infotech.', 'Healthcare SaaS'),
+        'custom-institute-management-software-case-study': ('Takshashila: Institute Management Software', 'Custom institute management software built for Takshashila.', 'Education'),
+    } %}
+    {% if featured_work %}
+    <section class="wd-section section-alt wd-anchor" id="our-work">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-5" data-aos="fade-up">
+                <div>
+                    <span class="wd-eyebrow">Case Studies</span>
+                    <h2 class="wd-title mb-2">Our Work</h2>
+                    <p class="wd-lead mb-0">A few of the web applications and platforms our team has built. Each case study page has the full details.</p>
+                </div>
+                <a href="/portfolio" class="btn btn-outline-dark rounded-pill px-4">View All Case Studies</a>
+            </div>
+            <div class="row g-4">
+                {% for p in featured_work %}
+                {% set t = work_text.get(p.slug, (p.title, '', p.industry or '')) %}
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                    <a href="/portfolio/{{ p.slug }}" class="wd-work">
+                        <div class="wd-work-img">
+                            {% if p.hero_image_web %}<img src="{{ p.hero_image_web | webp_url }}" alt="{{ t[0] }}" loading="lazy" decoding="async">{% endif %}
+                        </div>
+                        <div class="wd-work-body">
+                            <span class="wd-work-tag">{{ t[2] }}</span>
+                            <h3>{{ t[0] }}</h3>
+                            <p>{{ t[1] }}</p>
+                            <span class="wd-link">View case study <i class="fas fa-arrow-right ms-1"></i></span>
+                        </div>
+                    </a>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -498,13 +567,13 @@
     {% endif %}
 
     {% if service and service.get_faqs() %}
-    <!-- FAQ Section -->
-    <section class="py-5" style="background: #f8f9fc;">
+    <!-- FAQ Section (Service.faqs — admin me edit hote hain) -->
+    <section class="py-5 wd-anchor" id="faq" style="background: #ffffff;">
         <div class="container-xxl">
             <div class="text-center mb-5" data-aos="fade-up">
                 <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold" style="letter-spacing:1px;">FAQs</span>
                 <h2 class="fw-bold" style="color: #0b1c3c;">Frequently Asked Questions</h2>
-                <p class="text-muted">Everything you need to know about {{ service.title | lower }}.</p>
+                <p class="text-muted">Everything you need to know about website development with IV Infotech.</p>
             </div>
 
             <div class="row justify-content-center">
@@ -512,8 +581,8 @@
                     <div class="accordion" id="serviceFaqAccordion">
 
                         {% for faq in service.get_faqs() %}
-                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ 100 + loop.index0 * 100 }}">
-                            <h2 class="accordion-header" id="faqHeading-{{ loop.index }}">
+                        <div class="accordion-item border-0 mb-3 shadow-sm rounded-4 overflow-hidden" data-aos="fade-up">
+                            <h3 class="accordion-header" id="faqHeading-{{ loop.index }}">
                                 <button class="accordion-button fw-semibold {{ 'collapsed' if not loop.first }}" type="button"
                                     data-bs-toggle="collapse" data-bs-target="#faqCollapse-{{ loop.index }}"
                                     aria-expanded="{{ 'true' if loop.first else 'false' }}"
@@ -521,7 +590,7 @@
                                     style="background: #fff; color: #0b1c3c; box-shadow: none; padding: 20px 24px; font-size: 1.05rem;">
                                     {{ faq.question }}
                                 </button>
-                            </h2>
+                            </h3>
                             <div id="faqCollapse-{{ loop.index }}"
                                 class="accordion-collapse collapse {{ 'show' if loop.first else '' }}"
                                 aria-labelledby="faqHeading-{{ loop.index }}"
@@ -540,34 +609,26 @@
     </section>
 
     <style>
-        #serviceFaqAccordion .accordion-button:focus {
-            box-shadow: none !important;
-            outline: none;
-        }
-        #serviceFaqAccordion .accordion-button:not(.collapsed) {
-            background: #ffffff;
-            color: #2F55F4;
-            box-shadow: none;
-        }
-        #serviceFaqAccordion .accordion-button:not(.collapsed)::after {
-            filter: invert(29%) sepia(98%) saturate(2000%) hue-rotate(220deg) brightness(95%);
-        }
-        #serviceFaqAccordion .accordion-item {
-            border: 1px solid rgba(15, 23, 42, 0.07) !important;
-        }
+        #serviceFaqAccordion .accordion-button:focus { box-shadow: none !important; outline: none; }
+        #serviceFaqAccordion .accordion-button:not(.collapsed) { background: #ffffff; color: #2F55F4; box-shadow: none; }
+        #serviceFaqAccordion .accordion-button:not(.collapsed)::after { filter: invert(29%) sepia(98%) saturate(2000%) hue-rotate(220deg) brightness(95%); }
+        #serviceFaqAccordion .accordion-item { border: 1px solid rgba(15, 23, 42, 0.07) !important; }
     </style>
     {% endif %}
 
-    <!-- Floating CTA Section -->
+    <!-- Final CTA -->
     <section class="container px-4">
         <div class="cta-floating-strip">
             <div class="row align-items-center">
-                <div class="col-lg-8 text-center text-lg-start mb-4 mb-lg-0">
-                    <h2 class="fw-bold mb-2">Ready to digitize your business operations?</h2>
-                    <p class="lead mb-0 opacity-90">Let's build something scalable together. Book a free consultation today.</p>
+                <div class="col-lg-7 text-center text-lg-start mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-2">Ready to Start Your Website Project?</h2>
+                    <p class="mb-0 opacity-90">Tell us what you want to build and we will reply with a clear plan, timeline and quote. As a website development company in India with a local team in Gujarat, we are easy to reach and quick to respond.</p>
                 </div>
-                <div class="col-lg-4 text-center text-lg-end">
-                    <a href="contact" class="btn btn-white-pop rounded-pill">Get a Free Quote</a>
+                <div class="col-lg-5 text-center text-lg-end">
+                    <div class="wd-cta-actions d-flex gap-2 flex-wrap justify-content-center justify-content-lg-end">
+                        <a href="/contact" class="btn btn-white-pop rounded-pill">Get a Free Quote</a>
+                        <a href="{{ wa_link }}" target="_blank" rel="noopener" class="btn btn-ghost-white rounded-pill"><i class="fab fa-whatsapp me-2"></i>WhatsApp Us</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -578,24 +639,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const activateServicesLink = () => {
-                const servicesLink = document.querySelector('.nav-link[href="services"]');
-                if (servicesLink) {
-                    servicesLink.classList.add('active');
-                }
-            };
-
-            setTimeout(activateServicesLink, 400);
-        });
-    </script>
+    {# Pehle yahan inline AOS.init() tha jo AOS load hone se pehle chalta tha (JS error). AOS ab main.js init karti hai. #}
 </body>
 
 </html>
