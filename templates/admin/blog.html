@@ -253,6 +253,18 @@
                                    value="{{ p.author_role if is_edit else '' }}"
                                    placeholder="e.g. Senior Developer" maxlength="120">
                         </div>
+
+                        <!-- SEO #7: asli author (Team member) — photo, bio aur author page isi se aata hai -->
+                        <div class="col-12">
+                            <label class="form-label">Author (Team Member)</label>
+                            <select class="form-select" name="author_id">
+                                <option value="">Not set (use the Author Name and Role above)</option>
+                                {% for a in authors or [] %}
+                                <option value="{{ a.id }}" {{ 'selected' if is_edit and p.author_id == a.id else '' }}>{{ a.name }} — {{ a.role }}</option>
+                                {% endfor %}
+                            </select>
+                            <p class="help-text">Shows this person's photo, bio and author page on the article. Name and role are filled from the selected member. Add a bio and LinkedIn link under Team.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -275,6 +287,27 @@
                     <textarea class="form-control" name="excerpt" rows="3"
                               placeholder="A short 1–2 sentence summary shown on the blog feed cards.">{{ p.excerpt if is_edit else '' }}</textarea>
                     <p class="help-text">Displayed on the blog listing page. Keep it under 180 characters.</p>
+                </div>
+
+                <!-- Card: SEO (SEO #6) — khaali chhodo to post title / excerpt use hota hai -->
+                <div class="editor-card">
+                    <h2><i class="fa-solid fa-magnifying-glass" style="color:var(--primary-blue);"></i> SEO — Google Search Result</h2>
+                    <p class="help-text" style="margin-bottom:14px;">Optional. Leave blank to use the post title and excerpt.</p>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label" for="seoTitle">SEO Title <span class="seo-count" data-for="seoTitle" data-min="30" data-max="60"></span></label>
+                            <input type="text" class="form-control" name="seo_title" id="seoTitle" maxlength="255"
+                                   value="{{ p.seo_title if is_edit and p.seo_title else '' }}"
+                                   placeholder="e.g. E-commerce Website Cost in India 2026 | IV Infotech">
+                            <p class="help-text">Up to 60 characters. Google cuts longer titles.</p>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="metaDesc">Meta Description <span class="seo-count" data-for="metaDesc" data-min="140" data-max="155"></span></label>
+                            <textarea class="form-control" name="meta_description" id="metaDesc" rows="3" maxlength="400"
+                                      placeholder="A 140–155 character summary shown under the title in Google.">{{ p.meta_description if is_edit and p.meta_description else '' }}</textarea>
+                            <p class="help-text">Aim for 140–155 characters.</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Card: Sidebar CTA Widget -->
@@ -406,6 +439,19 @@
             };
             reader.readAsDataURL(this.files[0]);
         }
+    });
+
+    // ── SEO character counters (green = sahi length, orange = chhota, red = bahut lamba) ──
+    document.querySelectorAll('.seo-count').forEach(function (badge) {
+        var field = document.getElementById(badge.dataset.for);
+        var min = +badge.dataset.min, max = +badge.dataset.max;
+        function update() {
+            var n = field.value.length;
+            badge.textContent = '(' + n + ' / ' + max + ')';
+            badge.style.color = n === 0 ? '#9ca3af' : (n > max ? '#ef4444' : (n >= min ? '#16a34a' : '#d97706'));
+        }
+        field.addEventListener('input', update);
+        update();
     });
 
     // ── TinyMCE initialisation ────────────────────────────────

@@ -7,20 +7,27 @@
 
 <title>Mobile App Development Company & Services in India</title>
     <meta name="description" content="Custom mobile app development company in India — Android, iOS & Flutter app development services for startups & enterprises. Get a free quote.">
-    <meta name="keywords" content="custom mobile app development company india, mobile app development services india, android app development services, ios app development company, flutter app development services, mobile app development company gujarat">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="geo.region" content="IN-GJ">
     <meta name="geo.placename" content="Gujarat, India">
     <meta name="geo.position" content="23.0225;72.5714">
     <meta name="ICBM" content="23.0225, 72.5714">
-    <link rel="canonical" href="https://www.ivinfotech.com/custom-mobile-application-development">
+    {% set page_url = "https://www.ivinfotech.com/custom-mobile-application-development" %}
+    <link rel="canonical" href="{{ page_url }}">
+    {# SEO #10: BreadcrumbList (Service schema is page par pehle se hai) #}
+    <script type="application/ld+json">
+{{ {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+  {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.ivinfotech.com/'},
+  {'@type': 'ListItem', 'position': 2, 'name': 'Services', 'item': 'https://www.ivinfotech.com/services'},
+  {'@type': 'ListItem', 'position': 3, 'name': 'Custom Mobile Application Development', 'item': page_url}]} | tojson }}
+    </script>
 
      <!-- opengrapg meta tag -->
     <meta property="og:title" content="Custom Mobile App Development Company in India | IV Infotech">
     <meta property="og:description" content="IV Infotech offers mobile app development services in India, including Android, iOS, and Flutter apps for startups and businesses across Gujarat. Build scalable, high-performance mobile apps." />
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.ivinfotech.com/custom-mobile-application-development">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:image" content="https://www.ivinfotech.com/assets/images/mobileappdevelopment_ogimage.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -3438,12 +3445,9 @@
             letter-spacing: 0.3px;
         }
     </style>
-<!-- {% include 'components/tracking_head.html' %}
-{% if service and service.get_faqs() %}
-    <script type="application/ld+json">
-{{ service.get_faqs() | faq_schema | safe }}
-    </script>
-{% endif %} -->
+{# Tracking pehle HTML comment ke andar tha — is page par Google Tag Manager / Analytics chal hi nahi raha tha #}
+{% include 'components/tracking_head.html' %}
+{# FAQ schema is page ke upar static block me hai, isliye database wala FAQ schema yahan dobara nahi lagaya #}
 </head>
 
 <body>

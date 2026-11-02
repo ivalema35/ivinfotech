@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{# SEO: /hire hub page — navbar ka "Hire" link isi par aata hai, yahan se saare hire-* pages linked hain #}
+{% set page_url = "https://www.ivinfotech.com/hire" %}
+<title>Hire Dedicated Developers &amp; Designers | IV Infotech</title>
+<meta name="description" content="Hire pre-vetted PHP, Laravel, Android, Flutter, HTML/CSS developers, UI/UX designers and AI engineers from IV Infotech, Mehsana. Hourly, monthly or fixed price.">
+    <meta name="author" content="IV Infotech">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ page_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="IV Infotech">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:url" content="{{ page_url }}">
+    <meta property="og:title" content="Hire Dedicated Developers &amp; Designers | IV Infotech">
+    <meta property="og:description" content="Hire pre-vetted PHP, Laravel, Android, Flutter, HTML/CSS developers, UI/UX designers and AI engineers from IV Infotech, Mehsana. Hourly, monthly or fixed price.">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hire Dedicated Developers &amp; Designers | IV Infotech">
+    <meta name="twitter:description" content="Hire pre-vetted PHP, Laravel, Android, Flutter, HTML/CSS developers, UI/UX designers and AI engineers from IV Infotech, Mehsana. Hourly, monthly or fixed price.">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/favicon/site.webmanifest">
+    <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
+
+    <!-- Preconnect for Faster External Resource Loading -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ivinfotech.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Hire Developers", "item": "https://www.ivinfotech.com/hire" }
+      ]
+    }
+    </script>
+{% include 'components/tracking_head.html' %}
+</head>
+
+<body>
+{% include 'components/tracking_body.html' %}
+    {%- include 'components/preloader.html' %}
+    {%- include 'components/navbar.html' %}
+
+    <header class="page-header">
+        <div class="container-xxl text-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Hire Developers</li>
+                </ol>
+            </nav>
+
+            <h1 class="display-4 fw-bold">Hire Dedicated Developers</h1>
+
+            <p class="lead w-75 mx-auto">Pre-vetted developers, designers and AI engineers from our Mehsana team, ready to join your project in 24 hours.</p>
+        </div>
+
+        <div class="custom-shape-divider-bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="100%" height="100" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </header>
+
+    <!-- Hire Roles Grid -->
+    <section class="py-5">
+        <div class="container-xxl">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fab fa-php"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">PHP Developers</h2>
+                        <p class="text-muted">Experts in Core PHP, MVC architecture, REST APIs, MySQL and OOP for custom web applications.</p>
+                        <a href="/hire-php-developers" class="service-link">Hire PHP Developers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fab fa-laravel"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">Laravel Developers</h2>
+                        <p class="text-muted">Experts in Laravel, Eloquent ORM, REST APIs, Vue.js and Livewire for scalable web platforms.</p>
+                        <a href="/hire-laravel-developers" class="service-link">Hire Laravel Developers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fab fa-android"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">Android Developers</h2>
+                        <p class="text-muted">Experts in Kotlin, Java, Jetpack Compose, Firebase and Google Play deployment.</p>
+                        <a href="/hire-android-developers" class="service-link">Hire Android Developers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">Flutter Developers</h2>
+                        <p class="text-muted">Experts in Dart and cross-platform iOS &amp; Android apps with Firebase and modern state management.</p>
+                        <a href="/hire-flutter-developers" class="service-link">Hire Flutter Developers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fab fa-html5"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">HTML / CSS Developers</h2>
+                        <p class="text-muted">Experts in semantic HTML5, CSS3, responsive design, Bootstrap 5, TailwindCSS and SASS.</p>
+                        <a href="/hire-html-developers" class="service-link">Hire HTML Developers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-pen-nib"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">UI/UX Designers</h2>
+                        <p class="text-muted">Experts in Figma, user research, wireframing, prototyping and scalable design systems.</p>
+                        <a href="/hire-ui-ux-designers" class="service-link">Hire UI/UX Designers ➝</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h2 class="h4 fw-bold mb-3">AI &amp; Automation Engineers</h2>
+                        <p class="text-muted">Experts in Python, LLMs, OpenAI APIs, LangChain, TensorFlow and PyTorch for AI and automation.</p>
+                        <a href="/hire-ai-engineers" class="service-link">Hire AI Engineers ➝</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Engagement Models (wahi models jo har hire-* page par likhe hain) -->
+    <section class="py-5 bg-light">
+        <div class="container-xxl">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="fw-bold">Choose How You Hire</h2>
+                <p class="text-muted">Flexible models to match every team size and budget.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3">Hourly Basis</h3>
+                        <p class="text-muted">Pay only for hours worked. Ideal for bug fixes, feature additions or short sprints. Detailed timesheets provided.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3">Monthly Dedicated</h3>
+                        <p class="text-muted">A full-time developer (160 hrs/month) working only on your project, with daily standups and reporting.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h3 class="h4 fw-bold mb-3">Fixed Price Project</h3>
+                        <p class="text-muted">Defined scope, fixed cost and fixed timeline, with milestone-based delivery and full NDA + IP protection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container-xxl">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-8 text-center text-md-start mb-3 mb-md-0">
+                    <h3 class="fw-bold mb-1">Need a developer for your project?</h3>
+                    <p class="mb-0 opacity-75">Tell us your requirement and get matched profiles within 24 hours.</p>
+                </div>
+
+                <div class="col-lg-4 col-md-4 text-center text-md-end">
+                    <a href="/contact" class="btn cta-btn">Hire Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {%- include 'components/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</body>
+
+</html>

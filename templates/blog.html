@@ -12,11 +12,10 @@
     <title>Blog – Tech Insights on Web Dev, AI & Digital Marketing | IV Infotech</title>
     <meta name="description"
         content="Read the latest insights and innovations from IV Infotech – expert articles on web development, AI automation, mobile apps, digital marketing, and emerging tech trends.">
-    <meta name="keywords"
-        content="IV Infotech Blog, Web Development Tips, AI Automation Articles, Digital Marketing Insights, Mobile App Trends, Software Engineering Blog Gujarat, Tech Blog India">
     <meta name="author" content="IV Infotech">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ivinfotech.com/blog">
+    {% set page_url = "https://www.ivinfotech.com/blog" %}
+    <link rel="canonical" href="{{ page_url }}">
 
     <!-- Open Graph / Facebook Meta Tags -->
     <meta property="og:type" content="website">
@@ -36,57 +35,45 @@
     <link rel="preconnect" href="https://images.unsplash.com">
     <link rel="preconnect" href="https://ui-avatars.com">
 
-    <meta property="og:url" content="https://www.ivinfotech.com/blog.html">
+    <meta property="og:url" content="{{ page_url }}">
     <meta property="og:title" content="Blog – Tech Insights on Web Dev, AI & Digital Marketing | IV Infotech">
     <meta property="og:description"
         content="Discover expert articles on web development, AI automation, mobile apps, and digital marketing from IV Infotech – Gujarat's leading IT agency.">
-    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og-blog.jpg">
+    <meta property="og:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
     <meta property="og:locale" content="en_IN">
     <meta property="og:site_name" content="IV Infotech">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.ivinfotech.com/blog.html">
+    <meta name="twitter:url" content="{{ page_url }}">
     <meta name="twitter:title" content="Blog – Tech Insights | IV Infotech">
     <meta name="twitter:description"
         content="Expert articles on web development, AI, mobile apps, and digital marketing from IV Infotech.">
-    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og-blog.jpg">
+    <meta name="twitter:image" content="https://www.ivinfotech.com/assets/images/og_image.png">
 
-    <!-- JSON-LD Structured Data - Blog -->
+    <!-- JSON-LD Structured Data - Blog (SEO #10: asli published posts se banta hai; pehle wala hardcoded JSON invalid tha) -->
+    {% set blog_ld_posts = [] %}
+    {% for bp in (posts or [])[:10] %}
+    {% set _ = blog_ld_posts.append({
+        '@type': 'BlogPosting',
+        'headline': bp.title,
+        'url': 'https://www.ivinfotech.com/blog/' ~ bp.slug,
+        'datePublished': bp.created_at.strftime('%Y-%m-%d') if bp.created_at else None,
+        'author': ({'@type': 'Person', 'name': bp.author.name, 'url': 'https://www.ivinfotech.com/author/' ~ bp.author.slug}
+                   if bp.author else {'@type': 'Organization', 'name': 'IV Infotech'})
+    }) %}
+    {% endfor %}
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "IV Infotech Blog",
-        "description": "Expert insights on web development, AI automation, mobile apps, and digital marketing.",
-        "url": "https://www.ivinfotech.com/blog.html",
-        "publisher": {
-            "@type": "Organization",
-            "name": "IV Infotech",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.ivinfotech.com/assets/images/logo.png"
-            }
-        },
-        "blogPost": [
-            {
-                "@type": "BlogPosting",
-                "headline": "How AI-Powered Automation Is Transforming Small Businesses in 2026",
-                "description": "Discover how small and mid-sized businesses are leveraging AI automation to cut costs, streamline workflows, and boost revenue.",
-                "datePublished": "2026-02-15",
-                "author": { "@type": "Person", "name": "Aarav Mehta" },
-                "publisher": { "@type": "Organization", "name": "IV Infotech" }
-            },
-            {
-                "@type": "BlogPosting",
-                "headline": "Next.js vs Nuxt.js: Which Framework Should You Choose in 2026?",
-                "description": "A detailed comparison of Next.js and Nuxt.js covering performance, SEO, DX, and ecosystem.",
-                "datePublished": "2026-02-10",
-                "author": { "@type": "Person", "name": "Priya Sharma" },
-                "publisher": { "@type": "Organization", "name": "IV Infotech" }
-            }
-        ]
-    }
+{{ {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  'name': 'IV Infotech Blog',
+  'description': 'Expert insights on web development, AI automation, mobile apps, and digital marketing.',
+  'url': 'https://www.ivinfotech.com/blog',
+  'publisher': {'@type': 'Organization', 'name': 'IV Infotech',
+                'logo': {'@type': 'ImageObject', 'url': 'https://www.ivinfotech.com/assets/images/ivlogo.png'}},
+  'blogPost': blog_ld_posts
+} | tojson }}
     </script>
 
     <!-- Stylesheets -->

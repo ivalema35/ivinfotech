@@ -1,0 +1,35 @@
+{# Service + BreadcrumbList schema (SEO PDF #10).
+   Include karne se pehle page me yeh variables set hone chahiye:
+     page_url  — canonical URL (har service page ke upar pehle se set hai)
+     svc_name  — service ka naam, jaise "Web Hosting Services"
+     svc_desc  — 1-2 line description (meta description jaisa)
+   FAQPage schema alag se database ke FAQs se banta hai (faq_schema filter). #}
+    <script type="application/ld+json">
+{{ {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": svc_name,
+      "serviceType": svc_name,
+      "description": svc_desc,
+      "url": page_url,
+      "provider": {
+        "@type": "Organization",
+        "name": "IV Infotech",
+        "url": "https://www.ivinfotech.com/",
+        "logo": "https://www.ivinfotech.com/assets/images/ivlogo.png"
+      },
+      "areaServed": {"@type": "Country", "name": "India"}
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ivinfotech.com/"},
+        {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.ivinfotech.com/services"},
+        {"@type": "ListItem", "position": 3, "name": svc_name, "item": page_url}
+      ]
+    }
+  ]
+} | tojson }}
+    </script>
